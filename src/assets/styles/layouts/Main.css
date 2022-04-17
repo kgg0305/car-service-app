@@ -1,0 +1,148 @@
+.trigger {
+    padding: 0 24px;
+    font-size: 18px;
+    line-height: 64px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.trigger:hover {
+    color: #1890ff;
+}
+
+.content-layout {
+    background: #fff;
+    margin: '24px 16px';
+    padding: 24;
+    min-height: 280;
+}
+
+.main-layout {
+    height: 100%;
+    width: 100%;
+}
+
+.main-layout .ant-space {
+    width: 100%;
+}
+
+.header-layout {
+    background-color: #484848;
+    height: 80px;
+}
+
+.content-layout {
+    padding: 20px;
+}
+
+.main-header-title {
+    padding-left: 50px;
+    font-weight: 600;
+    font-size: 21px;
+    line-height: 25px;
+    display: flex;
+    align-items: center;
+    color: #363636;
+}
+
+.main-body-divider {
+    margin: 0px;
+    height: 1px;
+    background-color: #484848;
+}
+
+.main-sub-title {
+    font-weight: 500;
+    font-size: 21px;
+    line-height: 25px;
+    display: flex;
+    align-items: center;
+    color: #363636;
+}
+
+.table-layout {
+    border-top: 1px solid #CBCBCB;
+    border-bottom: 1px solid #CBCBCB;
+}
+
+.table-header-col-section {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    padding-right: 21px;
+    background-color: #F2F2F2;
+}
+
+.table-header-col-section label {
+    margin: 0px;
+    width: 100%;
+
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    align-items: center;
+    text-align: right;
+    color: #363636;
+}
+
+.table-value-col-section {
+    padding-left: 6px;
+}
+
+.white-button {
+    width: 153px;
+    height: 49px;
+
+    background-color: white;
+    border: 1px solid #B3B3B3;
+    box-sizing: border-box;
+    border-radius: 2px;
+
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 16px;
+    align-items: center;
+    text-align: center;
+    color: #363636;
+}
+
+.black-button {
+    background: #363636;
+    border-radius: 2px;
+
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 16px;
+    align-items: center;
+    text-align: center;
+    color: white;
+}
+
+.big-button {
+    width: 153px;
+    height: 49px;
+}
+
+.medium-button {
+    height: 39px;
+}
+
+.small-button {
+    width: 80px;
+    height: 30px;
+}
+
+.rounded-button {
+    border-radius: 100px;
+}
+
+.body-header-title {
+    font-weight: 300;
+    font-size: 21px;
+    line-height: 25px;
+
+    display: flex;
+    align-items: center;
+
+    color: #363636;
+}

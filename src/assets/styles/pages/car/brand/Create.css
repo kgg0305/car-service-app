@@ -1,0 +1,17 @@
+.order-description-label {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+
+    color: #999999;
+}
+
+.logo-description-label {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 30px;
+
+    color: #999999;
+}
