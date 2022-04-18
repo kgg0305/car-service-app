@@ -10,6 +10,7 @@ function App() {
 	return (
 		<BrowserRouter>
 			<Routes>
+				<Route exact path='/' element={< Main />}></Route>
 				<Route path="/car/brand/" element={<Main />}>
 					<Route index element={<CarBrandList />} />
 					<Route path="create" element={<CarBrandCreate />} />
