@@ -72,3 +72,7 @@
     text-align: center!important;
     color: white!important;
 }
+
+.top-menu-layout > .ant-menu-item a:hover {
+    color: white!important;
+}

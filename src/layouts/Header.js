@@ -7,19 +7,19 @@ import setting_icon from '../assets/images/setting-icon.png'
 function Header() {
     return(
         <Row justify="middle">
-            <Col style={{ height: 80 }}>
+            <Col flex="auto" style={{ height: 80 }}>
                 <Menu className="top-menu-layout" mode="horizontal" defaultSelectedKeys={['1']}>
                     <Menu.Item key="1">
                         <Link to="/car/brand">자동차 DB</Link>
                     </Menu.Item>
                     <Menu.Item key="2">
-                        <Link to="/blogs">금융견적 DB</Link>
+                        <Link to="/">금융견적 DB</Link>
                     </Menu.Item>
                     <Menu.Item key="3">
-                        <Link to="/blogs">견적 관리</Link>
+                        <Link to="/">견적 관리</Link>
                     </Menu.Item>
                     <Menu.Item key="4">
-                        <Link to="/blogs">콘텐츠 관리</Link>
+                        <Link to="/">콘텐츠 관리</Link>
                     </Menu.Item>
                 </Menu>
             </Col>

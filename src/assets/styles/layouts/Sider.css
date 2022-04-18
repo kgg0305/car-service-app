@@ -51,3 +51,7 @@
 .sider-menu-layout > .ant-menu-item::after {
     border-right: solid 1px #B3B3B3!important;
 }
+
+.sider-menu-layout > .ant-menu-item a:hover {
+    color: #363636!important;
+}

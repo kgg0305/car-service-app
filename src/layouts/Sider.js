@@ -16,22 +16,22 @@ function Sider() {
                     <Link to="/car/brand">브랜드</Link>
                 </Menu.Item>
                 <Menu.Item key="2">
-                    <Link to="/blogs">모델 그룹</Link>
+                    <Link to="/">모델 그룹</Link>
                 </Menu.Item>
                 <Menu.Item key="3">
-                    <Link to="/blogs">모델</Link>
+                    <Link to="/">모델</Link>
                 </Menu.Item>
                 <Menu.Item key="4">
-                    <Link to="/blogs">라인업</Link>
+                    <Link to="/">라인업</Link>
                 </Menu.Item>
                 <Menu.Item key="5">
-                    <Link to="/blogs">트림</Link>
+                    <Link to="/">트림</Link>
                 </Menu.Item>
                 <Menu.Item key="6">
-                    <Link to="/blogs">할인/비용</Link>
+                    <Link to="/">할인/비용</Link>
                 </Menu.Item>
                 <Menu.Item key="7">
-                    <Link to="/blogs">취득세/공채/탁송</Link>
+                    <Link to="/">취득세/공채/탁송</Link>
                 </Menu.Item>
             </Menu>
         </>
