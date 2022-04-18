@@ -8,210 +8,148 @@ import '../../../assets/styles/pages/car/brand/Create.css';
 const { Option } = Select;
 
 function Create() {
-    const [bodyList, setbodyList] = useState([
-        <Space direction='vertical' size={20}>
-            <label className='main-sub-title'>정보 01</label>
-            <Space direction='vertical' size={0}>
-                <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
-                    <Col span={2} className='table-header-col-section'>
-                        <label>브랜드</label>
-                    </Col>
-                    <Col span={10} className='table-value-col-section'>
-                        <Space>
-                            <Input placeholder="브랜드 입력" maxLength={15} style={{ width: 400 }} />
-                            <Button className='black-button'>확인</Button>
-                        </Space>
-                    </Col>
-                    <Col span={2} className='table-header-col-section'>
-                        <label>순서</label>
-                    </Col>
-                    <Col flex="auto" className='table-value-col-section'>
-                        <Space>
-                            <Input maxLength={6} value={1} style={{ width: 150 }} />
-                            <label className='order-description-label'>숫자가 낮을수록 먼저 노출이 됩니다.</label>
-                        </Space>
-                    </Col>
-                </Row>
-                <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
-                    <Col  span={2} className='table-header-col-section'>
-                        <label>국가</label>
-                    </Col>
-                    <Col  span={4} className='table-value-col-section'>
-                        <Select
-                            suffixIcon={<CaretDownOutlined />}
-                            placeholder="선택"
-                            style={{ width: 150 }}>
-                            <Option value="SK">국산</Option>
-                            <Option value="US">미국</Option>
-                            <Option value="EU">유럽</Option>
-                            <Option value="JP">일본</Option>
-                            <Option value="CH">중국</Option>
-                        </Select>
-                    </Col>
-                    <Col  span={2} className='table-header-col-section'>
-                        <label>수입여부</label>
-                    </Col>
-                    <Col span={4} className='table-value-col-section'>
-                        <Select
-                            suffixIcon={<CaretDownOutlined />}
-                            placeholder="선택"
-                            style={{ width: 150 }}>
-                            <Option value="domestic">국산</Option>
-                            <Option value="income">수입</Option>
-                        </Select>
-                    </Col>
-                    <Col  span={2} className='table-header-col-section'>
-                        <label>사용여부</label>
-                    </Col>
-                    <Col flex="auto" className='table-value-col-section'>
-                        <Select
-                            suffixIcon={<CaretDownOutlined />}
-                            placeholder="선택"
-                            defaultValue="true"
-                            style={{ width: 150 }}>
-                            <Option value="true">사용</Option>
-                            <Option value="false">미사용</Option>
-                        </Select>
-                    </Col>
-                </Row>
-                <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
-                    <Col span={2} className='table-header-col-section'>
-                        <label>공식사이트</label>
-                    </Col>
-                    <Col span={10} className='table-value-col-section'>
-                        <Input placeholder="URL 입력" style={{ width: 400 }} />
-                    </Col>
-                    <Col span={2} className='table-header-col-section'>
-                        <label>전시장 안내</label>
-                    </Col>
-                    <Col flex="auto" className='table-value-col-section'>
-                        <Input placeholder="URL 입력" style={{ width: 400 }} />
-                    </Col>
-                </Row>
-                <Row gutter={[0]} align="middle" style={{ height:174 }} className='table-layout'>
-                    <Col span={2} className='table-header-col-section'>
-                        <label>로고</label>
-                    </Col>
-                    <Col flex="auto" className='table-value-col-section'>
-                        <Space direction='horizontal' align='end' size={20}>
-                            <Image src={ preview_default_image } width={150} height={150} />
-                            <Space direction='vertical' size={34}>
-                                <label className='logo-description-label'>
-                                    이미지 권장 크기는 90 * 60이며, *.png로 등록하셔야 합니다. <br/>
-                                    이미지를 새로 등록 하기 위해선 등록된 이미지 [삭제]후 재 등록 하시면 됩니다.
-                                </label>
-                                <Button className='black-button'>등록</Button>
-                            </Space>
-                        </Space>
-                        
-                    </Col>
-                </Row>
-            </Space>
-        </Space>
+    const [showDeleteButton, setShowDeleteButton] = useState(false);
+    const [bodyList, setBodyList] = useState([
+        {
+            number: 1
+        }
     ]);
 
+    const renderBodyList = () => {
+        return (
+            <>
+                {bodyList.map(body => {
+                    return (
+                        <Space direction='vertical' size={20}>
+                            <Row align='middle'>
+                                <Col>
+                                    <label className='main-sub-title'>정보 { body.number != 10 ? '0' + body.number : body.number }</label>
+                                </Col>
+                                <Col flex="auto" />
+                                <Col>
+                                    { showDeleteButton ? <Button className='white-button big-button' style={{width: 129, fontWeight: 500}} onClick={() => onDeleteComponentClick(body.number)}>정보삭제</Button> : <></> }
+                                </Col>
+                            </Row>
+                            <Space direction='vertical' size={0}>
+                                <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
+                                    <Col span={2} className='table-header-col-section'>
+                                        <label>브랜드</label>
+                                    </Col>
+                                    <Col span={10} className='table-value-col-section'>
+                                        <Space>
+                                            <Input placeholder="브랜드 입력" maxLength={15} style={{ width: 400 }} />
+                                            <Button className='black-button'>확인</Button>
+                                        </Space>
+                                    </Col>
+                                    <Col span={2} className='table-header-col-section'>
+                                        <label>순서</label>
+                                    </Col>
+                                    <Col flex="auto" className='table-value-col-section'>
+                                        <Space>
+                                            <Input maxLength={6} value={1} style={{ width: 150 }} />
+                                            <label className='order-description-label'>숫자가 낮을수록 먼저 노출이 됩니다.</label>
+                                        </Space>
+                                    </Col>
+                                </Row>
+                                <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
+                                    <Col  span={2} className='table-header-col-section'>
+                                        <label>국가</label>
+                                    </Col>
+                                    <Col  span={4} className='table-value-col-section'>
+                                        <Select
+                                            suffixIcon={<CaretDownOutlined />}
+                                            placeholder="선택"
+                                            style={{ width: 150 }}>
+                                            <Option value="SK">국산</Option>
+                                            <Option value="US">미국</Option>
+                                            <Option value="EU">유럽</Option>
+                                            <Option value="JP">일본</Option>
+                                            <Option value="CH">중국</Option>
+                                        </Select>
+                                    </Col>
+                                    <Col  span={2} className='table-header-col-section'>
+                                        <label>수입여부</label>
+                                    </Col>
+                                    <Col span={4} className='table-value-col-section'>
+                                        <Select
+                                            suffixIcon={<CaretDownOutlined />}
+                                            placeholder="선택"
+                                            style={{ width: 150 }}>
+                                            <Option value="domestic">국산</Option>
+                                            <Option value="income">수입</Option>
+                                        </Select>
+                                    </Col>
+                                    <Col  span={2} className='table-header-col-section'>
+                                        <label>사용여부</label>
+                                    </Col>
+                                    <Col flex="auto" className='table-value-col-section'>
+                                        <Select
+                                            suffixIcon={<CaretDownOutlined />}
+                                            placeholder="선택"
+                                            defaultValue="true"
+                                            style={{ width: 150 }}>
+                                            <Option value="true">사용</Option>
+                                            <Option value="false">미사용</Option>
+                                        </Select>
+                                    </Col>
+                                </Row>
+                                <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
+                                    <Col span={2} className='table-header-col-section'>
+                                        <label>공식사이트</label>
+                                    </Col>
+                                    <Col span={10} className='table-value-col-section'>
+                                        <Input placeholder="URL 입력" style={{ width: 400 }} />
+                                    </Col>
+                                    <Col span={2} className='table-header-col-section'>
+                                        <label>전시장 안내</label>
+                                    </Col>
+                                    <Col flex="auto" className='table-value-col-section'>
+                                        <Input placeholder="URL 입력" style={{ width: 400 }} />
+                                    </Col>
+                                </Row>
+                                <Row gutter={[0]} align="middle" style={{ height:174 }} className='table-layout'>
+                                    <Col span={2} className='table-header-col-section'>
+                                        <label>로고</label>
+                                    </Col>
+                                    <Col flex="auto" className='table-value-col-section'>
+                                        <Space direction='horizontal' align='end' size={20}>
+                                            <Image src={ preview_default_image } width={150} height={150} />
+                                            <Space direction='vertical' size={34}>
+                                                <label className='logo-description-label'>
+                                                    이미지 권장 크기는 90 * 60이며, *.png로 등록하셔야 합니다. <br/>
+                                                    이미지를 새로 등록 하기 위해선 등록된 이미지 [삭제]후 재 등록 하시면 됩니다.
+                                                </label>
+                                                <Button className='black-button'>등록</Button>
+                                            </Space>
+                                        </Space>
+                                        
+                                    </Col>
+                                </Row>
+                            </Space>
+                        </Space>
+                    );
+                })}
+            </>
+        );
+    };
+
     const onAddComponentClick = event => {
-        setbodyList(bodyList.concat(
-            <Space direction='vertical' size={20}>
-                <label className='main-sub-title'>정보 0{bodyList.length + 1}</label>
-                <Space direction='vertical' size={0}>
-                    <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
-                        <Col span={2} className='table-header-col-section'>
-                            <label>브랜드</label>
-                        </Col>
-                        <Col span={10} className='table-value-col-section'>
-                            <Space>
-                                <Input placeholder="브랜드 입력" maxLength={15} style={{ width: 400 }} />
-                                <Button className='black-button'>확인</Button>
-                            </Space>
-                        </Col>
-                        <Col span={2} className='table-header-col-section'>
-                            <label>순서</label>
-                        </Col>
-                        <Col flex="auto" className='table-value-col-section'>
-                            <Space>
-                                <Input maxLength={6} value={1} style={{ width: 150 }} />
-                                <label className='order-description-label'>숫자가 낮을수록 먼저 노출이 됩니다.</label>
-                            </Space>
-                        </Col>
-                    </Row>
-                    <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
-                        <Col  span={2} className='table-header-col-section'>
-                            <label>국가</label>
-                        </Col>
-                        <Col  span={4} className='table-value-col-section'>
-                            <Select
-                                suffixIcon={<CaretDownOutlined />}
-                                placeholder="선택"
-                                style={{ width: 150 }}>
-                                <Option value="SK">국산</Option>
-                                <Option value="US">미국</Option>
-                                <Option value="EU">유럽</Option>
-                                <Option value="JP">일본</Option>
-                                <Option value="CH">중국</Option>
-                            </Select>
-                        </Col>
-                        <Col  span={2} className='table-header-col-section'>
-                            <label>수입여부</label>
-                        </Col>
-                        <Col span={4} className='table-value-col-section'>
-                            <Select
-                                suffixIcon={<CaretDownOutlined />}
-                                placeholder="선택"
-                                style={{ width: 150 }}>
-                                <Option value="domestic">국산</Option>
-                                <Option value="income">수입</Option>
-                            </Select>
-                        </Col>
-                        <Col  span={2} className='table-header-col-section'>
-                            <label>사용여부</label>
-                        </Col>
-                        <Col flex="auto" className='table-value-col-section'>
-                            <Select
-                                suffixIcon={<CaretDownOutlined />}
-                                placeholder="선택"
-                                defaultValue="true"
-                                style={{ width: 150 }}>
-                                <Option value="true">사용</Option>
-                                <Option value="false">미사용</Option>
-                            </Select>
-                        </Col>
-                    </Row>
-                    <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
-                        <Col span={2} className='table-header-col-section'>
-                            <label>공식사이트</label>
-                        </Col>
-                        <Col span={10} className='table-value-col-section'>
-                            <Input placeholder="URL 입력" style={{ width: 400 }} />
-                        </Col>
-                        <Col span={2} className='table-header-col-section'>
-                            <label>전시장 안내</label>
-                        </Col>
-                        <Col flex="auto" className='table-value-col-section'>
-                            <Input placeholder="URL 입력" style={{ width: 400 }} />
-                        </Col>
-                    </Row>
-                    <Row gutter={[0]} align="middle" style={{ height:174 }} className='table-layout'>
-                        <Col span={2} className='table-header-col-section'>
-                            <label>로고</label>
-                        </Col>
-                        <Col flex="auto" className='table-value-col-section'>
-                            <Space direction='horizontal' align='end' size={20}>
-                                <Image src={ preview_default_image } width={150} height={150} />
-                                <Space direction='vertical' size={34}>
-                                    <label className='logo-description-label'>
-                                        이미지 권장 크기는 90 * 60이며, *.png로 등록하셔야 합니다. <br/>
-                                        이미지를 새로 등록 하기 위해선 등록된 이미지 [삭제]후 재 등록 하시면 됩니다.
-                                    </label>
-                                    <Button className='black-button'>등록</Button>
-                                </Space>
-                            </Space>
-                            
-                        </Col>
-                    </Row>
-                </Space>
-            </Space>
-        ));
+        if(bodyList.length < 10){
+            setShowDeleteButton(true);
+            setBodyList([...bodyList, {
+                number: bodyList[bodyList.length - 1].number + 1
+            }]);
+        }
+    };
+
+    const onDeleteComponentClick = (number) => {
+        if(bodyList.length > 1){
+            if(bodyList.length == 2){
+                console.log(bodyList.length);
+                setShowDeleteButton(false);
+            }
+            setBodyList(bodyList.filter((body) => body.number != number));
+        }
     };
 
     return(
@@ -242,7 +180,7 @@ function Create() {
             {/* Body Section */}
 			<Space direction='vertical' size={20} style={{paddingBottom: 117}}>
                 <Space direction='vertical' size={72} split={<Divider />}>
-                    {bodyList}
+                    {renderBodyList()}
                 </Space>
 				
 				<Row justify="center" gutter={[17, 0]}>
