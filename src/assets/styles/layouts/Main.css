@@ -21,6 +21,10 @@
     min-height: 280;
 }
 
+main {
+    overflow-y: auto;
+}
+
 .main-layout {
     height: 100%;
     width: 100%;
@@ -94,9 +98,6 @@
 }
 
 .white-button {
-    width: 153px;
-    height: 49px;
-
     background-color: white;
     border: 1px solid #B3B3B3;
     box-sizing: border-box;
@@ -113,6 +114,12 @@
 .white-button:hover {
     border: 1px solid black;
 
+    color: #363636;
+}
+
+.white-button:focus {
+    background-color: white;
+    border-color: #B3B3B3;
     color: #363636;
 }
 
@@ -133,6 +140,12 @@
     background-color: black;
     border-color: black;
 
+    color: white;
+}
+
+.black-button:focus {
+    background-color: #363636;
+    border-color: #363636;
     color: white;
 }
 
