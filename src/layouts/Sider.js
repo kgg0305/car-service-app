@@ -16,10 +16,10 @@ function Sider() {
                     <Link to="/car/brand">브랜드</Link>
                 </Menu.Item>
                 <Menu.Item key="2">
-                    <Link to="/">모델 그룹</Link>
+                    <Link to="/car/group">모델 그룹</Link>
                 </Menu.Item>
                 <Menu.Item key="3">
-                    <Link to="/">모델</Link>
+                    <Link to="/car/model">모델</Link>
                 </Menu.Item>
                 <Menu.Item key="4">
                     <Link to="/">라인업</Link>

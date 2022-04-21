@@ -8,7 +8,7 @@ import alert_icon from '../../../assets/images/alert-icon.png';
 
 const { Option } = Select;
 
-function Create() {
+function Edit() {
     const [showModal, setShowModal] = useState(false);
     const [showDeleteButton, setShowDeleteButton] = useState(false);
     const [bodyList, setBodyList] = useState([
@@ -57,15 +57,14 @@ function Create() {
                                     </Col>
                                 </Row>
                                 <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
-                                    <Col span={2} className='table-header-col-section'>
+                                    <Col  span={2} className='table-header-col-section'>
                                         <label>국가</label>
                                     </Col>
-                                    <Col span={4} className='table-value-col-section'>
+                                    <Col  span={4} className='table-value-col-section'>
                                         <Select
                                             suffixIcon={<CaretDownOutlined />}
                                             placeholder="선택"
-                                            style={{ width: 150 }}
-                                        >
+                                            style={{ width: 150 }}>
                                             <Option value="SK">국산</Option>
                                             <Option value="US">미국</Option>
                                             <Option value="EU">유럽</Option>
@@ -73,20 +72,19 @@ function Create() {
                                             <Option value="CH">중국</Option>
                                         </Select>
                                     </Col>
-                                    <Col span={2} className='table-header-col-section'>
+                                    <Col  span={2} className='table-header-col-section'>
                                         <label>수입여부</label>
                                     </Col>
                                     <Col span={4} className='table-value-col-section'>
                                         <Select
                                             suffixIcon={<CaretDownOutlined />}
                                             placeholder="선택"
-                                            style={{ width: 150 }}
-                                        >
+                                            style={{ width: 150 }}>
                                             <Option value="domestic">국산</Option>
                                             <Option value="income">수입</Option>
                                         </Select>
                                     </Col>
-                                    <Col span={2} className='table-header-col-section'>
+                                    <Col  span={2} className='table-header-col-section'>
                                         <label>사용여부</label>
                                     </Col>
                                     <Col flex="auto" className='table-value-col-section'>
@@ -94,8 +92,7 @@ function Create() {
                                             suffixIcon={<CaretDownOutlined />}
                                             placeholder="선택"
                                             defaultValue="true"
-                                            style={{ width: 150 }}
-                                        >
+                                            style={{ width: 150 }}>
                                             <Option value="true">사용</Option>
                                             <Option value="false">미사용</Option>
                                         </Select>
@@ -177,7 +174,7 @@ function Create() {
                 <Space direction='vertical' size={18}>
                     <Row justify='middle'>
                         <Col>
-                            <label className='main-header-title'>브랜드 등록</label>
+                            <label className='main-header-title'>브랜드 수정</label>
                         </Col>
                         <Col flex="auto" />
                         <Col>
@@ -185,9 +182,7 @@ function Create() {
                                 <Link to="/car/brand">
                                     <Button className='white-button medium-button'>취소</Button>
                                 </Link>
-                                <Button className='white-button medium-button' onClick={onSaveClick}>저장하고 나가기</Button>
-                                
-                                <Button className='black-button medium-button'>저장하고 모델그룹 등록하기</Button>
+                                <Button className='black-button medium-button' onClick={onSaveClick}>저장하고 나가기</Button>
                             </Space>
                         </Col>
                     </Row>
@@ -227,4 +222,4 @@ function Create() {
     );
 }
 
-export default Create;
+export default Edit;

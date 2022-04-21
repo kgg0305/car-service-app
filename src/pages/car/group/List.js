@@ -10,20 +10,18 @@ function List() {
 		[
 			{
 				number: '1',
-				logo: window.location.origin + '/images/logo/logo.png',
-				brand: 'Ford',
-				order: '10',
+				brand: 32,
+				group: '10 Downing Street',
+                type: '경차',
 				available: '사용',
-				count: '42',
 				manage: '',
 			},
 			{
 				number: '1',
-				logo: window.location.origin + '/images/logo/logo.png',
-				brand: 'Ford',
-				order: '10',
+				brand: 32,
+				group: '10 Downing Street',
+                type: '경차',
 				available: '사용',
-				count: '12',
 				manage: '',
 			},
 		]
@@ -37,22 +35,21 @@ function List() {
             align: 'center',
 		},
 		{
-			title: '로고',
-			dataIndex: 'logo',
-			key: 'logo',
-            align: 'center',
-			render: path => <Image src={path} />,
-		},
-		{
 			title: '브랜드',
 			dataIndex: 'brand',
 			key: 'brand',
             align: 'center',
 		},
 		{
-			title: '순서',
-			dataIndex: 'order',
-			key: 'order',
+			title: '모델그룹',
+			dataIndex: 'group',
+			key: 'group',
+            align: 'center',
+		},
+        {
+			title: '차종',
+			dataIndex: 'type',
+			key: 'type',
             align: 'center',
 		},
 		{
@@ -62,29 +59,23 @@ function List() {
             align: 'center',
 		},
 		{
-			title: '등록 차량수',
-			dataIndex: 'count',
-			key: 'count',
-            align: 'center',
-		},
-		{
 			title: '관리',
 			dataIndex: 'manage',
 			key: 'manage',
             align: 'center',
 			render: path => 
-				<Row justify='center'>
-					<Col>
-						<Space size={15} split={<Divider type="vertical" />}>
-							<Link to="/car/brand/edit">
-								<Button className='white-button small-button rounded-button'>그룹관리</Button>
-							</Link>
-							<Link to="/car/brand/edit">
-								<Button className='black-button small-button rounded-button'>수정</Button>
-							</Link>
-						</Space>
-					</Col>
-				</Row>,
+                <Row justify='center'>
+                    <Col>
+                        <Space size={15} split={<Divider type="vertical" />}>
+                            <Link to="/car/group/edit">
+                                <Button className='white-button small-button rounded-button'>그룹관리</Button>
+                            </Link>
+                            <Link to="/car/group/edit">
+                                <Button className='black-button small-button rounded-button'>수정</Button>
+                            </Link>
+                        </Space>
+                    </Col>
+                </Row>,
 		},
 	];
 
@@ -93,22 +84,20 @@ function List() {
 			...dataSource,
 			{
 				number: '1',
-				logo: window.location.origin + '/images/logo/logo.png',
-				brand: 'Ford',
-				order: '1',
+				brand: 32,
+				group: '10 Downing Street',
+                type: '경차',
 				available: '사용',
-				count: '3',
 				manage: '',
 			},
 			{
 				number: '1',
-				logo: window.location.origin + '/images/logo/logo.png',
-				brand: 'Ford',
-				order: '2',
+				brand: 32,
+				group: '10 Downing Street',
+                type: '경차',
 				available: '사용',
-				count: '4',
 				manage: '',
-			}
+			},
 		]);
 	};
 
@@ -116,7 +105,7 @@ function List() {
 		<Space direction='vertical' size={18} className='main-layout'>
 			{/* Page Header */}
 			<Space direction='vertical' size={18}>
-				<label className='main-header-title'>브랜드 목록</label>
+				<label className='main-header-title'>모델그룹 목록</label>
 				<Divider className='main-body-divider' />
 			</Space>
 
@@ -125,13 +114,14 @@ function List() {
 				<label className='main-sub-title'>검색</label>
 				<Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
 					<Col flex="154px" className='table-header-col-section'>
-						<label>차량검색</label>
+						<label>차량</label>
 					</Col>
 					<Col flex="auto" className='table-value-col-section'>
 						<Select
 							suffixIcon={<CaretDownOutlined />}
 							placeholder="브랜드 선택"
-							style={{ width: 400 }}>
+							style={{ width: 400 }}
+                        >
 							<Option value="jack">Jack</Option>
 							<Option value="lucy">Lucy</Option>
 							<Option value="Yiminghe">yiminghe</Option>
@@ -144,10 +134,40 @@ function List() {
 						<Select
 							suffixIcon={<CaretDownOutlined />}
 							placeholder="선택"
-							style={{ width: 150 }}
-						>
+							style={{ width: 150 }}>
 							<Option value="1">사용</Option>
 							<Option value="2">미사용</Option>
+						</Select>
+					</Col>
+                    <Col flex="154px" className='table-header-col-section'>
+						<label>차종</label>
+					</Col>
+					<Col flex="auto" className='table-value-col-section'>
+						<Select
+							suffixIcon={<CaretDownOutlined />}
+							placeholder="선택"
+							style={{ width: 150 }}
+                        >
+							<Option value="1">경차</Option>
+							<Option value="2">경습합</Option>
+							<Option value="3">경트럭</Option>
+                            <Option value="4">대형</Option>
+                            <Option value="5">대형MPV</Option>
+                            <Option value="6">대형SUV</Option>
+                            <Option value="7">소형</Option>
+                            <Option value="8">소형MPV</Option>
+                            <Option value="9">소형SUV</Option>
+                            <Option value="10">소형버스</Option>
+                            <Option value="11">소형버스</Option>
+							<Option value="12">소형트럭</Option>
+							<Option value="13">스포츠카</Option>
+                            <Option value="14">승합</Option>
+                            <Option value="15">준대형</Option>
+                            <Option value="16">준중형</Option>
+                            <Option value="17">중형</Option>
+                            <Option value="18">중형SUV</Option>
+                            <Option value="19">중형트럭</Option>
+                            <Option value="20">픽업/밴</Option>
 						</Select>
 					</Col>
 				</Row>
@@ -169,7 +189,7 @@ function List() {
 					</Col>
 					<Col flex="auto" />
 					<Col>
-						<Link to="/car/brand/create">
+						<Link to="/car/group/create">
 							<Button className='black-button big-button'>등록</Button>
 						</Link>
 					</Col>
