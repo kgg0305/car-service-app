@@ -22,16 +22,16 @@ function Sider() {
                     <Link to="/car/model">모델</Link>
                 </Menu.Item>
                 <Menu.Item key="4">
-                    <Link to="/">라인업</Link>
+                    <Link to="/car/lineup">라인업</Link>
                 </Menu.Item>
                 <Menu.Item key="5">
-                    <Link to="/">트림</Link>
+                    <Link to="/car/trim">트림</Link>
                 </Menu.Item>
                 <Menu.Item key="6">
-                    <Link to="/">할인/비용</Link>
+                    <Link to="/car/discount">할인/비용</Link>
                 </Menu.Item>
                 <Menu.Item key="7">
-                    <Link to="/">취득세/공채/탁송</Link>
+                    <Link to="/car/extra">취득세/공채/탁송</Link>
                 </Menu.Item>
             </Menu>
         </>

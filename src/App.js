@@ -14,6 +14,20 @@ import CarGroupEdit from './pages/car/group/Edit';
 import CarModelList from './pages/car/model/List';
 import CarModelCreate from './pages/car/model/Create';
 import CarModelEdit from './pages/car/model/Edit';
+// Lineup
+import CarLineupList from './pages/car/lineup/List';
+import CarLineupCreate from './pages/car/lineup/Create';
+import CarLineupEdit from './pages/car/lineup/Edit';
+// Trim
+import CarTrimList from './pages/car/trim/List';
+import CarTrimCreate from './pages/car/trim/Create';
+import CarTrimEdit from './pages/car/trim/Edit';
+// Discount
+import CarDiscountList from './pages/car/discount/List';
+import CarDiscountCreate from './pages/car/discount/Create';
+import CarDiscountEdit from './pages/car/discount/Edit';
+// Extra
+import CarExtraList from './pages/car/extra/List';
 
 function App() {
 	return (
@@ -36,6 +50,24 @@ function App() {
 					<Route index element={<CarModelList />} />
 					<Route path="create" element={<CarModelCreate />} />
 					<Route path="edit" element={<CarModelEdit />} />
+				</Route>
+				<Route path="/car/lineup/" element={<Main />}>
+					<Route index element={<CarLineupList />} />
+					<Route path="create" element={<CarLineupCreate />} />
+					<Route path="edit" element={<CarLineupEdit />} />
+				</Route>
+				<Route path="/car/trim/" element={<Main />}>
+					<Route index element={<CarTrimList />} />
+					<Route path="create" element={<CarTrimCreate />} />
+					<Route path="edit" element={<CarTrimEdit />} />
+				</Route>
+				<Route path="/car/discount/" element={<Main />}>
+					<Route index element={<CarDiscountList />} />
+					<Route path="create" element={<CarDiscountCreate />} />
+					<Route path="edit" element={<CarDiscountEdit />} />
+				</Route>
+				<Route path="/car/extra/" element={<Main />}>
+					<Route index element={<CarExtraList />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>

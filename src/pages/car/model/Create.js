@@ -32,7 +32,7 @@ function Create() {
                         <Col flex="auto" />
                         <Col>
                             <Space size={10}>
-                                <Link to="/car/brand">
+                                <Link to="/car/model">
                                     <Button className='white-button medium-button'>취소</Button>
                                 </Link>
                                 <Button className='white-button medium-button' onClick={onSaveClick}>저장하고 나가기</Button>

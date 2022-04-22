@@ -1,4 +1,4 @@
-import { Col, Divider, Row, Space, Table, Select, Button, Image } from 'antd';
+import { Col, Divider, Row, Space, Table, Select, Button, Image, DatePicker } from 'antd';
 import { Link } from 'react-router-dom';
 import { CaretDownOutlined } from '@ant-design/icons'
 import React, { useState } from 'react';
@@ -11,23 +11,21 @@ function List() {
 			{
 				number: '1',
 				brand: 32,
-				group: '10 Downing Street',
-                model: '경차',
-                order: '경차',
-                new: '경차',
-				available: '사용',
-                register: '2022-03-05',
+				type: '블루멤버스 포인트 선사용',
+                condition: '2회 이상 재구매 고객',
+                money: '-100,000원',
+                start: '2022-01-24',
+				end: '2022-02-24',
 				manage: '',
 			},
 			{
 				number: '1',
 				brand: 32,
-				group: '10 Downing Street',
-                model: '경차',
-                order: '경차',
-                new: '경차',
-				available: '사용',
-                register: '2022-03-05',
+				type: '블루멤버스 포인트 선사용',
+                condition: '2회 이상 재구매 고객',
+                money: '-100,000원',
+                start: '2022-01-24',
+				end: '2022-02-24',
 				manage: '',
 			},
 		]
@@ -47,39 +45,33 @@ function List() {
             align: 'center',
 		},
 		{
-			title: '모델그룹',
-			dataIndex: 'group',
-			key: 'group',
+			title: '종류',
+			dataIndex: 'type',
+			key: 'type',
             align: 'center',
 		},
         {
-			title: '모델',
-			dataIndex: 'model',
-			key: 'model',
+			title: '조건',
+			dataIndex: 'condition',
+			key: 'condition',
             align: 'center',
 		},
         {
-			title: '순서',
-			dataIndex: 'order',
-			key: 'order',
+			title: '할인비용',
+			dataIndex: 'money',
+			key: 'money',
             align: 'center',
 		},
         {
-			title: '신차여부',
-			dataIndex: 'new',
-			key: 'new',
+			title: '시작일',
+			dataIndex: 'start',
+			key: 'start',
             align: 'center',
 		},
 		{
-			title: '사용여부',
-			dataIndex: 'available',
-			key: 'available',
-            align: 'center',
-		},
-        {
-			title: '등록일',
-			dataIndex: 'register',
-			key: 'register',
+			title: '종료일',
+			dataIndex: 'end',
+			key: 'end',
             align: 'center',
 		},
 		{
@@ -90,14 +82,9 @@ function List() {
 			render: path => 
                 <Row justify='center'>
                     <Col>
-                        <Space size={15} split={<Divider type="vertical" />}>
-                            <Link to="/car/model/edit">
-                                <Button className='white-button small-button rounded-button'>그룹관리</Button>
-                            </Link>
-                            <Link to="/car/model/edit">
-                                <Button className='black-button small-button rounded-button'>수정</Button>
-                            </Link>
-                        </Space>
+                        <Link to="/car/discount/edit">
+                            <Button className='black-button small-button rounded-button'>수정</Button>
+                        </Link>
                     </Col>
                 </Row>,
 		},
@@ -107,25 +94,23 @@ function List() {
 		setDataSource([
 			...dataSource,
 			{
-				number: '1', 
+				number: '1',
 				brand: 32,
-				group: '10 Downing Street',
-                model: '경차',
-                order: '경차',
-                new: '경차',
-				available: '사용',
-                register: '2022-03-05',
+				type: '블루멤버스 포인트 선사용',
+                condition: '2회 이상 재구매 고객',
+                money: '-100,000원',
+                start: '2022-01-24',
+				end: '2022-02-24',
 				manage: '',
 			},
 			{
 				number: '1',
 				brand: 32,
-				group: '10 Downing Street',
-                model: '경차',
-                order: '경차',
-                new: '경차',
-				available: '사용',
-                register: '2022-03-05',
+				type: '블루멤버스 포인트 선사용',
+                condition: '2회 이상 재구매 고객',
+                money: '-100,000원',
+                start: '2022-01-24',
+				end: '2022-02-24',
 				manage: '',
 			},
 		]);
@@ -135,7 +120,7 @@ function List() {
 		<Space direction='vertical' size={18} className='main-layout'>
 			{/* Page Header */}
 			<Space direction='vertical' size={18}>
-				<label className='main-header-title'>모델 목록</label>
+				<label className='main-header-title'>할인/비용 목록</label>
 				<Divider className='main-body-divider' />
 			</Space>
 
@@ -145,14 +130,14 @@ function List() {
                 <Space direction='vertical' size={0}>
                     <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
                         <Col flex="154px" className='table-header-col-section'>
-                            <label>차량</label>
+                            <label>브랜드</label>
                         </Col>
                         <Col flex="auto" className='table-value-col-section'>
                             <Space size={6}>
                                 <Select
                                     suffixIcon={<CaretDownOutlined />}
                                     placeholder="브랜드 선택"
-                                    style={{ width: 400 }}
+                                    style={{ width: 300 }}
                                 >
                                     <Option value="jack">Jack</Option>
                                     <Option value="lucy">Lucy</Option>
@@ -160,8 +145,8 @@ function List() {
                                 </Select>
                                 <Select
                                     suffixIcon={<CaretDownOutlined />}
-                                    placeholder="모델그룹 선택"
-                                    style={{ width: 400 }}
+                                    placeholder="할인종류 선택"
+                                    style={{ width: 300 }}
                                 >
                                     <Option value="jack">Jack</Option>
                                     <Option value="lucy">Lucy</Option>
@@ -172,28 +157,25 @@ function List() {
                     </Row>
                     <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
                         <Col flex="154px" className='table-header-col-section'>
-                            <label>신차여부</label>
-                        </Col>
-                        <Col span={4} className='table-value-col-section'>
-                            <Select
-                                suffixIcon={<CaretDownOutlined />}
-                                placeholder="선택"
-                                style={{ width: 150 }}>
-                                <Option value="1">예</Option>
-                                <Option value="2">아니오</Option>
-                            </Select>
-                        </Col>
-                        <Col flex="154px" className='table-header-col-section'>
-                            <label>사용여부</label>
+                            <label>날짜</label>
                         </Col>
                         <Col flex="auto" className='table-value-col-section'>
-                            <Select
-                                suffixIcon={<CaretDownOutlined />}
-                                placeholder="선택"
-                                style={{ width: 150 }}>
-                                <Option value="1">사용</Option>
-                                <Option value="2">미사용</Option>
-                            </Select>
+                            <Space size={30}>
+                                <Space size={2}>
+                                    <Button className='black-button smallest-button'>전체</Button>
+                                    <Button className='white-button smallest-button'>오늘</Button>
+                                    <Button className='white-button smallest-button'>어제</Button>
+                                    <Button className='white-button smallest-button'>3일</Button>
+                                    <Button className='white-button smallest-button'>7일</Button>
+                                    <Button className='white-button smallest-button'>1개월</Button>
+                                    <Button className='white-button smallest-button'>3개월</Button>
+                                </Space>
+                                <Space size={6}>
+                                    <DatePicker placeholder='시작일' />
+                                    <label>~</label>
+                                    <DatePicker placeholder='종료일' />
+                                </Space>
+                            </Space>
                         </Col>
                     </Row>
                 </Space>
@@ -215,8 +197,8 @@ function List() {
 					</Col>
 					<Col flex="auto" />
 					<Col>
-						<Link to="/car/model/create">
-							<Button className='black-button big-button'>등록</Button>
+						<Link to="/car/discount/create">
+							<Button className='black-button big-button'>상품 등록</Button>
 						</Link>
 					</Col>
 				</Row>

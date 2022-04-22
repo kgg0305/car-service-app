@@ -1,4 +1,4 @@
-import { Col, Divider, Row, Space, Table, Select, Button, Image } from 'antd';
+import { Col, Divider, Row, Space, Table, Select, Button, Image, Upload } from 'antd';
 import { Link } from 'react-router-dom';
 import { CaretDownOutlined } from '@ant-design/icons'
 import React, { useState } from 'react';
@@ -11,24 +11,22 @@ function List() {
 			{
 				number: '1',
 				brand: 32,
-				group: '10 Downing Street',
                 model: '경차',
-                order: '경차',
-                new: '경차',
-				available: '사용',
-                register: '2022-03-05',
-				manage: '',
+                area: '',
+				tax: '',
+                profit: '',
+				discount: '',
+                delivery: '',
 			},
 			{
 				number: '1',
 				brand: 32,
-				group: '10 Downing Street',
                 model: '경차',
-                order: '경차',
-                new: '경차',
-				available: '사용',
-                register: '2022-03-05',
-				manage: '',
+                area: '',
+				tax: '',
+                profit: '',
+				discount: '',
+                delivery: '',
 			},
 		]
 	);
@@ -46,12 +44,6 @@ function List() {
 			key: 'brand',
             align: 'center',
 		},
-		{
-			title: '모델그룹',
-			dataIndex: 'group',
-			key: 'group',
-            align: 'center',
-		},
         {
 			title: '모델',
 			dataIndex: 'model',
@@ -59,47 +51,34 @@ function List() {
             align: 'center',
 		},
         {
-			title: '순서',
-			dataIndex: 'order',
-			key: 'order',
-            align: 'center',
-		},
-        {
-			title: '신차여부',
-			dataIndex: 'new',
-			key: 'new',
+			title: '등록지역',
+			dataIndex: 'area',
+			key: 'area',
             align: 'center',
 		},
 		{
-			title: '사용여부',
-			dataIndex: 'available',
-			key: 'available',
+			title: '면세조건',
+			dataIndex: 'tax',
+			key: 'tax',
             align: 'center',
 		},
         {
-			title: '등록일',
-			dataIndex: 'register',
-			key: 'register',
+			title: '취득세',
+			dataIndex: 'profit',
+			key: 'profit',
             align: 'center',
 		},
-		{
-			title: '관리',
-			dataIndex: 'manage',
-			key: 'manage',
+        {
+			title: '채권할인',
+			dataIndex: 'discount',
+			key: 'discount',
             align: 'center',
-			render: path => 
-                <Row justify='center'>
-                    <Col>
-                        <Space size={15} split={<Divider type="vertical" />}>
-                            <Link to="/car/model/edit">
-                                <Button className='white-button small-button rounded-button'>그룹관리</Button>
-                            </Link>
-                            <Link to="/car/model/edit">
-                                <Button className='black-button small-button rounded-button'>수정</Button>
-                            </Link>
-                        </Space>
-                    </Col>
-                </Row>,
+		},
+        {
+			title: '탁송',
+			dataIndex: 'delivery',
+			key: 'delivery',
+            align: 'center',
 		},
 	];
 
@@ -107,26 +86,24 @@ function List() {
 		setDataSource([
 			...dataSource,
 			{
-				number: '1', 
+				number: '1',
 				brand: 32,
-				group: '10 Downing Street',
                 model: '경차',
-                order: '경차',
-                new: '경차',
-				available: '사용',
-                register: '2022-03-05',
-				manage: '',
+                area: '',
+				tax: '',
+                profit: '',
+				discount: '',
+                delivery: '',
 			},
 			{
 				number: '1',
 				brand: 32,
-				group: '10 Downing Street',
                 model: '경차',
-                order: '경차',
-                new: '경차',
-				available: '사용',
-                register: '2022-03-05',
-				manage: '',
+                area: '',
+				tax: '',
+                profit: '',
+				discount: '',
+                delivery: '',
 			},
 		]);
 	};
@@ -135,7 +112,7 @@ function List() {
 		<Space direction='vertical' size={18} className='main-layout'>
 			{/* Page Header */}
 			<Space direction='vertical' size={18}>
-				<label className='main-header-title'>모델 목록</label>
+				<label className='main-header-title'>면세조건/등록지역/탁송</label>
 				<Divider className='main-body-divider' />
 			</Space>
 
@@ -152,7 +129,7 @@ function List() {
                                 <Select
                                     suffixIcon={<CaretDownOutlined />}
                                     placeholder="브랜드 선택"
-                                    style={{ width: 400 }}
+                                    style={{ width: 300 }}
                                 >
                                     <Option value="jack">Jack</Option>
                                     <Option value="lucy">Lucy</Option>
@@ -161,39 +138,22 @@ function List() {
                                 <Select
                                     suffixIcon={<CaretDownOutlined />}
                                     placeholder="모델그룹 선택"
-                                    style={{ width: 400 }}
+                                    style={{ width: 300 }}
+                                >
+                                    <Option value="jack">Jack</Option>
+                                    <Option value="lucy">Lucy</Option>
+                                    <Option value="Yiminghe">yiminghe</Option>
+                                </Select>
+                                <Select
+                                    suffixIcon={<CaretDownOutlined />}
+                                    placeholder="모델 선택"
+                                    style={{ width: 300 }}
                                 >
                                     <Option value="jack">Jack</Option>
                                     <Option value="lucy">Lucy</Option>
                                     <Option value="Yiminghe">yiminghe</Option>
                                 </Select>
                             </Space>
-                        </Col>
-                    </Row>
-                    <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
-                        <Col flex="154px" className='table-header-col-section'>
-                            <label>신차여부</label>
-                        </Col>
-                        <Col span={4} className='table-value-col-section'>
-                            <Select
-                                suffixIcon={<CaretDownOutlined />}
-                                placeholder="선택"
-                                style={{ width: 150 }}>
-                                <Option value="1">예</Option>
-                                <Option value="2">아니오</Option>
-                            </Select>
-                        </Col>
-                        <Col flex="154px" className='table-header-col-section'>
-                            <label>사용여부</label>
-                        </Col>
-                        <Col flex="auto" className='table-value-col-section'>
-                            <Select
-                                suffixIcon={<CaretDownOutlined />}
-                                placeholder="선택"
-                                style={{ width: 150 }}>
-                                <Option value="1">사용</Option>
-                                <Option value="2">미사용</Option>
-                            </Select>
                         </Col>
                     </Row>
                 </Space>
@@ -214,11 +174,18 @@ function List() {
 						<label className='body-header-title'>목록</label>
 					</Col>
 					<Col flex="auto" />
-					<Col>
-						<Link to="/car/model/create">
-							<Button className='black-button big-button'>등록</Button>
-						</Link>
-					</Col>
+                    <Col>
+                        <Space size={12}>
+                            <Col>
+                                <Button className='white-button big-button'>엑셀 다운로드</Button>
+                            </Col>
+                            <Col>
+                                <Upload>
+                                    <Button className='black-button big-button'>엑셀 등록</Button>
+                                </Upload>
+                            </Col>
+                        </Space>
+                    </Col>
 				</Row>
 				<Table dataSource={dataSource} columns={columns} pagination={false} />
 				<Row justify='center'>
