@@ -1,9 +1,8 @@
-import { Col, Divider, Row, Space, Table, Select, Button, Image, DatePicker } from 'antd';
+import { Col, Divider, Row, Space, Table, Button } from 'antd';
 import { Link } from 'react-router-dom';
-import { CaretDownOutlined } from '@ant-design/icons'
 import React, { useState } from 'react';
-
-const { Option } = Select;
+import SearchPanel from '../../../components/SearchPanel';
+import { Constants } from '../../../constants/Constants';
 
 function List() {
 	const [dataSource, setDataSource] = useState(
@@ -90,6 +89,91 @@ function List() {
 		},
 	];
 
+	const searchRowList = [
+		{
+			height: 80,
+			columns: [
+				{
+					titleText: '브랜드',
+					titleWidth: '154px',
+					contentItems: [
+						{
+							type: Constants.inputTypes.select,
+							placeholder: '브랜드 선택',
+							width: 300,
+							data: null
+						},
+						{
+							type: Constants.inputTypes.select,
+							placeholder: '할인종류 선택',
+							width: 300,
+							data: null
+						}
+					]
+				}
+			]
+		},
+		{
+			height: 80,
+			columns: [
+				{
+					titleText: '날짜',
+					titleWidth: '154px',
+					contentItems: [
+						{
+							type: Constants.inputTypes.button,
+							label: '전체',
+							width: 50,
+							selected: true
+						},
+						{
+							type: Constants.inputTypes.button,
+							label: '오늘',
+							width: 50
+						},
+						{
+							type: Constants.inputTypes.button,
+							label: '어제',
+							width: 50
+						},
+						{
+							type: Constants.inputTypes.button,
+							label: '3일',
+							width: 50
+						},
+						{
+							type: Constants.inputTypes.button,
+							label: '7일',
+							width: 50
+						},
+						{
+							type: Constants.inputTypes.button,
+							label: '1개월',
+							width: 50
+						},
+						{
+							type: Constants.inputTypes.button,
+							label: '3개월',
+							width: 50
+						},
+						{
+							type: Constants.inputTypes.datePicker,
+							placeholder: '시작일'
+						},
+						{
+							type: Constants.inputTypes.label,
+							label: '~'
+						},
+						{
+							type: Constants.inputTypes.datePicker,
+							placeholder: '종료일'
+						}
+					]
+				}
+			]
+		}
+	];
+
 	const onClickTableMore = () => {
 		setDataSource([
 			...dataSource,
@@ -125,69 +209,7 @@ function List() {
 			</Space>
 
 			{/* Search Section */}
-			<Space direction='vertical' size={20}>
-				<label className='main-sub-title'>검색</label>
-                <Space direction='vertical' size={0}>
-                    <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
-                        <Col flex="154px" className='table-header-col-section'>
-                            <label>브랜드</label>
-                        </Col>
-                        <Col flex="auto" className='table-value-col-section'>
-                            <Space size={6}>
-                                <Select
-                                    suffixIcon={<CaretDownOutlined />}
-                                    placeholder="브랜드 선택"
-                                    style={{ width: 300 }}
-                                >
-                                    <Option value="jack">Jack</Option>
-                                    <Option value="lucy">Lucy</Option>
-                                    <Option value="Yiminghe">yiminghe</Option>
-                                </Select>
-                                <Select
-                                    suffixIcon={<CaretDownOutlined />}
-                                    placeholder="할인종류 선택"
-                                    style={{ width: 300 }}
-                                >
-                                    <Option value="jack">Jack</Option>
-                                    <Option value="lucy">Lucy</Option>
-                                    <Option value="Yiminghe">yiminghe</Option>
-                                </Select>
-                            </Space>
-                        </Col>
-                    </Row>
-                    <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
-                        <Col flex="154px" className='table-header-col-section'>
-                            <label>날짜</label>
-                        </Col>
-                        <Col flex="auto" className='table-value-col-section'>
-                            <Space size={30}>
-                                <Space size={2}>
-                                    <Button className='black-button smallest-button'>전체</Button>
-                                    <Button className='white-button smallest-button'>오늘</Button>
-                                    <Button className='white-button smallest-button'>어제</Button>
-                                    <Button className='white-button smallest-button'>3일</Button>
-                                    <Button className='white-button smallest-button'>7일</Button>
-                                    <Button className='white-button smallest-button'>1개월</Button>
-                                    <Button className='white-button smallest-button'>3개월</Button>
-                                </Space>
-                                <Space size={6}>
-                                    <DatePicker placeholder='시작일' />
-                                    <label>~</label>
-                                    <DatePicker placeholder='종료일' />
-                                </Space>
-                            </Space>
-                        </Col>
-                    </Row>
-                </Space>
-				<Row justify="center" gutter={[17, 0]}>
-					<Col>
-						<Button className='white-button big-button'>초기화</Button>
-					</Col>
-					<Col>
-						<Button className='black-button big-button'>검색</Button>
-					</Col>
-				</Row>
-			</Space>
+			<SearchPanel dataSource={searchRowList} />
 
 			{/* Body Section */}
 			<Space className='body-section' direction='vertical' size={20}>

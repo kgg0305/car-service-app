@@ -1,9 +1,7 @@
-import { Col, Divider, Row, Space, Table, Select, Button, Image, Upload } from 'antd';
-import { Link } from 'react-router-dom';
-import { CaretDownOutlined } from '@ant-design/icons'
+import { Col, Divider, Row, Space, Table, Button, Upload } from 'antd';
 import React, { useState } from 'react';
-
-const { Option } = Select;
+import SearchPanel from '../../../components/SearchPanel';
+import { Constants } from '../../../constants/Constants';
 
 function List() {
 	const [dataSource, setDataSource] = useState(
@@ -82,6 +80,38 @@ function List() {
 		},
 	];
 
+	const searchRowList = [
+		{
+			height: 80,
+			columns: [
+				{
+					titleText: '차량',
+					titleWidth: '154px',
+					contentItems: [
+						{
+							type: Constants.inputTypes.select,
+							placeholder: '브랜드 선택',
+							width: 250,
+							data: null
+						},
+						{
+							type: Constants.inputTypes.select,
+							placeholder: '모델그룹 선택',
+							width: 250,
+							data: null
+						},
+						{
+							type: Constants.inputTypes.select,
+							placeholder: '모델 선택',
+							width: 250,
+							data: null
+						}
+					]
+				}
+			]
+		}
+	];
+
 	const onClickTableMore = () => {
 		setDataSource([
 			...dataSource,
@@ -117,55 +147,7 @@ function List() {
 			</Space>
 
 			{/* Search Section */}
-			<Space direction='vertical' size={20}>
-				<label className='main-sub-title'>검색</label>
-                <Space direction='vertical' size={0}>
-                    <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
-                        <Col flex="154px" className='table-header-col-section'>
-                            <label>차량</label>
-                        </Col>
-                        <Col flex="auto" className='table-value-col-section'>
-                            <Space size={6}>
-                                <Select
-                                    suffixIcon={<CaretDownOutlined />}
-                                    placeholder="브랜드 선택"
-                                    style={{ width: 300 }}
-                                >
-                                    <Option value="jack">Jack</Option>
-                                    <Option value="lucy">Lucy</Option>
-                                    <Option value="Yiminghe">yiminghe</Option>
-                                </Select>
-                                <Select
-                                    suffixIcon={<CaretDownOutlined />}
-                                    placeholder="모델그룹 선택"
-                                    style={{ width: 300 }}
-                                >
-                                    <Option value="jack">Jack</Option>
-                                    <Option value="lucy">Lucy</Option>
-                                    <Option value="Yiminghe">yiminghe</Option>
-                                </Select>
-                                <Select
-                                    suffixIcon={<CaretDownOutlined />}
-                                    placeholder="모델 선택"
-                                    style={{ width: 300 }}
-                                >
-                                    <Option value="jack">Jack</Option>
-                                    <Option value="lucy">Lucy</Option>
-                                    <Option value="Yiminghe">yiminghe</Option>
-                                </Select>
-                            </Space>
-                        </Col>
-                    </Row>
-                </Space>
-				<Row justify="center" gutter={[17, 0]}>
-					<Col>
-						<Button className='white-button big-button'>초기화</Button>
-					</Col>
-					<Col>
-						<Button className='black-button big-button'>검색</Button>
-					</Col>
-				</Row>
-			</Space>
+			<SearchPanel dataSource={searchRowList} />
 
 			{/* Body Section */}
 			<Space className='body-section' direction='vertical' size={20}>
