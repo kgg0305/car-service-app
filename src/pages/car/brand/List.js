@@ -1,7 +1,8 @@
-import { Col, Divider, Row, Space, Table, Select, Button, Image } from 'antd';
+import { Col, Divider, Row, Space, Select, Button, Image } from 'antd';
 import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
 import SearchPanel from '../../../components/SearchPanel';
+import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
 
 const { Option } = Select;
@@ -10,6 +11,7 @@ function List() {
 	const [dataSource, setDataSource] = useState(
 		[
 			{
+				key: 1,
 				number: '1',
 				logo: window.location.origin + '/images/logo/logo.png',
 				brand: 'Ford',
@@ -19,6 +21,7 @@ function List() {
 				manage: '',
 			},
 			{
+				key: 2,
 				number: '1',
 				logo: window.location.origin + '/images/logo/logo.png',
 				brand: 'Ford',
@@ -121,6 +124,20 @@ function List() {
 		}
 	];
 
+	const tableList = {
+		topItems: [
+			{
+				type: Constants.inputTypes.button,
+				link: '/car/brand/create',
+				label: '등록',
+				style: 'black-button big-button',
+				width: 150
+			}
+		],
+		tableData: dataSource,
+		tableColumns: columns
+	};
+
 	const onClickTableMore = () => {
 		setDataSource([
 			...dataSource,
@@ -157,23 +174,8 @@ function List() {
 			<SearchPanel dataSource={searchRowList} />
 
 			{/* Body Section */}
-			<Space className='body-section' direction='vertical' size={20}>
-				<Row justify='bottom'>
-					<Col>
-						<label className='body-header-title'>목록</label>
-					</Col>
-					<Col flex="auto" />
-					<Col>
-						<Link to="/car/brand/create">
-							<Button className='black-button big-button'>등록</Button>
-						</Link>
-					</Col>
-				</Row>
-				<Table dataSource={dataSource} columns={columns} pagination={false} />
-				<Row justify='center'>
-					<label className='table-more-label' onClick={onClickTableMore}>더보기</label>
-				</Row>
-			</Space>
+			<TableList dataSource={tableList} />
+
 		</Space>
     );
 }

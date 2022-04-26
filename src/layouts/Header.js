@@ -1,32 +1,32 @@
 import React from "react";
 import '../assets/styles/layouts/Header.css'
-import { Menu, Space, Divider, Row, Col } from "antd";
+import { Menu, Space, Divider, Row, Col, Button } from "antd";
 import { Link } from 'react-router-dom';
 import setting_icon from '../assets/images/setting-icon.png'
+import { Constants } from '../constants/Constants';
 
 function Header() {
     return(
         <Row justify="middle">
             <Col flex="auto" style={{ height: 80 }}>
-                <Menu className="top-menu-layout" mode="horizontal" defaultSelectedKeys={['1']}>
-                    <Menu.Item key="1">
-                        <Link to="/car/brand">자동차 DB</Link>
-                    </Menu.Item>
-                    <Menu.Item key="2">
-                        <Link to="/">금융견적 DB</Link>
-                    </Menu.Item>
-                    <Menu.Item key="3">
-                        <Link to="/">견적 관리</Link>
-                    </Menu.Item>
-                    <Menu.Item key="4">
-                        <Link to="/">콘텐츠 관리</Link>
-                    </Menu.Item>
+                <Menu className="top-menu-layout" mode="horizontal" defaultSelectedKeys={['0']}>
+                    {
+                        Constants.headerMenus.map((item, index) => (
+                            <Menu.Item key={ index }>
+                                <Link to={ item.link }>{ item.label }</Link>
+                            </Menu.Item>
+                        ))
+                    }
                 </Menu>
             </Col>
             <Col flex="auto"></Col>
             <Col>
                 <Space align="center">
-                    <label className ="top-menu-user">[사용자이름]님</label>
+                    <Link to={'/user/mine'}>
+                        <Button className ="top-menu-user" type="link" block>
+                            [사용자이름]님
+                        </Button>
+                    </Link>
                     <a>
                         <img src={setting_icon} />
                     </a>

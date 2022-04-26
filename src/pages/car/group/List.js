@@ -1,13 +1,15 @@
-import { Col, Divider, Row, Space, Table, Button } from 'antd';
+import { Col, Divider, Row, Space, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
 import SearchPanel from '../../../components/SearchPanel';
+import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
 
 function List() {
 	const [dataSource, setDataSource] = useState(
 		[
 			{
+				key: 1,
 				number: '1',
 				brand: 32,
 				group: '10 Downing Street',
@@ -16,6 +18,7 @@ function List() {
 				manage: '',
 			},
 			{
+				key: 2,
 				number: '1',
 				brand: 32,
 				group: '10 Downing Street',
@@ -122,26 +125,18 @@ function List() {
 		}
 	];
 
-	const onClickTableMore = () => {
-		setDataSource([
-			...dataSource,
+	const tableList = {
+		topItems: [
 			{
-				number: '1',
-				brand: 32,
-				group: '10 Downing Street',
-                type: '경차',
-				available: '사용',
-				manage: '',
-			},
-			{
-				number: '1',
-				brand: 32,
-				group: '10 Downing Street',
-                type: '경차',
-				available: '사용',
-				manage: '',
-			},
-		]);
+				type: Constants.inputTypes.button,
+				link: '/car/group/create',
+				label: '등록',
+				style: 'black-button big-button',
+				width: 150
+			}
+		],
+		tableData: dataSource,
+		tableColumns: columns
 	};
 
     return(
@@ -156,23 +151,8 @@ function List() {
 			<SearchPanel dataSource={searchRowList} />
 
 			{/* Body Section */}
-			<Space className='body-section' direction='vertical' size={20}>
-				<Row justify='bottom'>
-					<Col>
-						<label className='body-header-title'>목록</label>
-					</Col>
-					<Col flex="auto" />
-					<Col>
-						<Link to="/car/group/create">
-							<Button className='black-button big-button'>등록</Button>
-						</Link>
-					</Col>
-				</Row>
-				<Table dataSource={dataSource} columns={columns} pagination={false} />
-				<Row justify='center'>
-					<label className='table-more-label' onClick={onClickTableMore}>더보기</label>
-				</Row>
-			</Space>
+			<TableList dataSource={tableList} />
+
 		</Space>
     );
 }

@@ -1,0 +1,37 @@
+.summaryBody {
+    padding: 15px;
+
+    background: #FDFDFD;
+    border: 1px solid #E5E5E5;
+    box-sizing: border-box;
+}
+
+.summaryHeaderLabel {
+    font-weight: 600;
+    font-size: 21px;
+    line-height: 25px;
+
+    display: flex;
+    align-items: center;
+
+    color: #363636;
+}
+
+.summaryValueLabel {
+    font-weight: 700;
+    font-size: 46px;
+    line-height: 54px;
+
+    display: flex;
+    align-items: center;
+    text-align: right;
+
+    color: #363636;
+}
+
+.graphBody {
+    height: 463px;
+    
+    border: 1px solid #CBCBCB;
+    box-sizing: border-box;
+}

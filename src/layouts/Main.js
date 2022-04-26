@@ -7,11 +7,11 @@ import SiderContent from './Sider';
 
 const { Header, Content, Sider } = Layout;
 
-function Main() {
+function Main({ headerMenuKey }) {
 	return (
 		<Layout className='main-layout'>
 			<Sider width='auto' theme='light'>
-				<SiderContent />
+				<SiderContent headerMenuKey={ headerMenuKey } />
 			</Sider>
 			<Layout className="site-layout">
 				<Header className='header-layout'>

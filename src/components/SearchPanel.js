@@ -1,74 +1,27 @@
 import React from "react";
-import { Col, Row, Space, Select, Button, DatePicker } from 'antd';
-import { CaretDownOutlined } from '@ant-design/icons'
-import { Constants } from '../constants/Constants';
+import { Col, Row, Space, Button } from 'antd';
+import ContentItem from './ContentItem';
+import styles from "../assets/styles/components/SearchPanel.module.css";
 
-function ShowContentItem(contentItem, contentIndex) {
-    switch (contentItem.type) {
-        case Constants.inputTypes.select:
-            return (
-                <Select
-                    key={contentIndex}
-                    suffixIcon={<CaretDownOutlined />}
-                    placeholder={contentItem.placeholder}
-                    style={{ width: contentItem.width }}
-                >
-                    {
-                        contentItem.data 
-                        ? contentItem.data.map((optionItem, optionIndex) => (
-                            <Select.Option key={optionIndex} value={optionItem.value}>
-                                {optionItem.label}
-                            </Select.Option>
-                        )) 
-                        : ''
-                        
-                    }
-                </Select>
-            );
-            break;
-
-        case Constants.inputTypes.button:
-            return (
-                <Button key={contentIndex} className={ contentItem.selected ? 'black-button smallest-button' : 'smallest-button' }>{contentItem.label}</Button>
-            );
-            break;
-
-        case Constants.inputTypes.datePicker:
-            return (
-                <DatePicker key={contentIndex} placeholder={contentItem.placeholder} />
-            );
-            break;
-
-        case Constants.inputTypes.label:
-            return (
-                <label key={contentIndex}>{contentItem.label}</label>
-            );
-            break;
-    
-        default:
-            break;
-    }
-}
-
-function SearchPanel(props) {
+function SearchPanel({ dataSource }) {
     return (
         <Space direction='vertical' size={20}>
-            <label key={0} className='main-sub-title'>검색</label>
+            <label key={0} className={styles.titleLabel}>검색</label>
             <div key={1}>
                 {
-                    props.dataSource.map((item, index) => (
-                        <Row key={index} gutter={[0]} align="middle" style={{ height: item.height }} className='table-layout'>
+                    dataSource.map((item, index) => (
+                        <Row key={index} gutter={[0]} align="middle" style={{ height: item.height }} className={styles.table}>
                             {
                                 item.columns.map((subItem, subIndex) => (
                                     <>
-                                        <Col key={subIndex + "_1"} flex={subItem.titleWidth} className='table-header-col-section'>
-                                            <label>{subItem.titleText}</label>
+                                        <Col key={subIndex + "_1"} flex={subItem.titleWidth} className={styles.tableHeader}>
+                                            <label className={styles.tableHeaderLabel}>{subItem.titleText}</label>
                                         </Col>
-                                        <Col key={subIndex + "_2"} flex="auto" className='table-value-col-section'>
+                                        <Col key={subIndex + "_2"} flex="auto" className={styles.tableValue}>
                                             <Space size={6}>
                                                 {
                                                     subItem.contentItems.map((contentItem, contentIndex) => (
-                                                        ShowContentItem(contentItem, contentIndex)
+                                                        <ContentItem item={contentItem} key={contentIndex} />
                                                     ))
                                                 }
                                             </Space>

@@ -1,12 +1,14 @@
-import { Col, Divider, Row, Space, Table, Button, Upload } from 'antd';
+import { Divider, Space } from 'antd';
 import React, { useState } from 'react';
 import SearchPanel from '../../../components/SearchPanel';
+import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
 
 function List() {
 	const [dataSource, setDataSource] = useState(
 		[
 			{
+				key: 1,
 				number: '1',
 				brand: 32,
                 model: '경차',
@@ -17,6 +19,7 @@ function List() {
                 delivery: '',
 			},
 			{
+				key: 2,
 				number: '1',
 				brand: 32,
                 model: '경차',
@@ -112,30 +115,18 @@ function List() {
 		}
 	];
 
-	const onClickTableMore = () => {
-		setDataSource([
-			...dataSource,
+	const tableList = {
+		topItems: [
 			{
-				number: '1',
-				brand: 32,
-                model: '경차',
-                area: '',
-				tax: '',
-                profit: '',
-				discount: '',
-                delivery: '',
-			},
-			{
-				number: '1',
-				brand: 32,
-                model: '경차',
-                area: '',
-				tax: '',
-                profit: '',
-				discount: '',
-                delivery: '',
-			},
-		]);
+				type: Constants.inputTypes.button,
+				link: '/car/disount/create',
+				label: '등록',
+				style: 'black-button big-button',
+				width: 150
+			}
+		],
+		tableData: dataSource,
+		tableColumns: columns
 	};
 
     return(
@@ -150,30 +141,8 @@ function List() {
 			<SearchPanel dataSource={searchRowList} />
 
 			{/* Body Section */}
-			<Space className='body-section' direction='vertical' size={20}>
-				<Row justify='bottom'>
-					<Col>
-						<label className='body-header-title'>목록</label>
-					</Col>
-					<Col flex="auto" />
-                    <Col>
-                        <Space size={12}>
-                            <Col>
-                                <Button className='white-button big-button'>엑셀 다운로드</Button>
-                            </Col>
-                            <Col>
-                                <Upload>
-                                    <Button className='black-button big-button'>엑셀 등록</Button>
-                                </Upload>
-                            </Col>
-                        </Space>
-                    </Col>
-				</Row>
-				<Table dataSource={dataSource} columns={columns} pagination={false} />
-				<Row justify='center'>
-					<label className='table-more-label' onClick={onClickTableMore}>더보기</label>
-				</Row>
-			</Space>
+			<TableList dataSource={tableList} />
+
 		</Space>
     );
 }
