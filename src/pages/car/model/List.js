@@ -1,102 +1,105 @@
 import { Col, Divider, Row, Space, Button } from 'antd';
 import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { GetBrandOptionListAPI } from '../../../api/Brand';
+import { GetGroupOptionListAPI } from '../../../api/Group';
+import { GetModelListAPI } from '../../../api/Model';
 import SearchPanel from '../../../components/SearchPanel';
 import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
 
 function List() {
-	const [dataSource, setDataSource] = useState(
-		[
-			{
-				key: 1,
-				number: '1',
-				brand: 32,
-				group: '10 Downing Street',
-                model: '경차',
-                order: '경차',
-                new: '경차',
-				available: '사용',
-                register: '2022-03-05',
-				manage: '',
-			},
-			{
-				key: 2,
-				number: '1',
-				brand: 32,
-				group: '10 Downing Street',
-                model: '경차',
-                order: '경차',
-                new: '경차',
-				available: '사용',
-                register: '2022-03-05',
-				manage: '',
-			},
-		]
-	);
+	const [offset, setOffset] = useState(0);
+	const [brandOptionList, setBrandOptionList] = useState([]);
+	const [groupOptionList, setGroupOptionList] = useState([]);
+	const [dataSource, setDataSource] = useState();
+	const [searchData, setSearchData] = useState({
+		brand_id: null,
+		group_id: null,
+		is_new: null,
+		is_use: null
+	});
+	
+	const initComponent = async () => {
+		const initDataSource = await GetModelListAPI(offset);
+		const initBrandOptionList = await GetBrandOptionListAPI();
+		const initGroupOptionList = await GetGroupOptionListAPI();
+		
+		setDataSource(initDataSource);
+		setBrandOptionList(initBrandOptionList);
+		setGroupOptionList(initGroupOptionList);
+	};
+
+	useEffect(() => {
+		initComponent();
+	}, []);
 	
 	const columns = [
 		{
 			title: '번호',
-			dataIndex: 'number',
-			key: 'number',
+			dataIndex: 'idx',
+			key: 'idx',
             align: 'center',
 		},
 		{
 			title: '브랜드',
-			dataIndex: 'brand',
-			key: 'brand',
+			dataIndex: 'brand_name',
+			key: 'brand_name',
             align: 'center',
 		},
 		{
 			title: '모델그룹',
-			dataIndex: 'group',
-			key: 'group',
+			dataIndex: 'group_name',
+			key: 'group_name',
             align: 'center',
 		},
         {
 			title: '모델',
-			dataIndex: 'model',
-			key: 'model',
+			dataIndex: 'model_name',
+			key: 'model_name',
             align: 'center',
 		},
         {
 			title: '순서',
-			dataIndex: 'order',
-			key: 'order',
+			dataIndex: 'sequence',
+			key: 'sequence',
             align: 'center',
 		},
         {
 			title: '신차여부',
-			dataIndex: 'new',
-			key: 'new',
+			dataIndex: 'is_new',
+			key: 'is_new',
             align: 'center',
+			render: is_new => 
+				is_new == 0 ? '예' : '아니오'
 		},
 		{
 			title: '사용여부',
-			dataIndex: 'available',
-			key: 'available',
+			dataIndex: 'is_use',
+			key: 'is_use',
             align: 'center',
+			render: is_use => 
+				is_use == 0 ? '사용' : '미사용'
 		},
         {
 			title: '등록일',
-			dataIndex: 'register',
-			key: 'register',
+			dataIndex: 'release_date',
+			key: 'release_date',
             align: 'center',
 		},
 		{
 			title: '관리',
-			dataIndex: 'manage',
-			key: 'manage',
+			dataIndex: 'idx',
+			key: 'idx',
             align: 'center',
-			render: path => 
+			render: idx => 
                 <Row justify='center'>
                     <Col>
                         <Space size={15} split={<Divider type="vertical" />}>
                             <Link to="/car/model/edit">
                                 <Button className='white-button small-button rounded-button'>그룹관리</Button>
                             </Link>
-                            <Link to="/car/model/edit">
+                            <Link to={"/car/model/edit/" + idx}>
                                 <Button className='black-button small-button rounded-button'>수정</Button>
                             </Link>
                         </Space>
@@ -105,7 +108,7 @@ function List() {
 		},
 	];
 
-	const searchRowList = [
+	const searchDataSource = [
 		{
 			height: 80,
 			columns: [
@@ -115,15 +118,17 @@ function List() {
 					contentItems: [
 						{
 							type: Constants.inputTypes.select,
+							name: 'brand_id',
 							placeholder: '브랜드 선택',
 							width: 400,
-							data: null
+							data: brandOptionList
 						},
 						{
 							type: Constants.inputTypes.select,
+							name: 'group_id',
 							placeholder: '모델그룹 선택',
 							width: 400,
-							data: null
+							data: groupOptionList
 						}
 					]
 				}
@@ -138,6 +143,7 @@ function List() {
 					contentItems: [
 						{
 							type: Constants.inputTypes.select,
+							name: 'is_new',
 							placeholder: ' 선택',
 							width: 150,
 							data: Constants.isNewOptions
@@ -150,6 +156,7 @@ function List() {
 					contentItems: [
 						{
 							type: Constants.inputTypes.select,
+							name: 'is_use',
 							placeholder: '선택',
 							width: 150,
 							data: Constants.availableOptions
@@ -160,7 +167,7 @@ function List() {
 		}
 	];
 
-	const tableList = {
+	const tableDataSource = {
 		topItems: [
 			{
 				type: Constants.inputTypes.button,
@@ -174,6 +181,26 @@ function List() {
 		tableColumns: columns
 	};
 
+	const onClickTableMore = async() => {
+		const initDataSource = await GetModelListAPI(offset + 10, searchData);
+		setOffset(offset + initDataSource.length);
+		
+		setDataSource([
+			...dataSource,
+			...initDataSource
+		]);
+	};
+
+	const onClickSearch = async(searchData) => {
+		const initDataSource = await GetModelListAPI(0, searchData);
+		setOffset(0);
+		setSearchData(searchData);
+
+		setDataSource([
+			...initDataSource
+		]);
+	};
+
     return(
 		<Space direction='vertical' size={18} className='main-layout'>
 			{/* Page Header */}
@@ -183,11 +210,14 @@ function List() {
 			</Space>
 
 			{/* Search Section */}
-			<SearchPanel dataSource={searchRowList} />
+			<SearchPanel dataSource={searchDataSource} onSearch={onClickSearch} />
 
 			{/* Body Section */}
-			<TableList dataSource={tableList} />
+			<TableList dataSource={tableDataSource} />
 			
+			<Row justify='center'>
+				<label className='show-more-label' onClick={onClickTableMore}>더보기</label>
+			</Row>
 		</Space>
     );
 }

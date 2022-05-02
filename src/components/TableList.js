@@ -56,14 +56,6 @@ function TableList({ dataSource }) {
             </Space>
             
             <Table dataSource={dataSource.tableData} columns={dataSource.tableColumns} pagination={false} bordered />
-            {
-                !dataSource.disabledMore
-                ?
-                <Row justify='center'>
-                    <label className={ styles.showMoreLabel }>더보기</label>
-                </Row>
-                : ''
-            }
             
         </Space>
     );

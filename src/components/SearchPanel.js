@@ -1,9 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import { Col, Row, Space, Button } from 'antd';
 import ContentItem from './ContentItem';
 import styles from "../assets/styles/components/SearchPanel.module.css";
 
-function SearchPanel({ dataSource }) {
+function SearchPanel({ dataSource, onSearch }) {
+
+    var initSearchData = {};
+
+    dataSource.map((item) => {
+        item.columns.map((subItem) => {
+            subItem.contentItems.map((contentItem) => {
+                initSearchData[contentItem.name] = null;
+            })
+        })
+    });
+    
+    const [searchData, setSearchData] = useState(initSearchData);
+    
+    const onContentItemChange = (itemName, itemValue) => {
+        setSearchData({
+            ...searchData,
+            [itemName]: itemValue
+        });
+    };
+
+    const onReset = () => {
+        setSearchData(initSearchData);
+        onSearch(initSearchData);
+    };
+
     return (
         <Space direction='vertical' size={20}>
             <label key={0} className={styles.titleLabel}>검색</label>
@@ -21,7 +46,7 @@ function SearchPanel({ dataSource }) {
                                             <Space size={6}>
                                                 {
                                                     subItem.contentItems.map((contentItem, contentIndex) => (
-                                                        <ContentItem item={contentItem} key={contentIndex} />
+                                                        <ContentItem item={contentItem} key={contentIndex} value={searchData[contentItem.name]} onChange={onContentItemChange} />
                                                     ))
                                                 }
                                             </Space>
@@ -35,10 +60,10 @@ function SearchPanel({ dataSource }) {
             </div>
             <Row key={2} justify="center" gutter={[17, 0]}>
                 <Col>
-                    <Button className='white-button big-button'>초기화</Button>
+                    <Button className='white-button big-button' onClick={onReset}>초기화</Button>
                 </Col>
                 <Col>
-                    <Button className='black-button big-button'>검색</Button>
+                    <Button className='black-button big-button' onClick={() => onSearch(searchData)}>검색</Button>
                 </Col>
             </Row>
         </Space>

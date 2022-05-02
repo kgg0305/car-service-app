@@ -1,21 +1,84 @@
 import { Col, Divider, Row, Space, Select, Button, Input, Modal } from 'antd';
 import { CaretDownOutlined, PlusOutlined } from '@ant-design/icons'
-import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
-import preview_default_image from '../../../assets/images/preview-default-image.png';
-import '../../../assets/styles/pages/car/brand/Create.css';
+import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { GetBrandOptionListAPI } from '../../../api/Brand';
+import { CheckGroupNameAPI, CreateGroupAPI } from '../../../api/Group';
+import { GetCarKindOptionListAPI } from '../../../api/CarKind';
 import alert_icon from '../../../assets/images/alert-icon.png';
+import { Constants } from '../../../constants/Constants';
 
 const { Option } = Select;
 
 function Create() {
+    let navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
+    const [brandOptionList, setBrandOptionList] = useState([]);
+	const [carKindOptionList, setCarKindOptionList] = useState([]);
     const [showDeleteButton, setShowDeleteButton] = useState(false);
     const [bodyList, setBodyList] = useState([
         {
-            number: 1
+            number: 1,
+            brand_id: null,
+            group_name: '',
+            car_kind_id: null,
+            is_use: 0,
+            check_name: ''
         }
     ]);
+
+    const initComponent = async () => {
+		const initBrandOptionList = await GetBrandOptionListAPI();
+		const initCarKindOptionList = await GetCarKindOptionListAPI();
+		
+		setBrandOptionList(initBrandOptionList);
+		setCarKindOptionList(initCarKindOptionList);
+	};
+
+    useEffect(() => {
+		initComponent();
+	}, []);
+
+    async function checkName(number, name) {
+        const result = await CheckGroupNameAPI(name);
+        onChangeComponent(number, 'check_name', result ? 'exist' : 'not-exist');
+    }
+
+    const onAddComponentClick = event => {
+        if(bodyList.length < 10){
+            setShowDeleteButton(true);
+            setBodyList([...bodyList, {
+                number: bodyList[bodyList.length - 1].number + 1,
+                brand_id: null,
+                group_name: '',
+                car_kind_id: null,
+                is_use: 0
+            }]);
+        }
+    };
+
+    const onDeleteComponentClick = (number) => {
+        if(bodyList.length > 1){
+            if(bodyList.length === 2){
+                setShowDeleteButton(false);
+            }
+            setBodyList(bodyList.filter((body) => body.number !== number));
+        }
+    };
+
+    const onChangeComponent = (number, name, value) => {
+        setBodyList(bodyList.map(body => body.number === number ? {...body, [name]: value} : body));
+    }
+
+    const onSaveClick = event => {
+        CreateGroupAPI(bodyList);
+        // setShowModal(true);
+        navigate('/car/group');
+    };
+
+    const onCloseModalClick = () => {
+        setShowModal(false);
+    };
 
     const renderBodyList = () => {
         return (
@@ -39,13 +102,22 @@ function Create() {
                                     </Col>
                                     <Col span={10} className='table-value-col-section'>
                                     <Select
+                                        name='brand_id' 
+                                        value={body.brand_id} 
+                                        onChange={value => {
+                                            onChangeComponent(body.number, 'brand_id', value);
+                                        }}
                                         suffixIcon={<CaretDownOutlined />}
                                         placeholder="브랜드 선택"
                                         style={{ width: 400 }}
                                     >
-                                        <Option value="jack">Jack</Option>
-                                        <Option value="lucy">Lucy</Option>
-                                        <Option value="Yiminghe">yiminghe</Option>
+                                        {
+                                            brandOptionList.map((optionItem, optionIndex) => (
+                                                <Select.Option key={optionIndex} value={optionItem.value}>
+                                                    {optionItem.label}
+                                                </Select.Option>
+                                            ))
+                                        }
                                     </Select>
                                     </Col>
                                     <Col span={2} className='table-header-col-section'>
@@ -54,10 +126,24 @@ function Create() {
                                     <Col flex="auto" className='table-value-col-section'>
                                         <Space>
                                             <div className=''>
-                                                <Input placeholder="모델 그룹명 입력" maxLength={15} style={{ width: 400 }} />
-                                                <label className='danger-alert'>이미 사용중인 이름 입니다.</label>
+                                                <Input 
+                                                    name='group_name' 
+                                                    value={body.group_name} 
+                                                    onChange={e => {
+                                                        onChangeComponent(body.number, e.target.name, e.target.value);
+                                                    }} 
+                                                    placeholder="모델 그룹명 입력" 
+                                                    maxLength={15} style={{ width: 400 }} 
+                                                />
+                                                {
+                                                    body.check_name == 'exist'
+                                                    ? <label className='danger-alert'>이미 사용중인 이름 입니다.</label>
+                                                    : body.check_name == 'not-exist'
+                                                    ? <label className='successful-alert'>사용 가능한 이름 입니다.</label>
+                                                    : ''
+                                                }
                                             </div>
-                                            <Button className='black-button'>확인</Button>
+                                            <Button className='black-button' onClick={() => checkName(body.number, body.group_name)}>확인</Button>
                                         </Space>
                                     </Col>
                                 </Row>
@@ -67,30 +153,22 @@ function Create() {
                                     </Col>
                                     <Col flex="auto" className='table-value-col-section'>
                                         <Select
+                                            name='car_kind_id' 
+                                            value={body.car_kind_id} 
+                                            onChange={value => {
+                                                onChangeComponent(body.number, 'car_kind_id', value);
+                                            }}
                                             suffixIcon={<CaretDownOutlined />}
                                             placeholder="선택"
                                             style={{ width: 150 }}
                                         >
-                                            <Option value="1">경차</Option>
-                                            <Option value="2">경습합</Option>
-                                            <Option value="3">경트럭</Option>
-                                            <Option value="4">대형</Option>
-                                            <Option value="5">대형MPV</Option>
-                                            <Option value="6">대형SUV</Option>
-                                            <Option value="7">소형</Option>
-                                            <Option value="8">소형MPV</Option>
-                                            <Option value="9">소형SUV</Option>
-                                            <Option value="10">소형버스</Option>
-                                            <Option value="11">소형버스</Option>
-                                            <Option value="12">소형트럭</Option>
-                                            <Option value="13">스포츠카</Option>
-                                            <Option value="14">승합</Option>
-                                            <Option value="15">준대형</Option>
-                                            <Option value="16">준중형</Option>
-                                            <Option value="17">중형</Option>
-                                            <Option value="18">중형SUV</Option>
-                                            <Option value="19">중형트럭</Option>
-                                            <Option value="20">픽업/밴</Option>
+                                            {
+                                                carKindOptionList.map((optionItem, optionIndex) => (
+                                                    <Select.Option key={optionIndex} value={optionItem.value}>
+                                                        {optionItem.label}
+                                                    </Select.Option>
+                                                ))
+                                            }
                                         </Select>
                                     </Col>
                                     <Col span={2} className='table-header-col-section'>
@@ -98,13 +176,22 @@ function Create() {
                                     </Col>
                                     <Col flex="auto" className='table-value-col-section'>
                                         <Select
+                                            name='is_use' 
+                                            value={body.is_use} 
+                                            onChange={value => {
+                                                onChangeComponent(body.number, 'is_use', value);
+                                            }}
                                             suffixIcon={<CaretDownOutlined />}
                                             placeholder="선택"
-                                            defaultValue="true"
                                             style={{ width: 150 }}
                                         >
-                                            <Option value="true">사용</Option>
-                                            <Option value="false">미사용</Option>
+                                            {
+                                                Constants.availableOptions.map((optionItem, optionIndex) => (
+                                                    <Select.Option key={optionIndex} value={optionItem.value}>
+                                                        {optionItem.label}
+                                                    </Select.Option>
+                                                ))
+                                            }
                                         </Select>
                                     </Col>
                                 </Row>
@@ -114,33 +201,6 @@ function Create() {
                 })}
             </>
         );
-    };
-
-    const onAddComponentClick = event => {
-        if(bodyList.length < 10){
-            setShowDeleteButton(true);
-            setBodyList([...bodyList, {
-                number: bodyList[bodyList.length - 1].number + 1
-            }]);
-        }
-    };
-
-    const onDeleteComponentClick = (number) => {
-        if(bodyList.length > 1){
-            if(bodyList.length === 2){
-                console.log(bodyList.length);
-                setShowDeleteButton(false);
-            }
-            setBodyList(bodyList.filter((body) => body.number !== number));
-        }
-    };
-
-    const onSaveClick = event => {
-        setShowModal(true);
-    };
-
-    const onCloseModalClick = () => {
-        setShowModal(false);
     };
 
     return(

@@ -1,90 +1,90 @@
 import { Col, Divider, Row, Space, Button } from 'antd';
 import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { GetBrandOptionListAPI } from '../../../api/Brand';
+import { GetDiscountKindListAPI, GetDiscountKindOptionListAPI } from '../../../api/DiscountKind';
 import SearchPanel from '../../../components/SearchPanel';
 import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
 
 function List() {
-	const [dataSource, setDataSource] = useState(
-		[
-			{
-				key: 1,
-				number: '1',
-				brand: 32,
-				type: '블루멤버스 포인트 선사용',
-                condition: '2회 이상 재구매 고객',
-                money: '-100,000원',
-                start: '2022-01-24',
-				end: '2022-02-24',
-				manage: '',
-			},
-			{
-				key: 2,
-				number: '1',
-				brand: 32,
-				type: '블루멤버스 포인트 선사용',
-                condition: '2회 이상 재구매 고객',
-                money: '-100,000원',
-                start: '2022-01-24',
-				end: '2022-02-24',
-				manage: '',
-			},
-		]
-	);
+	const [offset, setOffset] = useState(0);
+	const [brandOptionList, setBrandOptionList] = useState([]);
+	const [discountKindOptionList, setDiscountKindOptionList] = useState([]);
+	const [dataSource, setDataSource] = useState();
+	const [searchData, setSearchData] = useState({
+		brand_id: null,
+		idx: null,
+		s_date: null,
+		e_date: null
+	});
+	
+	const initComponent = async () => {
+		const initDataSource = await GetDiscountKindListAPI(offset);
+		const initBrandOptionList = await GetBrandOptionListAPI();
+		const initDiscountKindOptionList = await GetDiscountKindOptionListAPI();
+		
+		setDataSource(initDataSource);
+		setBrandOptionList(initBrandOptionList);
+		setDiscountKindOptionList(initDiscountKindOptionList);
+	};
+
+	useEffect(() => {
+		initComponent();
+	}, []);
 	
 	const columns = [
 		{
 			title: '번호',
-			dataIndex: 'number',
-			key: 'number',
+			dataIndex: 'idx',
+			key: 'idx',
             align: 'center',
 		},
 		{
 			title: '브랜드',
-			dataIndex: 'brand',
-			key: 'brand',
+			dataIndex: 'brand_name',
+			key: 'brand_name',
             align: 'center',
 		},
 		{
 			title: '종류',
-			dataIndex: 'type',
-			key: 'type',
+			dataIndex: 'kind_name',
+			key: 'kind_name',
             align: 'center',
 		},
         {
 			title: '조건',
-			dataIndex: 'condition',
-			key: 'condition',
+			dataIndex: 'condition_name',
+			key: 'condition_name',
             align: 'center',
 		},
         {
 			title: '할인비용',
-			dataIndex: 'money',
-			key: 'money',
+			dataIndex: 'discount_price',
+			key: 'discount_price',
             align: 'center',
 		},
         {
 			title: '시작일',
-			dataIndex: 'start',
-			key: 'start',
+			dataIndex: 's_date',
+			key: 's_date',
             align: 'center',
 		},
 		{
 			title: '종료일',
-			dataIndex: 'end',
-			key: 'end',
+			dataIndex: 'e_date',
+			key: 'e_date',
             align: 'center',
 		},
 		{
 			title: '관리',
-			dataIndex: 'manage',
-			key: 'manage',
+			dataIndex: 'idx',
+			key: 'idx',
             align: 'center',
-			render: path => 
+			render: idx => 
                 <Row justify='center'>
                     <Col>
-                        <Link to="/car/discount/edit">
+                        <Link to={"/car/discount/edit/" + idx}>
                             <Button className='black-button small-button rounded-button'>수정</Button>
                         </Link>
                     </Col>
@@ -92,7 +92,7 @@ function List() {
 		},
 	];
 
-	const searchRowList = [
+	const searchDataSource = [
 		{
 			height: 80,
 			columns: [
@@ -102,15 +102,17 @@ function List() {
 					contentItems: [
 						{
 							type: Constants.inputTypes.select,
+							name: 'brand_id',
 							placeholder: '브랜드 선택',
 							width: 300,
-							data: null
+							data: brandOptionList
 						},
 						{
 							type: Constants.inputTypes.select,
+							name: 'idx',
 							placeholder: '할인종류 선택',
 							width: 300,
-							data: null
+							data: discountKindOptionList
 						}
 					]
 				}
@@ -160,6 +162,7 @@ function List() {
 						},
 						{
 							type: Constants.inputTypes.datePicker,
+							name: 's_date',
 							placeholder: '시작일'
 						},
 						{
@@ -168,6 +171,7 @@ function List() {
 						},
 						{
 							type: Constants.inputTypes.datePicker,
+							name: 'e_date',
 							placeholder: '종료일'
 						}
 					]
@@ -176,7 +180,7 @@ function List() {
 		}
 	];
 
-	const tableList = {
+	const tableDataSource = {
 		topItems: [
 			{
 				type: Constants.inputTypes.button,
@@ -190,6 +194,26 @@ function List() {
 		tableColumns: columns
 	};
 
+	const onClickTableMore = async() => {
+		const initDataSource = await GetDiscountKindListAPI(offset + 10, searchData);
+		setOffset(offset + initDataSource.length);
+		
+		setDataSource([
+			...dataSource,
+			...initDataSource
+		]);
+	};
+
+	const onClickSearch = async(searchData) => {
+		const initDataSource = await GetDiscountKindListAPI(0, searchData);
+		setOffset(0);
+		setSearchData(searchData);
+
+		setDataSource([
+			...initDataSource
+		]);
+	};
+
     return(
 		<Space direction='vertical' size={18} className='main-layout'>
 			{/* Page Header */}
@@ -199,11 +223,14 @@ function List() {
 			</Space>
 
 			{/* Search Section */}
-			<SearchPanel dataSource={searchRowList} />
+			<SearchPanel dataSource={searchDataSource} onSearch={onClickSearch} />
 
 			{/* Body Section */}
-			<TableList dataSource={tableList} />
+			<TableList dataSource={tableDataSource} />
 
+			<Row justify='center'>
+				<label className='show-more-label' onClick={onClickTableMore}>더보기</label>
+			</Row>
 		</Space>
     );
 }

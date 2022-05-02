@@ -23,17 +23,6 @@
     color: #363636;
 }
 
-.showMoreLabel {
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 23px;
-    align-items: center;
-    text-align: center;
-    cursor: pointer;
-    
-    color: #8C8C8C;
-}
-
 .headerDivider {
     margin-top: 0px;
     margin-bottom: 27px;

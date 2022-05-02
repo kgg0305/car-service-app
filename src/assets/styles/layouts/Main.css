@@ -247,6 +247,20 @@ main {
     color: #C90000;
 }
 
+.successful-alert {
+    position: absolute;
+    top: 40px;
+    left: 7px;
+
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 12px;
+
+    align-items: center;
+
+    color: #00afff;
+}
+
 .alert-button {
     width: 100%;
     border: none;
@@ -395,4 +409,16 @@ main {
 .ant-checkbox-checked .ant-checkbox-inner {
     background-color: #C4C4C4;
     border-color: #CBCBCB;
+}
+
+.show-more-label {
+    padding-bottom: 50px;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 23px;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    
+    color: #8C8C8C;
 }

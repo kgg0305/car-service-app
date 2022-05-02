@@ -98,8 +98,7 @@ function List() {
 	const tableList = {
         title: '시간대별 카운트 자동입력 설정',
 		tableData: dataSource,
-		tableColumns: columns,
-        disabledMore: true
+		tableColumns: columns
 	};
 
     return (

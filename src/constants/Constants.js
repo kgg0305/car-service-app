@@ -3,6 +3,7 @@ export const Constants = {
         select: "select",
         input: "input",
         button: "button",
+        upload: "upload",
         datePicker: "datePicker",
         label: "label"
     },
@@ -152,99 +153,83 @@ export const Constants = {
     availableOptions: [
         {
             label: "사용",
-            value: true
+            value: '0'
         },
         {
             label: "미사용",
-            value: false
+            value: '1'
+        }
+    ],
+    incomeOptions: [
+        {
+            label: "국산",
+            value: '0'
+        },
+        {
+            label: "수입",
+            value: '1'
+        }
+    ],
+    nationOptions: [
+        {
+            label: "국산",
+            value: '0'
+        },
+        {
+            label: "미국",
+            value: '1'
+        },
+        {
+            label: "유럽",
+            value: '2'
+        },
+        {
+            label: "일본",
+            value: '3'
+        },
+        {
+            label: "중국",
+            value: '4'
         }
     ],
     isNewOptions: [
         {
             label: "예",
-            value: true
+            value: '0'
         },
         {
             label: "아니오",
-            value: false
+            value: '1'
         }
     ],
-    carTypeOptions: [
+    fuelTypeOptions: [
         {
-            label: "경차",
-            value: 1
+            label: "휘발유",
+            value: '0'
         },
         {
-            label: "경습합",
-            value: 2
+            label: "경유",
+            value: '1'
+        }
+    ],
+    gearBoxTypeOptions: [
+        {
+            label: "휘발유",
+            value: '0'
         },
         {
-            label: "경트럭",
-            value: 3
+            label: "경유",
+            value: '1'
+        }
+    ],
+    currencyTypeOptions: [
+        {
+            label: "원",
+            value: '0'
         },
         {
-            label: "대형",
-            value: 4
-        },
-        {
-            label: "대형MPV",
-            value: 5
-        },
-        {
-            label: "대형SUV",
-            value: 6
-        },
-        {
-            label: "소형",
-            value: 7
-        },
-        {
-            label: "소형MPV",
-            value: 8
-        },
-        {
-            label: "소형SUV",
-            value: 9
-        },
-        {
-            label: "소형버스",
-            value: 10
-        },
-        {
-            label: "소형트럭",
-            value: 11
-        },
-        {
-            label: "스포츠카",
-            value: 12
-        },
-        {
-            label: "승합",
-            value: 13
-        },
-        {
-            label: "준대형",
-            value: 14
-        },
-        {
-            label: "준중형",
-            value: 15
-        },
-        {
-            label: "중형",
-            value: 16
-        },
-        {
-            label: "중형SUV",
-            value: 17
-        },
-        {
-            label: "중형트럭",
-            value: 18
-        },
-        {
-            label: "픽업/밴",
-            value: 19
+            label: "유로",
+            value: '1'
         }
     ]
 }

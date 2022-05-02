@@ -1,19 +1,73 @@
 import { Col, Divider, Row, Space, Select, Button, Input, Image, Upload, Modal, Tabs, DatePicker, Switch } from 'antd';
 import { CaretDownOutlined, PlusOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
-import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
-import preview_default_image from '../../../assets/images/preview-default-image.png';
-import '../../../assets/styles/pages/car/brand/Create.css';
+import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { GetBrandOptionListAPI } from '../../../api/Brand';
+import { GetGroupOptionListAPI } from '../../../api/Group';
+import { GetModelOptionListAPI } from '../../../api/Model';
+import { CheckLineupNameAPI, CreateLineupAPI } from '../../../api/Lineup';
 import alert_icon from '../../../assets/images/alert-icon.png';
+import { Constants } from '../../../constants/Constants';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
 
 function Create() {
+    let navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
+    const [brandOptionList, setBrandOptionList] = useState([]);
+	const [groupOptionList, setGroupOptionList] = useState([]);
+    const [modelOptionList, setModelOptionList] = useState([]);
+    const [bodyInfo, setBodyInfo] = useState(
+        {
+            number: 1,
+            brand_id: null,
+            group_id: null,
+            model_id: null,
+            model_lineup_ids: '',
+            model_color_ids: '',
+            lineup_name: '',
+            fule_kind: '',
+            year_type: '2022',
+            is_use: '',
+            is_use_lineup: '',
+            is_use_color: '',
+            check_name: ''
+        }
+    );
 
-    const onSaveClick = event => {
-        setShowModal(true);
+    const initComponent = async () => {
+		const initBrandOptionList = await GetBrandOptionListAPI();
+		const initGroupOptionList = await GetGroupOptionListAPI();
+        const initModelOptionList = await GetModelOptionListAPI();
+		
+		setBrandOptionList(initBrandOptionList);
+		setGroupOptionList(initGroupOptionList);
+        setModelOptionList(initModelOptionList);
+	};
+
+    useEffect(() => {
+		initComponent();
+	}, []);
+
+    async function checkName(name) {
+        const result = await CheckLineupNameAPI(name);
+        onChangeComponent('check_name', result ? 'exist' : 'not-exist');
+    }
+
+    const onChangeComponent = (name, value) => {
+        setBodyInfo(
+            { 
+                ...bodyInfo,
+                [name]: value
+            }
+        );        
+    }
+
+    const onSaveClick = async() => {
+        CreateLineupAPI(bodyInfo);
+        // setShowModal(true);
+        navigate('/car/lineup');
     };
 
     const onCloseModalClick = () => {
@@ -32,7 +86,7 @@ function Create() {
                         <Col flex="auto" />
                         <Col>
                             <Space size={10}>
-                                <Link to="/car/trim">
+                                <Link to="/car/lineup">
                                     <Button className='white-button medium-button'>취소</Button>
                                 </Link>
                                 <Button className='white-button medium-button' onClick={onSaveClick}>저장하고 나가기</Button>
@@ -61,37 +115,62 @@ function Create() {
                                     </Col>
                                     <Col span={5} className='table-value-col-section'>
                                         <Select
+                                            name='brand_id' 
+                                            value={bodyInfo.brand_id} 
+                                            onChange={value => {
+                                                onChangeComponent('brand_id', value);
+                                            }}
                                             suffixIcon={<CaretDownOutlined />}
-                                            placeholder="선택"
+                                            placeholder="브랜드 선택"
                                             style={{ width: 300 }}
                                         >
-                                            <Option value="SK">현대</Option>
+                                            {
+                                                brandOptionList.map((optionItem, optionIndex) => (
+                                                    <Select.Option key={optionIndex} value={optionItem.value}>
+                                                        {optionItem.label}
+                                                    </Select.Option>
+                                                ))
+                                            }
                                         </Select>
                                     </Col>
                                     <Col span={5} className='table-value-col-section'>
                                         <Select
+                                            name='group_id' 
+                                            value={bodyInfo.group_id} 
+                                            onChange={value => {
+                                                onChangeComponent('group_id', value);
+                                            }}
                                             suffixIcon={<CaretDownOutlined />}
-                                            placeholder="선택"
+                                            placeholder="모델그룹 선택"
                                             style={{ width: 300 }}
                                         >
-                                            <Option value="SK">국산</Option>
-                                            <Option value="US">미국</Option>
-                                            <Option value="EU">유럽</Option>
-                                            <Option value="JP">일본</Option>
-                                            <Option value="CH">중국</Option>
+                                            {
+                                                groupOptionList.map((optionItem, optionIndex) => (
+                                                    <Select.Option key={optionIndex} value={optionItem.value}>
+                                                        {optionItem.label}
+                                                    </Select.Option>
+                                                ))
+                                            }
                                         </Select>
                                     </Col>
                                     <Col flex='auto' className='table-value-col-section'>
                                         <Select
+                                            name='model_id' 
+                                            value={bodyInfo.model_id} 
+                                            onChange={value => {
+                                                onChangeComponent('model_id', value);
+                                            }}
                                             suffixIcon={<CaretDownOutlined />}
-                                            placeholder="선택"
+                                            placeholder="모델 선택"
                                             style={{ width: 300 }}
                                         >
-                                            <Option value="SK">국산</Option>
-                                            <Option value="US">미국</Option>
-                                            <Option value="EU">유럽</Option>
-                                            <Option value="JP">일본</Option>
-                                            <Option value="CH">중국</Option>
+                                            {
+                                                modelOptionList.map((optionItem, optionIndex) => (
+                                                    <Select.Option key={optionIndex} value={optionItem.value}>
+                                                        {optionItem.label}
+                                                    </Select.Option>
+                                                ))
+                                            }
                                         </Select>
                                     </Col>
                                 </Row>
@@ -102,10 +181,23 @@ function Create() {
                                     <Col span={10} className='table-value-col-section'>
                                         <Space>
                                             <div className=''>
-                                                <Input placeholder="라인업 입력" maxLength={15} style={{ width: 400 }} />
-                                                <label className='danger-alert'>이미 사용중인 이름 입니다.</label>
+                                                <Input 
+                                                    name='lineup_name' 
+                                                    value={bodyInfo.lineup_name} 
+                                                    onChange={e => {
+                                                        onChangeComponent(e.target.name, e.target.value);
+                                                    }} 
+                                                    placeholder="라인업 입력" maxLength={15} style={{ width: 400 }} 
+                                                />
+                                                {
+                                                    bodyInfo.check_name == 'exist'
+                                                    ? <label className='danger-alert'>이미 사용중인 이름 입니다.</label>
+                                                    : bodyInfo.check_name == 'not-exist'
+                                                    ? <label className='successful-alert'>사용 가능한 이름 입니다.</label>
+                                                    : ''
+                                                }
                                             </div>
-                                            <Button className='black-button'>확인</Button>
+                                            <Button className='black-button' onClick={() => checkName(bodyInfo.lineup_name)}>확인</Button>
                                         </Space>
                                     </Col>
                                     <Col span={2} className='table-header-col-section'>
@@ -113,15 +205,22 @@ function Create() {
                                     </Col>
                                     <Col flex='auto' className='table-value-col-section'>
                                         <Select
+                                            name='fule_kind' 
+                                            value={bodyInfo.fule_kind} 
+                                            onChange={value => {
+                                                onChangeComponent('fule_kind', value);
+                                            }}
                                             suffixIcon={<CaretDownOutlined />}
                                             placeholder="선택"
                                             style={{ width: 150 }}
                                         >
-                                            <Option value="SK">국산</Option>
-                                            <Option value="US">미국</Option>
-                                            <Option value="EU">유럽</Option>
-                                            <Option value="JP">일본</Option>
-                                            <Option value="CH">중국</Option>
+                                            {
+                                                Constants.fuelTypeOptions.map((optionItem, optionIndex) => (
+                                                    <Select.Option key={optionIndex} value={optionItem.value}>
+                                                        {optionItem.label}
+                                                    </Select.Option>
+                                                ))
+                                            }
                                         </Select>
                                     </Col>
                                 </Row>
@@ -131,7 +230,14 @@ function Create() {
                                     </Col>
                                     <Col span={10} className='table-value-col-section'>
                                         <Space>
-                                            <Input maxLength={6} value={2022} style={{ width: 150 }} />
+                                            <Input 
+                                                name='year_type' 
+                                                value={bodyInfo.year_type} 
+                                                onChange={e => {
+                                                    onChangeComponent(e.target.name, e.target.value);
+                                                }} 
+                                                maxLength={6} style={{ width: 150 }} 
+                                            />
                                         </Space>
                                     </Col>
                                     <Col span={2} className='table-header-col-section'>
@@ -139,13 +245,23 @@ function Create() {
                                     </Col>
                                     <Col flex="auto" className='table-value-col-section'>
                                         <Select
+                                            name='is_use' 
+                                            value={bodyInfo.is_use} 
+                                            onChange={value => {
+                                                onChangeComponent('is_use', value);
+                                            }}
                                             suffixIcon={<CaretDownOutlined />}
                                             placeholder="선택"
                                             defaultValue="true"
                                             style={{ width: 150 }}
                                         >
-                                            <Option value="true">사용</Option>
-                                            <Option value="false">미사용</Option>
+                                            {
+                                                Constants.availableOptions.map((optionItem, optionIndex) => (
+                                                    <Select.Option key={optionIndex} value={optionItem.value}>
+                                                        {optionItem.label}
+                                                    </Select.Option>
+                                                ))
+                                            }
                                         </Select>
                                     </Col>
                                 </Row>

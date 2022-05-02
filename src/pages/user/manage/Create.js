@@ -2,8 +2,6 @@ import { Col, Divider, Row, Space, Select, Button, Input, Modal } from 'antd';
 import { CaretDownOutlined, PlusOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
-import preview_default_image from '../../../assets/images/preview-default-image.png';
-import '../../../assets/styles/pages/car/brand/Create.css';
 import alert_icon from '../../../assets/images/alert-icon.png';
 
 const { Option } = Select;

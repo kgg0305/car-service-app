@@ -102,32 +102,32 @@ function App() {
 				<Route path="/car/brand/" element={ <Main headerMenuKey={"car"} /> }>
 					<Route index element={<CarBrandList />} />
 					<Route path="create" element={<CarBrandCreate />} />
-					<Route path="edit" element={<CarBrandEdit />} />
+					<Route path="edit/:id" element={<CarBrandEdit />} />
 				</Route>
 				<Route path="/car/group/" element={ <Main headerMenuKey={"car"} /> }>
 					<Route index element={<CarGroupList />} />
 					<Route path="create" element={<CarGroupCreate />} />
-					<Route path="edit" element={<CarGroupEdit />} />
+					<Route path="edit/:id" element={<CarGroupEdit />} />
 				</Route>
 				<Route path="/car/model/" element={ <Main headerMenuKey={"car"} /> }>
 					<Route index element={<CarModelList />} />
 					<Route path="create" element={<CarModelCreate />} />
-					<Route path="edit" element={<CarModelEdit />} />
+					<Route path="edit/:id" element={<CarModelEdit />} />
 				</Route>
 				<Route path="/car/lineup/" element={ <Main headerMenuKey={"car"} /> }>
 					<Route index element={<CarLineupList />} />
 					<Route path="create" element={<CarLineupCreate />} />
-					<Route path="edit" element={<CarLineupEdit />} />
+					<Route path="edit/:id" element={<CarLineupEdit />} />
 				</Route>
 				<Route path="/car/trim/" element={ <Main headerMenuKey={"car"} /> }>
 					<Route index element={<CarTrimList />} />
 					<Route path="create" element={<CarTrimCreate />} />
-					<Route path="edit" element={<CarTrimEdit />} />
+					<Route path="edit/:id" element={<CarTrimEdit />} />
 				</Route>
 				<Route path="/car/discount/" element={ <Main headerMenuKey={"car"} /> }>
 					<Route index element={<CarDiscountList />} />
 					<Route path="create" element={<CarDiscountCreate />} />
-					<Route path="edit" element={<CarDiscountEdit />} />
+					<Route path="edit/:id" element={<CarDiscountEdit />} />
 				</Route>
 				<Route path="/car/extra/" element={ <Main headerMenuKey={"car"} /> }>
 					<Route index element={<CarExtraList />} />
@@ -156,35 +156,35 @@ function App() {
 				<Route path="/content/recommendation/" element={ <Main headerMenuKey={"content"} /> }>
 					<Route index element={<ContentRecommendationList />} />
 					<Route path="create" element={<ContentRecommendationCreate />} />
-					<Route path="edit" element={<ContentRecommendationEdit />} />
+					<Route path="edit/:id" element={<ContentRecommendationEdit />} />
 				</Route>
 				<Route path="/content/photo/" element={ <Main headerMenuKey={"content"} /> }>
 					<Route index element={<ContentPhotoList />} />
 					<Route path="create" element={<ContentPhotoCreate />} />
-					<Route path="edit" element={<ContentPhotoEdit />} />
+					<Route path="edit/:id" element={<ContentPhotoEdit />} />
 				</Route>
 				<Route path="/content/gallery/" element={ <Main headerMenuKey={"content"} /> }>
 					<Route index element={<ContentGalleryList />} />
-					<Route path="edit" element={<ContentGalleryEdit />} />
+					<Route path="edit/:id" element={<ContentGalleryEdit />} />
 				</Route>
 				<Route path="/content/popular/" element={ <Main headerMenuKey={"content"} /> }>
 					<Route index element={<ContentPopularList />} />
-					<Route path="edit" element={<ContentPopularEdit />} />
+					<Route path="edit/:id" element={<ContentPopularEdit />} />
 				</Route>
 				<Route path="/content/carRank/" element={ <Main headerMenuKey={"content"} /> }>
 					<Route index element={<ContentCarRankList />} />
 					<Route path="create" element={<ContentCarRankCreate />} />
-					<Route path="edit" element={<ContentCarRankEdit />} />
+					<Route path="edit/:id" element={<ContentCarRankEdit />} />
 				</Route>
 				<Route path="/content/contentRank/" element={ <Main headerMenuKey={"content"} /> }>
 					<Route index element={<ContentContentRankList />} />
 					<Route path="create" element={<ContentContentRankCreate />} />
-					<Route path="edit" element={<ContentContentRankEdit />} />
+					<Route path="edit/:id" element={<ContentContentRankEdit />} />
 				</Route>
 				<Route path="/content/movieRank/" element={ <Main headerMenuKey={"content"} /> }>
 					<Route index element={<ContentMovieRankList />} />
 					<Route path="create" element={<ContentMovieRankCreate />} />
-					<Route path="edit" element={<ContentMovieRankEdit />} />
+					<Route path="edit/:id" element={<ContentMovieRankEdit />} />
 				</Route>
 				<Route path="/content/media/" element={ <Main headerMenuKey={"content"} /> }>
 					<Route index element={<ContentMediaList />} />

@@ -1,6 +1,7 @@
 import { Col, Divider, Row, Space, Select, Button, Image } from 'antd';
 import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { GetBrandListAPI, GetBrandOptionListAPI } from '../../../api/Brand';
 import SearchPanel from '../../../components/SearchPanel';
 import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
@@ -8,36 +9,31 @@ import { Constants } from '../../../constants/Constants';
 const { Option } = Select;
 
 function List() {
-	const [dataSource, setDataSource] = useState(
-		[
-			{
-				key: 1,
-				number: '1',
-				logo: window.location.origin + '/images/logo/logo.png',
-				brand: 'Ford',
-				order: '10',
-				available: '사용',
-				count: '42',
-				manage: '',
-			},
-			{
-				key: 2,
-				number: '1',
-				logo: window.location.origin + '/images/logo/logo.png',
-				brand: 'Ford',
-				order: '10',
-				available: '사용',
-				count: '12',
-				manage: '',
-			},
-		]
-	);
+	const [offset, setOffset] = useState(0);
+	const [brandOptionList, setBrandOptionList] = useState([]);
+	const [dataSource, setDataSource] = useState([]);
+	const [searchData, setSearchData] = useState({
+		idx: '',
+		is_use: null
+	});
+
+	const initComponent = async () => {
+		const initDataSource = await GetBrandListAPI(offset);
+		const initBrandOptionList = await GetBrandOptionListAPI();
+		
+		setDataSource(initDataSource);
+		setBrandOptionList(initBrandOptionList);
+	};
+
+	useEffect(() => {
+		initComponent();
+	}, []);
 	
 	const columns = [
 		{
 			title: '번호',
-			dataIndex: 'number',
-			key: 'number',
+			dataIndex: 'idx',
+			key: 'idx',
             align: 'center',
 		},
 		{
@@ -45,25 +41,27 @@ function List() {
 			dataIndex: 'logo',
 			key: 'logo',
             align: 'center',
-			render: path => <Image src={path} />,
+			render: path => <Image src={window.location.origin + '/images/logo/' + path} />,
 		},
 		{
 			title: '브랜드',
-			dataIndex: 'brand',
-			key: 'brand',
+			dataIndex: 'brand_name',
+			key: 'brand_name',
             align: 'center',
 		},
 		{
 			title: '순서',
-			dataIndex: 'order',
-			key: 'order',
+			dataIndex: 'sequence',
+			key: 'sequence',
             align: 'center',
 		},
 		{
 			title: '사용여부',
-			dataIndex: 'available',
-			key: 'available',
+			dataIndex: 'is_use',
+			key: 'is_use',
             align: 'center',
+			render: is_use => 
+				is_use == 0 ? '사용' : '미사용'
 		},
 		{
 			title: '등록 차량수',
@@ -73,17 +71,17 @@ function List() {
 		},
 		{
 			title: '관리',
-			dataIndex: 'manage',
-			key: 'manage',
+			dataIndex: 'idx',
+			key: 'idx',
             align: 'center',
-			render: path => 
+			render: idx => 
 				<Row justify='center'>
 					<Col>
 						<Space size={15} split={<Divider type="vertical" />}>
 							<Link to="/car/brand/edit">
 								<Button className='white-button small-button rounded-button'>그룹관리</Button>
 							</Link>
-							<Link to="/car/brand/edit">
+							<Link to={"/car/brand/edit/" + idx}>
 								<Button className='black-button small-button rounded-button'>수정</Button>
 							</Link>
 						</Space>
@@ -92,7 +90,7 @@ function List() {
 		},
 	];
 
-	const searchRowList = [
+	const searchDataSource = [
 		{
 			height: 80,
 			columns: [
@@ -102,9 +100,10 @@ function List() {
 					contentItems: [
 						{
 							type: Constants.inputTypes.select,
+							name: 'idx',
 							placeholder: '브랜드 선택',
 							width: 400,
-							data: null
+							data: brandOptionList
 						}
 					]
 				},
@@ -114,6 +113,7 @@ function List() {
 					contentItems: [
 						{
 							type: Constants.inputTypes.select,
+							name: 'is_use',
 							placeholder: '선택',
 							width: 150,
 							data: Constants.availableOptions
@@ -124,7 +124,7 @@ function List() {
 		}
 	];
 
-	const tableList = {
+	const tableDataSource = {
 		topItems: [
 			{
 				type: Constants.inputTypes.button,
@@ -138,27 +138,23 @@ function List() {
 		tableColumns: columns
 	};
 
-	const onClickTableMore = () => {
+	const onClickTableMore = async() => {
+		const initDataSource = await GetBrandListAPI(offset + 10, searchData);
+		setOffset(offset + initDataSource.length);
+		
 		setDataSource([
 			...dataSource,
-			{
-				number: '1',
-				logo: window.location.origin + '/images/logo/logo.png',
-				brand: 'Ford',
-				order: '1',
-				available: '사용',
-				count: '3',
-				manage: '',
-			},
-			{
-				number: '1',
-				logo: window.location.origin + '/images/logo/logo.png',
-				brand: 'Ford',
-				order: '2',
-				available: '사용',
-				count: '4',
-				manage: '',
-			}
+			...initDataSource
+		]);
+	};
+
+	const onClickSearch = async(searchData) => {
+		const initDataSource = await GetBrandListAPI(0, searchData);
+		setOffset(0);
+		setSearchData(searchData);
+
+		setDataSource([
+			...initDataSource
 		]);
 	};
 
@@ -171,11 +167,14 @@ function List() {
 			</Space>
 
 			{/* Search Section */}
-			<SearchPanel dataSource={searchRowList} />
+			<SearchPanel dataSource={searchDataSource} onSearch={onClickSearch} />
 
 			{/* Body Section */}
-			<TableList dataSource={tableList} />
+			<TableList dataSource={tableDataSource} />
 
+			<Row justify='center'>
+				<label className='show-more-label' onClick={onClickTableMore}>더보기</label>
+			</Row>
 		</Space>
     );
 }

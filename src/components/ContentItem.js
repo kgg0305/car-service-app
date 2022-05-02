@@ -1,22 +1,26 @@
 import React from "react";
-import { Select, Button, DatePicker, Input, Space } from 'antd';
+import { Select, Button, DatePicker, Input, Space, Upload } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons'
 import { Constants } from '../constants/Constants';
 
-function ContentItem(props) {
-    switch (props.item.type) {
+function ContentItem({ item, key, value, onChange}) {
+    switch (item.type) {
         case Constants.inputTypes.select:
             return (
                 <Select
-                    key={props.key}
+                    key={key}
                     size={'large'}
+                    value={value}
+                    onChange={value => {
+                        onChange(item.name ,value);
+                    }}
                     suffixIcon={<CaretDownOutlined />}
-                    placeholder={props.item.placeholder}
-                    style={{ width: props.item.width }}
+                    placeholder={item.placeholder}
+                    style={{ width: item.width }}
                 >
                     {
-                        props.item.data 
-                        ? props.item.data.map((optionItem, optionIndex) => (
+                        item.data 
+                        ? item.data.map((optionItem, optionIndex) => (
                             <Select.Option key={optionIndex} value={optionItem.value}>
                                 {optionItem.label}
                             </Select.Option>
@@ -29,37 +33,58 @@ function ContentItem(props) {
 
         case Constants.inputTypes.button:
             return (
-                <Button key={props.key} 
+                <Button key={key} 
                     size={'large'}
-                    className={ props.item.style }
+                    className={ item.style }
                 >
-                    {props.item.label}
+                    {item.label}
                 </Button>
+            );
+            break;
+
+        case Constants.inputTypes.upload:
+            return (
+                <Upload>
+                    <Button key={key} 
+                        size={'large'}
+                        className={ item.style }
+                    >
+                        {item.label}
+                    </Button>
+                </Upload>
+                
             );
             break;
 
         case Constants.inputTypes.datePicker:
             return (
-                <DatePicker key={props.key} size={'large'} placeholder={props.item.placeholder} />
+                <DatePicker key={key} size={'large'} placeholder={item.placeholder} />
             );
             break;
 
         case Constants.inputTypes.label:
             return (
-                props.item.icon
+                item.icon
                 ?
                 <Space>
-                    {props.item.icon}
-                    <label key={props.key}>{props.item.label}</label>
+                    {item.icon}
+                    <label key={key}>{item.label}</label>
                 </Space>
                 :
-                <label key={props.key}>{props.item.label}</label>
+                <label key={key}>{item.label}</label>
             );
             break;
 
         case Constants.inputTypes.input:
             return (
-                <Input key={props.key} size={'large'} style={{ width: props.item.width }} placeholder={props.item.placeholder} disabled={props.item.disabled} value={props.item.value} />
+                <Input 
+                    key={key} 
+                    size={'large'} 
+                    value={value}
+                    onChange={e => {
+                        onChange(item.name, e.target.value);
+                    }}
+                    style={{ width: item.width }} placeholder={item.placeholder} disabled={item.disabled} />
             );
             break;
     

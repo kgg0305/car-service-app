@@ -1,8 +1,7 @@
-import { Col, Divider, Row, Space, Select, Button, Input, Modal, DatePicker } from 'antd';
+import { Col, Divider, Row, Space, Select, Button, Input } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
-import '../../../assets/styles/pages/car/brand/Create.css';
 
 const { Option } = Select;
 

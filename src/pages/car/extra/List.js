@@ -1,72 +1,77 @@
 import { Divider, Space } from 'antd';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { GetBrandOptionListAPI } from '../../../api/Brand';
+import { GetGroupOptionListAPI } from '../../../api/Group';
+import { GetModelOptionListAPI } from '../../../api/Model';
+import { GetExtraListAPI } from '../../../api/Extra';
 import SearchPanel from '../../../components/SearchPanel';
 import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
 
 function List() {
-	const [dataSource, setDataSource] = useState(
-		[
-			{
-				key: 1,
-				number: '1',
-				brand: 32,
-                model: '경차',
-                area: '',
-				tax: '',
-                profit: '',
-				discount: '',
-                delivery: '',
-			},
-			{
-				key: 2,
-				number: '1',
-				brand: 32,
-                model: '경차',
-                area: '',
-				tax: '',
-                profit: '',
-				discount: '',
-                delivery: '',
-			},
-		]
-	);
+	const [offset, setOffset] = useState(0);
+	const [brandOptionList, setBrandOptionList] = useState([]);
+	const [groupOptionList, setGroupOptionList] = useState([]);
+	const [modelOptionList, setModelOptionList] = useState([]);
+	const [dataSource, setDataSource] = useState();
+	const [searchData, setSearchData] = useState({
+		brand_id: null,
+		group_id: null,
+		model_id: null,
+		is_use: null
+	});
+	
+	const initComponent = async () => {
+		const initDataSource = await GetExtraListAPI(offset);
+		const initBrandOptionList = await GetBrandOptionListAPI();
+		const initGroupOptionList = await GetGroupOptionListAPI();
+		const initModelOptionList = await GetModelOptionListAPI();
+		
+		setDataSource(initDataSource);
+		setBrandOptionList(initBrandOptionList);
+		setGroupOptionList(initGroupOptionList);
+		setModelOptionList(initModelOptionList);
+	};
+
+	useEffect(() => {
+		initComponent();
+	}, []);
 	
 	const columns = [
 		{
 			title: '번호',
-			dataIndex: 'number',
-			key: 'number',
+			dataIndex: 'idx',
+			key: 'idx',
             align: 'center',
 		},
 		{
 			title: '브랜드',
-			dataIndex: 'brand',
-			key: 'brand',
+			dataIndex: 'brand_name',
+			key: 'brand_name',
             align: 'center',
 		},
         {
 			title: '모델',
-			dataIndex: 'model',
-			key: 'model',
+			dataIndex: 'model_name',
+			key: 'model_name',
             align: 'center',
 		},
         {
 			title: '등록지역',
-			dataIndex: 'area',
-			key: 'area',
+			dataIndex: 'region',
+			key: 'region',
             align: 'center',
 		},
 		{
 			title: '면세조건',
-			dataIndex: 'tax',
-			key: 'tax',
+			dataIndex: 'condition',
+			key: 'condition',
             align: 'center',
 		},
         {
 			title: '취득세',
-			dataIndex: 'profit',
-			key: 'profit',
+			dataIndex: 'fee',
+			key: 'fee',
             align: 'center',
 		},
         {
@@ -77,13 +82,13 @@ function List() {
 		},
         {
 			title: '탁송',
-			dataIndex: 'delivery',
-			key: 'delivery',
+			dataIndex: 'transfer',
+			key: 'transfer',
             align: 'center',
 		},
 	];
 
-	const searchRowList = [
+	const searchDataSource = [
 		{
 			height: 80,
 			columns: [
@@ -93,21 +98,24 @@ function List() {
 					contentItems: [
 						{
 							type: Constants.inputTypes.select,
+							name: 'brand_id',
 							placeholder: '브랜드 선택',
 							width: 250,
-							data: null
+							data: brandOptionList
 						},
 						{
 							type: Constants.inputTypes.select,
+							name: 'group_id',
 							placeholder: '모델그룹 선택',
 							width: 250,
-							data: null
+							data: groupOptionList
 						},
 						{
 							type: Constants.inputTypes.select,
+							name: 'model_id',
 							placeholder: '모델 선택',
 							width: 250,
-							data: null
+							data: modelOptionList
 						}
 					]
 				}
@@ -115,18 +123,44 @@ function List() {
 		}
 	];
 
-	const tableList = {
+	const tableDataSource = {
 		topItems: [
 			{
 				type: Constants.inputTypes.button,
 				link: '/car/disount/create',
-				label: '등록',
+				label: '엑셀 다운로드',
+				style: 'white-button big-button',
+				width: 150
+			},
+			{
+				type: Constants.inputTypes.upload,
+				label: '엑셀 등록',
 				style: 'black-button big-button',
 				width: 150
 			}
 		],
 		tableData: dataSource,
 		tableColumns: columns
+	};
+
+	const onClickTableMore = async() => {
+		const initDataSource = await GetExtraListAPI(offset + 10, searchData);
+		setOffset(offset + initDataSource.length);
+		
+		setDataSource([
+			...dataSource,
+			...initDataSource
+		]);
+	};
+
+	const onClickSearch = async(searchData) => {
+		const initDataSource = await GetExtraListAPI(0, searchData);
+		setOffset(0);
+		setSearchData(searchData);
+
+		setDataSource([
+			...initDataSource
+		]);
 	};
 
     return(
@@ -138,10 +172,10 @@ function List() {
 			</Space>
 
 			{/* Search Section */}
-			<SearchPanel dataSource={searchRowList} />
+			<SearchPanel dataSource={searchDataSource} />
 
 			{/* Body Section */}
-			<TableList dataSource={tableList} />
+			<TableList dataSource={tableDataSource} />
 
 		</Space>
     );
