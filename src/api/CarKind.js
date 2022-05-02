@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export async function CheckCarKindNameAPI(kind_name) {
     try {
-        const response = await axios.post('http://127.0.0.1:4200/car-kind/check-name', {
+        const response = await axios.post(process.env.REACT_APP_API_URL + '/car-kind/check-name', {
             kind_name: kind_name
         });
     
@@ -23,7 +23,7 @@ export async function CreateCarKindAPI(bodyList) {
     });
 
     try {
-        const response = await axios.post('http://127.0.0.1:4200/car-kind', data);
+        const response = await axios.post(process.env.REACT_APP_API_URL + '/car-kind', data);
     
         return response.data;
     } catch (e) {
@@ -37,7 +37,7 @@ export async function UpdateCarKindAPI(body) {
     };
     
     try {
-        const response = await axios.put('http://127.0.0.1:4200/car-kind/' + body.idx, data);
+        const response = await axios.put(process.env.REACT_APP_API_URL + '/car-kind/' + body.idx, data);
     
         return response.data;
     } catch (e) {
@@ -47,7 +47,7 @@ export async function UpdateCarKindAPI(body) {
 
 export async function GetCarKindListAPI(offset, search) {
     try {
-        const response = await axios.post('http://127.0.0.1:4200/car-kind/list/' + offset, search);
+        const response = await axios.post(process.env.REACT_APP_API_URL + '/car-kind/list/' + offset, search);
         
         return response.data;
     } catch (e) {
@@ -57,7 +57,7 @@ export async function GetCarKindListAPI(offset, search) {
 
 export async function GetCarKindOptionListAPI(offset, search) {
     try {
-        const response = await axios.get('http://127.0.0.1:4200/car-kind/option-list');
+        const response = await axios.get(process.env.REACT_APP_API_URL + '/car-kind/option-list');
         
         return response.data;
     } catch (e) {
@@ -67,7 +67,7 @@ export async function GetCarKindOptionListAPI(offset, search) {
 
 export async function GetCarKindInfoAPI(idx) {
     try {
-        const response = await axios.get('http://127.0.0.1:4200/car-kind/' + idx);
+        const response = await axios.get(process.env.REACT_APP_API_URL + '/car-kind/' + idx);
     
         return response.data;
     } catch (e) {
@@ -77,7 +77,7 @@ export async function GetCarKindInfoAPI(idx) {
 
 export async function DeleteCarKindInfoAPI(idx) {
     try {
-        const response = await axios.delete('http://127.0.0.1:4200/car-kind/' + idx);
+        const response = await axios.delete(process.env.REACT_APP_API_URL + '/car-kind/' + idx);
     
         return response.data;
     } catch (e) {

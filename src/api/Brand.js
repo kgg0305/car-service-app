@@ -3,7 +3,7 @@ import { CreateFileAPI } from './File';
 
 export async function CheckBrandNameAPI(brandName) {
     try {
-        const response = await axios.post('http://127.0.0.1:4200/brand/check-name', {
+        const response = await axios.post(process.env.REACT_APP_API_URL + '/brand/check-name', {
             brand_name: brandName
         });
     
@@ -41,7 +41,7 @@ export async function CreateBrandAPI(bodyList) {
     }
 
     try {
-        const response = await axios.post('http://127.0.0.1:4200/brand', data);
+        const response = await axios.post(process.env.REACT_APP_API_URL + '/brand', data);
     
         return response.data;
     } catch (e) {
@@ -69,7 +69,7 @@ export async function UpdateBrandAPI(body) {
     };
     
     try {
-        const response = await axios.put('http://127.0.0.1:4200/brand/' + body.idx, data);
+        const response = await axios.put(process.env.REACT_APP_API_URL + '/brand/' + body.idx, data);
     
         return response.data;
     } catch (e) {
@@ -79,7 +79,7 @@ export async function UpdateBrandAPI(body) {
 
 export async function GetBrandListAPI(offset, search) {
     try {
-        const response = await axios.post('http://127.0.0.1:4200/brand/list/' + offset, search);
+        const response = await axios.post(process.env.REACT_APP_API_URL + '/brand/list/' + offset, search);
         
         return response.data;
     } catch (e) {
@@ -89,7 +89,7 @@ export async function GetBrandListAPI(offset, search) {
 
 export async function GetBrandOptionListAPI(offset, search) {
     try {
-        const response = await axios.get('http://127.0.0.1:4200/brand/option-list');
+        const response = await axios.get(process.env.REACT_APP_API_URL + '/brand/option-list');
         
         return response.data;
     } catch (e) {
@@ -99,7 +99,7 @@ export async function GetBrandOptionListAPI(offset, search) {
 
 export async function GetBrandInfoAPI(idx) {
     try {
-        const response = await axios.get('http://127.0.0.1:4200/brand/' + idx);
+        const response = await axios.get(process.env.REACT_APP_API_URL + '/brand/' + idx);
     
         return response.data;
     } catch (e) {
@@ -109,7 +109,7 @@ export async function GetBrandInfoAPI(idx) {
 
 export async function DeleteBrandInfoAPI(idx) {
     try {
-        const response = await axios.delete('http://127.0.0.1:4200/brand/' + idx);
+        const response = await axios.delete(process.env.REACT_APP_API_URL + '/brand/' + idx);
     
         return response.data;
     } catch (e) {

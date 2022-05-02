@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export async function CheckDiscountKindNameAPI(kind_name) {
     try {
-        const response = await axios.post('http://127.0.0.1:4200/discount-kind/check-name', {
+        const response = await axios.post(process.env.REACT_APP_API_URL + '/discount-kind/check-name', {
             kind_name: kind_name
         });
     
@@ -29,7 +29,7 @@ export async function CreateDiscountKindAPI(bodyList) {
     });
 
     try {
-        const response = await axios.post('http://127.0.0.1:4200/discount-kind', data);
+        const response = await axios.post(process.env.REACT_APP_API_URL + '/discount-kind', data);
     
         return response.data;
     } catch (e) {
@@ -47,7 +47,7 @@ export async function UpdateDiscountKindAPI(body) {
     };
     
     try {
-        const response = await axios.put('http://127.0.0.1:4200/discount-kind/' + body.idx, data);
+        const response = await axios.put(process.env.REACT_APP_API_URL + '/discount-kind/' + body.idx, data);
     
         return response.data;
     } catch (e) {
@@ -57,7 +57,7 @@ export async function UpdateDiscountKindAPI(body) {
 
 export async function GetDiscountKindListAPI(offset, search) {
     try {
-        const response = await axios.post('http://127.0.0.1:4200/discount-kind/list/' + offset, search);
+        const response = await axios.post(process.env.REACT_APP_API_URL + '/discount-kind/list/' + offset, search);
         
         return response.data;
     } catch (e) {
@@ -67,7 +67,7 @@ export async function GetDiscountKindListAPI(offset, search) {
 
 export async function GetDiscountKindOptionListAPI(offset, search) {
     try {
-        const response = await axios.get('http://127.0.0.1:4200/discount-kind/option-list');
+        const response = await axios.get(process.env.REACT_APP_API_URL + '/discount-kind/option-list');
         
         return response.data;
     } catch (e) {
@@ -77,7 +77,7 @@ export async function GetDiscountKindOptionListAPI(offset, search) {
 
 export async function GetDiscountKindInfoAPI(idx) {
     try {
-        const response = await axios.get('http://127.0.0.1:4200/discount-kind/' + idx);
+        const response = await axios.get(process.env.REACT_APP_API_URL + '/discount-kind/' + idx);
     
         return response.data;
     } catch (e) {
@@ -87,7 +87,7 @@ export async function GetDiscountKindInfoAPI(idx) {
 
 export async function DeleteDiscountKindInfoAPI(idx) {
     try {
-        const response = await axios.delete('http://127.0.0.1:4200/discount-kind/' + idx);
+        const response = await axios.delete(process.env.REACT_APP_API_URL + '/discount-kind/' + idx);
     
         return response.data;
     } catch (e) {

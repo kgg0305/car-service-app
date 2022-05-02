@@ -13,7 +13,7 @@ export async function CreateModelColorAPI(bodyList) {
     });
 
     try {
-        const response = await axios.post('http://127.0.0.1:4200/model-color', data);
+        const response = await axios.post(process.env.REACT_APP_API_URL + '/model-color', data);
     
         return response.data;
     } catch (e) {
@@ -29,7 +29,7 @@ export async function UpdateModelColorAPI(body) {
     };
     
     try {
-        const response = await axios.put('http://127.0.0.1:4200/model-color/' + body.idx, data);
+        const response = await axios.put(process.env.REACT_APP_API_URL + '/model-color/' + body.idx, data);
     
         return response.data;
     } catch (e) {
@@ -39,7 +39,7 @@ export async function UpdateModelColorAPI(body) {
 
 export async function GetModelColorListAPI(offset, search) {
     try {
-        const response = await axios.post('http://127.0.0.1:4200/model-color/list/' + offset, search);
+        const response = await axios.post(process.env.REACT_APP_API_URL + '/model-color/list/' + offset, search);
         
         return response.data;
     } catch (e) {
@@ -49,7 +49,7 @@ export async function GetModelColorListAPI(offset, search) {
 
 export async function GetModelColorOptionListAPI(offset, search) {
     try {
-        const response = await axios.get('http://127.0.0.1:4200/model-color/option-list');
+        const response = await axios.get(process.env.REACT_APP_API_URL + '/model-color/option-list');
         
         return response.data;
     } catch (e) {
@@ -59,7 +59,7 @@ export async function GetModelColorOptionListAPI(offset, search) {
 
 export async function GetModelColorInfoAPI(idx) {
     try {
-        const response = await axios.get('http://127.0.0.1:4200/model-color/' + idx);
+        const response = await axios.get(process.env.REACT_APP_API_URL + '/model-color/' + idx);
     
         return response.data;
     } catch (e) {
@@ -69,7 +69,7 @@ export async function GetModelColorInfoAPI(idx) {
 
 export async function DeleteModelColorInfoAPI(idx) {
     try {
-        const response = await axios.delete('http://127.0.0.1:4200/model-color/' + idx);
+        const response = await axios.delete(process.env.REACT_APP_API_URL + '/model-color/' + idx);
     
         return response.data;
     } catch (e) {
