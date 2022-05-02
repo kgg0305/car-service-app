@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export async function CheckModelNameAPI(model_name) {
     try {
-        const response = await axios.post('http://13.125.168.233:4200/model/check-name', {
+        const response = await axios.post('http://127.0.0.1:4200/model/check-name', {
             model_name: model_name
         });
     
@@ -34,7 +34,7 @@ export async function CreateModelAPI(body) {
     ];
 
     try {
-        const response = await axios.post('http://13.125.168.233:4200/model', data);
+        const response = await axios.post('http://127.0.0.1:4200/model', data);
     
         return response.data;
     } catch (e) {
@@ -62,7 +62,7 @@ export async function UpdateModelAPI(body) {
     };
     
     try {
-        const response = await axios.put('http://13.125.168.233:4200/model/' + body.idx, data);
+        const response = await axios.put('http://127.0.0.1:4200/model/' + body.idx, data);
     
         return response.data;
     } catch (e) {
@@ -72,7 +72,7 @@ export async function UpdateModelAPI(body) {
 
 export async function GetModelListAPI(offset, search) {
     try {
-        const response = await axios.post('http://13.125.168.233:4200/model/list/' + offset, search);
+        const response = await axios.post('http://127.0.0.1:4200/model/list/' + offset, search);
         
         return response.data;
     } catch (e) {
@@ -82,7 +82,7 @@ export async function GetModelListAPI(offset, search) {
 
 export async function GetModelOptionListAPI(offset, search) {
     try {
-        const response = await axios.get('http://13.125.168.233:4200/model/option-list');
+        const response = await axios.get('http://127.0.0.1:4200/model/option-list');
         
         return response.data;
     } catch (e) {
@@ -92,7 +92,7 @@ export async function GetModelOptionListAPI(offset, search) {
 
 export async function GetModelInfoAPI(idx) {
     try {
-        const response = await axios.get('http://13.125.168.233:4200/model/' + idx);
+        const response = await axios.get('http://127.0.0.1:4200/model/' + idx);
     
         return response.data;
     } catch (e) {
@@ -102,7 +102,7 @@ export async function GetModelInfoAPI(idx) {
 
 export async function DeleteModelInfoAPI(idx) {
     try {
-        const response = await axios.delete('http://13.125.168.233:4200/model/' + idx);
+        const response = await axios.delete('http://127.0.0.1:4200/model/' + idx);
     
         return response.data;
     } catch (e) {

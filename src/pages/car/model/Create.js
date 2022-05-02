@@ -625,7 +625,7 @@ function Create() {
                                                                 <Image src={bodyInfo.preview_1} width={150} height={150} />
                                                                 <Upload
                                                                     accept='.png'
-                                                                    action='http://13.125.168.233:4200/model/logo'
+                                                                    action='http://127.0.0.1:4200/model/logo'
                                                                     fileList={[bodyInfo.picture_1]}
                                                                     name='picture_1' 
                                                                     onChange={async info => {
@@ -645,7 +645,7 @@ function Create() {
                                                                 <Image src={bodyInfo.preview_2} width={150} height={150} />
                                                                 <Upload
                                                                     accept='.png'
-                                                                    action='http://13.125.168.233:4200/model/logo'
+                                                                    action='http://127.0.0.1:4200/model/logo'
                                                                     fileList={[bodyInfo.picture_2]}
                                                                     name='picture_2' 
                                                                     onChange={async info => {
@@ -665,7 +665,7 @@ function Create() {
                                                                 <Image src={bodyInfo.preview_3} width={150} height={150} />
                                                                 <Upload
                                                                     accept='.png'
-                                                                    action='http://13.125.168.233:4200/model/logo'
+                                                                    action='http://127.0.0.1:4200/model/logo'
                                                                     fileList={[bodyInfo.picture_3]}
                                                                     name='picture_3' 
                                                                     onChange={async info => {
@@ -685,7 +685,7 @@ function Create() {
                                                                 <Image src={bodyInfo.preview_4} width={150} height={150} />
                                                                 <Upload
                                                                     accept='.png'
-                                                                    action='http://13.125.168.233:4200/model/logo'
+                                                                    action='http://127.0.0.1:4200/model/logo'
                                                                     fileList={[bodyInfo.picture_4]}
                                                                     name='picture_4' 
                                                                     onChange={async info => {

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export async function CheckGroupNameAPI(group_name) {
     try {
-        const response = await axios.post('http://13.125.168.233:4200/group/check-name', {
+        const response = await axios.post('http://127.0.0.1:4200/group/check-name', {
             group_name: group_name
         });
     
@@ -26,7 +26,7 @@ export async function CreateGroupAPI(bodyList) {
     });
 
     try {
-        const response = await axios.post('http://13.125.168.233:4200/group', data);
+        const response = await axios.post('http://127.0.0.1:4200/group', data);
     
         return response.data;
     } catch (e) {
@@ -43,7 +43,7 @@ export async function UpdateGroupAPI(body) {
     };
     
     try {
-        const response = await axios.put('http://13.125.168.233:4200/group/' + body.idx, data);
+        const response = await axios.put('http://127.0.0.1:4200/group/' + body.idx, data);
     
         return response.data;
     } catch (e) {
@@ -53,7 +53,7 @@ export async function UpdateGroupAPI(body) {
 
 export async function GetGroupListAPI(offset, search) {
     try {
-        const response = await axios.post('http://13.125.168.233:4200/group/list/' + offset, search);
+        const response = await axios.post('http://127.0.0.1:4200/group/list/' + offset, search);
         
         return response.data;
     } catch (e) {
@@ -63,7 +63,7 @@ export async function GetGroupListAPI(offset, search) {
 
 export async function GetGroupOptionListAPI(offset, search) {
     try {
-        const response = await axios.get('http://13.125.168.233:4200/group/option-list');
+        const response = await axios.get('http://127.0.0.1:4200/group/option-list');
         
         return response.data;
     } catch (e) {
@@ -73,7 +73,7 @@ export async function GetGroupOptionListAPI(offset, search) {
 
 export async function GetGroupInfoAPI(idx) {
     try {
-        const response = await axios.get('http://13.125.168.233:4200/group/' + idx);
+        const response = await axios.get('http://127.0.0.1:4200/group/' + idx);
     
         return response.data;
     } catch (e) {
@@ -83,7 +83,7 @@ export async function GetGroupInfoAPI(idx) {
 
 export async function DeleteGroupInfoAPI(idx) {
     try {
-        const response = await axios.delete('http://13.125.168.233:4200/group/' + idx);
+        const response = await axios.delete('http://127.0.0.1:4200/group/' + idx);
     
         return response.data;
     } catch (e) {

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export async function CheckExtraNameAPI(region) {
     try {
-        const response = await axios.post('http://13.125.168.233:4200/extra/check-name', {
+        const response = await axios.post('http://127.0.0.1:4200/extra/check-name', {
             region: region
         });
     
@@ -27,7 +27,7 @@ export async function CreateExtraAPI(body) {
     ];
 
     try {
-        const response = await axios.post('http://13.125.168.233:4200/extra', data);
+        const response = await axios.post('http://127.0.0.1:4200/extra', data);
     
         return response.data;
     } catch (e) {
@@ -48,7 +48,7 @@ export async function UpdateExtraAPI(body) {
     };
     
     try {
-        const response = await axios.put('http://13.125.168.233:4200/extra/' + body.idx, data);
+        const response = await axios.put('http://127.0.0.1:4200/extra/' + body.idx, data);
     
         return response.data;
     } catch (e) {
@@ -58,7 +58,7 @@ export async function UpdateExtraAPI(body) {
 
 export async function GetExtraListAPI(offset, search) {
     try {
-        const response = await axios.post('http://13.125.168.233:4200/extra/list/' + offset, search);
+        const response = await axios.post('http://127.0.0.1:4200/extra/list/' + offset, search);
         
         return response.data;
     } catch (e) {
@@ -68,7 +68,7 @@ export async function GetExtraListAPI(offset, search) {
 
 export async function GetExtraOptionListAPI(offset, search) {
     try {
-        const response = await axios.get('http://13.125.168.233:4200/extra/option-list');
+        const response = await axios.get('http://127.0.0.1:4200/extra/option-list');
         
         return response.data;
     } catch (e) {
@@ -78,7 +78,7 @@ export async function GetExtraOptionListAPI(offset, search) {
 
 export async function GetExtraInfoAPI(idx) {
     try {
-        const response = await axios.get('http://13.125.168.233:4200/extra/' + idx);
+        const response = await axios.get('http://127.0.0.1:4200/extra/' + idx);
     
         return response.data;
     } catch (e) {
@@ -88,7 +88,7 @@ export async function GetExtraInfoAPI(idx) {
 
 export async function DeleteExtraInfoAPI(idx) {
     try {
-        const response = await axios.delete('http://13.125.168.233:4200/extra/' + idx);
+        const response = await axios.delete('http://127.0.0.1:4200/extra/' + idx);
     
         return response.data;
     } catch (e) {
