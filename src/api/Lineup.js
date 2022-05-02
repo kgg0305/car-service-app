@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export async function CheckLineupNameAPI(lineup_name) {
     try {
-        const response = await axios.post('http://127.0.0.1:4200/lineup/check-name', {
+        const response = await axios.post('http://13.125.168.233:4200/lineup/check-name', {
             lineup_name: lineup_name
         });
     
@@ -30,7 +30,7 @@ export async function CreateLineupAPI(body) {
     ];
 
     try {
-        const response = await axios.post('http://127.0.0.1:4200/lineup', data);
+        const response = await axios.post('http://13.125.168.233:4200/lineup', data);
     
         return response.data;
     } catch (e) {
@@ -54,7 +54,7 @@ export async function UpdateLineupAPI(body) {
     };
     
     try {
-        const response = await axios.put('http://127.0.0.1:4200/lineup/' + body.idx, data);
+        const response = await axios.put('http://13.125.168.233:4200/lineup/' + body.idx, data);
     
         return response.data;
     } catch (e) {
@@ -64,7 +64,7 @@ export async function UpdateLineupAPI(body) {
 
 export async function GetLineupListAPI(offset, search) {
     try {
-        const response = await axios.post('http://127.0.0.1:4200/lineup/list/' + offset, search);
+        const response = await axios.post('http://13.125.168.233:4200/lineup/list/' + offset, search);
         
         return response.data;
     } catch (e) {
@@ -74,7 +74,7 @@ export async function GetLineupListAPI(offset, search) {
 
 export async function GetLineupOptionListAPI(offset, search) {
     try {
-        const response = await axios.get('http://127.0.0.1:4200/lineup/option-list');
+        const response = await axios.get('http://13.125.168.233:4200/lineup/option-list');
         
         return response.data;
     } catch (e) {
@@ -84,7 +84,7 @@ export async function GetLineupOptionListAPI(offset, search) {
 
 export async function GetLineupInfoAPI(idx) {
     try {
-        const response = await axios.get('http://127.0.0.1:4200/lineup/' + idx);
+        const response = await axios.get('http://13.125.168.233:4200/lineup/' + idx);
     
         return response.data;
     } catch (e) {
@@ -94,7 +94,7 @@ export async function GetLineupInfoAPI(idx) {
 
 export async function DeleteLineupInfoAPI(idx) {
     try {
-        const response = await axios.delete('http://127.0.0.1:4200/lineup/' + idx);
+        const response = await axios.delete('http://13.125.168.233:4200/lineup/' + idx);
     
         return response.data;
     } catch (e) {

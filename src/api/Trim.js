@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export async function CheckTrimNameAPI(lineup_name) {
     try {
-        const response = await axios.post('http://127.0.0.1:4200/trim/check-name', {
+        const response = await axios.post('http://13.125.168.233:4200/trim/check-name', {
             lineup_name: lineup_name
         });
     
@@ -27,7 +27,7 @@ export async function CreateTrimAPI(body) {
     ];
 
     try {
-        const response = await axios.post('http://127.0.0.1:4200/trim', data);
+        const response = await axios.post('http://13.125.168.233:4200/trim', data);
     
         return response.data;
     } catch (e) {
@@ -48,7 +48,7 @@ export async function UpdateTrimAPI(body) {
     };
     
     try {
-        const response = await axios.put('http://127.0.0.1:4200/trim/' + body.idx, data);
+        const response = await axios.put('http://13.125.168.233:4200/trim/' + body.idx, data);
     
         return response.data;
     } catch (e) {
@@ -58,7 +58,7 @@ export async function UpdateTrimAPI(body) {
 
 export async function GetTrimListAPI(offset, search) {
     try {
-        const response = await axios.post('http://127.0.0.1:4200/trim/list/' + offset, search);
+        const response = await axios.post('http://13.125.168.233:4200/trim/list/' + offset, search);
         
         return response.data;
     } catch (e) {
@@ -68,7 +68,7 @@ export async function GetTrimListAPI(offset, search) {
 
 export async function GetTrimOptionListAPI(offset, search) {
     try {
-        const response = await axios.get('http://127.0.0.1:4200/trim/option-list');
+        const response = await axios.get('http://13.125.168.233:4200/trim/option-list');
         
         return response.data;
     } catch (e) {
@@ -78,7 +78,7 @@ export async function GetTrimOptionListAPI(offset, search) {
 
 export async function GetTrimInfoAPI(idx) {
     try {
-        const response = await axios.get('http://127.0.0.1:4200/trim/' + idx);
+        const response = await axios.get('http://13.125.168.233:4200/trim/' + idx);
     
         return response.data;
     } catch (e) {
@@ -88,7 +88,7 @@ export async function GetTrimInfoAPI(idx) {
 
 export async function DeleteTrimInfoAPI(idx) {
     try {
-        const response = await axios.delete('http://127.0.0.1:4200/trim/' + idx);
+        const response = await axios.delete('http://13.125.168.233:4200/trim/' + idx);
     
         return response.data;
     } catch (e) {

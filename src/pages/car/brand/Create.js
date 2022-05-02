@@ -305,7 +305,7 @@ function Create() {
                                             </label>
                                             <Upload 
                                                 accept='.png'
-                                                // action='http://127.0.0.1:4200/file/brand'
+                                                // action='http://13.125.168.233:4200/file/brand'
                                                 fileList={[body.logo]}
                                                 name='logo' 
                                                 showUploadList={false}
