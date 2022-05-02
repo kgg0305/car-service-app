@@ -41,7 +41,7 @@ function List() {
 			dataIndex: 'logo',
 			key: 'logo',
             align: 'center',
-			render: path => <Image src={window.location.origin + '/images/logo/' + path} />,
+			render: path => <Image width={60} src={window.location.origin + '/uploads/brand/' + path} />,
 		},
 		{
 			title: '브랜드',

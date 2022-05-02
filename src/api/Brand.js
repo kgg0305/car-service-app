@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { CreateFileAPI } from './File';
 
 export async function CheckBrandNameAPI(brandName) {
     try {
-        const response = await axios.post('http://127.0.0.1:3001/brand/check-name', {
+        const response = await axios.post('http://127.0.0.1:4200/brand/check-name', {
             brand_name: brandName
         });
     
@@ -13,8 +14,13 @@ export async function CheckBrandNameAPI(brandName) {
 }
 
 export async function CreateBrandAPI(bodyList) {
+    
     var data = [];
-    bodyList.map(body => {
+
+    for (let i = 0; i < bodyList.length; i++) {
+        const body = bodyList[i];
+        const file = await CreateFileAPI('brand', 'logo', body.logo);
+
         data.push(
             {
                 brand_name: body.brand_name,
@@ -26,16 +32,16 @@ export async function CreateBrandAPI(bodyList) {
                 room_uri: body.room_uri,
                 service_uri: body.service_uri,
                 deposit_uri: body.deposit_uri,
-                logo: 'logo.png',
+                logo: file.filename,
                 is_delete: 0,
                 reg_date: new Date(),
                 up_date: new Date(),
             }
-        )
-    });
+        );
+    }
 
     try {
-        const response = await axios.post('http://127.0.0.1:3001/brand', data);
+        const response = await axios.post('http://127.0.0.1:4200/brand', data);
     
         return response.data;
     } catch (e) {
@@ -44,6 +50,8 @@ export async function CreateBrandAPI(bodyList) {
 }
 
 export async function UpdateBrandAPI(body) {
+    const file = await CreateFileAPI('brand', 'logo', body.logo);
+
     var data = 
     {
         brand_name: body.brand_name,
@@ -55,13 +63,13 @@ export async function UpdateBrandAPI(body) {
         room_uri: body.room_uri,
         service_uri: body.service_uri,
         deposit_uri: body.deposit_uri,
-        logo: body.logo,
+        logo: file.filename,
         is_delete: 0,
         up_date: new Date(),
     };
     
     try {
-        const response = await axios.put('http://127.0.0.1:3001/brand/' + body.idx, data);
+        const response = await axios.put('http://127.0.0.1:4200/brand/' + body.idx, data);
     
         return response.data;
     } catch (e) {
@@ -71,7 +79,7 @@ export async function UpdateBrandAPI(body) {
 
 export async function GetBrandListAPI(offset, search) {
     try {
-        const response = await axios.post('http://127.0.0.1:3001/brand/list/' + offset, search);
+        const response = await axios.post('http://127.0.0.1:4200/brand/list/' + offset, search);
         
         return response.data;
     } catch (e) {
@@ -81,7 +89,7 @@ export async function GetBrandListAPI(offset, search) {
 
 export async function GetBrandOptionListAPI(offset, search) {
     try {
-        const response = await axios.get('http://127.0.0.1:3001/brand/option-list');
+        const response = await axios.get('http://127.0.0.1:4200/brand/option-list');
         
         return response.data;
     } catch (e) {
@@ -91,7 +99,7 @@ export async function GetBrandOptionListAPI(offset, search) {
 
 export async function GetBrandInfoAPI(idx) {
     try {
-        const response = await axios.get('http://127.0.0.1:3001/brand/' + idx);
+        const response = await axios.get('http://127.0.0.1:4200/brand/' + idx);
     
         return response.data;
     } catch (e) {
@@ -101,7 +109,7 @@ export async function GetBrandInfoAPI(idx) {
 
 export async function DeleteBrandInfoAPI(idx) {
     try {
-        const response = await axios.delete('http://127.0.0.1:3001/brand/' + idx);
+        const response = await axios.delete('http://127.0.0.1:4200/brand/' + idx);
     
         return response.data;
     } catch (e) {

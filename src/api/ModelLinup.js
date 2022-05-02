@@ -14,7 +14,7 @@ export async function CreateModelLineupAPI(bodyList) {
     });
 
     try {
-        const response = await axios.post('http://127.0.0.1:3001/model-lineup', data);
+        const response = await axios.post('http://127.0.0.1:4200/model-lineup', data);
     
         return response.data;
     } catch (e) {
@@ -31,7 +31,7 @@ export async function UpdateModelLineupAPI(body) {
     };
     
     try {
-        const response = await axios.put('http://127.0.0.1:3001/model-lineup/' + body.idx, data);
+        const response = await axios.put('http://127.0.0.1:4200/model-lineup/' + body.idx, data);
     
         return response.data;
     } catch (e) {
@@ -41,7 +41,7 @@ export async function UpdateModelLineupAPI(body) {
 
 export async function GetModelLineupListAPI(offset, search) {
     try {
-        const response = await axios.post('http://127.0.0.1:3001/model-lineup/list/' + offset, search);
+        const response = await axios.post('http://127.0.0.1:4200/model-lineup/list/' + offset, search);
         
         return response.data;
     } catch (e) {
@@ -51,7 +51,7 @@ export async function GetModelLineupListAPI(offset, search) {
 
 export async function GetModelLineupOptionListAPI(offset, search) {
     try {
-        const response = await axios.get('http://127.0.0.1:3001/model-lineup/option-list');
+        const response = await axios.get('http://127.0.0.1:4200/model-lineup/option-list');
         
         return response.data;
     } catch (e) {
@@ -61,7 +61,7 @@ export async function GetModelLineupOptionListAPI(offset, search) {
 
 export async function GetModelLineupInfoAPI(idx) {
     try {
-        const response = await axios.get('http://127.0.0.1:3001/model-lineup/' + idx);
+        const response = await axios.get('http://127.0.0.1:4200/model-lineup/' + idx);
     
         return response.data;
     } catch (e) {
@@ -71,7 +71,7 @@ export async function GetModelLineupInfoAPI(idx) {
 
 export async function DeleteModelLineupInfoAPI(idx) {
     try {
-        const response = await axios.delete('http://127.0.0.1:3001/model-lineup/' + idx);
+        const response = await axios.delete('http://127.0.0.1:4200/model-lineup/' + idx);
     
         return response.data;
     } catch (e) {

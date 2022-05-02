@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export async function CheckDiscountConditionNameAPI(kind_name) {
     try {
-        const response = await axios.post('http://127.0.0.1:3001/discount-condition/check-name', {
+        const response = await axios.post('http://127.0.0.1:4200/discount-condition/check-name', {
             kind_name: kind_name
         });
     
@@ -32,7 +32,7 @@ export async function CreateDiscountConditionAPI(startedIndex, bodyList) {
     });
 
     try {
-        const response = await axios.post('http://127.0.0.1:3001/discount-condition', data);
+        const response = await axios.post('http://127.0.0.1:4200/discount-condition', data);
     
         return response.data;
     } catch (e) {
@@ -50,7 +50,7 @@ export async function UpdateDiscountConditionAPI(body) {
     };
     
     try {
-        const response = await axios.put('http://127.0.0.1:3001/discount-condition/' + body.idx, data);
+        const response = await axios.put('http://127.0.0.1:4200/discount-condition/' + body.idx, data);
     
         return response.data;
     } catch (e) {
@@ -60,7 +60,7 @@ export async function UpdateDiscountConditionAPI(body) {
 
 export async function GetDiscountConditionListAPI(offset, search) {
     try {
-        const response = await axios.post('http://127.0.0.1:3001/discount-condition/list/' + offset, search);
+        const response = await axios.post('http://127.0.0.1:4200/discount-condition/list/' + offset, search);
         
         return response.data;
     } catch (e) {
@@ -70,7 +70,7 @@ export async function GetDiscountConditionListAPI(offset, search) {
 
 export async function GetDiscountConditionOptionListAPI(offset, search) {
     try {
-        const response = await axios.get('http://127.0.0.1:3001/discount-condition/option-list');
+        const response = await axios.get('http://127.0.0.1:4200/discount-condition/option-list');
         
         return response.data;
     } catch (e) {
@@ -80,7 +80,7 @@ export async function GetDiscountConditionOptionListAPI(offset, search) {
 
 export async function GetDiscountConditionInfoAPI(idx) {
     try {
-        const response = await axios.get('http://127.0.0.1:3001/discount-condition/' + idx);
+        const response = await axios.get('http://127.0.0.1:4200/discount-condition/' + idx);
     
         return response.data;
     } catch (e) {
@@ -90,7 +90,7 @@ export async function GetDiscountConditionInfoAPI(idx) {
 
 export async function DeleteDiscountConditionInfoAPI(idx) {
     try {
-        const response = await axios.delete('http://127.0.0.1:3001/discount-condition/' + idx);
+        const response = await axios.delete('http://127.0.0.1:4200/discount-condition/' + idx);
     
         return response.data;
     } catch (e) {

@@ -94,10 +94,6 @@ function Create() {
 
     const onChangeComponent = (number, name, value) => {
         setBodyList(bodyList.map(body => body.number === number ? {...body, [name]: value} : body));
-
-        if(name == 'logo') {
-            previewChange(number, value);
-        }
     }
 
     const onSaveClick = event => {
@@ -309,15 +305,19 @@ function Create() {
                                             </label>
                                             <Upload 
                                                 accept='.png'
-                                                action='http://127.0.0.1:3001/brand/logo'
+                                                // action='http://127.0.0.1:4200/file/brand'
                                                 fileList={[body.logo]}
                                                 name='logo' 
-                                                onChange={async info => {
-                                                    onChangeComponent(body.number, 'logo', info.file);
+                                                showUploadList={false}
+                                                onChange={info => {
+                                                    previewChange(body.number, info.file);
                                                 }}
-                                                itemRender={(originNode, file, currFileList) => (
-                                                    <></>
-                                                )}
+                                                beforeUpload={file => {
+                                                    onChangeComponent(body.number, 'logo', file);
+                                            
+                                                    // Prevent upload
+                                                    return true;
+                                                }}
                                             >
                                                 <Button className='black-button'>등록</Button>
                                             </Upload>

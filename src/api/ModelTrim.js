@@ -14,7 +14,7 @@ export async function CreateModelTrimAPI(bodyList) {
     });
 
     try {
-        const response = await axios.post('http://127.0.0.1:3001/model-trim', data);
+        const response = await axios.post('http://127.0.0.1:4200/model-trim', data);
     
         return response.data;
     } catch (e) {
@@ -31,7 +31,7 @@ export async function UpdateModelTrimAPI(body) {
     };
     
     try {
-        const response = await axios.put('http://127.0.0.1:3001/model-trim/' + body.idx, data);
+        const response = await axios.put('http://127.0.0.1:4200/model-trim/' + body.idx, data);
     
         return response.data;
     } catch (e) {
@@ -41,7 +41,7 @@ export async function UpdateModelTrimAPI(body) {
 
 export async function GetModelTrimListAPI(offset, search) {
     try {
-        const response = await axios.post('http://127.0.0.1:3001/model-trim/list/' + offset, search);
+        const response = await axios.post('http://127.0.0.1:4200/model-trim/list/' + offset, search);
         
         return response.data;
     } catch (e) {
@@ -51,7 +51,7 @@ export async function GetModelTrimListAPI(offset, search) {
 
 export async function GetModelTrimOptionListAPI(offset, search) {
     try {
-        const response = await axios.get('http://127.0.0.1:3001/model-trim/option-list');
+        const response = await axios.get('http://127.0.0.1:4200/model-trim/option-list');
         
         return response.data;
     } catch (e) {
@@ -61,7 +61,7 @@ export async function GetModelTrimOptionListAPI(offset, search) {
 
 export async function GetModelTrimInfoAPI(idx) {
     try {
-        const response = await axios.get('http://127.0.0.1:3001/model-trim/' + idx);
+        const response = await axios.get('http://127.0.0.1:4200/model-trim/' + idx);
     
         return response.data;
     } catch (e) {
@@ -71,7 +71,7 @@ export async function GetModelTrimInfoAPI(idx) {
 
 export async function DeleteModelTrimInfoAPI(idx) {
     try {
-        const response = await axios.delete('http://127.0.0.1:3001/model-trim/' + idx);
+        const response = await axios.delete('http://127.0.0.1:4200/model-trim/' + idx);
     
         return response.data;
     } catch (e) {

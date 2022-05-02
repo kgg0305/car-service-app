@@ -13,7 +13,6 @@ function Edit() {
     let { id } = useParams();
     let navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
-    const [previewImage, setPreviewImage] = useState(preview_default_image);
     const [bodyInfo, setBodyInfo] = useState(
         {
             idx: id,
@@ -26,14 +25,18 @@ function Edit() {
             room_uri: '',
             service_uri: '',
             deposit_uri: '',
-            preview: null,
+            logo: {},
+            preview: preview_default_image,
             check_name: ''
         }
     );
 
     const initComponent = async () => {
 		const initBodyInfo = await GetBrandInfoAPI(id);
-		setBodyInfo(initBodyInfo);
+		setBodyInfo({
+            ...initBodyInfo,
+            preview: initBodyInfo.logo
+        });
 	}
 
 	useEffect(() => {
@@ -54,13 +57,18 @@ function Edit() {
         });
     }
 
-    const handleChange = async info => {
-        const file = info.file;
+    const previewChange = async (file) => {
+
         if (!file.url && !file.preview) {
             file.preview = await getBase64(file.originFileObj);
         }
 
-        setPreviewImage(file.preview);
+        setBodyInfo(
+            { 
+                ...bodyInfo,
+                ['preview']: file.preview
+            }
+        );
     };
 
     const onChangeComponent = (name, value) => {
@@ -297,13 +305,28 @@ function Edit() {
                                     </Col>
                                     <Col flex="auto" className='table-value-col-section'>
                                         <Space direction='horizontal' align='end' size={20}>
-                                            <Image src={ preview_default_image } width={150} height={150} />
+                                            <Image  src={bodyInfo.preview} width={150} height={150} />
                                             <Space direction='vertical' size={34}>
                                                 <label className='logo-description-label'>
                                                     이미지 권장 크기는 90 * 60이며, *.png로 등록하셔야 합니다. <br/>
                                                     이미지를 새로 등록 하기 위해선 등록된 이미지 [삭제]후 재 등록 하시면 됩니다.
                                                 </label>
-                                                <Upload>
+                                                <Upload 
+                                                    accept='.png'
+                                                    // action='http://127.0.0.1:4200/file/brand'
+                                                    fileList={[bodyInfo.logo]}
+                                                    name='logo' 
+                                                    showUploadList={false}
+                                                    onChange={info => {
+                                                        previewChange(info.file);
+                                                    }}
+                                                    beforeUpload={file => {
+                                                        onChangeComponent('logo', file);
+                                                
+                                                        // Prevent upload
+                                                        return true;
+                                                    }}
+                                                >
                                                     <Button className='black-button'>등록</Button>
                                                 </Upload>
                                             </Space>
