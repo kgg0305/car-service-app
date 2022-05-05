@@ -44,7 +44,7 @@ function TableList({ dataSource }) {
                                             <label className={ styles.subHeaderLabel }>{ item.label }</label>
                                         </Col>
                                         <Col>
-                                            <ContentItem item={item} key={index} />
+                                            <ContentItem item={item} key={index} value={item.value} />
                                         </Col>
                                     </Row>
                                 ))

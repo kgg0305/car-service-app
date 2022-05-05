@@ -1,101 +1,120 @@
 import { Col, Divider, Row, Space, Button, Input } from 'antd';
 import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { GetCountSettingListAPI, UpdateCountSettingAPI } from '../../../api/CountSetting';
 import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
 
 function List() {
-    const initDataSource = [];
-    for (let index = 0; index < 25; index++) {
-        initDataSource.push(
-            {
-				key: index,
-				time: index + '시 ~',
-				question1: '',
-				question2: '',
-			}
-        );
-    }
-    const [dataSource, setDataSource] = useState(initDataSource);
+    const [dataSource, setDataSource] = useState([]);
 	
+	const initComponent = async () => {
+		const initDataSource = await GetCountSettingListAPI();
+		
+		setDataSource(initDataSource);
+	};
+
+	useEffect(() => {
+		initComponent();
+	}, []);
+
+	const onChangeComponent = (idx, name, value) => {
+        setDataSource(dataSource.map(
+			body => body.idx === idx ? 
+			{
+				...body,
+				[name]: value
+			} 
+			: body
+		));
+
+		const body = {
+			...dataSource.filter(body => body.idx === idx)[0],
+			[name]: value
+		}
+
+		UpdateCountSettingAPI(body);
+    }
+
 	const columns = [
 		{
 			title: '시간대',
-            dataIndex: 'time',
-            key: 'time',
+            dataIndex: 'hour',
+            key: 'hour',
             align: 'center',
+			render: hour => hour + '시 ~',
 		},
 		{
 			title: '리스/렌탈 문의 (최저~최고값)',
-			dataIndex: 'question1',
-			key: 'question1',
+			dataIndex: 'idx',
+			key: 'idx',
             align: 'center',
-            render: path => 
+            render: idx => 
                 <Row justify='center'>
 					<Col>
 						<Space size={20}>
-                            <Input key={0} size={'large'} style={{ width: 130 }} placeholder='숫자입력' />
+                            <Input 
+								name='rent_min' 
+								value={dataSource[idx - 1].rent_min} 
+								onChange={e => {
+									onChangeComponent(idx, e.target.name, e.target.value);
+								}} 
+								key={0} 
+								size={'large'} 
+								style={{ width: 130 }} placeholder='숫자입력' 
+							/>
                             <label>~</label>
-                            <Input key={0} size={'large'} style={{ width: 130 }} placeholder='숫자입력' />
+                            <Input 
+								name='rent_max' 
+								value={dataSource[idx - 1].rent_max} 
+								onChange={e => {
+									onChangeComponent(idx, e.target.name, e.target.value);
+								}} 
+								key={1} 
+								size={'large'} 
+								style={{ width: 130 }} placeholder='숫자입력' 
+							/>
 						</Space>
 					</Col>
 				</Row>,
 		},
 		{
 			title: '신차문의 (최저~최고값)',
-			dataIndex: 'question2',
-			key: 'question2',
+			dataIndex: 'idx',
+			key: 'idx',
             align: 'center',
-            render: path => 
+            render: idx => 
                 <Row justify='center'>
 					<Col>
 						<Space size={20}>
-                            <Input key={0} size={'large'} style={{ width: 130 }} placeholder='숫자입력' />
+							<Input 
+								name='new_min' 
+								value={dataSource[idx - 1].new_min} 
+								onChange={e => {
+									onChangeComponent(idx, e.target.name, e.target.value);
+								}} 
+								key={0} 
+								size={'large'} 
+								style={{ width: 130 }} placeholder='숫자입력' 
+							/>
                             <label>~</label>
-                            <Input key={0} size={'large'} style={{ width: 130 }} placeholder='숫자입력' />
+                            <Input 
+								name='new_max' 
+								value={dataSource[idx - 1].new_max} 
+								onChange={e => {
+									onChangeComponent(idx, e.target.name, e.target.value);
+								}} 
+								key={1} 
+								size={'large'} 
+								style={{ width: 130 }} placeholder='숫자입력' 
+							/>
 						</Space>
 					</Col>
 				</Row>,
 		},
 	];
 
-	const searchRowList = [
-		{
-			height: 80,
-			columns: [
-				{
-					titleText: '관리자 입력',
-					titleWidth: '154px',
-					contentItems: [
-						{
-							type: Constants.inputTypes.label,
-							label: '랜스/리스 문의 카운트'
-						},
-                        {
-							type: Constants.inputTypes.input,
-							placeholder: '숫자입력',
-							width: 130,
-						},
-						{
-							type: Constants.inputTypes.label,
-							label: '신차 문의 카운트'
-						},
-                        {
-							type: Constants.inputTypes.input,
-							placeholder: '숫자입력',
-							width: 130,
-						},
-						{
-							type: Constants.inputTypes.label,
-							label: '2022-03-31 날짜에 입력 됩니다.'
-						}
-					]
-				}
-			]
-		}
-	];
-
-	const tableList = {
+	const tableDataSource = {
         title: '시간대별 카운트 자동입력 설정',
 		tableData: dataSource,
 		tableColumns: columns
@@ -104,7 +123,7 @@ function List() {
     return (
         <Space direction='vertical' size={18} className='main-layout'>
             {/* Body Section */}
-            <TableList dataSource={tableList} />
+            <TableList dataSource={tableDataSource} />
         </Space>
     );
 }

@@ -36,9 +36,9 @@ import CarDiscountCreate from './pages/car/discount/Create';
 import CarDiscountEdit from './pages/car/discount/Edit';
 // Extra
 import CarExtraList from './pages/car/extra/List';
-// Request
-import EstimationRequestList from './pages/estimation/request/List';
-import EstimationRequestDetail from './pages/estimation/request/Detail';
+// Quotation
+import EstimationQuotationList from './pages/estimation/quotation/List';
+import EstimationQuotationDetail from './pages/estimation/quotation/Detail';
 // Assignment
 import EstimationAssignmentList from './pages/estimation/assignment/List';
 import EstimationAssignmentManage from './pages/estimation/assignment/Manage';
@@ -134,9 +134,9 @@ function App() {
 				</Route>
 
 				{/* Estimation */}
-				<Route path="/estimation/request/" element={ <Main headerMenuKey={"estimation"} /> }>
-					<Route index element={<EstimationRequestList />} />
-					<Route path="detail" element={<EstimationRequestDetail />} />
+				<Route path="/estimation/quotation/" element={ <Main headerMenuKey={"estimation"} /> }>
+					<Route index element={<EstimationQuotationList />} />
+					<Route path="detail/:id" element={<EstimationQuotationDetail />} />
 				</Route>
 				<Route path="/estimation/assignment/" element={ <Main headerMenuKey={"estimation"} /> }>
 					<Route index element={<EstimationAssignmentList />} />

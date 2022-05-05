@@ -1,54 +1,113 @@
 import { Col, Divider, Row, Space, Button, Image, Select } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { GetUserListAPI } from '../../../api/User';
+import { GetGroupOptionListAPI } from '../../../api/Group';
 import SearchPanel from '../../../components/SearchPanel';
 import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
+import { GetQuotationCountAPI } from '../../../api/Quotation';
 
 function List() {
-    const [dataSource, setDataSource] = useState(
-		[
-			{
-				key: 1,
-				number: '1',
-				area: '강남',
-				name: '김철수',
-				quote: '100',
-				wait: '30',
-				meet: '20',
-				agree: '40',
-				export: '6',
-				end: '4',
-				manage: '',
-			},
-			{
-				key: 2,
-				number: '1',
-				area: '강남',
-				name: '김철수',
-				quote: '100',
-				wait: '30',
-				meet: '20',
-				agree: '40',
-				export: '6',
-				end: '4',
-				manage: '',
-			},
-		]
-	);
+	const [offset, setOffset] = useState(0);
+	const [groupOptionList, setGroupOptionList] = useState([]);
+	const [dataSource, setDataSource] = useState([]);
+	const [searchData, setSearchData] = useState({
+		group_id: null,
+		name: ''
+	});
+	const [summaryData, setSummaryData] = useState({
+		quotation: 0,
+		wait: 0,
+		business: 0,
+		contract: 0,
+		release: 0,
+		close: 0
+	});
+
+	const initComponent = async () => {
+		const initDataSource = await GetUserListAPI(offset);
+		const initGroupOptionList = await GetGroupOptionListAPI();
+		
+		let updatedDataSource = [];
+		for (let i = 0; i < initDataSource.length; i++) {
+			const element = initDataSource[i];
+			const quotation = await GetQuotationCountAPI({
+				assign_to: element.idx
+			});
+			const business = await GetQuotationCountAPI({
+				assign_to: element.idx,
+				is_business: '0'
+			});
+			const contract = await GetQuotationCountAPI({
+				assign_to: element.idx,
+				is_contract: '0'
+			});
+			const release = await GetQuotationCountAPI({
+				assign_to: element.idx,
+				is_release: '0'
+			});
+			const close = await GetQuotationCountAPI({
+				assign_to: element.idx,
+				is_close: '0'
+			});
+			const wait = quotation - business - contract - release - close;
+			updatedDataSource[i] = {
+				...initDataSource[i],
+				quotation: quotation,
+				wait: wait,
+				business: business,
+				contract: contract,
+				release: release,
+				close: close
+			}
+		}
+
+		const quotation = await GetQuotationCountAPI({
+			
+		});
+		const business = await GetQuotationCountAPI({
+			is_business: '0'
+		});
+		const contract = await GetQuotationCountAPI({
+			is_contract: '0'
+		});
+		const release = await GetQuotationCountAPI({
+			is_release: '0'
+		});
+		const close = await GetQuotationCountAPI({
+			is_close: '0'
+		});
+		const wait = quotation - business - contract - release - close;
+
+		setSummaryData({
+			quotation: quotation,
+			wait: wait,
+			business: business,
+			contract: contract,
+			release: release,
+			close: close
+		});
+		setDataSource(updatedDataSource);
+		setGroupOptionList(initGroupOptionList);
+	};
+
+	useEffect(() => {
+		initComponent();
+	}, []);
 	
 	const columns = [
 		{
 			title: '번호',
-			dataIndex: 'number',
-			key: 'number',
+			dataIndex: 'idx',
+			key: 'idx',
             align: 'center',
 		},
 		{
 			title: '지점',
-			dataIndex: 'area',
-			key: 'area',
+			dataIndex: 'group_name',
+			key: 'group_name',
             align: 'center',
 		},
 		{
@@ -59,8 +118,8 @@ function List() {
 		},
 		{
 			title: '견적서',
-			dataIndex: 'quote',
-			key: 'quote',
+			dataIndex: 'quotation',
+			key: 'quotation',
             align: 'center',
 		},
 		{
@@ -71,34 +130,34 @@ function List() {
 		},
 		{
 			title: '상담',
-			dataIndex: 'meet',
-			key: 'meet',
+			dataIndex: 'business',
+			key: 'business',
             align: 'center',
 		},
 		{
 			title: '계약',
-			dataIndex: 'agree',
-			key: 'agree',
+			dataIndex: 'contract',
+			key: 'contract',
             align: 'center',
 		},
 		{
 			title: '출고',
-			dataIndex: 'export',
-			key: 'export',
+			dataIndex: 'release',
+			key: 'release',
             align: 'center',
 		},
 		{
 			title: '종료',
-			dataIndex: 'end',
-			key: 'end',
+			dataIndex: 'close',
+			key: 'close',
             align: 'center',
 		},
 		{
 			title: '관리',
-			dataIndex: 'manage',
-			key: 'manage',
+			dataIndex: 'idx',
+			key: 'idx',
             align: 'center',
-			render: path => 
+			render: idx => 
 				<Row justify='center'>
 					<Col>
 						<Space size={15} split={<Divider type="vertical" />}>
@@ -111,7 +170,7 @@ function List() {
 		},
 	];
 
-	const searchRowList = [
+	const searchDataSource = [
 		{
 			height: 80,
 			columns: [
@@ -121,9 +180,10 @@ function List() {
 					contentItems: [
 						{
 							type: Constants.inputTypes.select,
+							name: 'group_id',
 							placeholder: '지점 선택',
 							width: 200,
-							data: null
+							data: groupOptionList
 						}
 					]
 				},
@@ -133,6 +193,7 @@ function List() {
 					contentItems: [
 						{
 							type: Constants.inputTypes.input,
+							name: 'name',
 							placeholder: '이름 입력',
 							width: 200
 						}
@@ -142,12 +203,12 @@ function List() {
 		}
 	];
 
-	const tableList = {
+	const tableDataSource = {
 		topItems: [
 			{
 				type: Constants.inputTypes.button,
-				link: '/car/model/create',
-				label: '등록',
+				link: '#',
+				label: '엑셀로 내려받기',
 				style: 'black-button big-button',
 				width: 150
 			}
@@ -157,47 +218,136 @@ function List() {
 				type: Constants.inputTypes.input,
 				disabled: true,
 				label: '견적서',
-				value: '999,999,999',
+				value: summaryData.quotation,
 				width: 130
 			},
 			{
 				type: Constants.inputTypes.input,
 				disabled: true,
 				label: '대기',
-				value: '999,999,999',
+				value: summaryData.wait,
 				width: 130
 			},
 			{
 				type: Constants.inputTypes.input,
 				disabled: true,
 				label: '상담',
-				value: '999,999,999',
+				value: summaryData.business,
 				width: 130
 			},
 			{
 				type: Constants.inputTypes.input,
 				disabled: true,
 				label: '계약',
-				value: '999,999,999',
+				value: summaryData.contract,
 				width: 130
 			},
 			{
 				type: Constants.inputTypes.input,
 				disabled: true,
 				label: '출고',
-				value: '999,999,999',
+				value: summaryData.release,
 				width: 130
 			},
 			{
 				type: Constants.inputTypes.input,
 				disabled: true,
 				label: '종료',
-				value: '999,999,999',
+				value: summaryData.close,
 				width: 130
 			}
 		],
 		tableData: dataSource,
 		tableColumns: columns
+	};
+
+	const onClickTableMore = async() => {
+		const initDataSource = await GetUserListAPI(offset + 10, searchData);
+		setOffset(offset + initDataSource.length);
+		
+		let updatedDataSource = [];
+		for (let i = 0; i < initDataSource.length; i++) {
+			const element = initDataSource[i];
+			const quotation = await GetQuotationCountAPI({
+				assign_to: element.idx
+			});
+			const business = await GetQuotationCountAPI({
+				assign_to: element.idx,
+				is_business: '0'
+			});
+			const contract = await GetQuotationCountAPI({
+				assign_to: element.idx,
+				is_contract: '0'
+			});
+			const release = await GetQuotationCountAPI({
+				assign_to: element.idx,
+				is_release: '0'
+			});
+			const close = await GetQuotationCountAPI({
+				assign_to: element.idx,
+				is_close: '0'
+			});
+			const wait = quotation - business - contract - release - close;
+			updatedDataSource[i] = {
+				...initDataSource[i],
+				quotation: quotation,
+				wait: wait,
+				business: business,
+				contract: contract,
+				release: release,
+				close: close
+			}
+		}
+
+		setDataSource([
+			...dataSource,
+			...updatedDataSource
+		]);
+	};
+
+	const onClickSearch = async(searchData) => {
+		const initDataSource = await GetUserListAPI(0, searchData);
+		
+		setOffset(0);
+		setSearchData(searchData);
+
+		let updatedDataSource = [];
+		for (let i = 0; i < initDataSource.length; i++) {
+			const element = initDataSource[i];
+			const quotation = await GetQuotationCountAPI({
+				assign_to: element.idx
+			});
+			const business = await GetQuotationCountAPI({
+				assign_to: element.idx,
+				is_business: '0'
+			});
+			const contract = await GetQuotationCountAPI({
+				assign_to: element.idx,
+				is_contract: '0'
+			});
+			const release = await GetQuotationCountAPI({
+				assign_to: element.idx,
+				is_release: '0'
+			});
+			const close = await GetQuotationCountAPI({
+				assign_to: element.idx,
+				is_close: '0'
+			});
+			const wait = quotation - business - contract - release - close;
+			updatedDataSource[i] = {
+				...initDataSource[i],
+				quotation: quotation,
+				wait: wait,
+				business: business,
+				contract: contract,
+				release: release,
+				close: close
+			}
+		}
+
+		setDataSource([
+			...updatedDataSource
+		]);
 	};
 
     return (
@@ -209,11 +359,14 @@ function List() {
             </Space>
 
             {/* Search Section */}
-            <SearchPanel dataSource={searchRowList} />
+            <SearchPanel dataSource={searchDataSource} onSearch={onClickSearch} />
 
             {/* Body Section */}
-            <TableList dataSource={tableList} />
+            <TableList dataSource={tableDataSource} />
 
+			<Row justify='center'>
+				<label className='show-more-label' onClick={onClickTableMore}>더보기</label>
+			</Row>
         </Space>
     );
 }

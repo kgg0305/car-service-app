@@ -3,7 +3,7 @@ import { Col, Row, Space, Button } from 'antd';
 import ContentItem from './ContentItem';
 import styles from "../assets/styles/components/SearchPanel.module.css";
 
-function SearchPanel({ dataSource, onSearch }) {
+function SearchPanel({ title, actionButtonTitle, disableInitButton, dataSource, onSearch }) {
 
     var initSearchData = {};
 
@@ -31,7 +31,7 @@ function SearchPanel({ dataSource, onSearch }) {
 
     return (
         <Space direction='vertical' size={20}>
-            <label key={0} className={styles.titleLabel}>검색</label>
+            <label key={0} className={styles.titleLabel}>{title ? title : '검색'}</label>
             <div key={1}>
                 {
                     dataSource.map((item, index) => (
@@ -60,10 +60,10 @@ function SearchPanel({ dataSource, onSearch }) {
             </div>
             <Row key={2} justify="center" gutter={[17, 0]}>
                 <Col>
-                    <Button className='white-button big-button' onClick={onReset}>초기화</Button>
+                    {disableInitButton ? '' : <Button className='white-button big-button' onClick={onReset}>초기화</Button>}
                 </Col>
                 <Col>
-                    <Button className='black-button big-button' onClick={() => onSearch(searchData)}>검색</Button>
+                    <Button className='black-button big-button' onClick={() => onSearch(searchData)}>{actionButtonTitle ? actionButtonTitle : '검색'}</Button>
                 </Col>
             </Row>
         </Space>

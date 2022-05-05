@@ -21,7 +21,7 @@ export const Constants = {
         {
             label: "견적 관리",
             key: "estimation",
-            link: "/estimation/request"
+            link: "/estimation/quotation"
         },
         {
             label: "콘텐츠 관리",
@@ -86,7 +86,7 @@ export const Constants = {
         {
             headerMenu: "estimation",
             label: "견적신청",
-            link: "/estimation/request"
+            link: "/estimation/quotation"
         },
         {
             headerMenu: "estimation",
@@ -230,6 +230,118 @@ export const Constants = {
         {
             label: "유로",
             value: '1'
+        }
+    ],
+    dateTypeOptions: [
+        {
+            label: "등록일",
+            value: '0'
+        },
+        {
+            label: "계약일",
+            value: '1'
+        },
+        {
+            label: "출고일",
+            value: '2'
+        }
+    ],
+    purchaseMethodOptions: [
+        {
+            label: "리스",
+            value: '0'
+        },
+        {
+            label: "렌탈",
+            value: '1'
+        },
+        {
+            label: "할부",
+            value: '2'
+        },
+        {
+            label: "현금",
+            value: '3'
+        }
+    ],
+    searchTypeOptions: [
+        {
+            label: "이름",
+            value: '0'
+        },
+        {
+            label: "연락처",
+            value: '1'
+        },
+        {
+            label: "차종",
+            value: '2'
+        }
+    ],
+    statusOptions: [
+        {
+            label: "진행",
+            value: '0'
+        },
+        {
+            label: "완료",
+            value: '1'
+        }
+    ],
+    yearOptions: [
+        {
+            label: new Date().getFullYear() + "년",
+            value: new Date().getFullYear()
+        }
+    ],
+    monthOptions: [
+        {
+            label: "1월",
+            value: 1
+        },
+        {
+            label: "2월",
+            value: 2
+        },
+        {
+            label: "3월",
+            value: 3
+        },
+        {
+            label: "4월",
+            value: 4
+        },
+        {
+            label: "5월",
+            value: 5
+        },
+        {
+            label: "6월",
+            value: 6
+        },
+        {
+            label: "7월",
+            value: 7
+        },
+        {
+            label: "8월",
+            value: 8
+        },
+        {
+            label: "9월",
+            value: 9
+        },
+        {
+            label: "10월",
+            value: 10
+        },
+        {
+            label: "11월",
+            value: 11
+        },
+        {
+            label: "12월",
+            value: 12
         }
     ]
 }

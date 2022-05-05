@@ -61,7 +61,7 @@ export async function GetGroupListAPI(offset, search) {
     }
 }
 
-export async function GetGroupOptionListAPI(offset, search) {
+export async function GetGroupOptionListAPI() {
     try {
         const response = await axios.get(process.env.REACT_APP_API_URL + '/group/option-list');
         

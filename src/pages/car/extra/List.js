@@ -1,4 +1,4 @@
-import { Divider, Space } from 'antd';
+import { Divider, Space, Row } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { GetBrandOptionListAPI } from '../../../api/Brand';
 import { GetGroupOptionListAPI } from '../../../api/Group';
@@ -172,11 +172,14 @@ function List() {
 			</Space>
 
 			{/* Search Section */}
-			<SearchPanel dataSource={searchDataSource} />
+			<SearchPanel dataSource={searchDataSource} onSearch={onClickSearch}/>
 
 			{/* Body Section */}
 			<TableList dataSource={tableDataSource} />
 
+			<Row justify='center'>
+				<label className='show-more-label' onClick={onClickTableMore}>더보기</label>
+			</Row>
 		</Space>
     );
 }

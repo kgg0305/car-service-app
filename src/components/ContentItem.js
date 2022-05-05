@@ -2,6 +2,7 @@ import React from "react";
 import { Select, Button, DatePicker, Input, Space, Upload } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons'
 import { Constants } from '../constants/Constants';
+import { Link } from "react-router-dom";
 
 function ContentItem({ item, key, value, onChange}) {
     switch (item.type) {
@@ -32,14 +33,29 @@ function ContentItem({ item, key, value, onChange}) {
             break;
 
         case Constants.inputTypes.button:
-            return (
-                <Button key={key} 
-                    size={'large'}
-                    className={ item.style }
-                >
-                    {item.label}
-                </Button>
-            );
+            if(item.link) {
+                return (
+                    <Link to={item.link}>
+                        <Button key={key} 
+                            size={'large'}
+                            className={ item.style }
+                        >
+                            {item.label}
+                        </Button>
+                    </Link>
+                );
+            } else {
+                return (
+                    <Button key={key} 
+                        size={'large'}
+                        className={ item.style }
+                    >
+                        {item.label}
+                    </Button>
+                );
+            }
+            
+
             break;
 
         case Constants.inputTypes.upload:
