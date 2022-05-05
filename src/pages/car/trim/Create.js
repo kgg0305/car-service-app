@@ -66,7 +66,7 @@ function Create() {
     }
 
     const onSaveClick = async() => {
-        CreateTrimAPI(bodyInfo);
+        await CreateTrimAPI(bodyInfo);
         // setShowModal(true);
         navigate('/car/trim');
     };

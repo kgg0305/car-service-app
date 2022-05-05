@@ -55,14 +55,14 @@ function Edit() {
         );
     }
 
-    const onSaveClick = event => {
-        UpdateGroupAPI(bodyInfo);
+    const onSaveClick = async() => {
+        await UpdateGroupAPI(bodyInfo);
         // setShowModal(true);
         navigate('/car/group');
     };
 
-    const onDeleteClick = (idx) => {
-        DeleteGroupInfoAPI(idx);
+    const onDeleteClick = async(idx) => {
+        await DeleteGroupInfoAPI(idx);
         navigate('/car/group');
     }
 

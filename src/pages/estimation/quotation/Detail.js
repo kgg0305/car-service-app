@@ -75,14 +75,14 @@ function Create() {
         );
     }
 
-    const onSaveClick = event => {
-        UpdateQuotationAPI(bodyInfo);
+    const onSaveClick = async() => {
+        await UpdateQuotationAPI(bodyInfo);
         // setShowModal(true);
         navigate('/estimation/quotation');
     };
 
-    const onDeleteClick = (idx) => {
-        DeleteQuotationInfoAPI(idx);
+    const onDeleteClick = async(idx) => {
+        await DeleteQuotationInfoAPI(idx);
         navigate('/estimation/quotation');
     }
 

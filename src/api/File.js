@@ -17,7 +17,7 @@ export async function CreateFileAPI(type, name, file) {
     }
 }
 
-export async function UpdateBrandAPI(body) {
+export async function UpdateFileAPI(body) {
     var data = 
     {
         brand_name: body.brand_name,
@@ -43,7 +43,7 @@ export async function UpdateBrandAPI(body) {
     }
 }
 
-export async function DeleteBrandInfoAPI(idx) {
+export async function DeleteFileInfoAPI(idx) {
     try {
         const response = await axios.delete(process.env.REACT_APP_API_URL + '/file/' + idx);
     

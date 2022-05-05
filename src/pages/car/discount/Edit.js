@@ -67,14 +67,14 @@ function Create() {
         // );
     }
 
-    const onSaveClick = event => {
-        UpdateDiscountKindAPI(kindBodyInfo);
+    const onSaveClick = async() => {
+        await UpdateDiscountKindAPI(kindBodyInfo);
         // setShowModal(true);
         navigate('/car/discount');
     };
 
-    const onDeleteClick = (idx) => {
-        DeleteDiscountKindInfoAPI(idx);
+    const onDeleteClick = async(idx) => {
+        await DeleteDiscountKindInfoAPI(idx);
         navigate('/car/discount');
     }
 

@@ -11,7 +11,7 @@ const { TabPane } = Tabs;
 function Create() {
     const [showModal, setShowModal] = useState(false);
 
-    const onSaveClick = event => {
+    const onSaveClick = async() => {
         setShowModal(true);
     };
 

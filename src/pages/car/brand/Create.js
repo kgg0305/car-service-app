@@ -96,8 +96,8 @@ function Create() {
         setBodyList(bodyList.map(body => body.number === number ? {...body, [name]: value} : body));
     }
 
-    const onSaveClick = event => {
-        CreateBrandAPI(bodyList);
+    const onSaveClick = async() => {
+        await CreateBrandAPI(bodyList);
         // setShowModal(true);
         navigate('/car/brand');
     };

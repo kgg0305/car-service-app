@@ -68,14 +68,14 @@ function Create() {
         );
     }
 
-    const onSaveClick = event => {
-        UpdateTrimAPI(bodyInfo);
+    const onSaveClick = async() => {
+        await UpdateTrimAPI(bodyInfo);
         // setShowModal(true);
         navigate('/car/trim');
     };
 
-    const onDeleteClick = (idx) => {
-        DeleteTrimInfoAPI(idx);
+    const onDeleteClick = async(idx) => {
+        await DeleteTrimInfoAPI(idx);
         navigate('/car/trim');
     }
 

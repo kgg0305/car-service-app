@@ -70,8 +70,8 @@ function Create() {
         setBodyList(bodyList.map(body => body.number === number ? {...body, [name]: value} : body));
     }
 
-    const onSaveClick = event => {
-        CreateGroupAPI(bodyList);
+    const onSaveClick = async() => {
+        await CreateGroupAPI(bodyList);
         // setShowModal(true);
         navigate('/car/group');
     };

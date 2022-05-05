@@ -213,7 +213,7 @@ function Create() {
         ));
         
         setLineupBodyList(tempLineupBodyList);
-        CreateModelLineupAPI(tempLineupBodyList);
+        await CreateModelLineupAPI(tempLineupBodyList);
 
         //create color
         const tempColorBodyList = colorBodyList.map(body => (
@@ -224,7 +224,7 @@ function Create() {
         ));
 
         setColorBodyList(tempColorBodyList);
-        CreateModelColorAPI(tempColorBodyList);
+        await CreateModelColorAPI(tempColorBodyList);
 
         //create color
         const tempTrimBodyList = trimBodyList.map(body => (
@@ -235,7 +235,7 @@ function Create() {
         ));
 
         setTrimBodyList(tempTrimBodyList);
-        CreateModelTrimAPI(tempTrimBodyList);
+        await CreateModelTrimAPI(tempTrimBodyList);
         
         // setShowModal(true);
         navigate('/car/model');

@@ -65,7 +65,7 @@ function Create() {
     }
 
     const onSaveClick = async() => {
-        CreateLineupAPI(bodyInfo);
+        await CreateLineupAPI(bodyInfo);
         // setShowModal(true);
         navigate('/car/lineup');
     };

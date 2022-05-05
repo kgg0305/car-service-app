@@ -67,14 +67,14 @@ function Create() {
         );
     }
 
-    const onSaveClick = event => {
-        UpdateLineupAPI(bodyInfo);
+    const onSaveClick = async() => {
+        await UpdateLineupAPI(bodyInfo);
         // setShowModal(true);
         navigate('/car/lineup');
     };
 
-    const onDeleteClick = (idx) => {
-        DeleteLineupInfoAPI(idx);
+    const onDeleteClick = async(idx) => {
+        await DeleteLineupInfoAPI(idx);
         navigate('/car/lineup');
     }
 

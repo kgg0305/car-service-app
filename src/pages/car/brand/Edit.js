@@ -80,14 +80,14 @@ function Edit() {
         );
     }
 
-    const onSaveClick = event => {
-        UpdateBrandAPI(bodyInfo);
+    const onSaveClick = async() => {
+        await UpdateBrandAPI(bodyInfo);
         // setShowModal(true);
         navigate('/car/brand');
     };
 
-    const onDeleteClick = (idx) => {
-        DeleteBrandInfoAPI(idx);
+    const onDeleteClick = async(idx) => {
+        await DeleteBrandInfoAPI(idx);
         navigate('/car/brand');
     }
 
