@@ -3,7 +3,7 @@ import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Main from './layouts/Main';
 // Mine
-import UserMineList from './pages/user/mine/List';
+import UserMineDetail from './pages/user/mine/Detail';
 // Manage
 import UserManageList from './pages/user/manage/List';
 import UserManageCreate from './pages/user/manage/Create';
@@ -86,13 +86,13 @@ function App() {
 				</Route>
 
 				{/* User */}
-				<Route path="/user/mine/" element={ <Main headerMenuKey={"user"} /> }>
-					<Route index element={<UserMineList />} />
+				<Route path="/user/mine/:id" element={ <Main headerMenuKey={"user"} /> }>
+					<Route index element={<UserMineDetail />} />
 				</Route>
 				<Route path="/user/manage/" element={ <Main headerMenuKey={"user"} /> }>
 					<Route index element={<UserManageList />} />
 					<Route path='create' element={<UserManageCreate />} />
-					<Route path='edit' element={<UserManageEdit />} />
+					<Route path='edit/:id' element={<UserManageEdit />} />
 				</Route>
 				<Route path="/user/role/" element={ <Main headerMenuKey={"user"} /> }>
 					<Route index element={<UserRoleList />} />

@@ -22,7 +22,7 @@ function Header() {
             <Col flex="auto"></Col>
             <Col>
                 <Space align="center">
-                    <Link to={'/user/mine'}>
+                    <Link to={'/user/mine/1'}>
                         <Button className ="top-menu-user" type="link" block>
                             [사용자이름]님
                         </Button>

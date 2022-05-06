@@ -25,8 +25,8 @@ function List() {
 		const initDiscountKindOptionList = await GetDiscountKindOptionListAPI();
 		
 		setDataSource(initDataSource);
-		setBrandOptionList(initBrandOptionList ? initBrandOptionList : []);
-		setDiscountKindOptionList(initDiscountKindOptionList ? initDiscountKindOptionList : []);
+		setBrandOptionList(initBrandOptionList);
+		setDiscountKindOptionList(initDiscountKindOptionList);
 	};
 
 	useEffect(() => {

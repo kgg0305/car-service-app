@@ -1,19 +1,83 @@
 import { Col, Divider, Row, Space, Select, Button, Input, Modal } from 'antd';
 import { CaretDownOutlined, PlusOutlined } from '@ant-design/icons'
-import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { GetGroupOptionListAPI } from '../../../api/Group';
+import { CheckUserNameAPI, CreateUserAPI } from '../../../api/User';
 import alert_icon from '../../../assets/images/alert-icon.png';
+import { Constants } from '../../../constants/Constants';
 
 const { Option } = Select;
 
 function Create() {
+    let navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
+    const [groupOptionList, setGroupOptionList] = useState([]);
     const [showDeleteButton, setShowDeleteButton] = useState(false);
     const [bodyList, setBodyList] = useState([
         {
-            number: 1
+            number: 1,
+            name: '',
+            user_id: '',
+            type_id: null,
+            group_id: null,
+            password: '',
+            check_name: ''
         }
     ]);
+
+    const initComponent = async () => {
+		const initGroupOptionList = await GetGroupOptionListAPI();
+		
+		setGroupOptionList(initGroupOptionList);
+	};
+
+	useEffect(() => {
+		initComponent();
+	}, []);
+
+    async function checkName(number, name) {
+        const result = await CheckUserNameAPI(name);
+        onChangeComponent(number, 'check_name', result ? 'exist' : 'not-exist');
+    }
+
+    const onAddComponentClick = event => {
+        if(bodyList.length < 10){
+            setShowDeleteButton(true);
+            setBodyList([...bodyList, {
+                number: bodyList[bodyList.length - 1].number + 1,
+                name: '',
+                user_id: '',
+                type_id: null,
+                group_id: null,
+                password: '',
+                check_name: ''
+            }]);
+        }
+    };
+
+    const onDeleteComponentClick = (number) => {
+        if(bodyList.length > 1){
+            if(bodyList.length === 2){
+                setShowDeleteButton(false);
+            }
+            setBodyList(bodyList.filter((body) => body.number !== number));
+        }
+    };
+
+    const onChangeComponent = (number, name, value) => {
+        setBodyList(bodyList.map(body => body.number === number ? {...body, [name]: value} : body));
+    }
+
+    const onSaveClick = async() => {
+        await CreateUserAPI(bodyList);
+        // setShowModal(true);
+        navigate('/user/manage');
+    };
+
+    const onCloseModalClick = () => {
+        setShowModal(false);
+    };
 
     const renderBodyList = () => {
         return (
@@ -36,13 +100,29 @@ function Create() {
                                         <label>이름</label>
                                     </Col>
                                     <Col span={10} className='table-value-col-section'>
-                                        <Input placeholder="이름 입력" style={{ width: 150 }} />
+                                        <Input 
+                                            name='name' 
+                                            value={body.name} 
+                                            onChange={e => {
+                                                onChangeComponent(body.number, e.target.name, e.target.value);
+                                            }} 
+                                            placeholder="이름 입력" 
+                                            style={{ width: 150 }} 
+                                        />
                                     </Col>
                                     <Col span={2} className='table-header-col-section'>
                                         <label>아이디</label>
                                     </Col>
                                     <Col flex="auto" className='table-value-col-section'>
-                                        <Input placeholder="이름 입력" style={{ width: 150 }} />
+                                        <Input 
+                                            name='user_id' 
+                                            value={body.user_id} 
+                                            onChange={e => {
+                                                onChangeComponent(body.number, e.target.name, e.target.value);
+                                            }} 
+                                            placeholder="아이디 입력" 
+                                            style={{ width: 150 }} 
+                                        />
                                     </Col>
                                 </Row>
                                 <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
@@ -52,26 +132,40 @@ function Create() {
                                     <Col span={10} className='table-value-col-section'>
                                         <Space size={6}>
                                             <Select
+                                                name='type_id' 
+                                                value={body.type_id} 
+                                                onChange={value => {
+                                                    onChangeComponent(body.number, 'type_id', value);
+                                                }}
                                                 suffixIcon={<CaretDownOutlined />}
                                                 placeholder="구분"
                                                 style={{ width: 150 }}
                                             >
-                                                <Option value="SK">국산</Option>
-                                                <Option value="US">미국</Option>
-                                                <Option value="EU">유럽</Option>
-                                                <Option value="JP">일본</Option>
-                                                <Option value="CH">중국</Option>
+                                                {
+                                                    Constants.userTypeOptions.map((optionItem, optionIndex) => (
+                                                        <Select.Option key={optionIndex} value={optionItem.value}>
+                                                            {optionItem.label}
+                                                        </Select.Option>
+                                                    ))
+                                                }
                                             </Select>
                                             <Select
+                                                name='group_id' 
+                                                value={body.group_id} 
+                                                onChange={value => {
+                                                    onChangeComponent(body.number, 'group_id', value);
+                                                }}
                                                 suffixIcon={<CaretDownOutlined />}
                                                 placeholder="그룹"
                                                 style={{ width: 150 }}
                                             >
-                                                <Option value="SK">국산</Option>
-                                                <Option value="US">미국</Option>
-                                                <Option value="EU">유럽</Option>
-                                                <Option value="JP">일본</Option>
-                                                <Option value="CH">중국</Option>
+                                                {
+                                                    groupOptionList.map((optionItem, optionIndex) => (
+                                                        <Select.Option key={optionIndex} value={optionItem.value}>
+                                                            {optionItem.label}
+                                                        </Select.Option>
+                                                    ))
+                                                }
                                             </Select>
                                         </Space>
                                     </Col>
@@ -81,8 +175,16 @@ function Create() {
                                     <Col flex="auto" className='table-value-col-section'>
                                         <Space size={6}>
                                             <div className=''>
-                                                <Input placeholder="브랜드 입력" maxLength={15} style={{ width: 250 }} />
-                                                <label className='danger-alert'>이미 사용중인 이름 입니다.</label>
+                                                <Input 
+                                                    name='password' 
+                                                    value={body.password} 
+                                                    onChange={e => {
+                                                        onChangeComponent(body.number, e.target.name, e.target.value);
+                                                    }} 
+                                                    placeholder="비밀번호 입력" 
+                                                    maxLength={15} style={{ width: 250 }} 
+                                                />
+                                                <label className='danger-alert'>사용할 수 없는 비밀번호 입니다.</label>
                                             </div>
                                             <label className='description-label' style={{width: 350}}>{'공백없이 8~15글자의 영문 대소문자, 숫자, 일부 특수기호만 조합해 사용(사용가능한 특수기호 : !@#$%^&*()_+=><)'}</label>
                                         </Space>
@@ -94,33 +196,6 @@ function Create() {
                 })}
             </>
         );
-    };
-
-    const onAddComponentClick = event => {
-        if(bodyList.length < 10){
-            setShowDeleteButton(true);
-            setBodyList([...bodyList, {
-                number: bodyList[bodyList.length - 1].number + 1
-            }]);
-        }
-    };
-
-    const onDeleteComponentClick = (number) => {
-        if(bodyList.length > 1){
-            if(bodyList.length === 2){
-                console.log(bodyList.length);
-                setShowDeleteButton(false);
-            }
-            setBodyList(bodyList.filter((body) => body.number !== number));
-        }
-    };
-
-    const onSaveClick = event => {
-        setShowModal(true);
-    };
-
-    const onCloseModalClick = () => {
-        setShowModal(false);
     };
 
     return(

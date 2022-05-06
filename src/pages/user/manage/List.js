@@ -1,6 +1,8 @@
 import { Col, Divider, Row, Space, Select, Button, Image } from 'antd';
 import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { GetGroupOptionListAPI } from '../../../api/Group';
+import { GetUserListAPI } from '../../../api/User';
 import SearchPanel from '../../../components/SearchPanel';
 import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
@@ -8,49 +10,47 @@ import { Constants } from '../../../constants/Constants';
 const { Option } = Select;
 
 function List() {
-	const [dataSource, setDataSource] = useState(
-		[
-			{
-				key: 1,
-				number: '1',
-				divider: 'user',
-				group: 'Ford',
-				name: 'kkk',
-				contact: 'kkk@gmail.com',
-				email: 'kkk@gmail.com',
-				manage: '',
-			},
-			{
-				key: 2,
-				number: '2',
-				divider: 'user',
-				group: 'Ford',
-				name: 'kkk',
-				contact: 'kkk@gmail.com',
-				email: 'kkk@gmail.com',
-				manage: '',
-			},
-		]
-	);
+	const [offset, setOffset] = useState(0);
+	const [groupOptionList, setGroupOptionList] = useState([]);
+	const [dataSource, setDataSource] = useState();
+	const [searchData, setSearchData] = useState({
+		type_id: null,
+		group_id: null,
+		name: ''
+	});
+	
+	const initComponent = async () => {
+		const initDataSource = await GetUserListAPI(offset);
+		const initGroupOptionList = await GetGroupOptionListAPI();
+		
+		setDataSource(initDataSource);
+		setGroupOptionList(initGroupOptionList);
+	};
+
+	useEffect(() => {
+		initComponent();
+	}, []);
 	
 	const columns = [
 		{
 			title: '번호',
-			dataIndex: 'number',
-			key: 'number',
+			dataIndex: 'idx',
+			key: 'idx',
             align: 'center',
 		},
 		{
 			title: '구분',
-			dataIndex: 'divider',
-			key: 'divider',
+			dataIndex: 'type_id',
+			key: 'type_id',
             align: 'center',
+			render: type_id => Constants.userTypeOptions.filter(item => item.value === type_id).length ? Constants.userTypeOptions.filter(item => item.value === type_id)[0].label : '',
 		},
 		{
 			title: '그룹',
-			dataIndex: 'group',
-			key: 'group',
+			dataIndex: 'group_id',
+			key: 'group_id',
             align: 'center',
+			render: group_id => groupOptionList.filter(item => item.value === group_id).length ? groupOptionList.filter(item => item.value === group_id)[0].label : '',
 		},
 		{
 			title: '이름',
@@ -60,8 +60,8 @@ function List() {
 		},
 		{
 			title: '연락처',
-			dataIndex: 'contact',
-			key: 'contact',
+			dataIndex: 'phone',
+			key: 'phone',
             align: 'center',
 		},
 		{
@@ -72,13 +72,13 @@ function List() {
 		},
 		{
 			title: '관리',
-			dataIndex: 'manage',
-			key: 'manage',
+			dataIndex: 'idx',
+			key: 'idx',
             align: 'center',
-			render: path => 
+			render: idx => 
 				<Row justify='center'>
 					<Col>
-						<Link to="/user/manage/edit">
+						<Link to={"/user/manage/edit/" + idx}>
 							<Button className='black-button small-button rounded-button'>수정</Button>
 						</Link>
 					</Col>
@@ -86,7 +86,7 @@ function List() {
 		},
 	];
 
-	const searchRowList = [
+	const searchDataSource = [
 		{
 			height: 80,
 			columns: [
@@ -96,15 +96,17 @@ function List() {
 					contentItems: [
 						{
 							type: Constants.inputTypes.select,
+							name: 'type_id',
 							placeholder: '구분',
 							width: 200,
-							data: null
+							data: Constants.userTypeOptions
 						},
 						{
 							type: Constants.inputTypes.select,
+							name: 'group_id',
 							placeholder: '그룹',
 							width: 200,
-							data: null
+							data: groupOptionList
 						}
 					]
 				},
@@ -114,6 +116,7 @@ function List() {
 					contentItems: [
 						{
 							type: Constants.inputTypes.input,
+							name: 'name',
 							placeholder: '이름입력',
 							width: 200
 						}
@@ -123,7 +126,7 @@ function List() {
 		}
 	];
 
-	const tableList = {
+	const tableDataSource = {
 		topItems: [
 			{
 				type: Constants.inputTypes.button,
@@ -137,27 +140,24 @@ function List() {
 		tableColumns: columns
 	};
 
-	const onClickTableMore = () => {
+	const onClickTableMore = async() => {
+		const initDataSource = await GetUserListAPI(offset + 10, searchData);
+		setOffset(offset + initDataSource.length);
+		
 		setDataSource([
 			...dataSource,
-			{
-				number: '1',
-				logo: window.location.origin + '/images/logo/logo.png',
-				brand: 'Ford',
-				order: '1',
-				available: '사용',
-				count: '3',
-				manage: '',
-			},
-			{
-				number: '1',
-				logo: window.location.origin + '/images/logo/logo.png',
-				brand: 'Ford',
-				order: '2',
-				available: '사용',
-				count: '4',
-				manage: '',
-			}
+			...initDataSource
+		]);
+	};
+
+	const onClickSearch = async(searchData) => {
+		const initDataSource = await GetUserListAPI(0, searchData);
+		
+		setOffset(0);
+		setSearchData(searchData);
+
+		setDataSource([
+			...initDataSource
 		]);
 	};
 
@@ -170,11 +170,14 @@ function List() {
 			</Space>
 
 			{/* Search Section */}
-			<SearchPanel dataSource={searchRowList} />
+			<SearchPanel dataSource={searchDataSource} onSearch={onClickSearch} />
 
 			{/* Body Section */}
-			<TableList dataSource={tableList} />
+			<TableList dataSource={tableDataSource} />
 
+			<Row justify='center'>
+				<label className='show-more-label' onClick={onClickTableMore}>더보기</label>
+			</Row>
 		</Space>
     );
 }
