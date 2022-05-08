@@ -22,7 +22,7 @@ function Create() {
             brand_id: null,
             group_name: '',
             car_kind_id: null,
-            is_use: 0,
+            is_use: null,
             check_name: ''
         }
     ]);
@@ -52,7 +52,7 @@ function Create() {
                 brand_id: null,
                 group_name: '',
                 car_kind_id: null,
-                is_use: 0
+                is_use: null
             }]);
         }
     };
@@ -74,6 +74,12 @@ function Create() {
         await CreateGroupAPI(bodyList);
         // setShowModal(true);
         navigate('/car/group');
+    };
+
+    const onSaveAndOtherClick = async() => {
+        await CreateGroupAPI(bodyList);
+        // setShowModal(true);
+        navigate('/car/model');
     };
 
     const onCloseModalClick = () => {
@@ -220,7 +226,7 @@ function Create() {
                                 </Link>
                                 <Button className='white-button medium-button' onClick={onSaveClick}>저장하고 나가기</Button>
                                 
-                                <Button className='black-button medium-button'>저장하고 모델 등록하기</Button>
+                                <Button className='black-button medium-button' onClick={onSaveAndOtherClick}>저장하고 모델 등록하기</Button>
                             </Space>
                         </Col>
                     </Row>

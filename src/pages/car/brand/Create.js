@@ -102,6 +102,12 @@ function Create() {
         navigate('/car/brand');
     };
 
+    const onSaveAndOtherClick = async() => {
+        await CreateBrandAPI(bodyList);
+        // setShowModal(true);
+        navigate('/car/group');
+    };
+
     const onCloseModalClick = () => {
         setShowModal(false);
     };
@@ -350,7 +356,7 @@ function Create() {
                                 </Link>
                                 <Button className='white-button medium-button' onClick={onSaveClick}>저장하고 나가기</Button>
                                 
-                                <Button className='black-button medium-button'>저장하고 모델그룹 등록하기</Button>
+                                <Button className='black-button medium-button' onClick={onSaveAndOtherClick}>저장하고 모델그룹 등록하기</Button>
                             </Space>
                         </Col>
                     </Row>

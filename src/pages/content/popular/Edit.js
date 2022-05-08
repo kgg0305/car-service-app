@@ -1,13 +1,85 @@
-import { Col, Divider, Row, Space, Select, Button, Input, Image, Upload } from 'antd';
+import { Col, Divider, Row, Space, Select, Button, Image, Upload } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons'
-import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { GetModelInfoAPI, GetModelOptionListAPI } from '../../../api/Model';
 import preview_default_image from '../../../assets/images/preview-default-image.png';
+import { GetModelGalleryListAPI } from '../../../api/ModelGallery';
+import { GetBrandOptionListAPI } from '../../../api/Brand';
+import { GetGroupOptionListAPI } from '../../../api/Group';
 
 const { Option } = Select;
 
 function Edit() {
-    
+    let { id } = useParams();
+    let navigate = useNavigate();
+    const [showModal, setShowModal] = useState(false);
+    const [brandOptionList, setBrandOptionList] = useState([]);
+	const [groupOptionList, setGroupOptionList] = useState([]);
+    const [modelOptionList, setModelOptionList] = useState([]);
+    const [modelBodyInfo, setModelBodyInfo] = useState({
+        idx: id,
+        brand_id: null,
+        group_id: null
+    });
+    const [bodyList, setBodyList] = useState([]);
+
+    const initComponent = async () => {
+        const initBrandOptionList = await GetBrandOptionListAPI(id);
+        const initGroupOptionList = await GetGroupOptionListAPI(id);
+        const initModelOptionList = await GetModelOptionListAPI(id);
+		const initModelBodyInfo = await GetModelInfoAPI(id);
+        const initBodyList = await GetModelGalleryListAPI(0, {
+            model_id: id
+        });
+
+        setBrandOptionList(initBrandOptionList);
+        setGroupOptionList(initGroupOptionList);
+        setModelOptionList(initModelOptionList);
+		setBodyList(initBodyList);
+        setModelBodyInfo(initModelBodyInfo);
+	}
+
+	useEffect(() => {
+		initComponent();
+	}, []);
+
+    const onChangeComponent = (name, value) => {
+        // setBodyInfo(
+        //     { 
+        //         ...bodyInfo,
+        //         [name]: value
+        //     }
+        // );
+    }
+
+    const onSaveClick = async() => {
+        // const created_info = await CreateModelAPI(bodyInfo);
+        
+        // setShowModal(true);
+        navigate('/content/gallery');
+    };
+
+    const onCloseModalClick = () => {
+        setShowModal(false);
+    };
+
+    const renderPictureList = () => {
+        return (
+            bodyList.map((body, index) => (
+                <Col style={{ textAlign: 'center' }}>
+                    <Space direction='vertical' size={5}>
+                        <label>사진 { (index + 1) !== 10 ? '0' + (index + 1) : (index + 1) }</label>
+                        <Image src={ window.location.origin + '/uploads/brand/' + body.picture } width={150} height={150} />
+                        <Upload>
+                            <Button className='black-button'>등록</Button>
+                        </Upload>
+                    </Space>
+                </Col>
+            ))
+        );
+    }
+
     return(
         <>
             <Space direction='vertical' size={18} className='main-layout'>
@@ -48,53 +120,70 @@ function Edit() {
                                     <Col flex="auto" className='table-value-col-section'>
                                         <Space size={6}>
                                             <Select
+                                                name='brand_id' 
+                                                value={modelBodyInfo.brand_id} 
+                                                onChange={value => {
+                                                    onChangeComponent('brand_id', value);
+                                                }}
                                                 suffixIcon={<CaretDownOutlined />}
                                                 placeholder="브랜드 선택"
                                                 style={{ width: 250 }}
                                             >
-                                                <Option value="jack">Jack</Option>
-                                                <Option value="lucy">Lucy</Option>
-                                                <Option value="Yiminghe">yiminghe</Option>
+                                                {
+                                                    brandOptionList.map((optionItem, optionIndex) => (
+                                                        <Select.Option key={optionIndex} value={optionItem.value}>
+                                                            {optionItem.label}
+                                                        </Select.Option>
+                                                    ))
+                                                }
                                             </Select>
                                             <Select
+                                                name='group_id' 
+                                                value={modelBodyInfo.group_id} 
+                                                onChange={value => {
+                                                    onChangeComponent('group_id', value);
+                                                }}
                                                 suffixIcon={<CaretDownOutlined />}
                                                 placeholder="모델그룹 선택"
                                                 style={{ width: 250 }}
                                             >
-                                                <Option value="jack">Jack</Option>
-                                                <Option value="lucy">Lucy</Option>
-                                                <Option value="Yiminghe">yiminghe</Option>
+                                                {
+                                                    groupOptionList.map((optionItem, optionIndex) => (
+                                                        <Select.Option key={optionIndex} value={optionItem.value}>
+                                                            {optionItem.label}
+                                                        </Select.Option>
+                                                    ))
+                                                }
                                             </Select>
                                             <Select
+                                                name='model_id' 
+                                                value={modelBodyInfo.idx} 
+                                                onChange={value => {
+                                                    onChangeComponent('model_id', value);
+                                                }}
                                                 suffixIcon={<CaretDownOutlined />}
                                                 placeholder="모델 선택"
                                                 style={{ width: 250 }}
                                             >
-                                                <Option value="jack">Jack</Option>
-                                                <Option value="lucy">Lucy</Option>
-                                                <Option value="Yiminghe">yiminghe</Option>
+                                                {
+                                                    modelOptionList.map((optionItem, optionIndex) => (
+                                                        <Select.Option key={optionIndex} value={optionItem.value}>
+                                                            {optionItem.label}
+                                                        </Select.Option>
+                                                    ))
+                                                }
                                             </Select>
                                         </Space>
                                     </Col>
                                 </Row>
-                                <Row gutter={[0]} align="middle" style={{ height:174 }} className='table-layout'>
+                                <Row gutter={[0]} align="middle" style={{ height:275 }} className='table-layout'>
                                     <Col span={2} className='table-header-col-section'>
                                         <label>사진</label>
                                     </Col>
                                     <Col flex="auto" className='table-value-col-section'>
-                                        <Space direction='horizontal' align='end' size={20}>
-                                            <Image src={ preview_default_image } width={150} height={150} />
-                                            <Space direction='vertical' size={34}>
-                                                <label className='logo-description-label'>
-                                                    이미지 권장 크기는 90 * 60이며, *.png로 등록하셔야 합니다. <br/>
-                                                    이미지를 새로 등록 하기 위해선 등록된 이미지 [삭제]후 재 등록 하시면 됩니다.
-                                                </label>
-                                                <Upload>
-                                                    <Button className='black-button'>등록</Button>
-                                                </Upload>
-                                             </Space>
-                                        </Space>
-                                        
+                                        <Row gutter={[10]}>
+                                            {renderPictureList()}
+                                        </Row>
                                     </Col>
                                 </Row>
                             </Space>

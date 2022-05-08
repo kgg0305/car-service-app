@@ -174,17 +174,17 @@ function App() {
 				<Route path="/content/carRank/" element={ <Main headerMenuKey={"content"} /> }>
 					<Route index element={<ContentCarRankList />} />
 					<Route path="create" element={<ContentCarRankCreate />} />
-					<Route path="edit/:id" element={<ContentCarRankEdit />} />
+					<Route path="edit" element={<ContentCarRankEdit />} />
 				</Route>
 				<Route path="/content/contentRank/" element={ <Main headerMenuKey={"content"} /> }>
 					<Route index element={<ContentContentRankList />} />
 					<Route path="create" element={<ContentContentRankCreate />} />
-					<Route path="edit/:id" element={<ContentContentRankEdit />} />
+					<Route path="edit" element={<ContentContentRankEdit />} />
 				</Route>
 				<Route path="/content/movieRank/" element={ <Main headerMenuKey={"content"} /> }>
 					<Route index element={<ContentMovieRankList />} />
 					<Route path="create" element={<ContentMovieRankCreate />} />
-					<Route path="edit/:id" element={<ContentMovieRankEdit />} />
+					<Route path="edit" element={<ContentMovieRankEdit />} />
 				</Route>
 				<Route path="/content/media/" element={ <Main headerMenuKey={"content"} /> }>
 					<Route index element={<ContentMediaList />} />

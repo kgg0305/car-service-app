@@ -1,57 +1,50 @@
 import { Col, Divider, Row, Space, Button, Switch } from 'antd';
-import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { GetContentListAPI, DeleteContentInfoAPI } from '../../../api/Content';
 import SearchPanel from '../../../components/SearchPanel';
 import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
 
 function List() {
-	const [dataSource, setDataSource] = useState(
-		[
-			{
-				key: 1,
-				number: '1',
-				name: '32',
-				category: '블루멤버스 포인트 선사용',
-                title: '2회 이상 재구매 고객',
-                news: '-100,000원',
-                views: '2022-01-24',
-				date: '2022-02-24',
-                available: '',
-				manage: '',
-			},
-			{
-				key: 2,
-				number: '2',
-				name: '32',
-				category: '블루멤버스 포인트 선사용',
-                title: '2회 이상 재구매 고객',
-                news: '-100,000원',
-                views: '2022-01-24',
-				date: '2022-02-24',
-                available: '',
-				manage: '',
-			},
-		]
-	);
+	const [offset, setOffset] = useState(0);
+	const [dataSource, setDataSource] = useState();
+	const [searchData, setSearchData] = useState({
+		start_date: null,
+		end_date: null,
+		media_type: null,
+		title: null,
+		category_id: null,
+		recommendation_id: null,
+		is_use: null
+	});
 	
+	const initComponent = async () => {
+		const initDataSource = await GetContentListAPI(offset);
+		
+		setDataSource(initDataSource);
+	};
+
+	useEffect(() => {
+		initComponent();
+	}, []);
+
 	const columns = [
 		{
 			title: '번호',
-			dataIndex: 'number',
-			key: 'number',
+			dataIndex: 'idx',
+			key: 'idx',
             align: 'center',
 		},
 		{
 			title: '매체명',
-			dataIndex: 'name',
-			key: 'name',
+			dataIndex: 'media_type',
+			key: 'media_type',
             align: 'center',
 		},
 		{
 			title: '카테고리',
-			dataIndex: 'category',
-			key: 'category',
+			dataIndex: 'category_id',
+			key: 'category_id',
             align: 'center',
 		},
         {
@@ -62,8 +55,8 @@ function List() {
 		},
         {
 			title: '추천뉴스',
-			dataIndex: 'news',
-			key: 'news',
+			dataIndex: 'recommendation',
+			key: 'recommendation',
             align: 'center',
 		},
         {
@@ -74,42 +67,32 @@ function List() {
 		},
 		{
 			title: '등록일',
-			dataIndex: 'date',
-			key: 'date',
+			dataIndex: 'created_date',
+			key: 'created_date',
             align: 'center',
 		},
 		{
 			title: '사용여부',
-			dataIndex: 'available',
-			key: 'available',
+			dataIndex: 'is_use',
+			key: 'is_use',
             align: 'center',
-            render: path => 
-                <Row justify='center'>
-                    <Col>
-                        <Space size={11}>
-                            <Switch width={100} height={40} />
-                            <label className='switch-label'>사용</label>
-                        </Space>
-                    </Col>
-                </Row>,
+            render: is_use => is_use == 0 ? '사용' : '미사용'
 		},
 		{
 			title: '관리',
-			dataIndex: 'manage',
-			key: 'manage',
+			dataIndex: 'idx',
+			key: 'idx',
             align: 'center',
-			render: path => 
+			render: idx => 
                 <Row justify='center'>
                     <Col>
-                        <Link to="/car/discount/edit">
-                            <Button className='black-button small-button rounded-button'>삭제</Button>
-                        </Link>
+						<Button className='black-button small-button rounded-button' onClick={() => onDeleteClick(idx)}>삭제</Button>
                     </Col>
                 </Row>,
 		},
 	];
 
-	const searchRowList = [
+	const searchDataSource = [
 		{
 			height: 80,
 			columns: [
@@ -154,6 +137,7 @@ function List() {
 						},
 						{
 							type: Constants.inputTypes.datePicker,
+							name:'start_date',
 							placeholder: '시작일'
 						},
 						{
@@ -162,6 +146,7 @@ function List() {
 						},
 						{
 							type: Constants.inputTypes.datePicker,
+							name:'end_date',
 							placeholder: '종료일'
 						}
 					]
@@ -172,6 +157,7 @@ function List() {
 					contentItems: [
 						{
 							type: Constants.inputTypes.select,
+							name: 'media_type',
 							placeholder: '선택',
 							width: 150,
 							data: null
@@ -189,6 +175,7 @@ function List() {
 					contentItems: [
 						{
 							type: Constants.inputTypes.input,
+							name: 'title',
 							placeholder: '검색어 입력',
 							width: 200
 						}
@@ -200,6 +187,7 @@ function List() {
 					contentItems: [
 						{
 							type: Constants.inputTypes.select,
+							name: 'category_id',
 							placeholder: '선택',
 							width: 150,
 							data: null
@@ -212,6 +200,7 @@ function List() {
 					contentItems: [
 						{
 							type: Constants.inputTypes.select,
+							name: 'news',
 							placeholder: '선택',
 							width: 150,
 							data: null
@@ -224,9 +213,10 @@ function List() {
 					contentItems: [
 						{
 							type: Constants.inputTypes.select,
+							name: 'is_use',
 							placeholder: '선택',
 							width: 150,
-							data: null
+							data: Constants.availableOptions
 						}
 					]
 				}
@@ -234,10 +224,36 @@ function List() {
 		}
 	];
 
-	const tableList = {
+	const tableDataSource = {
 		tableData: dataSource,
 		tableColumns: columns
 	};
+
+	const onClickTableMore = async() => {
+		const initDataSource = await GetContentListAPI(offset + 10, searchData);
+		setOffset(offset + initDataSource.length);
+		
+		setDataSource([
+			...dataSource,
+			...initDataSource
+		]);
+	};
+
+	const onClickSearch = async(searchData) => {
+		const initDataSource = await GetContentListAPI(0, searchData);
+		setOffset(0);
+		setSearchData(searchData);
+
+		setDataSource([
+			...initDataSource
+		]);
+	};
+
+	const onDeleteClick = async(idx) => {
+        await DeleteContentInfoAPI(idx);
+		const initDataSource = await GetContentListAPI(offset);
+		setDataSource(initDataSource);
+    };
 
     return(
 		<Space direction='vertical' size={18} className='main-layout'>
@@ -248,11 +264,14 @@ function List() {
 			</Space>
 
 			{/* Search Section */}
-			<SearchPanel dataSource={searchRowList} />
+			<SearchPanel dataSource={searchDataSource} onSearch={onClickSearch} />
 
 			{/* Body Section */}
-			<TableList dataSource={tableList} />
+			<TableList dataSource={tableDataSource} />
 
+			<Row justify='center'>
+				<label className='show-more-label' onClick={onClickTableMore}>더보기</label>
+			</Row>
 		</Space>
     );
 }

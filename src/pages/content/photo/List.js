@@ -1,85 +1,76 @@
 import { Col, Divider, Row, Space, Button, Image, Modal, Input } from 'antd';
 import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { GetPhotoListAPI } from '../../../api/Photo';
+import { GetContentInfoAPI } from '../../../api/Content';
 import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
 
 function List() {
+    const [offset, setOffset] = useState(0);
     const [showModal, setShowModal] = useState(false);
+	const [dataSource, setDataSource] = useState();
+    const [contentList, setContentList] = useState([]);
+	
+	const initComponent = async () => {
+		const initDataSource = await GetPhotoListAPI(offset);
+		
+        setDataSource(initDataSource.map(body => {
+			return({
+				...body,
+                content_count: body.content_ids.split(',').length
+			})
+		}));
+	};
 
-	const [dataSource, setDataSource] = useState(
-		[
-			{
-				key: 1,
-				date: '1',
-				list: '32',
-				count: '블루멤버스 포인트 선사용',
-                available: '사용',
-				manage: '',
-			},
-			{
-				key: 2,
-				date: '1',
-				list: '32',
-				count: '블루멤버스 포인트 선사용',
-                available: '사용',
-				manage: '',
-			},
-			{
-				key: 2,
-				date: '1',
-				list: '32',
-				count: '블루멤버스 포인트 선사용',
-                available: '사용',
-				manage: '',
-			},
-		]
-	);
+	useEffect(() => {
+		initComponent();
+	}, []);
 	
 	const columns = [
 		{
-			title: '발행일',
-			dataIndex: 'date',
-			key: 'date',
+			title: '번호',
+			dataIndex: 'idx',
+			key: 'idx',
             align: 'center',
 		},
 		{
 			title: '콘텐츠 목록',
-			dataIndex: 'list',
-			key: 'list',
+			dataIndex: 'content_ids',
+			key: 'content_ids',
             align: 'center',
-            render: list => 
+            render: content_ids => 
                 <Row gutter={[10]} justify='center'>
                     <Col>
-                        {list}
                     </Col>
                     <Col>
-                        <Button className='white-button small-button rounded-button' onClick={onViewDetailClick}>상세보기</Button>
+                        <Button className='white-button small-button rounded-button' onClick={() => onViewDetailClick(content_ids)}>상세보기</Button>
                     </Col>
                 </Row>,
 		},
 		{
 			title: '콘텐츠 수',
-			dataIndex: 'count',
-			key: 'count',
+			dataIndex: 'content_count',
+			key: 'content_count',
             align: 'center',
 		},
         {
 			title: '사용여부',
-			dataIndex: 'available',
-			key: 'available',
+			dataIndex: 'is_use',
+			key: 'is_use',
             align: 'center',
+            render: is_use => is_use == 0 ? '사용' : '미사용'
 		},
 		{
 			title: '관리',
-			dataIndex: 'manage',
-			key: 'manage',
+			dataIndex: 'idx',
+			key: 'idx',
             align: 'center',
-			render: path => 
+			render: idx => 
                 <Row justify='center'>
                     <Col>
                         <Space size={15} split={<Divider type="vertical" />}>
-							<Link to="/content/photo/edit">
+							<Link to={"/content/photo/edit/" + idx}>
 								<Button className='black-button small-button rounded-button'>수정</Button>
 							</Link>
 						</Space>
@@ -102,13 +93,36 @@ function List() {
 		tableColumns: columns
 	};
 
-    const onViewDetailClick = event => {
+    const onViewDetailClick = async(content_ids) => {
+        var initContentList = [];
+        for (let index = 0; index < content_ids.split(',').length; index++) {
+            const id = content_ids.split(',')[index];
+            initContentList.push(await GetContentInfoAPI(id));
+        }
+        
+        await setContentList(initContentList);
         setShowModal(true);
     };
 
     const onCloseModalClick = () => {
         setShowModal(false);
     };
+
+    const onClickTableMore = async() => {
+		const initDataSource = await GetPhotoListAPI(offset + 10);
+		setOffset(offset + initDataSource.length);
+		
+		setDataSource([
+			...dataSource,
+			...initDataSource.map(body => {
+				return({
+					...body,
+                    content_count: body.content_ids.split(',').length,
+                    publish_date_text: new Date(body.publish_date).getFullYear() + '-' + ("0" + (new Date(body.publish_date).getMonth() + 1)).slice(-2) + '-' + ("0" + new Date(body.publish_date).getDate()).slice(-2),
+				})
+			})
+		]);
+	};
 
     return(
         <>
@@ -136,22 +150,18 @@ function List() {
             >
                 <Space direction='vertical' size={20} style={{width:'100%'}}>
                     <Space direction='vertical' size={0} style={{width:'100%'}}>
-                        <Row key={0} gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
-                            <Col span={2} className='table-header-col-section'>
-                                <label>순서1</label>
-                            </Col>
-                            <Col flex="auto" className='table-value-col-section'>
-                                <Input />
-                            </Col>
-                        </Row>
-                        <Row key={1} gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
-                            <Col span={2} className='table-header-col-section'>
-                                <label>순서1</label>
-                            </Col>
-                            <Col flex="auto" className='table-value-col-section'>
-                                <Input />
-                            </Col>
-                        </Row>
+                        {
+                            contentList.map((content, index) => (
+                                <Row key={0} gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
+                                    <Col span={2} className='table-header-col-section'>
+                                        <label>순서{index + 1}</label>
+                                    </Col>
+                                    <Col flex="auto" className='table-value-col-section'>
+                                        <Input value={content.title} readOnly={true} />
+                                    </Col>
+                                </Row>
+                            ))
+                        }
                     </Space>
                 </Space>
             </Modal>

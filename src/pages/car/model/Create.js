@@ -560,7 +560,8 @@ function Create() {
                                             </Col>
                                             <Col flex='auto' className='table-value-col-section'>
                                                 <DatePicker 
-                                                    name='release_date' value={moment(bodyInfo.release_date)} 
+                                                    name='release_date' 
+                                                    value={moment(bodyInfo.release_date)} 
                                                     onChange={value => {
                                                         onChangeComponent('release_date', value.toString());
                                                     }}
