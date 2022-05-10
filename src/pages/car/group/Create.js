@@ -1,18 +1,19 @@
-import { Col, Divider, Row, Space, Select, Button, Input, Modal } from 'antd';
+import { Col, Divider, Row, Space, Select, Button, Input } from 'antd';
 import { CaretDownOutlined, PlusOutlined } from '@ant-design/icons'
 import { Link, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { GetBrandOptionListAPI } from '../../../api/Brand';
 import { CheckGroupNameAPI, CreateGroupAPI } from '../../../api/Group';
 import { GetCarKindOptionListAPI } from '../../../api/CarKind';
-import alert_icon from '../../../assets/images/alert-icon.png';
 import { Constants } from '../../../constants/Constants';
+import AlertModal from '../../../components/AlertModal';
 
 const { Option } = Select;
 
 function Create() {
     let navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
+    const [validationList, setValidationList] = useState([]);
     const [brandOptionList, setBrandOptionList] = useState([]);
 	const [carKindOptionList, setCarKindOptionList] = useState([]);
     const [showDeleteButton, setShowDeleteButton] = useState(false);
@@ -22,7 +23,7 @@ function Create() {
             brand_id: null,
             group_name: '',
             car_kind_id: null,
-            is_use: null,
+            is_use: '0',
             check_name: ''
         }
     ]);
@@ -52,7 +53,7 @@ function Create() {
                 brand_id: null,
                 group_name: '',
                 car_kind_id: null,
-                is_use: null
+                is_use: '0'
             }]);
         }
     };
@@ -70,20 +71,37 @@ function Create() {
         setBodyList(bodyList.map(body => body.number === number ? {...body, [name]: value} : body));
     }
 
-    const onSaveClick = async() => {
-        await CreateGroupAPI(bodyList);
-        // setShowModal(true);
-        navigate('/car/group');
-    };
+    const onSaveClick = async(url) => {
+        const validation = [];
+        bodyList.map((body, index) => {
+            if(body.brand_id === null) {
+                validation.push({
+                    title: '정보 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '브랜드'
+                })
+            }
+            if(body.group_name === '') {
+                validation.push({
+                    title: '정보 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '모델그룹'
+                })
+            }
+            if(body.car_kind_id === null) {
+                validation.push({
+                    title: '정보 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '차종'
+                })
+            }
+        });
 
-    const onSaveAndOtherClick = async() => {
-        await CreateGroupAPI(bodyList);
-        // setShowModal(true);
-        navigate('/car/model');
-    };
+        setValidationList(validation);
 
-    const onCloseModalClick = () => {
-        setShowModal(false);
+        if(validation.length > 0) {
+            setShowModal(true);
+        } else {
+            await CreateGroupAPI(bodyList);
+            navigate(url);
+        }
     };
 
     const renderBodyList = () => {
@@ -224,9 +242,9 @@ function Create() {
                                 <Link to="/car/group">
                                     <Button className='white-button medium-button'>취소</Button>
                                 </Link>
-                                <Button className='white-button medium-button' onClick={onSaveClick}>저장하고 나가기</Button>
+                                <Button className='white-button medium-button' onClick={() => onSaveClick('/car/group')}>저장하고 나가기</Button>
                                 
-                                <Button className='black-button medium-button' onClick={onSaveAndOtherClick}>저장하고 모델 등록하기</Button>
+                                <Button className='black-button medium-button' onClick={() => onSaveClick('/car/model')}>저장하고 모델 등록하기</Button>
                             </Space>
                         </Col>
                     </Row>
@@ -246,22 +264,7 @@ function Create() {
                     </Row>
                 </Space>
             </Space>
-            <Modal
-                centered
-                width={325}
-                closable={false}
-                visible={showModal}
-                footer={[
-                    <Button className='alert-button' onClick={onCloseModalClick}>확인</Button>
-                ]}
-            >
-                <Space direction='vertical' size={10} align='center' style={{width:'100%'}}>
-                    <img src={alert_icon} />
-                    <label className='alert-content-label'>[정보이름] - [필드이름]</label>
-                    <label className='alert-content-label'>작성되지 않은 정보가 있습니다.</label>
-                </Space>
-                
-            </Modal>
+            <AlertModal visible={showModal} onConfirmClick={() => setShowModal(false)} validationList={validationList} />
         </>
     );
 }

@@ -210,15 +210,35 @@ export const Constants = {
         {
             label: '경유',
             value: '1'
+        },
+        {
+            label: 'LPG',
+            value: '2'
+        },
+        {
+            label: '전기',
+            value: '3'
+        },
+        {
+            label: '휘발유/전기',
+            value: '4'
+        },
+        {
+            label: '수소',
+            value: '5'
+        },
+        {
+            label: 'CNG',
+            value: '6'
         }
     ],
     gearBoxTypeOptions: [
         {
-            label: '휘발유',
+            label: 'A/T',
             value: '0'
         },
         {
-            label: '경유',
+            label: 'M/T',
             value: '1'
         }
     ],

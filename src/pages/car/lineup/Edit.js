@@ -8,6 +8,8 @@ import { GetModelOptionListAPI } from '../../../api/Model';
 import { CheckLineupNameAPI, DeleteLineupInfoAPI, UpdateLineupAPI, GetLineupInfoAPI } from '../../../api/Lineup';
 import alert_icon from '../../../assets/images/alert-icon.png';
 import { Constants } from '../../../constants/Constants';
+import AlertModal from '../../../components/AlertModal';
+import AlertDeleteModal from '../../../components/AlertDeleteModal';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -15,22 +17,24 @@ const { TabPane } = Tabs;
 function Create() {
     let { id } = useParams();
     let navigate = useNavigate();
+    const [showModal, setShowModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [validationList, setValidationList] = useState([]);
     const [brandOptionList, setBrandOptionList] = useState([]);
 	const [groupOptionList, setGroupOptionList] = useState([]);
     const [modelOptionList, setModelOptionList] = useState([]);
-    const [showModal, setShowModal] = useState(false);
     const [bodyInfo, setBodyInfo] = useState(
         {
-            number: 1,
+            title: '정보 ',
             brand_id: null,
             group_id: null,
             model_id: null,
             model_lineup_ids: '',
             model_color_ids: '',
             lineup_name: '',
-            fule_kind: '',
-            year_type: '2022',
-            is_use: '',
+            fule_kind: null,
+            year_type: new Date().getFullYear(),
+            is_use: '0',
             is_use_lineup: '',
             is_use_color: '',
             check_name: ''
@@ -62,26 +66,71 @@ function Create() {
         setBodyInfo(
             { 
                 ...bodyInfo,
+                group_id: name == 'brand_id' ? null : bodyInfo.group_id,
+                model_id: (name == 'brand_id' || name == 'group_id') ? null : bodyInfo.model_id,
                 [name]: value
             }
         );
     }
 
-    const onSaveClick = async() => {
-        await UpdateLineupAPI(bodyInfo);
-        // setShowModal(true);
-        navigate('/car/lineup');
+    const onSaveClick = async(url) => {
+        const validation = [];
+        if(bodyInfo.brand_id === null) {
+            validation.push({
+                title: '정보 ',
+                name: '차량(브랜드)'
+            })
+        }
+        if(bodyInfo.group_id === null) {
+            validation.push({
+                title: '정보 ',
+                name: '차량(모델그룹)'
+            })
+        }
+        if(bodyInfo.model_id === null) {
+            validation.push({
+                title: '정보 ',
+                name: '차량(모델)'
+            })
+        }
+        if(bodyInfo.lineup_name === '') {
+            validation.push({
+                title: '정보 ',
+                name: '라인업'
+            })
+        }
+        if(bodyInfo.fule_kind === null) {
+            validation.push({
+                title: '정보 ',
+                name: '연료'
+            })
+        }
+        if(bodyInfo.year_type === '') {
+            validation.push({
+                title: '정보 ',
+                name: '연식'
+            })
+        }
+
+        setValidationList(validation);
+
+        if(validation.length > 0) {
+            setShowModal(true);
+        } else {
+            await UpdateLineupAPI(bodyInfo);
+            navigate(url);
+        }
     };
 
-    const onDeleteClick = async(idx) => {
-        await DeleteLineupInfoAPI(idx);
-        navigate('/car/lineup');
-    }
-
-    const onCloseModalClick = () => {
-        setShowModal(false);
+    const onDeleteClick = async() => {
+        setShowDeleteModal(true);
     };
 
+    const deleteInfo = async() => {
+        await DeleteLineupInfoAPI(id);
+        navigate('/car/lineup');
+    };
+    
     return(
         <>
             <Space direction='vertical' size={18} className='main-layout'>
@@ -97,7 +146,7 @@ function Create() {
                                 <Link to="/car/trim">
                                     <Button className='white-button medium-button'>취소</Button>
                                 </Link>
-                                <Button className='black-button medium-button' onClick={onSaveClick}>저장하고 나가기</Button>
+                                <Button className='black-button medium-button' onClick={() => onSaveClick('/car/lineup')}>저장하고 나가기</Button>
                             </Space>
                         </Col>
                     </Row>
@@ -151,7 +200,7 @@ function Create() {
                                             style={{ width: 300 }}
                                         >
                                             {
-                                                groupOptionList.map((optionItem, optionIndex) => (
+                                                groupOptionList.filter(item => item.brand_id === bodyInfo.brand_id).map((optionItem, optionIndex) => (
                                                     <Select.Option key={optionIndex} value={optionItem.value}>
                                                         {optionItem.label}
                                                     </Select.Option>
@@ -171,7 +220,7 @@ function Create() {
                                             style={{ width: 300 }}
                                         >
                                             {
-                                                modelOptionList.map((optionItem, optionIndex) => (
+                                                modelOptionList.filter(item => item.group_id === bodyInfo.group_id).map((optionItem, optionIndex) => (
                                                     <Select.Option key={optionIndex} value={optionItem.value}>
                                                         {optionItem.label}
                                                     </Select.Option>
@@ -333,24 +382,16 @@ function Create() {
                             </Row>
                         </Space>
                     </Space>
+
+                    <Row justify="center" gutter={[17, 0]}>
+                        <Col>
+                            <Button className='white-button rounded-button' onClick={() => onDeleteClick()}>삭제하기</Button>
+                        </Col>
+                    </Row>
                 </Space>
             </Space>
-            <Modal
-                centered
-                width={325}
-                closable={false}
-                visible={showModal}
-                footer={[
-                    <Button className='alert-button' onClick={onCloseModalClick}>확인</Button>
-                ]}
-            >
-                <Space direction='vertical' size={10} align='center' style={{width:'100%'}}>
-                    <img src={alert_icon} />
-                    <label className='alert-content-label'>[정보이름] - [필드이름]</label>
-                    <label className='alert-content-label'>작성되지 않은 정보가 있습니다.</label>
-                </Space>
-                
-            </Modal>
+            <AlertModal visible={showModal} onConfirmClick={() => setShowModal(false)} validationList={validationList} />
+            <AlertDeleteModal visible={showDeleteModal} onConfirmClick={() => deleteInfo(bodyInfo.idx)} onCancelClick={() => setShowDeleteModal(false)} validationList={validationList} />
         </>
     );
 }

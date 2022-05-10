@@ -1,4 +1,4 @@
-import { Col, Divider, Row, Space, Select, Button, Input, Image, Upload, Modal, Tabs, DatePicker, Switch } from 'antd';
+import { Col, Divider, Row, Space, Select, Button, Input, Image, Upload, Tabs, DatePicker, Switch, InputNumber } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons'
 import { Link, useNavigate } from 'react-router-dom';
 import moment from 'moment';
@@ -7,11 +7,11 @@ import { GetBrandOptionListAPI } from '../../../api/Brand';
 import { GetGroupOptionListAPI } from '../../../api/Group';
 import { CreateModelAPI, CheckModelNameAPI } from '../../../api/Model';
 import preview_default_image from '../../../assets/images/preview-default-image.png';
-import alert_icon from '../../../assets/images/alert-icon.png';
 import { Constants } from '../../../constants/Constants';
 import { CreateModelLineupAPI } from '../../../api/ModelLinup';
 import { CreateModelColorAPI } from '../../../api/ModelColor';
 import { CreateModelTrimAPI } from '../../../api/ModelTrim';
+import AlertModal from '../../../components/AlertModal';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -19,11 +19,12 @@ const { TabPane } = Tabs;
 function Create() {
     let navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
+    const [validationList, setValidationList] = useState([]);
     const [brandOptionList, setBrandOptionList] = useState([]);
 	const [groupOptionList, setGroupOptionList] = useState([]);
     const [bodyInfo, setBodyInfo] = useState(
         {
-            number: 1,
+            title: '정보 ',
             brand_id: null,
             group_id: null,
             is_new: null,
@@ -53,7 +54,7 @@ function Create() {
 
     const [lineupBodyList, setLineupBodyList] = useState([
         {
-            number: 1,
+            title: '정보 ',
             model_id: null,
             lineup_name: '',
             lineup_price: 1,
@@ -63,7 +64,7 @@ function Create() {
 
     const [colorBodyList, setColorBodyList] = useState([
         {
-            number: 1,
+            title: '정보 ',
             model_id: null,
             color_name: '',
             color_price: 1
@@ -72,7 +73,7 @@ function Create() {
 
     const [trimBodyList, setTrimBodyList] = useState([
         {
-            number: 1,
+            title: '정보 ',
             model_id: null,
             trim_name: '',
             trim_price: 1,
@@ -188,6 +189,7 @@ function Create() {
         setBodyInfo(
             { 
                 ...bodyInfo,
+                group_id: name == 'brand_id' ? null : bodyInfo.group_id,
                 [name]: value
             }
         );
@@ -200,49 +202,95 @@ function Create() {
         
     }
 
-    const onSaveClick = async() => {
-        const created_info = await CreateModelAPI(bodyInfo);
-        const model_id = created_info['insertId'];
+    const onSaveClick = async(url) => {
+        const validation = [];
+        if(bodyInfo.brand_id === null) {
+            validation.push({
+                title: '정보 ',
+                name: '차량'
+            })
+        }
+        if(bodyInfo.group_id === '') {
+            validation.push({
+                title: '정보 ',
+                name: '차량'
+            })
+        }
+        if(bodyInfo.model_name === '') {
+            validation.push({
+                title: '정보 ',
+                name: '모델'
+            })
+        }
+        if(bodyInfo.is_new === null) {
+            validation.push({
+                title: '정보 ',
+                name: '신차여부'
+            })
+        }
+        if(bodyInfo.release_date === null) {
+            validation.push({
+                title: '정보 ',
+                name: '출시일'
+            })
+        }
+        if(bodyInfo.sequence === '') {
+            validation.push({
+                title: '정보 ',
+                name: '순서'
+            })
+        }
+        if(bodyInfo.is_use === null) {
+            validation.push({
+                title: '정보 ',
+                name: '사용여부'
+            })
+        }
 
-        //create lineup
-        const tempLineupBodyList = lineupBodyList.map(body => (
-            {
-                ...body,
-                ['model_id']: model_id
-            }
-        ));
-        
-        setLineupBodyList(tempLineupBodyList);
-        await CreateModelLineupAPI(tempLineupBodyList);
+        setValidationList(validation);
 
-        //create color
-        const tempColorBodyList = colorBodyList.map(body => (
-            {
-                ...body,
-                ['model_id']: model_id
-            }
-        ));
+        if(validation.length > 0) {
+            setShowModal(true);
+        } else {
+            const created_info = await CreateModelAPI(bodyInfo);
+            const model_id = created_info['insertId'];
 
-        setColorBodyList(tempColorBodyList);
-        await CreateModelColorAPI(tempColorBodyList);
+            //create lineup
+            const tempLineupBodyList = lineupBodyList.map(body => (
+                {
+                    ...body,
+                    ['model_id']: model_id
+                }
+            ));
+            
+            setLineupBodyList(tempLineupBodyList);
+            await CreateModelLineupAPI(tempLineupBodyList);
 
-        //create color
-        const tempTrimBodyList = trimBodyList.map(body => (
-            {
-                ...body,
-                ['model_id']: model_id
-            }
-        ));
+            //create color
+            const tempColorBodyList = colorBodyList.map(body => (
+                {
+                    ...body,
+                    ['model_id']: model_id
+                }
+            ));
 
-        setTrimBodyList(tempTrimBodyList);
-        await CreateModelTrimAPI(tempTrimBodyList);
-        
-        // setShowModal(true);
-        navigate('/car/model');
-    };
+            setColorBodyList(tempColorBodyList);
+            await CreateModelColorAPI(tempColorBodyList);
 
-    const onCloseModalClick = () => {
-        setShowModal(false);
+            //create color
+            const tempTrimBodyList = trimBodyList.map(body => (
+                {
+                    ...body,
+                    ['model_id']: model_id
+                }
+            ));
+
+            setTrimBodyList(tempTrimBodyList);
+            await CreateModelTrimAPI(tempTrimBodyList);
+            
+            // setShowModal(true);
+            navigate(url);
+        }
     };
 
     const renderLineupBodyList = () => {
@@ -438,9 +486,9 @@ function Create() {
                                 <Link to="/car/model">
                                     <Button className='white-button medium-button'>취소</Button>
                                 </Link>
-                                <Button className='white-button medium-button' onClick={onSaveClick}>저장하고 나가기</Button>
+                                <Button className='white-button medium-button' onClick={() => onSaveClick('/car/model')}>저장하고 나가기</Button>
                                 
-                                <Button className='black-button medium-button'>저장하고 모델그룹 등록하기</Button>
+                                <Button className='black-button medium-button' onClick={() => onSaveClick('/car/lineup')} >저장하고 라인업 등록하기</Button>
                             </Space>
                         </Col>
                     </Row>
@@ -496,7 +544,7 @@ function Create() {
                                                     style={{ width: '100%' }}
                                                 >
                                                     {
-                                                        groupOptionList.map((optionItem, optionIndex) => (
+                                                        groupOptionList.filter(item => item.brand_id == bodyInfo.brand_id).map((optionItem, optionIndex) => (
                                                             <Select.Option key={optionIndex} value={optionItem.value}>
                                                                 {optionItem.label}
                                                             </Select.Option>
@@ -574,13 +622,15 @@ function Create() {
                                             </Col>
                                             <Col span={10} className='table-value-col-section'>
                                                 <Space>
-                                                    <Input 
+                                                    <InputNumber 
                                                         name='sequence' 
                                                         value={bodyInfo.sequence} 
-                                                        onChange={e => {
-                                                            onChangeComponent(e.target.name, e.target.value);
+                                                        onChange={number => {
+                                                            onChangeComponent('sequence', number);
                                                         }} 
-                                                        maxLength={6} style={{ width: 150 }} 
+                                                        maxLength={6} 
+                                                        style={{ width: 150 }} 
+                                                        controls={false}
                                                     />
                                                     <label className='order-description-label'>숫자가 낮을수록 먼저 노출이 됩니다.</label>
                                                 </Space>
@@ -621,7 +671,7 @@ function Create() {
                                                     </label>
                                                     <Row gutter={[8]}>
                                                         <Col>
-                                                            <label className='picture-header-label'>사진 01(대표)</label>
+                                                            <label className='picture-header-label'>사진 01 (대표)</label>
                                                             <Space direction='vertical' align='center' size={6}>
                                                                 <Image src={bodyInfo.preview_1} width={150} height={150} />
                                                                 <Upload
@@ -641,7 +691,7 @@ function Create() {
                                                             </Space>
                                                         </Col>
                                                         <Col>
-                                                            <label className='picture-header-label'>사진 01(대표)</label>
+                                                            <label className='picture-header-label'>사진 02 (대표)</label>
                                                             <Space direction='vertical' align='center' size={6}>
                                                                 <Image src={bodyInfo.preview_2} width={150} height={150} />
                                                                 <Upload
@@ -661,7 +711,7 @@ function Create() {
                                                             </Space>
                                                         </Col>
                                                         <Col>
-                                                            <label className='picture-header-label'>사진 01(대표)</label>
+                                                            <label className='picture-header-label'>사진 03 (대표)</label>
                                                             <Space direction='vertical' align='center' size={6}>
                                                                 <Image src={bodyInfo.preview_3} width={150} height={150} />
                                                                 <Upload
@@ -681,7 +731,7 @@ function Create() {
                                                             </Space>
                                                         </Col>
                                                         <Col>
-                                                            <label className='picture-header-label'>사진 01(대표)</label>
+                                                            <label className='picture-header-label'>사진 04 (대표)</label>
                                                             <Space direction='vertical' align='center' size={6}>
                                                                 <Image src={bodyInfo.preview_4} width={150} height={150} />
                                                                 <Upload
@@ -700,9 +750,88 @@ function Create() {
                                                                 </Upload>
                                                             </Space>
                                                         </Col>
+                                                        <Col>
+                                                            <label className='picture-header-label'>사진 05 (대표)</label>
+                                                            <Space direction='vertical' align='center' size={6}>
+                                                                <Image src={bodyInfo.preview_5} width={150} height={150} />
+                                                                <Upload
+                                                                    accept='.png'
+                                                                    action='http://127.0.0.1:4200/model/logo'
+                                                                    fileList={[bodyInfo.picture_5]}
+                                                                    name='picture_5' 
+                                                                    onChange={async info => {
+                                                                        onChangeComponent('picture_5', info.file);
+                                                                    }}
+                                                                    itemRender={(originNode, file, currFileList) => (
+                                                                        <></>
+                                                                    )}
+                                                                >
+                                                                    <Button className='black-button'>등록</Button>
+                                                                </Upload>
+                                                            </Space>
+                                                        </Col>
+                                                        <Col>
+                                                            <label className='picture-header-label'>사진 06 (대표)</label>
+                                                            <Space direction='vertical' align='center' size={6}>
+                                                                <Image src={bodyInfo.preview_6} width={150} height={150} />
+                                                                <Upload
+                                                                    accept='.png'
+                                                                    action='http://127.0.0.1:4200/model/logo'
+                                                                    fileList={[bodyInfo.picture_6]}
+                                                                    name='picture_6' 
+                                                                    onChange={async info => {
+                                                                        onChangeComponent('picture_6', info.file);
+                                                                    }}
+                                                                    itemRender={(originNode, file, currFileList) => (
+                                                                        <></>
+                                                                    )}
+                                                                >
+                                                                    <Button className='black-button'>등록</Button>
+                                                                </Upload>
+                                                            </Space>
+                                                        </Col>
+                                                        <Col>
+                                                            <label className='picture-header-label'>사진 07 (대표)</label>
+                                                            <Space direction='vertical' align='center' size={6}>
+                                                                <Image src={bodyInfo.preview_7} width={150} height={150} />
+                                                                <Upload
+                                                                    accept='.png'
+                                                                    action='http://127.0.0.1:4200/model/logo'
+                                                                    fileList={[bodyInfo.picture_7]}
+                                                                    name='picture_7' 
+                                                                    onChange={async info => {
+                                                                        onChangeComponent('picture_7', info.file);
+                                                                    }}
+                                                                    itemRender={(originNode, file, currFileList) => (
+                                                                        <></>
+                                                                    )}
+                                                                >
+                                                                    <Button className='black-button'>등록</Button>
+                                                                </Upload>
+                                                            </Space>
+                                                        </Col>
+                                                        <Col>
+                                                            <label className='picture-header-label'>사진 08 (대표)</label>
+                                                            <Space direction='vertical' align='center' size={6}>
+                                                                <Image src={bodyInfo.preview_8} width={150} height={150} />
+                                                                <Upload
+                                                                    accept='.png'
+                                                                    action='http://127.0.0.1:4200/model/logo'
+                                                                    fileList={[bodyInfo.picture_8]}
+                                                                    name='picture_8' 
+                                                                    onChange={async info => {
+                                                                        onChangeComponent('picture_8', info.file);
+                                                                    }}
+                                                                    itemRender={(originNode, file, currFileList) => (
+                                                                        <></>
+                                                                    )}
+                                                                >
+                                                                    <Button className='black-button'>등록</Button>
+                                                                </Upload>
+                                                            </Space>
+                                                        </Col>
                                                     </Row>
                                                 </Space>
-                                                
                                             </Col>
                                         </Row>
                                     </Space>
@@ -872,22 +1001,7 @@ function Create() {
                     </Tabs>
                 </Space>
             </Space>
-            <Modal
-                centered
-                width={325}
-                closable={false}
-                visible={showModal}
-                footer={[
-                    <Button className='alert-button' onClick={onCloseModalClick}>확인</Button>
-                ]}
-            >
-                <Space direction='vertical' size={10} align='center' style={{width:'100%'}}>
-                    <img src={alert_icon} />
-                    <label className='alert-content-label'>[정보이름] - [필드이름]</label>
-                    <label className='alert-content-label'>작성되지 않은 정보가 있습니다.</label>
-                </Space>
-                
-            </Modal>
+            <AlertModal visible={showModal} onConfirmClick={() => setShowModal(false)} validationList={validationList} />
         </>
     );
 }

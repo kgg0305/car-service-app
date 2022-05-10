@@ -22,7 +22,7 @@ function List() {
 		group_id: null,
 		model_id: null,
 		lineup_id: null,
-		is_use: null
+		is_use: ''
 	});
 	
 	const initComponent = async () => {
@@ -85,6 +85,7 @@ function List() {
 			dataIndex: 'is_use',
 			key: 'is_use',
             align: 'center',
+			render: is_use => Constants.availableOptions.filter(item => item.value == is_use)[0].label
 		},
 		{
 			title: '관리',

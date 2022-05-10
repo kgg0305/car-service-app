@@ -15,6 +15,7 @@ const { TabPane } = Tabs;
 function Create() {
     let navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
+    const [validationList, setValidationList] = useState([]);
     const [showDeleteButton, setShowDeleteButton] = useState(false);
     const [brandOptionList, setBrandOptionList] = useState([]);
     const [bodyList, setBodyList] = useState([
@@ -33,7 +34,7 @@ function Create() {
                             number: 1,
                             condition_name: '',
                             discount_price: 0,
-                            price_unit: 0
+                            price_unit: '0'
                         }
                     ]
                 }
@@ -69,7 +70,7 @@ function Create() {
                                 number: 1,
                                 condition_name: '',
                                 discount_price: 0,
-                                price_unit: 0
+                                price_unit: '0'
                             }
                         ]
                     }
@@ -156,12 +157,36 @@ function Create() {
     }
 
     const onSaveClick = async() => {
-        const created_info = await CreateDiscountKindAPI(bodyList);
-        const startedIndex = created_info['insertId'];
-        
-        await CreateDiscountConditionAPI(startedIndex, bodyList);
-        // setShowModal(true);
-        navigate('/car/discount');
+        const validation = [];
+        bodyList.map((body, index) => {
+            if(body.brand_id === null) {
+                validation.push({
+                    title: '정보 ' + (index + 1) < 10 ? '0' + (index + 1) : (index + 1),
+                    name: '브랜드'
+                })
+            }
+            body.kindBodyList.map((kindBody, kindIndex) => {
+                if(kindBody.kind_name === '') {
+                    validation.push({
+                        title: '종류 ' + (kindIndex + 1) < 10 ? '0' + (kindIndex + 1) : (kindIndex + 1),
+                        name: '상품 ' + (kindIndex + 1) < 10 ? '0' + (kindIndex + 1) : (kindIndex + 1) + '(할인 종류 이름)',
+                    })
+                }
+            })
+        });
+
+        setValidationList(validation);
+
+        if(validation.length > 0) {
+            setShowModal(true);
+        } else {
+            const created_info = await CreateDiscountKindAPI(bodyList);
+            const startedIndex = created_info['insertId'];
+            
+            await CreateDiscountConditionAPI(startedIndex, bodyList);
+            // setShowModal(true);
+            navigate('/car/discount');
+        }
     };
 
     const onCloseModalClick = () => {

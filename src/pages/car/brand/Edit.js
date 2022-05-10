@@ -1,11 +1,12 @@
-import { Col, Divider, Row, Space, Select, Button, Input, Image, Upload, Modal } from 'antd';
-import { CaretDownOutlined, PlusOutlined } from '@ant-design/icons'
+import { Col, Divider, Row, Space, Select, Button, Input, InputNumber, Image, Upload } from 'antd';
+import { CaretDownOutlined } from '@ant-design/icons'
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { CheckBrandNameAPI, GetBrandInfoAPI, UpdateBrandAPI, DeleteBrandInfoAPI } from '../../../api/Brand';
 import preview_default_image from '../../../assets/images/preview-default-image.png';
-import alert_icon from '../../../assets/images/alert-icon.png';
 import { Constants } from '../../../constants/Constants';
+import AlertModal from '../../../components/AlertModal';
+import AlertDeleteModal from '../../../components/AlertDeleteModal';
 
 const { Option } = Select;
 
@@ -13,6 +14,8 @@ function Edit() {
     let { id } = useParams();
     let navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [validationList, setValidationList] = useState([]);
     const [bodyInfo, setBodyInfo] = useState(
         {
             idx: id,
@@ -20,7 +23,7 @@ function Edit() {
             sequence: 1,
             nation: null,
             is_income: null,
-            is_use: null,
+            is_use: '0',
             public_uri: '',
             room_uri: '',
             service_uri: '',
@@ -35,7 +38,7 @@ function Edit() {
 		const initBodyInfo = await GetBrandInfoAPI(id);
 		setBodyInfo({
             ...initBodyInfo,
-            preview: initBodyInfo.logo
+            preview: window.location.origin + '/uploads/brand/' + initBodyInfo.logo
         });
 	}
 
@@ -80,19 +83,80 @@ function Edit() {
         );
     }
 
-    const onSaveClick = async() => {
-        await UpdateBrandAPI(bodyInfo);
-        // setShowModal(true);
-        navigate('/car/brand');
+    const onSaveClick = async(url) => {
+        const validation = [];
+        if(bodyInfo.brand_name === '') {
+            validation.push({
+                title: '정보 ',
+                name: '브랜드'
+            })
+        }
+        if(bodyInfo.sequence === null) {
+            validation.push({
+                title: '정보 ',
+                name: '순서'
+            })
+        }
+        if(bodyInfo.nation === null) {
+            validation.push({
+                title: '정보 ',
+                name: '국가'
+            })
+        }
+        if(bodyInfo.is_income === null) {
+            validation.push({
+                title: '정보 ',
+                name: '수입여부'
+            })
+        }
+        if(bodyInfo.public_uri === '') {
+            validation.push({
+                title: '정보 ',
+                name: '공식사이트'
+            })
+        }
+        if(bodyInfo.room_uri === '') {
+            validation.push({
+                title: '정보 ',
+                name: '전시장 안내'
+            })
+        }
+        if(bodyInfo.service_uri === '') {
+            validation.push({
+                title: '정보 ',
+                name: '서비스 센터'
+            })
+        }
+        if(bodyInfo.deposit_uri === '') {
+            validation.push({
+                title: '정보 ',
+                name: '보증금 안내'
+            })
+        }
+        if(bodyInfo.preview === preview_default_image) {
+            validation.push({
+                title: '정보 ',
+                name: '로고'
+            })
+        }
+
+        setValidationList(validation);
+
+        if(validation.length > 0) {
+            setShowModal(true);
+        } else {
+            await UpdateBrandAPI(bodyInfo);
+            navigate(url);
+        }
     };
 
-    const onDeleteClick = async(idx) => {
-        await DeleteBrandInfoAPI(idx);
-        navigate('/car/brand');
-    }
+    const onDeleteClick = async() => {
+        setShowDeleteModal(true);
+    };
 
-    const onCloseModalClick = () => {
-        setShowModal(false);
+    const deleteInfo = async() => {
+        await DeleteBrandInfoAPI(id);
+        navigate('/car/brand');
     };
 
     return(
@@ -110,7 +174,7 @@ function Edit() {
                                 <Link to="/car/brand">
                                     <Button className='white-button medium-button'>취소</Button>
                                 </Link>
-                                <Button className='black-button medium-button' onClick={onSaveClick}>저장하고 나가기</Button>
+                                <Button className='black-button medium-button' onClick={() => onSaveClick('/car/brand')}>저장하고 나가기</Button>
                             </Space>
                         </Col>
                     </Row>
@@ -159,13 +223,15 @@ function Edit() {
                                     </Col>
                                     <Col flex="auto" className='table-value-col-section'>
                                         <Space>
-                                            <Input
+                                            <InputNumber
                                                 name='sequence' 
                                                 value={bodyInfo.sequence} 
-                                                onChange={e => {
-                                                    onChangeComponent(e.target.name, e.target.value);
+                                                onChange={number => {
+                                                    onChangeComponent('sequence', number);
                                                 }} 
-                                                maxLength={6} style={{ width: 150 }} 
+                                                maxLength={6} 
+                                                style={{ width: 150 }} 
+                                                controls={false}
                                             />
                                             <label className='order-description-label'>숫자가 낮을수록 먼저 노출이 됩니다.</label>
                                         </Space>
@@ -340,27 +406,13 @@ function Edit() {
                     
                     <Row justify="center" gutter={[17, 0]}>
                         <Col>
-                            <Button className='white-button rounded-button' icon={<PlusOutlined />} onClick={() => onDeleteClick(bodyInfo.idx)}>삭제하기</Button>
+                            <Button className='white-button rounded-button' onClick={() => onDeleteClick()}>삭제하기</Button>
                         </Col>
                     </Row>
                 </Space>
             </Space>
-            <Modal
-                centered
-                width={325}
-                closable={false}
-                visible={showModal}
-                footer={[
-                    <Button className='alert-button' onClick={onCloseModalClick}>확인</Button>
-                ]}
-            >
-                <Space direction='vertical' size={10} align='center' style={{width:'100%'}}>
-                    <img src={alert_icon} />
-                    <label className='alert-content-label'>[정보이름] - [필드이름]</label>
-                    <label className='alert-content-label'>작성되지 않은 정보가 있습니다.</label>
-                </Space>
-                
-            </Modal>
+            <AlertModal visible={showModal} onConfirmClick={() => setShowModal(false)} validationList={validationList} />
+            <AlertDeleteModal visible={showDeleteModal} onConfirmClick={() => deleteInfo()} onCancelClick={() => setShowDeleteModal(false)} validationList={validationList} />
         </>
     );
 }

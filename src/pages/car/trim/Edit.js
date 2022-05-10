@@ -1,4 +1,4 @@
-import { Col, Divider, Row, Space, Select, Button, Input, Modal, Tabs, Switch } from 'antd';
+import { Col, Divider, Row, Space, Select, Button, Input, Modal, Tabs, Switch, InputNumber } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons'
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
@@ -9,6 +9,8 @@ import { GetLineupOptionListAPI } from '../../../api/Lineup';
 import { GetTrimInfoAPI, CheckTrimNameAPI, UpdateTrimAPI, DeleteTrimInfoAPI } from '../../../api/Trim';
 import alert_icon from '../../../assets/images/alert-icon.png';
 import { Constants } from '../../../constants/Constants';
+import AlertModal from '../../../components/AlertModal';
+import AlertDeleteModal from '../../../components/AlertDeleteModal';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -16,14 +18,16 @@ const { TabPane } = Tabs;
 function Create() {
     let { id } = useParams();
     let navigate = useNavigate();
+    const [showModal, setShowModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [validationList, setValidationList] = useState([]);
     const [brandOptionList, setBrandOptionList] = useState([]);
 	const [groupOptionList, setGroupOptionList] = useState([]);
     const [modelOptionList, setModelOptionList] = useState([]);
     const [lineupOptionList, setLineupOptionList] = useState([]);
-    const [showModal, setShowModal] = useState(false);
     const [bodyInfo, setBodyInfo] = useState(
         {
-            number: 1,
+            title: '정보 ',
             brand_id: null,
             group_id: null,
             model_id: null,
@@ -63,24 +67,76 @@ function Create() {
         setBodyInfo(
             { 
                 ...bodyInfo,
+                group_id: name == 'brand_id' ? null : bodyInfo.group_id,
+                model_id: (name == 'brand_id' || name == 'group_id') ? null : bodyInfo.model_id,
+                lineup_id: (name == 'brand_id' || name == 'group_id' || name == 'model_id') ? null : bodyInfo.lineup_id,
                 [name]: value
             }
         );
     }
 
-    const onSaveClick = async() => {
-        await UpdateTrimAPI(bodyInfo);
-        // setShowModal(true);
-        navigate('/car/trim');
+    const onSaveClick = async(url) => {
+        const validation = [];
+        if(bodyInfo.brand_id === null) {
+            validation.push({
+                title: '정보 ',
+                name: '차량(브랜드)'
+            })
+        }
+        if(bodyInfo.group_id === null) {
+            validation.push({
+                title: '정보 ',
+                name: '차량(모델그룹)'
+            })
+        }
+        if(bodyInfo.model_id === null) {
+            validation.push({
+                title: '정보 ',
+                name: '차량(모델)'
+            })
+        }
+        if(bodyInfo.lineup_id === null) {
+            validation.push({
+                title: '정보 ',
+                name: '차량(라인업)'
+            })
+        }
+        if(bodyInfo.trim_name === '') {
+            validation.push({
+                title: '정보 ',
+                name: '트림'
+            })
+        }
+        if(bodyInfo.gearbox_type === null) {
+            validation.push({
+                title: '정보 ',
+                name: '변속기'
+            })
+        }
+        if(bodyInfo.price === '') {
+            validation.push({
+                title: '정보 ',
+                name: '가격'
+            })
+        }
+
+        setValidationList(validation);
+
+        if(validation.length > 0) {
+            setShowModal(true);
+        } else {
+            await UpdateTrimAPI(bodyInfo);
+            navigate(url);
+        }
     };
 
-    const onDeleteClick = async(idx) => {
-        await DeleteTrimInfoAPI(idx);
-        navigate('/car/trim');
-    }
+    const onDeleteClick = async() => {
+        setShowDeleteModal(true);
+    };
 
-    const onCloseModalClick = () => {
-        setShowModal(false);
+    const deleteInfo = async() => {
+        await DeleteTrimInfoAPI(id);
+        navigate('/car/trim');
     };
 
     return(
@@ -98,7 +154,7 @@ function Create() {
                                 <Link to="/car/trim">
                                     <Button className='white-button medium-button'>취소</Button>
                                 </Link>
-                                <Button className='black-button medium-button' onClick={onSaveClick}>저장하고 나가기</Button>
+                                <Button className='black-button medium-button' onClick={() => onSaveClick('/car/trim')}>저장하고 나가기</Button>
                             </Space>
                         </Col>
                     </Row>
@@ -153,7 +209,7 @@ function Create() {
                                                         style={{ width: 300 }}
                                                     >
                                                         {
-                                                            groupOptionList.map((optionItem, optionIndex) => (
+                                                            groupOptionList.filter(item => item.brand_id === bodyInfo.brand_id).map((optionItem, optionIndex) => (
                                                                 <Select.Option key={optionIndex} value={optionItem.value}>
                                                                     {optionItem.label}
                                                                 </Select.Option>
@@ -171,7 +227,7 @@ function Create() {
                                                         style={{ width: 300 }}
                                                     >
                                                         {
-                                                            modelOptionList.map((optionItem, optionIndex) => (
+                                                            modelOptionList.filter(item => item.group_id === bodyInfo.group_id).map((optionItem, optionIndex) => (
                                                                 <Select.Option key={optionIndex} value={optionItem.value}>
                                                                     {optionItem.label}
                                                                 </Select.Option>
@@ -189,7 +245,7 @@ function Create() {
                                                         style={{ width: 400 }}
                                                     >
                                                         {
-                                                            lineupOptionList.map((optionItem, optionIndex) => (
+                                                            lineupOptionList.filter(item => item.model_id === bodyInfo.model_id).map((optionItem, optionIndex) => (
                                                                 <Select.Option key={optionIndex} value={optionItem.value}>
                                                                     {optionItem.label}
                                                                 </Select.Option>
@@ -255,12 +311,14 @@ function Create() {
                                                 <label>가격</label>
                                             </Col>
                                             <Col span={10} className='table-value-col-section'>
-                                                <Input 
+                                                <InputNumber 
                                                     name='price' 
                                                     value={bodyInfo.price} 
-                                                    onChange={e => {
-                                                        onChangeComponent(e.target.name, e.target.value);
+                                                    onChange={number => {
+                                                        onChangeComponent('price', number);
                                                     }} 
+                                                    controls={false}
+                                                    maxLength={9}
                                                     style={{ width: 150 }} 
                                                 />
                                             </Col>
@@ -565,24 +623,16 @@ function Create() {
                             </Space>
                         </TabPane>
                     </Tabs>
+
+                    <Row justify="center" gutter={[17, 0]}>
+                        <Col>
+                            <Button className='white-button rounded-button' onClick={() => onDeleteClick()}>삭제하기</Button>
+                        </Col>
+                    </Row>
                 </Space>
             </Space>
-            <Modal
-                centered
-                width={325}
-                closable={false}
-                visible={showModal}
-                footer={[
-                    <Button className='alert-button' onClick={onCloseModalClick}>확인</Button>
-                ]}
-            >
-                <Space direction='vertical' size={10} align='center' style={{width:'100%'}}>
-                    <img src={alert_icon} />
-                    <label className='alert-content-label'>[정보이름] - [필드이름]</label>
-                    <label className='alert-content-label'>작성되지 않은 정보가 있습니다.</label>
-                </Space>
-                
-            </Modal>
+            <AlertModal visible={showModal} onConfirmClick={() => setShowModal(false)} validationList={validationList} />
+            <AlertDeleteModal visible={showDeleteModal} onConfirmClick={() => deleteInfo(bodyInfo.idx)} onCancelClick={() => setShowDeleteModal(false)} validationList={validationList} />
         </>
     );
 }

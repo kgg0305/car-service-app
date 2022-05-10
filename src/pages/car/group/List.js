@@ -63,8 +63,7 @@ function List() {
 			dataIndex: 'is_use',
 			key: 'is_use',
             align: 'center',
-			render: is_use => 
-				is_use == 0 ? '사용' : '미사용'
+			render: is_use => Constants.availableOptions.filter(item => item.value == is_use)[0].label
 		},
 		{
 			title: '관리',
@@ -75,8 +74,8 @@ function List() {
                 <Row justify='center'>
                     <Col>
                         <Space size={15} split={<Divider type="vertical" />}>
-                            <Link to="/car/group/edit/">
-                                <Button className='white-button small-button rounded-button'>그룹관리</Button>
+                            <Link to="/car/model">
+                                <Button className='white-button small-button rounded-button'>모델관리</Button>
                             </Link>
                             <Link to={"/car/group/edit/" + idx}>
                                 <Button className='black-button small-button rounded-button'>수정</Button>

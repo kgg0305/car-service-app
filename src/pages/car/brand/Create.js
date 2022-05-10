@@ -1,18 +1,19 @@
-import { Col, Divider, Row, Space, Select, Button, Input, Image, Upload, Modal } from 'antd';
+import { Col, Divider, Row, Space, Select, Button, Input, Image, Upload, InputNumber } from 'antd';
 import { CaretDownOutlined, PlusOutlined } from '@ant-design/icons'
 import { Link, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import { CheckBrandNameAPI, CreateBrandAPI } from '../../../api/Brand';
 import preview_default_image from '../../../assets/images/preview-default-image.png';
 import styles from '../../../assets/styles/pages/car/brand/Create.module.css';
-import alert_icon from '../../../assets/images/alert-icon.png';
 import { Constants } from '../../../constants/Constants';
+import AlertModal from '../../../components/AlertModal';
 
 const { Option } = Select;
 
 function Create() {
     let navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
+    const [validationList, setValidationList] = useState([]);
     const [showDeleteButton, setShowDeleteButton] = useState(false);
     const [bodyList, setBodyList] = useState([
         {
@@ -21,7 +22,7 @@ function Create() {
             sequence: 1,
             nation: null,
             is_income: null,
-            is_use: null,
+            is_use: '0',
             public_uri: '',
             room_uri: '',
             service_uri: '',
@@ -69,16 +70,16 @@ function Create() {
             setBodyList([...bodyList, {
                 number: bodyList[bodyList.length - 1].number + 1,
                 brand_name: '',
-                sequence: 1,
+                sequence: bodyList[bodyList.length - 1].number + 1,
                 nation: null,
                 is_income: null,
-                is_use: null,
+                is_use: 0,
                 public_uri: '',
                 room_uri: '',
                 service_uri: '',
                 deposit_uri: '',
                 logo: {},
-                preview: null,
+                preview: preview_default_image,
             }]);
         }
     };
@@ -96,20 +97,73 @@ function Create() {
         setBodyList(bodyList.map(body => body.number === number ? {...body, [name]: value} : body));
     }
 
-    const onSaveClick = async() => {
-        await CreateBrandAPI(bodyList);
-        // setShowModal(true);
-        navigate('/car/brand');
-    };
+    const onSaveClick = async(url) => {
+        const validation = [];
+        bodyList.map((body, index) => {
+            if(body.brand_name === '') {
+                validation.push({
+                    title: '정보 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '브랜드'
+                })
+            }
+            if(body.sequence === null) {
+                validation.push({
+                    title: '정보 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '순서'
+                })
+            }
+            if(body.nation === null) {
+                validation.push({
+                    title: '정보 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '국가'
+                })
+            }
+            if(body.is_income === null) {
+                validation.push({
+                    title: '정보 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '수입여부'
+                })
+            }
+            if(body.public_uri === '') {
+                validation.push({
+                    title: '정보 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '공식사이트'
+                })
+            }
+            if(body.room_uri === '') {
+                validation.push({
+                    title: '정보 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '전시장 안내'
+                })
+            }
+            if(body.service_uri === '') {
+                validation.push({
+                    title: '정보 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '서비스 센터'
+                })
+            }
+            if(body.deposit_uri === '') {
+                validation.push({
+                    title: '정보 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '보증금 안내'
+                })
+            }
+            if(body.preview === preview_default_image) {
+                validation.push({
+                    title: '정보 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '로고'
+                })
+            }
+        });
 
-    const onSaveAndOtherClick = async() => {
-        await CreateBrandAPI(bodyList);
-        // setShowModal(true);
-        navigate('/car/group');
-    };
+        setValidationList(validation);
 
-    const onCloseModalClick = () => {
-        setShowModal(false);
+        if(validation.length > 0) {
+            setShowModal(true);
+        } else {
+            await CreateBrandAPI(bodyList);
+            navigate(url);
+        }
     };
 
     const renderBodyList = () => {
@@ -162,12 +216,14 @@ function Create() {
                                 </Col>
                                 <Col flex="auto" className='table-value-col-section'>
                                     <Space>
-                                        <Input name='sequence' 
+                                        <InputNumber name='sequence' 
                                             value={body.sequence} 
-                                            onChange={e => {
-                                                onChangeComponent(body.number, e.target.name, e.target.value);
+                                            onChange={number => {
+                                                onChangeComponent(body.number, 'sequence', number);
                                             }}
-                                            maxLength={6} style={{ width: 150 }} 
+                                            maxLength={6} 
+                                            style={{ width: 150 }} 
+                                            controls={false}
                                         />
                                         <label className={styles.orderDescriptionLabel}>숫자가 낮을수록 먼저 노출이 됩니다.</label>
                                     </Space>
@@ -354,9 +410,9 @@ function Create() {
                                 <Link to="/car/brand">
                                     <Button className='white-button medium-button'>취소</Button>
                                 </Link>
-                                <Button className='white-button medium-button' onClick={onSaveClick}>저장하고 나가기</Button>
+                                <Button className='white-button medium-button' onClick={() => onSaveClick('/car/brand')}>저장하고 나가기</Button>
                                 
-                                <Button className='black-button medium-button' onClick={onSaveAndOtherClick}>저장하고 모델그룹 등록하기</Button>
+                                <Button className='black-button medium-button' onClick={() => onSaveClick('/car/group')}>저장하고 모델그룹 등록하기</Button>
                             </Space>
                         </Col>
                     </Row>
@@ -376,22 +432,7 @@ function Create() {
                     </Row>
                 </Space>
             </Space>
-            <Modal
-                centered
-                width={325}
-                closable={false}
-                visible={showModal}
-                footer={[
-                    <Button className='alert-button' onClick={onCloseModalClick}>확인</Button>
-                ]}
-            >
-                <Space direction='vertical' size={10} align='center' style={{width:'100%'}}>
-                    <img src={alert_icon} />
-                    <label className='alert-content-label'>[정보이름] - [필드이름]</label>
-                    <label className='alert-content-label'>작성되지 않은 정보가 있습니다.</label>
-                </Space>
-                
-            </Modal>
+            <AlertModal visible={showModal} onConfirmClick={() => setShowModal(false)} validationList={validationList} />
         </>
     );
 }

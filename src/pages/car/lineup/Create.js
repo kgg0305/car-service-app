@@ -8,6 +8,7 @@ import { GetModelOptionListAPI } from '../../../api/Model';
 import { CheckLineupNameAPI, CreateLineupAPI } from '../../../api/Lineup';
 import alert_icon from '../../../assets/images/alert-icon.png';
 import { Constants } from '../../../constants/Constants';
+import AlertModal from '../../../components/AlertModal';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -15,21 +16,22 @@ const { TabPane } = Tabs;
 function Create() {
     let navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
+    const [validationList, setValidationList] = useState([]);
     const [brandOptionList, setBrandOptionList] = useState([]);
 	const [groupOptionList, setGroupOptionList] = useState([]);
     const [modelOptionList, setModelOptionList] = useState([]);
     const [bodyInfo, setBodyInfo] = useState(
         {
-            number: 1,
+            title: '정보 ',
             brand_id: null,
             group_id: null,
             model_id: null,
             model_lineup_ids: '',
             model_color_ids: '',
             lineup_name: '',
-            fule_kind: '',
-            year_type: '2022',
-            is_use: '',
+            fule_kind: null,
+            year_type: new Date().getFullYear(),
+            is_use: '0',
             is_use_lineup: '',
             is_use_color: '',
             check_name: ''
@@ -59,19 +61,60 @@ function Create() {
         setBodyInfo(
             { 
                 ...bodyInfo,
+                group_id: name == 'brand_id' ? null : bodyInfo.group_id,
+                model_id: (name == 'brand_id' || name == 'group_id') ? null : bodyInfo.model_id,
                 [name]: value
             }
         );        
     }
 
-    const onSaveClick = async() => {
-        await CreateLineupAPI(bodyInfo);
-        // setShowModal(true);
-        navigate('/car/lineup');
-    };
+    const onSaveClick = async(url) => {
+        const validation = [];
+        if(bodyInfo.brand_id === null) {
+            validation.push({
+                title: '정보 ',
+                name: '차량(브랜드)'
+            })
+        }
+        if(bodyInfo.group_id === null) {
+            validation.push({
+                title: '정보 ',
+                name: '차량(모델그룹)'
+            })
+        }
+        if(bodyInfo.model_id === null) {
+            validation.push({
+                title: '정보 ',
+                name: '차량(모델)'
+            })
+        }
+        if(bodyInfo.lineup_name === '') {
+            validation.push({
+                title: '정보 ',
+                name: '라인업'
+            })
+        }
+        if(bodyInfo.fule_kind === null) {
+            validation.push({
+                title: '정보 ',
+                name: '연료'
+            })
+        }
+        if(bodyInfo.year_type === '') {
+            validation.push({
+                title: '정보 ',
+                name: '연식'
+            })
+        }
 
-    const onCloseModalClick = () => {
-        setShowModal(false);
+        setValidationList(validation);
+
+        if(validation.length > 0) {
+            setShowModal(true);
+        } else {
+            await CreateLineupAPI(bodyInfo);
+            navigate(url);
+        }
     };
 
     return(
@@ -89,9 +132,9 @@ function Create() {
                                 <Link to="/car/lineup">
                                     <Button className='white-button medium-button'>취소</Button>
                                 </Link>
-                                <Button className='white-button medium-button' onClick={onSaveClick}>저장하고 나가기</Button>
+                                <Button className='white-button medium-button' onClick={() => onSaveClick('/car/lineup')}>저장하고 나가기</Button>
                                 
-                                <Button className='black-button medium-button'>저장하고 모델그룹 등록하기</Button>
+                                <Button className='black-button medium-button' onClick={() => onSaveClick('/car/trim')}>저장하고 트림 등록하기</Button>
                             </Space>
                         </Col>
                     </Row>
@@ -145,7 +188,7 @@ function Create() {
                                             style={{ width: 300 }}
                                         >
                                             {
-                                                groupOptionList.map((optionItem, optionIndex) => (
+                                                groupOptionList.filter(item => item.brand_id === bodyInfo.brand_id).map((optionItem, optionIndex) => (
                                                     <Select.Option key={optionIndex} value={optionItem.value}>
                                                         {optionItem.label}
                                                     </Select.Option>
@@ -165,7 +208,7 @@ function Create() {
                                             style={{ width: 300 }}
                                         >
                                             {
-                                                modelOptionList.map((optionItem, optionIndex) => (
+                                                modelOptionList.filter(item => item.group_id === bodyInfo.group_id).map((optionItem, optionIndex) => (
                                                     <Select.Option key={optionIndex} value={optionItem.value}>
                                                         {optionItem.label}
                                                     </Select.Option>
@@ -331,22 +374,7 @@ function Create() {
                     </Space>
                 </Space>
             </Space>
-            <Modal
-                centered
-                width={325}
-                closable={false}
-                visible={showModal}
-                footer={[
-                    <Button className='alert-button' onClick={onCloseModalClick}>확인</Button>
-                ]}
-            >
-                <Space direction='vertical' size={10} align='center' style={{width:'100%'}}>
-                    <img src={alert_icon} />
-                    <label className='alert-content-label'>[정보이름] - [필드이름]</label>
-                    <label className='alert-content-label'>작성되지 않은 정보가 있습니다.</label>
-                </Space>
-                
-            </Modal>
+            <AlertModal visible={showModal} onConfirmClick={() => setShowModal(false)} validationList={validationList} />
         </>
     );
 }

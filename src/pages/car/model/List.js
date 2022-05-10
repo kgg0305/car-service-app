@@ -17,7 +17,7 @@ function List() {
 		brand_id: null,
 		group_id: null,
 		is_new: null,
-		is_use: null
+		is_use: ''
 	});
 	
 	const initComponent = async () => {
@@ -78,8 +78,7 @@ function List() {
 			dataIndex: 'is_use',
 			key: 'is_use',
             align: 'center',
-			render: is_use => 
-				is_use == 0 ? '사용' : '미사용'
+			render: is_use => Constants.availableOptions.filter(item => item.value == is_use)[0].label
 		},
         {
 			title: '등록일',
@@ -96,8 +95,8 @@ function List() {
                 <Row justify='center'>
                     <Col>
                         <Space size={15} split={<Divider type="vertical" />}>
-                            <Link to="/car/model/edit">
-                                <Button className='white-button small-button rounded-button'>그룹관리</Button>
+                            <Link to="/car/lineup">
+                                <Button className='white-button small-button rounded-button'>라인업관리</Button>
                             </Link>
                             <Link to={"/car/model/edit/" + idx}>
                                 <Button className='black-button small-button rounded-button'>수정</Button>
