@@ -10,6 +10,7 @@ import AlertDeleteModal from '../../../components/AlertDeleteModal';
 
 const { Option } = Select;
 
+// 수정페지
 function Edit() {
     let { id } = useParams();
     let navigate = useNavigate();
@@ -412,7 +413,7 @@ function Edit() {
                 </Space>
             </Space>
             <AlertModal visible={showModal} onConfirmClick={() => setShowModal(false)} validationList={validationList} />
-            <AlertDeleteModal visible={showDeleteModal} onConfirmClick={() => deleteInfo()} onCancelClick={() => setShowDeleteModal(false)} validationList={validationList} />
+            <AlertDeleteModal visible={showDeleteModal} onConfirmClick={() => deleteInfo()} onCancelClick={() => setShowDeleteModal(false)} />
         </>
     );
 }

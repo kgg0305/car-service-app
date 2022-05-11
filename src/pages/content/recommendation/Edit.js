@@ -4,19 +4,22 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { DeleteRecommendationInfoAPI, GetRecommendationInfoAPI, UpdateRecommendationAPI } from '../../../api/Recommendation';
 import { GetContentInfoAPI } from '../../../api/Content';
+import AlertModal from '../../../components/AlertModal';
+import { GetDateStringFromDate } from '../../../constants/GlobalFunctions';
 
 const { Option } = Select;
 
+// 수정페지
 function Edit() {
     let { id } = useParams();
     let navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
+    const [validationList, setValidationList] = useState([]);
     const [bodyInfo, setBodyInfo] = useState(
         {
             idx: id,
             publish_date: new Date(),
-            content_ids: '',
-            status: null
+            content_ids: ''
         }
     );
     const [contentBodyList, setContentBodyList] = useState([
@@ -56,16 +59,45 @@ function Edit() {
         );
     }
 
-    const onSaveClick = async() => {
-        const updateBodyInfo = {
-            ...bodyInfo,
-            publish_date: new Date(bodyInfo.publish_date).getFullYear() + '-' + ("0" + (new Date(bodyInfo.publish_date).getMonth() + 1)).slice(-2) + '-' + ("0" + new Date(bodyInfo.publish_date).getDate()).slice(-2),
-            content_ids: contentBodyList.map(body => body.idx).join(',')
+    const onSaveClick = async(url) => {
+        const validation = [];
+        if(bodyInfo.publish_date === null) {
+            validation.push({
+                title: '정보',
+                name: '발행일'
+            })
         }
+        contentBodyList.map((body, index) => {
+            if(body.idx === null) {
+                validation.push({
+                    title: '뉴스 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '콘텐츠 번호'
+                })
+            }
+            if(body.title === '등록되지 않은 콘텐츠입니다.') {
+                validation.push({
+                    title: '뉴스 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '콘텐츠 내용'
+                })
+            }
+        });
 
-        await UpdateRecommendationAPI(updateBodyInfo);
-        // setShowModal(true);
-        navigate('/content/recommendation');
+        setValidationList(validation);
+
+        if(validation.length > 0) {
+            setShowModal(true);
+        } else {
+            const updateBodyInfo = {
+                publish_date: GetDateStringFromDate(new Date(bodyInfo.publish_date)),
+                content_ids: contentBodyList.map(body => body.idx).join(',')
+            }
+    
+            await UpdateRecommendationAPI(updateBodyInfo);
+            
+            setBodyInfo(updateBodyInfo);
+            // setShowModal(true);
+            navigate('/content/recommendation');
+        }
     };
 
     const onDeleteClick = async(idx) => {
@@ -241,6 +273,7 @@ function Edit() {
                     </Space>
                 </Space>
             </Space>
+            <AlertModal visible={showModal} onConfirmClick={() => setShowModal(false)} validationList={validationList} />
         </>
     );
 }

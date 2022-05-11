@@ -16,8 +16,7 @@ export async function CreateRecommendationAPI(body) {
     var data = [
         {
             publish_date: body.publish_date,
-            content_ids: body.content_ids,
-            status: body.status
+            content_ids: body.content_ids
         }
     ];
 
@@ -33,8 +32,7 @@ export async function CreateRecommendationAPI(body) {
 export async function UpdateRecommendationAPI(body) {
     var data = {
         publish_date: body.publish_date,
-        content_ids: body.content_ids,
-        status: body.status
+        content_ids: body.content_ids
     };
     
     try {

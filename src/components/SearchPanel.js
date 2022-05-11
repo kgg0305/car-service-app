@@ -3,6 +3,7 @@ import { Col, Row, Space, Button } from 'antd';
 import ContentItem from './ContentItem';
 import styles from "../assets/styles/components/SearchPanel.module.css";
 
+// 검색테이블
 function SearchPanel({ title, actionButtonTitle, disableInitButton, dataSource, onSearch }) {
 
     var initSearchData = {};

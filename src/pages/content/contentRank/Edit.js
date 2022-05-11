@@ -7,7 +7,8 @@ import { GetContentInfoAPI } from '../../../api/Content';
 
 const { Option } = Select;
 
-function Create() {
+// 수정페지
+function Edit() {
     let navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
     const [rankBodyInfo, setRankBodyInfo] = useState({
@@ -204,4 +205,4 @@ function Create() {
     );
 }
 
-export default Create;
+export default Edit;

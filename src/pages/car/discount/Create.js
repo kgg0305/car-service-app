@@ -8,10 +8,12 @@ import alert_icon from '../../../assets/images/alert-icon.png';
 import { CreateDiscountKindAPI } from '../../../api/DiscountKind';
 import { Constants } from '../../../constants/Constants';
 import { CreateDiscountConditionAPI } from '../../../api/DiscountCondition';
+import AlertModal from '../../../components/AlertModal';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
 
+// 등록페지
 function Create() {
     let navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
@@ -161,15 +163,15 @@ function Create() {
         bodyList.map((body, index) => {
             if(body.brand_id === null) {
                 validation.push({
-                    title: '정보 ' + (index + 1) < 10 ? '0' + (index + 1) : (index + 1),
+                    title: '정보 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
                     name: '브랜드'
                 })
             }
             body.kindBodyList.map((kindBody, kindIndex) => {
                 if(kindBody.kind_name === '') {
                     validation.push({
-                        title: '종류 ' + (kindIndex + 1) < 10 ? '0' + (kindIndex + 1) : (kindIndex + 1),
-                        name: '상품 ' + (kindIndex + 1) < 10 ? '0' + (kindIndex + 1) : (kindIndex + 1) + '(할인 종류 이름)',
+                        title: '종류 ' + ((kindIndex + 1) < 10 ? '0' + (kindIndex + 1) : (kindIndex + 1)),
+                        name: '상품 ' + ((kindIndex + 1) < 10 ? '0' + (kindIndex + 1) : (kindIndex + 1) + '(할인 종류 이름)'),
                     })
                 }
             })
@@ -335,7 +337,8 @@ function Create() {
                                         onChange={e => {
                                             onChangeKindComponent(body.number, kindBody.number, e.target.name, e.target.value);
                                         }} 
-                                        placeholder="할인 종류 이름" style={{ width: 300 }} 
+                                        placeholder="할인 종류 이름" 
+                                        maxLength={18} style={{ width: 300 }} 
                                     />
                                     <Input 
                                         name='kind_detail' 
@@ -343,7 +346,8 @@ function Create() {
                                         onChange={e => {
                                             onChangeKindComponent(body.number, kindBody.number, e.target.name, e.target.value);
                                         }} 
-                                        placeholder="세부 내용 입력" style={{ width: 900 }} 
+                                        placeholder="세부 내용 입력"
+                                        maxLength={50} style={{ width: 900 }} 
                                     />
                                 </Space>
                                 { 
@@ -488,22 +492,7 @@ function Create() {
                     </Tabs>
                 </Space>
             </Space>
-            <Modal
-                centered
-                width={325}
-                closable={false}
-                visible={showModal}
-                footer={[
-                    <Button className='alert-button' onClick={onCloseModalClick}>확인</Button>
-                ]}
-            >
-                <Space direction='vertical' size={10} align='center' style={{width:'100%'}}>
-                    <img src={alert_icon} />
-                    <label className='alert-content-label'>[정보이름] - [필드이름]</label>
-                    <label className='alert-content-label'>작성되지 않은 정보가 있습니다.</label>
-                </Space>
-                
-            </Modal>
+            <AlertModal visible={showModal} onConfirmClick={() => setShowModal(false)} validationList={validationList} />
         </>
     );
 }

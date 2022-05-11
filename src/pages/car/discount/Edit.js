@@ -7,18 +7,23 @@ import { GetBrandOptionListAPI } from '../../../api/Brand';
 import { GetDiscountKindInfoAPI, UpdateDiscountKindAPI, DeleteDiscountKindInfoAPI } from '../../../api/DiscountKind';
 import alert_icon from '../../../assets/images/alert-icon.png';
 import { Constants } from '../../../constants/Constants';
+import AlertModal from '../../../components/AlertModal';
+import AlertDeleteModal from '../../../components/AlertDeleteModal';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
 
-function Create() {
+// 수정페지
+function Edit() {
     let { id } = useParams();
     let navigate = useNavigate();
-    const [brandOptionList, setBrandOptionList] = useState([]);
     const [showModal, setShowModal] = useState(false);
-    const [kindBodyInfo, setKindBodyInfo] = useState(
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [validationList, setValidationList] = useState([]);
+    const [brandOptionList, setBrandOptionList] = useState([]);
+    const [bodyInfo, setBodyInfo] = useState(
         {
-            idx: 1,
+            idx: id,
             brand_id: null,
             kind_name: '',
             kind_detail: '',
@@ -39,20 +44,20 @@ function Create() {
 
     const initComponent = async () => {
         const initBrandOptionList = await GetBrandOptionListAPI();
-		const initKindBodyInfo = await GetDiscountKindInfoAPI(id);
+		const initBodyInfo = await GetDiscountKindInfoAPI(id);
 
         setBrandOptionList(initBrandOptionList);
-		setKindBodyInfo(initKindBodyInfo);
+		setBodyInfo(initBodyInfo);
 	}
 
 	useEffect(() => {
 		initComponent();
 	}, []);
 
-    const onChangeKindComponent = (name, value) => {
-        setKindBodyInfo(
+    const onChangeComponent = (name, value) => {
+        setBodyInfo(
             { 
-                ...kindBodyInfo,
+                ...bodyInfo,
                 [name]: value
             }
         );
@@ -61,25 +66,50 @@ function Create() {
     const onChangeConditionComponent = (number, name, value) => {
         // setConditionBodyList(
         //     { 
-        //         ...kindBodyInfo,
+        //         ...bodyInfo,
         //         [name]: value
         //     }
         // );
     }
 
     const onSaveClick = async() => {
-        await UpdateDiscountKindAPI(kindBodyInfo);
-        // setShowModal(true);
-        navigate('/car/discount');
+        const validation = [];
+        if(bodyInfo.brand_id === null) {
+            validation.push({
+                title: '정보',
+                name: '브랜드'
+            })
+        }
+        if(bodyInfo.kind_name === '') {
+            validation.push({
+                title: '종류',
+                name: '할인종류 이름',
+            })
+        }
+        if(bodyInfo.kind_detail === '') {
+            validation.push({
+                title: '종류',
+                name: '세부내용',
+            })
+        }
+
+        setValidationList(validation);
+
+        if(validation.length > 0) {
+            setShowModal(true);
+        } else {
+            await UpdateDiscountKindAPI(bodyInfo);
+            navigate('/car/discount');
+        }
     };
 
-    const onDeleteClick = async(idx) => {
-        await DeleteDiscountKindInfoAPI(idx);
-        navigate('/car/discount');
-    }
+    const onDeleteClick = async() => {
+        setShowDeleteModal(true);
+    };
 
-    const onCloseModalClick = () => {
-        setShowModal(false);
+    const deleteInfo = async() => {
+        await DeleteDiscountKindInfoAPI(id);
+        navigate('/car/discount');
     };
 
     const renderConditionBodyList = () => {
@@ -165,9 +195,9 @@ function Create() {
                                             <Col span={5} className='table-value-col-section'>
                                                 <Select
                                                     name='brand_id' 
-                                                    value={kindBodyInfo.brand_id} 
+                                                    value={bodyInfo.brand_id} 
                                                     onChange={value => {
-                                                        onChangeKindComponent('brand_id', value);
+                                                        onChangeComponent('brand_id', value);
                                                     }}
                                                     suffixIcon={<CaretDownOutlined />}
                                                     placeholder="브랜드 선택"
@@ -202,22 +232,23 @@ function Create() {
                                                     <Space size={6}>
                                                         <Input 
                                                             name='kind_name' 
-                                                            value={kindBodyInfo.kind_name} 
+                                                            value={bodyInfo.kind_name} 
                                                             onChange={e => {
-                                                                onChangeKindComponent(e.target.name, e.target.value);
+                                                                onChangeComponent(e.target.name, e.target.value);
                                                             }} 
-                                                            placeholder="할인 종류 이름" style={{ width: 300 }} 
+                                                            placeholder="할인 종류 이름"
+                                                            maxLength={18} style={{ width: 300 }} 
                                                         />
                                                         <Input 
                                                             name='kind_detail' 
-                                                            value={kindBodyInfo.kind_detail} 
+                                                            value={bodyInfo.kind_detail} 
                                                             onChange={e => {
-                                                                onChangeKindComponent(e.target.name, e.target.value);
+                                                                onChangeComponent(e.target.name, e.target.value);
                                                             }} 
-                                                            placeholder="세부 내용 입력" style={{ width: 900 }} 
+                                                            placeholder="세부 내용 입력"
+                                                            maxLength={50} style={{ width: 900 }} 
                                                         />
                                                     </Space>
-                                                    <Button className='white-button'>삭제</Button>
                                                 </Space>
                                             </Col>
                                         </Row>
@@ -229,18 +260,18 @@ function Create() {
                                                 <Space size={6}>
                                                 <DatePicker 
                                                     name='s_date' 
-                                                    value={moment(kindBodyInfo.s_date)} 
+                                                    value={moment(bodyInfo.s_date)} 
                                                     onChange={value => {
-                                                        onChangeKindComponent('s_date', value.toString());
+                                                        onChangeComponent('s_date', value.toString());
                                                     }}
                                                     placeholder='시작일' 
                                                 />
                                                 <label>~</label>
                                                 <DatePicker 
                                                     name='e_date' 
-                                                    value={moment(kindBodyInfo.e_date)} 
+                                                    value={moment(bodyInfo.e_date)} 
                                                     onChange={value => {
-                                                        onChangeKindComponent('e_date', value.toString());
+                                                        onChangeComponent('e_date', value.toString());
                                                     }}
                                                     placeholder='종료일' 
                                                 />
@@ -251,7 +282,7 @@ function Create() {
                                 </Space>
                                 <Row justify="center" gutter={[17, 0]}>
                                     <Col>
-                                        <Button className='white-button rounded-button' icon={<PlusOutlined />} onClick={() => onDeleteClick(kindBodyInfo.idx)}>삭제하기</Button>
+                                        <Button className='white-button rounded-button' icon={<PlusOutlined />} onClick={() => onDeleteClick(bodyInfo.idx)}>삭제하기</Button>
                                     </Col>
                                 </Row>
                             </Space>
@@ -311,24 +342,10 @@ function Create() {
                     </Tabs>
                 </Space>
             </Space>
-            <Modal
-                centered
-                width={325}
-                closable={false}
-                visible={showModal}
-                footer={[
-                    <Button className='alert-button' onClick={onCloseModalClick}>확인</Button>
-                ]}
-            >
-                <Space direction='vertical' size={10} align='center' style={{width:'100%'}}>
-                    <img src={alert_icon} />
-                    <label className='alert-content-label'>[정보이름] - [필드이름]</label>
-                    <label className='alert-content-label'>작성되지 않은 정보가 있습니다.</label>
-                </Space>
-                
-            </Modal>
+            <AlertModal visible={showModal} onConfirmClick={() => setShowModal(false)} validationList={validationList} />
+            <AlertDeleteModal visible={showDeleteModal} onConfirmClick={() => deleteInfo()} onCancelClick={() => setShowDeleteModal(false)} />
         </>
     );
 }
 
-export default Create;
+export default Edit;

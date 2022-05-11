@@ -7,6 +7,7 @@ import SearchPanel from '../../../components/SearchPanel';
 import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
 
+// 목록페지
 function List() {
 	const [offset, setOffset] = useState(0);
 	const [brandOptionList, setBrandOptionList] = useState([]);

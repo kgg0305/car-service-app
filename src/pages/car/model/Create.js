@@ -16,6 +16,7 @@ import AlertModal from '../../../components/AlertModal';
 const { Option } = Select;
 const { TabPane } = Tabs;
 
+// 등록페지
 function Create() {
     let navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
@@ -48,6 +49,7 @@ function Create() {
             preview_6: preview_default_image,
             preview_7: preview_default_image,
             preview_8: preview_default_image,
+            created_date: new Date(),
             check_name: ''
         }
     );

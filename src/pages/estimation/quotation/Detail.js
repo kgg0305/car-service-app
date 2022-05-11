@@ -9,7 +9,8 @@ import { Constants } from '../../../constants/Constants';
 
 const { Option } = Select;
 
-function Create() {
+// 상세페지
+function Detail() {
     let { id } = useParams();
     let navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
@@ -386,4 +387,4 @@ function Create() {
     );
 }
 
-export default Create;
+export default Detail;

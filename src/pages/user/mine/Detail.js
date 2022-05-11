@@ -5,7 +5,8 @@ import { GetUserInfoAPI, UpdateUserAPI } from '../../../api/User';
 
 const { Option } = Select;
 
-function Create() {
+// 상세페지
+function Detail() {
     let { id } = useParams(1);
     let navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
@@ -174,4 +175,4 @@ function Create() {
     );
 }
 
-export default Create;
+export default Detail;

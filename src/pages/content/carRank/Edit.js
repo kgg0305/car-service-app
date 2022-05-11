@@ -10,7 +10,8 @@ import { GetModelOptionListAPI } from '../../../api/Model';
 
 const { Option } = Select;
 
-function Create() {
+// 수정페지
+function Edit() {
     let navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
     const [brandOptionList, setBrandOptionList] = useState([]);
@@ -238,4 +239,4 @@ function Create() {
     );
 }
 
-export default Create;
+export default Edit;

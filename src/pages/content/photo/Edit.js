@@ -8,7 +8,8 @@ import { Constants } from '../../../constants/Constants';
 
 const { Option } = Select;
 
-function Create() {
+// 수정페지
+function Edit() {
     let { id } = useParams();
     let navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
@@ -283,4 +284,4 @@ function Create() {
     );
 }
 
-export default Create;
+export default Edit;

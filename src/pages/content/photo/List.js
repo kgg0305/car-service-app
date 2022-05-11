@@ -6,21 +6,27 @@ import { GetContentInfoAPI } from '../../../api/Content';
 import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
 
+// 목록페지
 function List() {
     const [offset, setOffset] = useState(0);
     const [showModal, setShowModal] = useState(false);
-	const [dataSource, setDataSource] = useState();
+	const [dataSource, setDataSource] = useState([]);
     const [contentList, setContentList] = useState([]);
 	
 	const initComponent = async () => {
 		const initDataSource = await GetPhotoListAPI(offset);
 		
-        setDataSource(initDataSource.map(body => {
-			return({
-				...body,
-                content_count: body.content_ids.split(',').length
-			})
-		}));
+        let initTempDataSource = [];
+        for (let i = 0; i < initDataSource.length; i++) {
+            const element = initDataSource[i];
+            initTempDataSource.push({
+                ...element,
+                content_list_text: (await GetContentInfoAPI(element.content_ids.split(',')[0])).title,
+                content_count: element.content_ids.split(',').length
+            });
+        }
+
+        setDataSource(initTempDataSource);
 	};
 
 	useEffect(() => {
@@ -36,17 +42,10 @@ function List() {
 		},
 		{
 			title: '콘텐츠 목록',
-			dataIndex: 'content_ids',
-			key: 'content_ids',
+			dataIndex: 'idx',
+			key: 'idx',
             align: 'center',
-            render: content_ids => 
-                <Row gutter={[10]} justify='center'>
-                    <Col>
-                    </Col>
-                    <Col>
-                        <Button className='white-button small-button rounded-button' onClick={() => onViewDetailClick(content_ids)}>상세보기</Button>
-                    </Col>
-                </Row>,
+            render: idx => renderContentListField(idx),
 		},
 		{
 			title: '콘텐츠 수',
@@ -59,7 +58,7 @@ function List() {
 			dataIndex: 'is_use',
 			key: 'is_use',
             align: 'center',
-            render: is_use => is_use == 0 ? '사용' : '미사용'
+            render: is_use => Constants.availableOptions.filter(item => item.value === is_use)[0].label
 		},
 		{
 			title: '관리',
@@ -123,6 +122,19 @@ function List() {
 			})
 		]);
 	};
+
+    const renderContentListField = (idx) => {
+        return (
+            <Row gutter={[10]} justify='center'>
+                <Col>
+                    <label>{dataSource.filter(item => item.idx === idx)[0].content_list_text}</label>
+                </Col>
+                <Col>
+                    <Button className='white-button small-button rounded-button' onClick={() => onViewDetailClick(dataSource.filter(item => item.idx === idx)[0].content_ids)}>상세보기</Button>
+                </Col>
+            </Row>
+        );
+    };
 
     return(
         <>

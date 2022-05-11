@@ -14,11 +14,13 @@ import alert_icon from '../../../assets/images/alert-icon.png';
 import AlertModal from '../../../components/AlertModal';
 import AlertDeleteModal from '../../../components/AlertDeleteModal';
 import { Constants } from '../../../constants/Constants';
+import { GetDateTimeStringFromDate, GetDateStringFromDate } from '../../../constants/GlobalFunctions';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
 
-function Create() {
+// 수정페지
+function Edit() {
     let { id } = useParams();
     let navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
@@ -52,6 +54,7 @@ function Create() {
             preview_6: preview_default_image,
             preview_7: preview_default_image,
             preview_8: preview_default_image,
+            created_date: new Date(),
             check_name: ''
         }
     );
@@ -94,7 +97,10 @@ function Create() {
 		const initBrandOptionList = await GetBrandOptionListAPI();
 		const initGroupOptionList = await GetGroupOptionListAPI();
 		
-        setBodyInfo(initBodyInfo);
+        setBodyInfo({
+            ...initBodyInfo,
+            created_date: GetDateTimeStringFromDate(new Date())
+        });
 		setBrandOptionList(initBrandOptionList);
 		setGroupOptionList(initGroupOptionList);
 	};
@@ -494,7 +500,7 @@ function Create() {
                                 <Link to="/car/model">
                                     <Button className='white-button medium-button'>취소</Button>
                                 </Link>
-                                <Button className='black-button medium-button' onClick={onSaveClick}>저장하고 나가기</Button>
+                                <Button className='black-button medium-button' onClick={() => onSaveClick('/car/model')}>저장하고 나가기</Button>
                             </Space>
                         </Col>
                     </Row>
@@ -617,7 +623,7 @@ function Create() {
                                                     name='release_date' 
                                                     value={moment(bodyInfo.release_date)} 
                                                     onChange={value => {
-                                                        onChangeComponent('release_date', value.toString());
+                                                        onChangeComponent('release_date', GetDateStringFromDate(new Date(value.toString())));
                                                     }}
                                                 />
                                             </Col>
@@ -1015,9 +1021,9 @@ function Create() {
                 </Space>
             </Space>
             <AlertModal visible={showModal} onConfirmClick={() => setShowModal(false)} validationList={validationList} />
-            <AlertDeleteModal visible={showDeleteModal} onConfirmClick={() => deleteInfo(bodyInfo.idx)} onCancelClick={() => setShowDeleteModal(false)} validationList={validationList} />
+            <AlertDeleteModal visible={showDeleteModal} onConfirmClick={() => deleteInfo(bodyInfo.idx)} onCancelClick={() => setShowDeleteModal(false)} />
         </>
     );
 }
 
-export default Create;
+export default Edit;

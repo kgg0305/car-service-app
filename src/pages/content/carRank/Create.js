@@ -10,6 +10,7 @@ import { GetModelOptionListAPI } from '../../../api/Model';
 
 const { Option } = Select;
 
+// 등록페지
 function Create() {
     let navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);

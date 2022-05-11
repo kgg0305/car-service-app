@@ -1,8 +1,9 @@
 import React from "react";
 import { Space, Button, Modal } from 'antd';
-import alert_icon from '../assets/images/alert-icon.png';
+import delete_icon from '../assets/images/delete-icon.png';
 
-function AlertDeleteModal({ visible, onConfirmClick, onCancelClick, validationList }) {
+// 삭제확인창
+function AlertDeleteModal({ visible, onConfirmClick, onCancelClick }) {
     return (
         <Modal
             centered
@@ -17,15 +18,8 @@ function AlertDeleteModal({ visible, onConfirmClick, onCancelClick, validationLi
             ]}
         >
             <Space direction='vertical' size={10} align='center' style={{width:'100%'}}>
-                <img src={alert_icon} />
-                <label className='alert-content-label'>
-                    {
-                        validationList.map(validation => (
-                            '정보' + (validation.number < 10 ? '0' + validation.number : validation.number) + ' - ' + validation.name
-                        )).join(', ')
-                    }
-                </label>
-                <label className='alert-content-label'>작성되지 않은 정보가 있습니다.</label>
+                <img src={delete_icon} />
+                <label className='alert-content-label'>삭제 하시겠습니까?</label>
             </Space>
             
         </Modal>

@@ -7,6 +7,7 @@ export const Constants = {
         datePicker: 'datePicker',
         label: 'label'
     },
+    // 주메뉴
     headerMenus: [
         {
             label: '자동차 DB',
@@ -29,6 +30,7 @@ export const Constants = {
             link: '/content/content'
         }
     ],
+    // 보조메뉴
     siderMenus: [
         // User
         {
@@ -150,6 +152,7 @@ export const Constants = {
             link: '/content/media'
         }
     ],
+    // 사용여부
     availableOptions: [
         {
             label: '사용',
@@ -160,6 +163,7 @@ export const Constants = {
             value: '1'
         }
     ],
+    // 수입여부
     incomeOptions: [
         {
             label: '국산',
@@ -170,6 +174,7 @@ export const Constants = {
             value: '1'
         }
     ],
+    // 국가
     nationOptions: [
         {
             label: '국산',
@@ -192,6 +197,7 @@ export const Constants = {
             value: '4'
         }
     ],
+    // 신차여부
     isNewOptions: [
         {
             label: '예',
@@ -202,6 +208,7 @@ export const Constants = {
             value: '1'
         }
     ],
+    // 연료
     fuelTypeOptions: [
         {
             label: '휘발유',
@@ -232,6 +239,7 @@ export const Constants = {
             value: '6'
         }
     ],
+    // 변속기
     gearBoxTypeOptions: [
         {
             label: 'A/T',
@@ -242,6 +250,7 @@ export const Constants = {
             value: '1'
         }
     ],
+    // 가격단위
     currencyTypeOptions: [
         {
             label: '원',
@@ -252,6 +261,7 @@ export const Constants = {
             value: '1'
         }
     ],
+    // 날짜형식
     dateTypeOptions: [
         {
             label: '등록일',
@@ -266,6 +276,7 @@ export const Constants = {
             value: '2'
         }
     ],
+    // 구입방법
     purchaseMethodOptions: [
         {
             label: '리스',
@@ -284,6 +295,7 @@ export const Constants = {
             value: '3'
         }
     ],
+    // 검색구분
     searchTypeOptions: [
         {
             label: '이름',
@@ -298,6 +310,7 @@ export const Constants = {
             value: '2'
         }
     ],
+    // 
     statusOptions: [
         {
             label: '진행',
@@ -308,12 +321,14 @@ export const Constants = {
             value: '1'
         }
     ],
+    // 년
     yearOptions: [
         {
             label: new Date().getFullYear() + '년',
             value: new Date().getFullYear()
         }
     ],
+    // 월
     monthOptions: [
         {
             label: '1월',
@@ -364,6 +379,7 @@ export const Constants = {
             value: 12
         }
     ],
+    // 유저구분
     userTypeOptions: [
         {
             label: '사용자',

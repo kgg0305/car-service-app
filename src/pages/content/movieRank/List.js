@@ -5,6 +5,7 @@ import { GetRankInfoAPI } from '../../../api/Rank';
 import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
 
+// 목록페지
 function List() {
     const [offset, setOffset] = useState(0);
 	const [rankBodyInfo, setRankBodyInfo] = useState({

@@ -1,13 +1,20 @@
 import { Col, Divider, Row, Space, Button, Switch } from 'antd';
 import React, { useState, useEffect } from 'react';
-import { GetContentListAPI, DeleteContentInfoAPI } from '../../../api/Content';
+import { GetContentListAPI, DeleteContentInfoAPI, UpdateContentAPI } from '../../../api/Content';
+import AlertDeleteModal from '../../../components/AlertDeleteModal';
 import SearchPanel from '../../../components/SearchPanel';
 import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
+import { GetDateTimeStringFromDate } from '../../../constants/GlobalFunctions';
 
+// 목록페지
 function List() {
 	const [offset, setOffset] = useState(0);
-	const [dataSource, setDataSource] = useState();
+	const [showDeleteModal, setShowDeleteModal] = useState({
+		is_show: false,
+		idx: null
+	});
+	const [dataSource, setDataSource] = useState([]);
 	const [searchData, setSearchData] = useState({
 		start_date: null,
 		end_date: null,
@@ -70,13 +77,14 @@ function List() {
 			dataIndex: 'created_date',
 			key: 'created_date',
             align: 'center',
+			render: created_date => GetDateTimeStringFromDate(new Date(created_date))
 		},
 		{
 			title: '사용여부',
-			dataIndex: 'is_use',
-			key: 'is_use',
+			dataIndex: 'idx',
+			key: 'idx',
             align: 'center',
-            render: is_use => is_use == 0 ? '사용' : '미사용'
+            render: idx => renderSwitchComponent(idx)
 		},
 		{
 			title: '관리',
@@ -250,29 +258,70 @@ function List() {
 	};
 
 	const onDeleteClick = async(idx) => {
-        await DeleteContentInfoAPI(idx);
-		const initDataSource = await GetContentListAPI(offset);
-		setDataSource(initDataSource);
+        setShowDeleteModal({
+			is_show: true,
+			idx: idx
+		});
     };
 
-    return(
-		<Space direction='vertical' size={18} className='main-layout'>
-			{/* Page Header */}
-			<Space direction='vertical' size={18}>
-				<label className='main-header-title'>콘텐츠 관리</label>
-				<Divider className='main-body-divider' />
-			</Space>
+    const deleteInfo = async() => {
+        await DeleteContentInfoAPI(showDeleteModal.idx);
+        const initDataSource = await GetContentListAPI(offset);
+		setDataSource(initDataSource);
+		setShowDeleteModal({
+			is_show: false, 
+			idx: null
+		});
+    };
 
-			{/* Search Section */}
-			<SearchPanel dataSource={searchDataSource} onSearch={onClickSearch} />
+	const changeIsUse = async(idx, checked) => {
+		let bodyInfo = dataSource.filter(item => item.idx === idx)[0];
+		bodyInfo.is_use = checked ? '1' : '0';
+		await UpdateContentAPI(bodyInfo);
 
-			{/* Body Section */}
-			<TableList dataSource={tableDataSource} />
+		setDataSource(dataSource.map(item => (
+			item.idx === idx ? bodyInfo : item
+		)));
+	}
 
-			<Row justify='center'>
-				<label className='show-more-label' onClick={onClickTableMore}>더보기</label>
+	const renderSwitchComponent = (idx) => {
+		return (
+			<Row justify='center' gutter={[11]}>
+				<Col>
+					<Switch checked={dataSource.filter(item => item.idx === idx)[0].is_use === '0' ? false : true} onClick={checked => changeIsUse(idx, checked)}/>
+				</Col>
+				<Col>
+					<label className='switch-label'>
+						{
+							Constants.availableOptions.filter(item => item.value === dataSource.filter(item => item.idx === idx)[0].is_use)[0].label
+						}
+					</label>
+				</Col>
 			</Row>
-		</Space>
+		);
+	}
+
+    return(
+		<>
+			<Space direction='vertical' size={18} className='main-layout'>
+				{/* Page Header */}
+				<Space direction='vertical' size={18}>
+					<label className='main-header-title'>콘텐츠 관리</label>
+					<Divider className='main-body-divider' />
+				</Space>
+
+				{/* Search Section */}
+				<SearchPanel dataSource={searchDataSource} onSearch={onClickSearch} />
+
+				{/* Body Section */}
+				<TableList dataSource={tableDataSource} />
+
+				<Row justify='center'>
+					<label className='show-more-label' onClick={onClickTableMore}>더보기</label>
+				</Row>
+			</Space>
+			<AlertDeleteModal visible={showDeleteModal.is_show} onConfirmClick={() => deleteInfo()} onCancelClick={() => setShowDeleteModal({is_show: false, idx: null})} />
+		</>
     );
 }
 

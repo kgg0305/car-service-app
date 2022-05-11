@@ -5,6 +5,7 @@ import { GetCountSettingListAPI, UpdateCountSettingAPI } from '../../../api/Coun
 import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
 
+// 목록페지
 function List() {
     const [dataSource, setDataSource] = useState([]);
 	

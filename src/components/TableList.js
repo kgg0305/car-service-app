@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import ContentItem from './ContentItem';
 import styles from "../assets/styles/components/TableList.module.css";
 
+// 목록테이블
 function TableList({ dataSource }) {
     return (
         <Space className={ styles.tableList } direction='vertical' size={20}>

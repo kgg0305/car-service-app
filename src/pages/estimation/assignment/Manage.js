@@ -7,7 +7,8 @@ import { Constants } from '../../../constants/Constants';
 
 const { Option } = Select;
 
-function Create() {
+// 관리페지
+function Manage() {
     const [dataSource, setDataSource] = useState(
 		[
 			{
@@ -233,4 +234,4 @@ function Create() {
     );
 }
 
-export default Create;
+export default Manage;

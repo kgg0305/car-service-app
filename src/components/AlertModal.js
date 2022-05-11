@@ -2,6 +2,7 @@ import React from "react";
 import { Space, Button, Modal } from 'antd';
 import alert_icon from '../assets/images/alert-icon.png';
 
+// 유효성검사창
 function AlertModal({ visible, onConfirmClick, validationList }) {
     return (
         <Modal

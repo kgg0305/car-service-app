@@ -7,7 +7,9 @@ import { GetModelListAPI } from '../../../api/Model';
 import SearchPanel from '../../../components/SearchPanel';
 import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
+import { GetDateTimeStringFromDate } from '../../../constants/GlobalFunctions';
 
+// 목록페지
 function List() {
 	const [offset, setOffset] = useState(0);
 	const [brandOptionList, setBrandOptionList] = useState([]);
@@ -82,9 +84,10 @@ function List() {
 		},
         {
 			title: '등록일',
-			dataIndex: 'release_date',
-			key: 'release_date',
+			dataIndex: 'created_date',
+			key: 'created_date',
             align: 'center',
+			render: created_date => GetDateTimeStringFromDate(new Date(created_date))
 		},
 		{
 			title: '관리',

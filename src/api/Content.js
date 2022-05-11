@@ -15,21 +15,12 @@ export async function CheckContentNameAPI(model_name) {
 export async function CreateContentAPI(body) {
     var data = [
         {
-            group_id: body.group_id,
-            brand_id: body.brand_id,
-            model_name: body.model_name,
-            is_new: body.is_new,
-            release_date: body.release_date,
-            sequence: body.sequence,
+            media_type: body.media_type,
+            category_id: body.category_id,
+            title: body.title,
+            views: body.views,
+            created_date: body.created_date,
             is_use: body.is_use,
-            picture_1: body.picture_1,
-            picture_2: body.picture_2,
-            picture_3: body.picture_3,
-            picture_4: body.picture_4,
-            picture_5: body.picture_5,
-            picture_6: body.picture_6,
-            picture_7: body.picture_7,
-            picture_8: body.picture_8,
         }
     ];
 
@@ -44,21 +35,12 @@ export async function CreateContentAPI(body) {
 
 export async function UpdateContentAPI(body) {
     var data = {
-        group_id: body.group_id,
-        brand_id: body.brand_id,
-        model_name: body.model_name,
-        is_new: body.is_new,
-        release_date: body.release_date,
-        sequence: body.sequence,
+        media_type: body.media_type,
+        category_id: body.category_id,
+        title: body.title,
+        views: body.views,
+        created_date: body.created_date,
         is_use: body.is_use,
-        picture_1: body.picture_1,
-        picture_2: body.picture_2,
-        picture_3: body.picture_3,
-        picture_4: body.picture_4,
-        picture_5: body.picture_5,
-        picture_6: body.picture_6,
-        picture_7: body.picture_7,
-        picture_8: body.picture_8,
     };
     
     try {

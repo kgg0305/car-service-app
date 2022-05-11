@@ -9,6 +9,7 @@ import { Constants } from '../../../constants/Constants';
 
 const { Option } = Select;
 
+// 목록페지
 function List() {
 	const [offset, setOffset] = useState(0);
 	const [groupOptionList, setGroupOptionList] = useState([]);

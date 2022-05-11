@@ -30,6 +30,7 @@ export async function CreateModelAPI(body) {
             picture_6: body.picture_6,
             picture_7: body.picture_7,
             picture_8: body.picture_8,
+            created_date: body.created_date,
         }
     ];
 
@@ -43,6 +44,7 @@ export async function CreateModelAPI(body) {
 }
 
 export async function UpdateModelAPI(body) {
+    console.log(body)
     var data = {
         group_id: body.group_id,
         brand_id: body.brand_id,
@@ -59,6 +61,7 @@ export async function UpdateModelAPI(body) {
         picture_6: body.picture_6,
         picture_7: body.picture_7,
         picture_8: body.picture_8,
+        created_date: body.created_date,
     };
     
     try {

@@ -1,31 +1,39 @@
 import { Col, Divider, Row, Space, Button, Image, Modal, Input } from 'antd';
 import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import { GetRecommendationListAPI } from '../../../api/Recommendation';
+import { GetRecommendationListAPI, UpdateRecommendationAPI } from '../../../api/Recommendation';
 import { GetContentInfoAPI } from '../../../api/Content';
 import { CheckOutlined } from '@ant-design/icons';
+import lockIcon from '../../../assets/images/lock-icon.png';
 import checkIcon from '../../../assets/images/check-icon.png';
 import clockIcon from '../../../assets/images/clock-icon.png';
 import historyIcon from '../../../assets/images/history-icon.png';
 import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
+import { GetDateStringFromDate } from '../../../constants/GlobalFunctions';
 
+// 목록페지
 function List() {
     const [offset, setOffset] = useState(0);
     const [showModal, setShowModal] = useState(false);
-	const [dataSource, setDataSource] = useState();
+	const [dataSource, setDataSource] = useState([]);
     const [contentList, setContentList] = useState([]);
 	
 	const initComponent = async () => {
 		const initDataSource = await GetRecommendationListAPI(offset);
 		
-        setDataSource(initDataSource.map(body => {
-			return({
-				...body,
-                content_count: body.content_ids.split(',').length,
-				publish_date_text: new Date(body.publish_date).getFullYear() + '-' + ("0" + (new Date(body.publish_date).getMonth() + 1)).slice(-2) + '-' + ("0" + new Date(body.publish_date).getDate()).slice(-2),
-			})
-		}));
+        let initTempDataSource = [];
+        for (let i = 0; i < initDataSource.length; i++) {
+            const element = initDataSource[i];
+            initTempDataSource.push({
+                ...element,
+                content_list_text: (await GetContentInfoAPI(element.content_ids.split(',')[0])).title,
+                content_count: element.content_ids.split(',').length,
+				publish_date_text: GetDateStringFromDate(new Date(element.publish_date)),
+            });
+        }
+
+        setDataSource(initTempDataSource);
 	};
 
 	useEffect(() => {
@@ -41,17 +49,10 @@ function List() {
 		},
 		{
 			title: '콘텐츠 목록',
-			dataIndex: 'content_ids',
-			key: 'content_ids',
+			dataIndex: 'idx',
+			key: 'idx',
             align: 'center',
-            render: content_ids => 
-                <Row gutter={[10]} justify='center'>
-                    <Col>
-                    </Col>
-                    <Col>
-                        <Button className='white-button small-button rounded-button' onClick={() => onViewDetailClick(content_ids)}>상세보기</Button>
-                    </Col>
-                </Row>,
+            render: idx => renderContentListField(idx),
 		},
 		{
 			title: '콘텐츠 수',
@@ -61,40 +62,17 @@ function List() {
 		},
         {
 			title: '발행여부/상태',
-			dataIndex: 'status',
-			key: 'status',
+			dataIndex: 'publish_date',
+			key: 'publish_date',
             align: 'center',
-            render: status => 
-                <Row justify='center'>
-                    <Col>
-                        {
-                            status === '0' ? 
-                            <Image src={checkIcon} preview={false} />
-                            : status === '1' ? 
-                            <Image src={clockIcon} preview={false} />
-                            : <Image src={historyIcon} preview={false} />
-                        }
-                    </Col>
-                </Row>,
+            render: publish_date => renderStatusField(publish_date),
 		},
 		{
 			title: '관리',
 			dataIndex: 'idx',
 			key: 'idx',
             align: 'center',
-			render: idx => 
-                <Row justify='center'>
-                    <Col>
-                        <Space size={15} split={<Divider type="vertical" />}>
-							<Link to="/content/recommendation/edit">
-								<Button className='white-button small-button rounded-button'>즉시반영</Button>
-							</Link>
-							<Link to={"/content/recommendation/edit/" + idx}>
-								<Button className='black-button small-button rounded-button'>수정</Button>
-							</Link>
-						</Space>
-                    </Col>
-                </Row>,
+			render: idx => renderManageField(idx),
 		},
 	];
 
@@ -152,11 +130,78 @@ function List() {
 				return({
 					...body,
                     content_count: body.content_ids.split(',').length,
-                    publish_date_text: new Date(body.publish_date).getFullYear() + '-' + ("0" + (new Date(body.publish_date).getMonth() + 1)).slice(-2) + '-' + ("0" + new Date(body.publish_date).getDate()).slice(-2),
+                    publish_date_text: GetDateStringFromDate(new Date(body.publish_date)),
 				})
 			})
 		]);
 	};
+
+    const onClickPublish = async(idx) => {
+        let bodyInfo = dataSource.filter(item => item.idx === idx)[0];
+        bodyInfo.publish_date = GetDateStringFromDate(new Date());
+        await UpdateRecommendationAPI(bodyInfo);
+
+        let initDataSource = dataSource;
+        setDataSource(dataSource.map(item => (
+            item.idx === idx ? bodyInfo : item
+        )));
+    }
+
+    const renderStatusField = (publish_date) => {
+        let current_date = new Date();
+        let current_time = current_date.getTime();
+        let day_current_time = current_date;
+        day_current_time.setDate(current_date.getDate() + 1);
+        day_current_time = day_current_time.getTime();
+        let publish_time = new Date(publish_date).getTime();
+        return (
+            <Row justify='center'>
+                <Col>
+                    {
+                        publish_time < current_time ? 
+                        <Image src={checkIcon} preview={false} />
+                        : current_time < publish_time && publish_time < day_current_time ? 
+                        <Image src={clockIcon} preview={false} />
+                        : <Image src={historyIcon} preview={false} />
+                    }
+                </Col>
+            </Row>
+        );
+    };
+
+    const renderManageField = (idx) => {
+        let current_time = new Date().getTime();
+        return (
+            <Row justify='center'>
+                <Col>
+                    {
+                        new Date(dataSource.filter(item => item.idx === idx)[0].publish_date).getTime() < current_time ? 
+                        <Image src={lockIcon} preview={false} />
+                        :
+                        <Space size={15} split={<Divider type="vertical" />}>
+                            <Button className='white-button small-button rounded-button' onClick={() => onClickPublish(idx)}>즉시반영</Button>
+                            <Link to={"/content/recommendation/edit/" + idx}>
+                                <Button className='black-button small-button rounded-button'>수정</Button>
+                            </Link>
+                        </Space>
+                    }
+                </Col>
+            </Row>
+        );
+    };
+
+    const renderContentListField = (idx) => {
+        return (
+            <Row gutter={[10]} justify='center'>
+                <Col>
+                    <label>{dataSource.filter(item => item.idx === idx)[0].content_list_text}</label>
+                </Col>
+                <Col>
+                    <Button className='white-button small-button rounded-button' onClick={() => onViewDetailClick(dataSource.filter(item => item.idx === idx)[0].content_ids)}>상세보기</Button>
+                </Col>
+            </Row>
+        );
+    };
 
     return(
         <>

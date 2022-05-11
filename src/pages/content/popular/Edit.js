@@ -10,6 +10,7 @@ import { GetGroupOptionListAPI } from '../../../api/Group';
 
 const { Option } = Select;
 
+// 수정페지
 function Edit() {
     let { id } = useParams();
     let navigate = useNavigate();
