@@ -7,6 +7,7 @@ import { GetModelInfoAPI } from '../../../api/Model';
 import { GetBrandOptionListAPI } from '../../../api/Brand';
 import { GetGroupOptionListAPI } from '../../../api/Group';
 import { GetModelOptionListAPI } from '../../../api/Model';
+import AlertModal from '../../../components/AlertModal';
 
 const { Option } = Select;
 
@@ -14,6 +15,7 @@ const { Option } = Select;
 function Create() {
     let navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
+    const [validationList, setValidationList] = useState([]);
     const [brandOptionList, setBrandOptionList] = useState([]);
     const [groupOptionList, setGroupOptionList] = useState([]);
     const [modelOptionList, setModelOptionList] = useState([]);
@@ -27,7 +29,8 @@ function Create() {
             number: 1,
             brand_id: null,
             group_id: null,
-            idx: null
+            idx: null,
+            is_income: null
         }
     ]);
 
@@ -58,15 +61,42 @@ function Create() {
 	}, []);
 
     const onSaveClick = async() => {
-        const updateRankBodyInfo = {
-            ...rankBodyInfo,
-            ids: modelBodyList.map(body => body.idx).join(','),
-            created_date: new Date()
-        };
-        const created_info = await UpdateRankAPI(updateRankBodyInfo);
-        
-        // setShowModal(true);
-        navigate('/content/carRank');
+        const validation = [];
+        modelBodyList.map(body => {
+            if(body.brand_id === null) {
+                validation.push({
+                    title: '순위 ' + (body.number < 10 ? '0' + body.number : body.number),
+                    name: '브랜드'
+                })
+            }
+            if(body.group_id === null) {
+                validation.push({
+                    title: '순위 ' + (body.number < 10 ? '0' + body.number : body.number),
+                    name: '그룹'
+                })
+            }
+            if(body.idx === null) {
+                validation.push({
+                    title: '순위 ' + (body.number < 10 ? '0' + body.number : body.number),
+                    name: '모델'
+                })
+            }
+        });
+
+        setValidationList(validation);
+
+        if(validation.length > 0) {
+            setShowModal(true);
+        } else {
+            const updateRankBodyInfo = {
+                ...rankBodyInfo,
+                ids: modelBodyList.map(body => body.idx).join(','),
+                created_date: new Date()
+            };
+            const created_info = await UpdateRankAPI(updateRankBodyInfo);
+            
+            navigate('/content/carRank');
+        }
     };
 
     const onAddModelComponentClick = event => {
@@ -79,7 +109,16 @@ function Create() {
     };
 
     const onChangeModelComponent = async(number, name, value) => {
-        await setModelBodyList(modelBodyList.map(body => body.number === number ? {...body, [name]: value} : body));
+        await setModelBodyList(modelBodyList.map(
+            body => body.number === number ? 
+            {
+                ...body, 
+                group_id: name == 'brand_id' ? null : body.group_id,
+                model_id: (name == 'brand_id' || name == 'group_id') ? null : body.model_id,
+                [name]: value
+            } 
+            : body
+        ));
     }
 
     const onDeleteModelComponentClick = (number) => {
@@ -126,7 +165,7 @@ function Create() {
                                 style={{ width: 300 }}
                             >
                                 {
-                                    groupOptionList.map((optionItem, optionIndex) => (
+                                    groupOptionList.filter(item => item.brand_id === body.brand_id).map((optionItem, optionIndex) => (
                                         <Select.Option key={optionIndex} value={optionItem.value}>
                                             {optionItem.label}
                                         </Select.Option>
@@ -144,7 +183,7 @@ function Create() {
                                 style={{ width: 300 }}
                             >
                                 {
-                                    modelOptionList.map((optionItem, optionIndex) => (
+                                    modelOptionList.filter(item => item.group_id === body.group_id).map((optionItem, optionIndex) => (
                                         <Select.Option key={optionIndex} value={optionItem.value}>
                                             {optionItem.label}
                                         </Select.Option>
@@ -212,19 +251,19 @@ function Create() {
                                 <Col>
                                     <Space size={10}>
                                         <label>최소 등록수량</label>
-                                        <Input size='large' style={{width: 130}} value={'1 / 20'} disabled />
+                                        <Input size='large' style={{width: 130}} value={modelBodyList.length + ' / 20'} disabled />
                                     </Space>
                                 </Col>
                                 <Col>
                                     <Space size={10}>
                                         <label>국내</label>
-                                        <Input size='large' style={{width: 130}} value={'1 / 20'} disabled />
+                                        <Input size='large' style={{width: 130}} value={modelBodyList.filter(body => body.is_income == '0').length + ' / 20'} disabled />
                                     </Space>
                                 </Col>
                                 <Col>
                                     <Space size={10}>
                                         <label>수입</label>
-                                        <Input size='large' style={{width: 130}} value={'0 / 20'} disabled />
+                                        <Input size='large' style={{width: 130}} value={modelBodyList.filter(body => body.is_income == '1').length + ' / 20'} disabled />
                                     </Space>
                                 </Col>
                             </Row>
@@ -235,6 +274,7 @@ function Create() {
                     </Space>
                 </Space>
             </Space>
+            <AlertModal visible={showModal} onConfirmClick={() => setShowModal(false)} validationList={validationList} />
         </>
     );
 }

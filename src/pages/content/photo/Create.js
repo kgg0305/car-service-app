@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { CreatePhotoAPI } from '../../../api/Photo';
 import { GetContentInfoAPI } from '../../../api/Content';
 import { Constants } from '../../../constants/Constants';
+import AlertModal from '../../../components/AlertModal';
 
 const { Option } = Select;
 
@@ -12,13 +13,14 @@ const { Option } = Select;
 function Create() {
     let navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
+    const [validationList, setValidationList] = useState([]);
     const [bodyInfo, setBodyInfo] = useState(
         {
             number: 1,
             category: '',
             tag: '',
             content_ids: null,
-            is_use: null
+            is_use: '0'
         }
     );
     const [contentBodyList, setContentBodyList] = useState([
@@ -40,16 +42,49 @@ function Create() {
     }
 
     const onSaveClick = async() => {
-        const updateBodyInfo = {
-            ...bodyInfo,
-            content_ids: contentBodyList.map(body => body.idx).join(',')
+        const validation = [];
+        if(bodyInfo.category === '') {
+            validation.push({
+                title: '정보',
+                name: '카테고리'
+            })
         }
+        if(bodyInfo.tag === '') {
+            validation.push({
+                title: '정보',
+                name: '태그'
+            })
+        }
+        contentBodyList.map((body, index) => {
+            if(body.idx === null) {
+                validation.push({
+                    title: '뉴스 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '콘텐츠 번호'
+                })
+            }
+            if(body.title === '등록되지 않은 콘텐츠입니다.') {
+                validation.push({
+                    title: '뉴스 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '콘텐츠 내용'
+                })
+            }
+        });
 
-        const created_info = await CreatePhotoAPI(updateBodyInfo);
-        
-        setBodyInfo(updateBodyInfo);
-        // setShowModal(true);
-        navigate('/content/photo');
+        setValidationList(validation);
+
+        if(validation.length > 0) {
+            setShowModal(true);
+        } else {
+            const updateBodyInfo = {
+                ...bodyInfo,
+                content_ids: contentBodyList.map(body => body.idx).join(',')
+            }
+    
+            const created_info = await CreatePhotoAPI(updateBodyInfo);
+            
+            setBodyInfo(updateBodyInfo);
+            navigate('/content/photo');
+        }
     };
 
     const onAddContentComponentClick = event => {
@@ -254,6 +289,7 @@ function Create() {
                     </Space>
                 </Space>
             </Space>
+            <AlertModal visible={showModal} onConfirmClick={() => setShowModal(false)} validationList={validationList} />
         </>
     );
 }

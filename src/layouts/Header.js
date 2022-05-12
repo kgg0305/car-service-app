@@ -27,9 +27,9 @@ function Header() {
                             [사용자이름]님
                         </Button>
                     </Link>
-                    <a>
+                    <Link to={'/user/mine/1'}>
                         <img src={setting_icon} />
-                    </a>
+                    </Link>
                     <Divider className="top-menu-divider" type="vertical" />
                     <a className="top-menu-logout">로그아웃</a>
                 </Space>

@@ -379,15 +379,84 @@ export const Constants = {
             value: 12
         }
     ],
-    // 유저구분
+    // 사용자구분
     userTypeOptions: [
         {
-            label: '사용자',
+            label: '콘텐츠',
             value: '0'
         },
         {
-            label: '관리자',
+            label: '자동차',
             value: '1'
+        }
+    ],
+    // 사용자팀그룹
+    userTeamGroupOptions: [
+        {
+            label: '1팀',
+            value: '0'
+        },
+        {
+            label: '2팀',
+            value: '1'
+        }
+    ],
+    // 사용자지점그룹
+    userAreaGroupOptions: [
+        {
+            label: '일산',
+            value: '0'
+        },
+        {
+            label: '합정',
+            value: '1'
+        }
+    ],
+    //사양
+    specificationOptions: [
+        {
+            label: '파워트레인/성능',
+            value: '0'
+        },
+        {
+            label: '엔진/성능',
+            value: '1'
+        },
+        {
+            label: '지능형 안전 기술',
+            value: '2'
+        },
+        {
+            label: '외관',
+            value: '3'
+        },
+        {
+            label: '내장',
+            value: '4'
+        },
+        {
+            label: '시트',
+            value: '5'
+        },
+        {
+            label: '편의',
+            value: '6'
+        },
+        {
+            label: '안전',
+            value: '7'
+        },
+        {
+            label: '인포테이먼트',
+            value: '8'
+        },
+        {
+            label: '멀티미디어',
+            value: '9'
+        },
+        {
+            label: '공조 시스템',
+            value: '10'
         }
     ]
 }

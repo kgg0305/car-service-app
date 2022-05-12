@@ -1,4 +1,4 @@
-import { Divider, Space, Row } from 'antd';
+import { Divider, Space, Row, Select, Col, Button } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { GetBrandOptionListAPI } from '../../../api/Brand';
 import { GetGroupOptionListAPI } from '../../../api/Group';
@@ -7,6 +7,7 @@ import { GetExtraListAPI } from '../../../api/Extra';
 import SearchPanel from '../../../components/SearchPanel';
 import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
+import { CaretDownOutlined } from '@ant-design/icons';
 
 // 목록페지
 function List() {
@@ -18,8 +19,7 @@ function List() {
 	const [searchData, setSearchData] = useState({
 		brand_id: null,
 		group_id: null,
-		model_id: null,
-		is_use: null
+		model_id: null
 	});
 	
 	const initComponent = async () => {
@@ -154,6 +154,35 @@ function List() {
 		]);
 	};
 
+	const onChangeSearchComponent = (name, value) => {
+		setSearchData(
+            { 
+                ...searchData,
+                group_id: name == 'brand_id' ? null : searchData.group_id,
+                model_id: (name == 'brand_id' || name == 'group_id') ? null : searchData.model_id,
+                [name]: value
+            }
+        );
+	};
+
+	const onClickReset = () => {
+		setSearchData(
+			{
+				brand_id: null,
+				group_id: null,
+				model_id: null
+			}
+		);
+
+		onClickSearch(
+			{
+				brand_id: null,
+				group_id: null,
+				model_id: null
+			}
+		);
+	};
+
 	const onClickSearch = async(searchData) => {
 		const initDataSource = await GetExtraListAPI(0, searchData);
 		setOffset(0);
@@ -173,7 +202,86 @@ function List() {
 			</Space>
 
 			{/* Search Section */}
-			<SearchPanel dataSource={searchDataSource} onSearch={onClickSearch}/>
+			<Space direction='vertical' size={20}>
+				<label className='title-label'>검색</label>
+				<Space direction='vertical' size={0}>
+				<Row key={1} gutter={[0]} align="middle" style={{ height: 80 }} className='table'>
+					<Col flex="154px" className='table-header'>
+						<label className='table-header-label'>차량</label>
+					</Col>
+					<Col flex="auto" className='table-value'>
+						<Space size={6}>
+							<Select
+								name='brand_id' 
+								value={searchData.brand_id} 
+								onChange={value => {
+									onChangeSearchComponent('brand_id', value);
+								}}
+								suffixIcon={<CaretDownOutlined />}
+								placeholder="브랜드 선택"
+								size='large'
+								style={{ width: 300 }}
+							>
+								{
+									brandOptionList.map((optionItem, optionIndex) => (
+										<Select.Option key={optionIndex} value={optionItem.value}>
+											{optionItem.label}
+										</Select.Option>
+									))
+								}
+							</Select>
+							<Select
+								name='group_id' 
+								value={searchData.group_id} 
+								onChange={value => {
+									onChangeSearchComponent('group_id', value);
+								}}
+								suffixIcon={<CaretDownOutlined />}
+								placeholder="모델그룹 선택"
+								size='large'
+								style={{ width: 300 }}
+							>
+								{
+									groupOptionList.filter(item => item.brand_id == searchData.brand_id).map((optionItem, optionIndex) => (
+										<Select.Option key={optionIndex} value={optionItem.value}>
+											{optionItem.label}
+										</Select.Option>
+									))
+								}
+							</Select>
+							<Select
+								name='model_id' 
+								value={searchData.model_id} 
+								onChange={value => {
+									onChangeSearchComponent('model_id', value);
+								}}
+								suffixIcon={<CaretDownOutlined />}
+								placeholder="모델 선택"
+								size='large'
+								style={{ width: 300 }}
+							>
+								{
+									modelOptionList.filter(item => item.group_id === searchData.group_id).map((optionItem, optionIndex) => (
+										<Select.Option key={optionIndex} value={optionItem.value}>
+											{optionItem.label}
+										</Select.Option>
+									))
+								}
+							</Select>
+						</Space>
+					</Col>
+				</Row>
+				</Space>
+				
+				<Row key={2} justify="center" gutter={[17, 0]}>
+					<Col>
+						<Button className='white-button big-button' onClick={onClickReset}>초기화</Button>
+					</Col>
+					<Col>
+						<Button className='black-button big-button' onClick={() => onClickSearch(searchData)}>검색</Button>
+					</Col>
+				</Row>
+			</Space>
 
 			{/* Body Section */}
 			<TableList dataSource={tableDataSource} />

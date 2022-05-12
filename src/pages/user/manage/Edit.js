@@ -6,6 +6,8 @@ import { CheckUserNameAPI, DeleteUserInfoAPI, GetUserInfoAPI, UpdateUserAPI } fr
 import { GetGroupOptionListAPI } from '../../../api/Group';
 import alert_icon from '../../../assets/images/alert-icon.png';
 import { Constants } from '../../../constants/Constants';
+import AlertModal from '../../../components/AlertModal';
+import AlertDeleteModal from '../../../components/AlertDeleteModal';
 
 const { Option } = Select;
 
@@ -13,7 +15,8 @@ function Create({ match }) {
     let { id } = useParams();
     let navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
-    const [groupOptionList, setGroupOptionList] = useState([]);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [validationList, setValidationList] = useState([]);
     const [bodyInfo, setBodyInfo] = useState(
         {
             number: 1,
@@ -28,9 +31,7 @@ function Create({ match }) {
 
     const initComponent = async () => {
 		const initBodyInfo = await GetUserInfoAPI(id);
-        const initGroupOptionList = await GetGroupOptionListAPI();
 		setBodyInfo(initBodyInfo);
-        setGroupOptionList(initGroupOptionList);
 	}
 
 	useEffect(() => {
@@ -46,24 +47,63 @@ function Create({ match }) {
         setBodyInfo(
             { 
                 ...bodyInfo,
+                group_id: (name == 'type_id') ? null : bodyInfo.group_id,
                 [name]: value
             }
         );
     }
 
     const onSaveClick = async() => {
-        await UpdateUserAPI(bodyInfo);
-        // setShowModal(true);
+        const validation = [];
+        if(bodyInfo.name === '') {
+            validation.push({
+                title: '정보',
+                name: '이름'
+            })
+        }
+        if(bodyInfo.user_id === '') {
+            validation.push({
+                title: '정보',
+                name: '아이디'
+            })
+        }
+        if(bodyInfo.type_id === null) {
+            validation.push({
+                title: '정보',
+                name: '구분'
+            })
+        }
+        if(bodyInfo.group_id === null) {
+            validation.push({
+                title: '정보',
+                name: '그룹'
+            })
+        }
+        if(bodyInfo.password === '') {
+            validation.push({
+                title: '정보',
+                name: '비밀번호'
+            })
+        }
+
+        setValidationList(validation);
+
+        if(validation.length > 0) {
+            setShowModal(true);
+        } else {
+            await UpdateUserAPI(bodyInfo);
+        
         navigate('/user/manage');
+        }
     };
 
-    const onDeleteClick = async(idx) => {
-        await DeleteUserInfoAPI(idx);
-        navigate('/user/manage');
-    }
+    const onDeleteClick = async() => {
+        setShowDeleteModal(true);
+    };
 
-    const onCloseModalClick = () => {
-        setShowModal(false);
+    const deleteInfo = async() => {
+        await DeleteUserInfoAPI(id);
+        navigate('/user/manage');
     };
 
     return(
@@ -164,11 +204,19 @@ function Create({ match }) {
                                                 style={{ width: 150 }}
                                             >
                                                 {
-                                                    groupOptionList.map((optionItem, optionIndex) => (
+                                                    bodyInfo.type_id === '0' ? 
+                                                    Constants.userTeamGroupOptions.map((optionItem, optionIndex) => (
                                                         <Select.Option key={optionIndex} value={optionItem.value}>
                                                             {optionItem.label}
                                                         </Select.Option>
                                                     ))
+                                                    : bodyInfo.type_id === '1' ? 
+                                                    Constants.userAreaGroupOptions.map((optionItem, optionIndex) => (
+                                                        <Select.Option key={optionIndex} value={optionItem.value}>
+                                                            {optionItem.label}
+                                                        </Select.Option>
+                                                    ))
+                                                    : ''
                                                 }
                                             </Select>
                                         </Space>
@@ -200,27 +248,13 @@ function Create({ match }) {
                     
                     <Row justify="center" gutter={[17, 0]}>
                         <Col>
-                            <Button className='white-button rounded-button' icon={<PlusOutlined />} onClick={() => onDeleteClick(bodyInfo.idx)}>삭제하기</Button>
+                            <Button className='white-button rounded-button' icon={<PlusOutlined />} onClick={onDeleteClick}>삭제하기</Button>
                         </Col>
                     </Row>
                 </Space>
             </Space>
-            <Modal
-                centered
-                width={325}
-                closable={false}
-                visible={showModal}
-                footer={[
-                    <Button className='alert-button' onClick={onCloseModalClick}>확인</Button>
-                ]}
-            >
-                <Space direction='vertical' size={10} align='center' style={{width:'100%'}}>
-                    <img src={alert_icon} />
-                    <label className='alert-content-label'>[정보이름] - [필드이름]</label>
-                    <label className='alert-content-label'>작성되지 않은 정보가 있습니다.</label>
-                </Space>
-                
-            </Modal>
+            <AlertModal visible={showModal} onConfirmClick={() => setShowModal(false)} validationList={validationList} />
+            <AlertDeleteModal visible={showDeleteModal} onConfirmClick={() => deleteInfo()} onCancelClick={() => setShowDeleteModal(false)} />
         </>
     );
 }

@@ -6,9 +6,9 @@ export async function CreateModelLineupAPI(bodyList) {
         data.push(
             {
                 model_id: body.model_id,
-                lineup_name: body.lineup_name,
-                lineup_price: body.lineup_price,
-                lineup_detail: body.lineup_detail
+                name: body.name,
+                price: body.price,
+                detail: body.detail
             }
         )
     });
@@ -25,9 +25,9 @@ export async function CreateModelLineupAPI(bodyList) {
 export async function UpdateModelLineupAPI(body) {
     var data = {
         model_id: body.model_id,
-        lineup_name: body.lineup_name,
-        lineup_price: body.lineup_price,
-        lineup_detail: body.lineup_detail
+        name: body.name,
+        price: body.price,
+        detail: body.detail
     };
     
     try {

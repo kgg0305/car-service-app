@@ -422,3 +422,41 @@ main {
     
     color: #8C8C8C;
 }
+
+.title-label {
+    font-weight: 500;
+    font-size: 21px;
+    line-height: 25px;
+    display: flex;
+    align-items: center;
+    color: #363636;
+}
+
+.table {
+    border-top: 1px solid #CBCBCB;
+    border-bottom: 1px solid #CBCBCB;
+}
+
+.table-header {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    padding-right: 21px;
+    background-color: #F2F2F2;
+}
+
+.table-header-label {
+    margin: 0px;
+    width: 100%;
+
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    align-items: center;
+    text-align: right;
+    color: #363636;
+}
+
+.table-value {
+    padding: 0px 6px;
+}

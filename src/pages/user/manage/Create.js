@@ -6,6 +6,7 @@ import { GetGroupOptionListAPI } from '../../../api/Group';
 import { CheckUserNameAPI, CreateUserAPI } from '../../../api/User';
 import alert_icon from '../../../assets/images/alert-icon.png';
 import { Constants } from '../../../constants/Constants';
+import AlertModal from '../../../components/AlertModal';
 
 const { Option } = Select;
 
@@ -13,7 +14,7 @@ const { Option } = Select;
 function Create() {
     let navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
-    const [groupOptionList, setGroupOptionList] = useState([]);
+    const [validationList, setValidationList] = useState([]);
     const [showDeleteButton, setShowDeleteButton] = useState(false);
     const [bodyList, setBodyList] = useState([
         {
@@ -28,9 +29,7 @@ function Create() {
     ]);
 
     const initComponent = async () => {
-		const initGroupOptionList = await GetGroupOptionListAPI();
-		
-		setGroupOptionList(initGroupOptionList);
+
 	};
 
 	useEffect(() => {
@@ -67,17 +66,61 @@ function Create() {
     };
 
     const onChangeComponent = (number, name, value) => {
-        setBodyList(bodyList.map(body => body.number === number ? {...body, [name]: value} : body));
-    }
-
-    const onSaveClick = async() => {
-        await CreateUserAPI(bodyList);
-        // setShowModal(true);
-        navigate('/user/manage');
+        setBodyList(bodyList.map(
+            body => body.number === number ? 
+            {
+                ...body, 
+                group_id: (name == 'type_id') ? null : body.group_id,
+                [name]: value
+            } 
+            : body
+        ));
     };
 
-    const onCloseModalClick = () => {
-        setShowModal(false);
+    const onSaveClick = async() => {
+        const validation = [];
+        bodyList.map((body, index) => {
+            if(body.name === '') {
+                validation.push({
+                    title: '정보 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '이름'
+                })
+            }
+            if(body.user_id === '') {
+                validation.push({
+                    title: '정보 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '아이디'
+                })
+            }
+            if(body.type_id === null) {
+                validation.push({
+                    title: '정보 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '구분'
+                })
+            }
+            if(body.group_id === null) {
+                validation.push({
+                    title: '정보 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '그룹'
+                })
+            }
+            if(body.password === '') {
+                validation.push({
+                    title: '정보 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '비밀번호'
+                })
+            }
+        });
+
+        setValidationList(validation);
+
+        if(validation.length > 0) {
+            setShowModal(true);
+        } else {
+            await CreateUserAPI(bodyList);
+        
+            navigate('/user/manage');
+        }
     };
 
     const renderBodyList = () => {
@@ -108,6 +151,7 @@ function Create() {
                                                 onChangeComponent(body.number, e.target.name, e.target.value);
                                             }} 
                                             placeholder="이름 입력" 
+                                            maxLength={10}
                                             style={{ width: 150 }} 
                                         />
                                     </Col>
@@ -122,6 +166,7 @@ function Create() {
                                                 onChangeComponent(body.number, e.target.name, e.target.value);
                                             }} 
                                             placeholder="아이디 입력" 
+                                            maxLength={10}
                                             style={{ width: 150 }} 
                                         />
                                     </Col>
@@ -161,11 +206,19 @@ function Create() {
                                                 style={{ width: 150 }}
                                             >
                                                 {
-                                                    groupOptionList.map((optionItem, optionIndex) => (
+                                                    body.type_id === '0' ? 
+                                                    Constants.userTeamGroupOptions.map((optionItem, optionIndex) => (
                                                         <Select.Option key={optionIndex} value={optionItem.value}>
                                                             {optionItem.label}
                                                         </Select.Option>
                                                     ))
+                                                    : body.type_id === '1' ? 
+                                                    Constants.userAreaGroupOptions.map((optionItem, optionIndex) => (
+                                                        <Select.Option key={optionIndex} value={optionItem.value}>
+                                                            {optionItem.label}
+                                                        </Select.Option>
+                                                    ))
+                                                    : ''
                                                 }
                                             </Select>
                                         </Space>
@@ -229,27 +282,12 @@ function Create() {
                     
                     <Row justify="center" gutter={[17, 0]}>
                         <Col>
-                            <Button className='white-button rounded-button' icon={<PlusOutlined />} onClick={onAddComponentClick}>브랜드 추가하기</Button>
+                            <Button className='white-button rounded-button' icon={<PlusOutlined />} onClick={onAddComponentClick}>사용자 추가하기</Button>
                         </Col>
                     </Row>
                 </Space>
             </Space>
-            <Modal
-                centered
-                width={325}
-                closable={false}
-                visible={showModal}
-                footer={[
-                    <Button className='alert-button' onClick={onCloseModalClick}>확인</Button>
-                ]}
-            >
-                <Space direction='vertical' size={10} align='center' style={{width:'100%'}}>
-                    <img src={alert_icon} />
-                    <label className='alert-content-label'>[정보이름] - [필드이름]</label>
-                    <label className='alert-content-label'>작성되지 않은 정보가 있습니다.</label>
-                </Space>
-                
-            </Modal>
+            <AlertModal visible={showModal} onConfirmClick={() => setShowModal(false)} validationList={validationList} />
         </>
     );
 }

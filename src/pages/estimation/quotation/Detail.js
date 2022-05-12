@@ -78,7 +78,7 @@ function Detail() {
 
     const onSaveClick = async() => {
         await UpdateQuotationAPI(bodyInfo);
-        // setShowModal(true);
+        
         navigate('/estimation/quotation');
     };
 

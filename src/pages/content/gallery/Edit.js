@@ -57,7 +57,7 @@ function Edit() {
     const onSaveClick = async() => {
         // const created_info = await CreateModelAPI(bodyInfo);
         
-        // setShowModal(true);
+        
         navigate('/content/gallery');
     };
 

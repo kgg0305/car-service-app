@@ -22,6 +22,7 @@ export async function CreateTrimAPI(body) {
             trim_name: body.trim_name,
             gearbox_type: body.gearbox_type,
             price: body.price,
+            model_trim_ids: body.model_trim_ids,
             is_use: body.is_use
         }
     ];
@@ -44,6 +45,7 @@ export async function UpdateTrimAPI(body) {
         trim_name: body.trim_name,
         gearbox_type: body.gearbox_type,
         price: body.price,
+        model_trim_ids: body.model_trim_ids,
         is_use: body.is_use
     };
     

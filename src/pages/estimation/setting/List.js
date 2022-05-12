@@ -61,7 +61,7 @@ function List() {
 									onChangeComponent(idx, e.target.name, e.target.value);
 								}} 
 								key={0} 
-								size={'large'} 
+								size='large' 
 								style={{ width: 130 }} placeholder='숫자입력' 
 							/>
                             <label>~</label>
@@ -72,7 +72,7 @@ function List() {
 									onChangeComponent(idx, e.target.name, e.target.value);
 								}} 
 								key={1} 
-								size={'large'} 
+								size='large' 
 								style={{ width: 130 }} placeholder='숫자입력' 
 							/>
 						</Space>
@@ -95,7 +95,7 @@ function List() {
 									onChangeComponent(idx, e.target.name, e.target.value);
 								}} 
 								key={0} 
-								size={'large'} 
+								size='large' 
 								style={{ width: 130 }} placeholder='숫자입력' 
 							/>
                             <label>~</label>
@@ -106,7 +106,7 @@ function List() {
 									onChangeComponent(idx, e.target.name, e.target.value);
 								}} 
 								key={1} 
-								size={'large'} 
+								size='large' 
 								style={{ width: 130 }} placeholder='숫자입력' 
 							/>
 						</Space>

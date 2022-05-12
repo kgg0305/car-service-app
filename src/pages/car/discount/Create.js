@@ -186,7 +186,7 @@ function Create() {
             const startedIndex = created_info['insertId'];
             
             await CreateDiscountConditionAPI(startedIndex, bodyList);
-            // setShowModal(true);
+            
             navigate('/car/discount');
         }
     };

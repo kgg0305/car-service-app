@@ -1,13 +1,13 @@
-import { Col, Divider, Row, Space, Button, Image, Select } from 'antd';
+import { Col, Divider, Row, Space, Button, Input, Select, DatePicker } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { GetGroupOptionListAPI } from '../../../api/Group';
 import { GetQuotationListAPI } from '../../../api/Quotation';
 import { GetUserOptionListAPI } from '../../../api/User';
-import SearchPanel from '../../../components/SearchPanel';
 import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
+import moment from 'moment';
 
 // 목록페지
 function List() {
@@ -16,14 +16,15 @@ function List() {
 	const [groupOptionList, setGroupOptionList] = useState([]);
 	const [userOptionList, setUserOptionList] = useState([]);
 	const [searchData, setSearchData] = useState({
-		date_type: null,
-		s_date: new Date(),
-		e_date: new Date(),
+		date_type: '0',
+		date_period: 0,
+		s_date: null,
+		e_date: null,
 		purchase_method: null,
 		search_type: null,
 		search_text: '',
 		purchase_path: '',
-		status: ''
+		status: 0
 	});
 	const [summaryData, setSummaryData] = useState({
 		quotation: 0,
@@ -132,161 +133,6 @@ function List() {
 		},
 	];
 
-	const searchDataSource = [
-		{
-			height: 80,
-			columns: [
-				{
-					titleText: '날짜',
-					titleWidth: '154px',
-					contentItems: [
-						{
-							type: Constants.inputTypes.select,
-							name: 'date_type',
-							placeholder: '등록일',
-							width: 130,
-							data: Constants.dateTypeOptions
-						},
-                        {
-							type: Constants.inputTypes.button,
-							name: 'date_button1',
-							label: '전체',
-							style: 'black-button'
-						},
-						{
-							type: Constants.inputTypes.button,
-							name: 'date_button2',
-							label: '오늘',
-							style: 'white-button'
-						},
-						{
-							type: Constants.inputTypes.button,
-							name: 'date_button3',
-							label: '어제',
-							style: 'white-button'
-						},
-						{
-							type: Constants.inputTypes.button,
-							name: 'date_button4',
-							label: '3일',
-							style: 'white-button'
-						},
-						{
-							type: Constants.inputTypes.button,
-							name: 'date_button5',
-							label: '7일',
-							style: 'white-button'
-						},
-						{
-							type: Constants.inputTypes.button,
-							name: 'date_button6',
-							label: '1개월',
-							style: 'white-button'
-						},
-						{
-							type: Constants.inputTypes.button,
-							name: 'date_button7',
-							label: '3개월',
-							style: 'white-button'
-						},
-                        {
-							type: Constants.inputTypes.datePicker,
-							name: 's_date',
-							placeholder: '시작일'
-						},
-						{
-							type: Constants.inputTypes.label,
-							label: '~'
-						},
-						{
-							type: Constants.inputTypes.datePicker,
-							name: 'e_date',
-							placeholder: '종료일'
-						}
-					]
-				}
-			]
-		},
-        {
-			height: 80,
-			columns: [
-				{
-					titleText: '검색 I',
-					titleWidth: '154px',
-					contentItems: [
-						{
-							type: Constants.inputTypes.select,
-							name: 'purchase_method',
-							placeholder: '구입방법',
-							width: 130,
-							data: Constants.purchaseMethodOptions
-						},
-                        {
-							type: Constants.inputTypes.select,
-							name: 'search_type',
-							placeholder: '검색구분',
-							width: 130,
-							data: Constants.searchTypeOptions
-						},
-                        {
-							type: Constants.inputTypes.input,
-							name: 'search_text',
-							placeholder: '검색어 입력',
-							width: 200
-						},
-                        {
-							type: Constants.inputTypes.input,
-							name: 'purchase_path',
-							placeholder: '유입경로 입력',
-							width: 200
-						}
-					]
-				}
-			]
-		},
-        {
-			height: 80,
-			columns: [
-				{
-					titleText: '검색 II',
-					titleWidth: '154px',
-					contentItems: [
-						{
-							type: Constants.inputTypes.button,
-							label: '전체',
-							style: 'black-button'
-						},
-                        {
-							type: Constants.inputTypes.button,
-							label: '대기중',
-							style: 'white-button disabled-button'
-						},
-                        {
-							type: Constants.inputTypes.button,
-							label: '상담중',
-							style: 'white-button disabled-button'
-						},
-                        {
-							type: Constants.inputTypes.button,
-							label: '계약중',
-							style: 'white-button disabled-button'
-						},
-                        {
-							type: Constants.inputTypes.button,
-							label: '출고중',
-							style: 'white-button disabled-button'
-						},
-                        {
-							type: Constants.inputTypes.button,
-							label: '종료',
-							style: 'white-button disabled-button'
-						}
-					]
-				}
-			]
-		}
-	];
-
 	const tableDataSource = {
 		topItems: [
 			{
@@ -364,6 +210,90 @@ function List() {
 		]);
 	};
 
+	const onChangeSearchComponent = (name, value) => {
+		let s_date = searchData.s_date;
+		let e_date = searchData.e_date;
+		if(name === 'date_period') {
+			switch (value) {
+				case 0:
+					s_date = null;
+					e_date = null;
+					break;
+				case 1:
+					s_date = new Date();
+					e_date = new Date();
+					break;
+				case 2:
+					s_date = new Date();
+					s_date.setDate(s_date.getDate() - 1)
+					e_date = new Date();
+					e_date.setDate(e_date.getDate() - 1)
+					break;
+				case 3:
+					s_date = new Date();
+					s_date.setDate(s_date.getDate() - 3)
+					e_date = new Date();
+					break;
+				case 4:
+					s_date = new Date();
+					s_date.setDate(s_date.getDate() - 7)
+					e_date = new Date();
+					break;
+				case 5:
+					s_date = new Date();
+					s_date.setMonth(s_date.getMonth() - 1)
+					e_date = new Date();
+					break;
+				case 6:
+					s_date = new Date();
+					s_date.setMonth(s_date.getMonth() - 3)
+					e_date = new Date();
+					break;
+				default:
+					break;
+			}
+		}
+		setSearchData(
+            { 
+                ...searchData,
+                idx: name == 'brand_id' ? null : searchData.idx,
+				s_date: s_date,
+				e_date: e_date,
+                [name]: value
+            }
+        );
+	};
+
+	const onClickReset = () => {
+		setSearchData(
+			{
+				date_type: '0',
+				date_period: 0,
+				s_date: new Date(),
+				e_date: new Date(),
+				purchase_method: null,
+				search_type: null,
+				search_text: '',
+				purchase_path: '',
+				status: 0
+			}
+		);
+
+		onClickSearch(
+			{
+				date_type: '0',
+				date_period: 0,
+				s_date: new Date(),
+				e_date: new Date(),
+				purchase_method: null,
+				search_type: null,
+				search_text: '',
+				purchase_path: '',
+				status: 0
+			}
+		);
+	};
+
 	const onClickSearch = async(searchData) => {
 		const initDataSource = await GetQuotationListAPI(0, searchData);
 
@@ -389,7 +319,7 @@ function List() {
 			<Row justify='center'>
 				<Col>
 					<Select
-						size={'large'}
+						size='large'
 						suffixIcon={<CaretDownOutlined />}
 						placeholder={'선택'}
 						style={{ width: 130 }}
@@ -412,7 +342,7 @@ function List() {
 			<Row justify='center'>
 				<Col>
 					<Select
-						size={'large'}
+						size='large'
 						suffixIcon={<CaretDownOutlined />}
 						placeholder={'선택'}
 						style={{ width: 130 }}
@@ -439,7 +369,248 @@ function List() {
             </Space>
 
             {/* Search Section */}
-            <SearchPanel dataSource={searchDataSource} onSearch={onClickSearch} />
+            <Space direction='vertical' size={20}>
+				<label className='title-label'>검색</label>
+				<Space direction='vertical' size={0}>
+					<Row key={1} gutter={[0]} align="middle" style={{ height: 80 }} className='table'>
+						<Col flex="154px" className='table-header'>
+							<label className='table-header-label'>날짜</label>
+						</Col>
+						<Col flex="auto" className='table-value'>
+							<Space size={6}>
+								<Select
+									name='date_type' 
+									value={searchData.date_type} 
+									onChange={value => {
+										onChangeSearchComponent('date_type', value);
+									}}
+									suffixIcon={<CaretDownOutlined />}
+									placeholder="등록일"
+									size='large'
+									style={{ width: 130 }}
+								>
+									{
+										Constants.dateTypeOptions.map((optionItem, optionIndex) => (
+											<Select.Option key={optionIndex} value={optionItem.value}>
+												{optionItem.label}
+											</Select.Option>
+										))
+									}
+								</Select>
+								<Button 
+									key={1}
+									onClick={() => onChangeSearchComponent('date_period', 0)}
+									size='large'
+									className={searchData.date_period === 0 ? 'black-button' : 'white-button'}
+								>
+									전체
+								</Button>
+								<Button 
+									key={2}
+									onClick={() => onChangeSearchComponent('date_period', 1)}
+									size='large'
+									className={searchData.date_period === 1 ? 'black-button' : 'white-button'}
+								>
+									오늘
+								</Button>
+								<Button 
+									key={3}
+									onClick={() => onChangeSearchComponent('date_period', 2)}
+									size='large'
+									className={searchData.date_period === 2 ? 'black-button' : 'white-button'}
+								>
+									어제
+								</Button>
+								<Button 
+									key={4}
+									onClick={() => onChangeSearchComponent('date_period', 3)}
+									size='large'
+									className={searchData.date_period === 3 ? 'black-button' : 'white-button'}
+								>
+									3일
+								</Button>
+								<Button 
+									key={5}
+									onClick={() => onChangeSearchComponent('date_period', 4)}
+									size='large'
+									className={searchData.date_period === 4 ? 'black-button' : 'white-button'}
+								>
+									7일
+								</Button>
+								<Button 
+									key={6}
+									onClick={() => onChangeSearchComponent('date_period', 5)}
+									size='large'
+									className={searchData.date_period === 5 ? 'black-button' : 'white-button'}
+								>
+									1개월
+								</Button>
+								<Button 
+									key={7}
+									onClick={() => onChangeSearchComponent('date_period', 6)}
+									size='large'
+									className={searchData.date_period === 6 ? 'black-button' : 'white-button'}
+								>
+									3개월
+								</Button>
+								<DatePicker 
+									key={8}
+									name='s_date' 
+									value={searchData.s_date ? moment(searchData.s_date) : ''} 
+									onChange={value => {
+										onChangeSearchComponent('s_date', value.toString());
+									}}
+									placeholder='시작일' 
+									size='large'
+								/>
+								<DatePicker 
+									key={9}
+									name='e_date' 
+									value={searchData.e_date ? moment(searchData.e_date) : ''} 
+									onChange={value => {
+										onChangeSearchComponent('e_date', value.toString());
+									}}
+									placeholder='종료일' 
+									size='large'
+								/>
+							</Space>
+						</Col>
+					</Row>
+					<Row key={2} gutter={[0]} align="middle" style={{ height: 80 }} className='table'>
+						<Col flex="154px" className='table-header'>
+							<label className='table-header-label'>검색 I</label>
+						</Col>
+						<Col flex="auto" className='table-value'>
+							<Space size={6}>
+								<Select
+									name='purchase_method' 
+									value={searchData.purchase_method} 
+									onChange={value => {
+										onChangeSearchComponent('purchase_method', value);
+									}}
+									suffixIcon={<CaretDownOutlined />}
+									placeholder="구입방법"
+									size='large'
+									style={{ width: 130 }}
+								>
+									{
+										Constants.purchaseMethodOptions.map((optionItem, optionIndex) => (
+											<Select.Option key={optionIndex} value={optionItem.value}>
+												{optionItem.label}
+											</Select.Option>
+										))
+									}
+								</Select>
+								<Select
+									name='search_type' 
+									value={searchData.search_type} 
+									onChange={value => {
+										onChangeSearchComponent('search_type', value);
+									}}
+									suffixIcon={<CaretDownOutlined />}
+									placeholder="검색구분"
+									size='large'
+									style={{ width: 130 }}
+								>
+									{
+										Constants.searchTypeOptions.map((optionItem, optionIndex) => (
+											<Select.Option key={optionIndex} value={optionItem.value}>
+												{optionItem.label}
+											</Select.Option>
+										))
+									}
+								</Select>
+								<Input 
+									name='search_text' 
+									value={searchData.search_text} 
+									onChange={e => {
+										onChangeSearchComponent(e.target.name, e.target.value);
+									}} 
+									size='large' 
+									style={{width: 200}} 
+									placeholder='검색어 입력'
+								/>
+								<Input 
+									name='purchase_path' 
+									value={searchData.purchase_path} 
+									onChange={e => {
+										onChangeSearchComponent(e.target.name, e.target.value);
+									}} 
+									size='large' 
+									style={{width: 200}} 
+									placeholder='유입경로 입력'
+								/>
+							</Space>
+						</Col>
+					</Row>
+					<Row key={3} gutter={[0]} align="middle" style={{ height: 80 }} className='table'>
+						<Col flex="154px" className='table-header'>
+							<label className='table-header-label'>검색 II</label>
+						</Col>
+						<Col flex="auto" className='table-value'>
+							<Space size={6}>
+								<Button 
+									key={1}
+									onClick={() => onChangeSearchComponent('status', 0)}
+									size='large'
+									className={(searchData.status === 0 ? 'black-button' : 'white-button') + ' big-button'}
+								>
+									전체
+								</Button>
+								<Button 
+									key={2}
+									onClick={() => onChangeSearchComponent('status', 1)}
+									size='large'
+									className={(searchData.status === 1 ? 'black-button' : 'white-button') + ' big-button'}
+								>
+									대기중
+								</Button>
+								<Button 
+									key={3}
+									onClick={() => onChangeSearchComponent('status', 2)}
+									size='large'
+									className={(searchData.status === 2 ? 'black-button' : 'white-button') + ' big-button'}
+								>
+									상담중
+								</Button>
+								<Button 
+									key={4}
+									onClick={() => onChangeSearchComponent('status', 3)}
+									size='large'
+									className={(searchData.status === 3 ? 'black-button' : 'white-button') + ' big-button'}
+								>
+									계약중
+								</Button>
+								<Button 
+									key={5}
+									onClick={() => onChangeSearchComponent('status', 4)}
+									size='large'
+									className={(searchData.status === 4 ? 'black-button' : 'white-button') + ' big-button'}
+								>
+									출고중
+								</Button>
+								<Button 
+									key={6}
+									onClick={() => onChangeSearchComponent('status', 5)}
+									size='large'
+									className={(searchData.status === 5 ? 'black-button' : 'white-button') + ' big-button'}
+								>
+									종료
+								</Button>
+							</Space>
+						</Col>
+					</Row>
+				</Space>
+				
+				<Row key={2} justify="center" gutter={[17, 0]}>
+					<Col>
+						<Button className='white-button big-button' onClick={onClickReset}>초기화</Button>
+					</Col>
+					<Col>
+						<Button className='black-button big-button' onClick={() => onClickSearch(searchData)}>검색</Button>
+					</Col>
+				</Row>
+			</Space>
 
             {/* Body Section */}
             <TableList dataSource={tableDataSource} />

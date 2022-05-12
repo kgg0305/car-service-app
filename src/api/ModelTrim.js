@@ -6,9 +6,9 @@ export async function CreateModelTrimAPI(bodyList) {
         data.push(
             {
                 model_id: body.model_id,
-                trim_name: body.trim_name,
-                trim_price: body.trim_price,
-                trim_detail: body.trim_detail
+                name: body.name,
+                price: body.price,
+                detail: body.detail
             }
         )
     });
@@ -25,9 +25,9 @@ export async function CreateModelTrimAPI(bodyList) {
 export async function UpdateModelTrimAPI(body) {
     var data = {
         model_id: body.model_id,
-        trim_name: body.trim_name,
-        trim_price: body.trim_price,
-        trim_detail: body.trim_detail
+        name: body.name,
+        price: body.price,
+        detail: body.detail
     };
     
     try {

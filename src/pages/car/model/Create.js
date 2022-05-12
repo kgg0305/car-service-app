@@ -12,6 +12,8 @@ import { CreateModelLineupAPI } from '../../../api/ModelLinup';
 import { CreateModelColorAPI } from '../../../api/ModelColor';
 import { CreateModelTrimAPI } from '../../../api/ModelTrim';
 import AlertModal from '../../../components/AlertModal';
+import { GetDiscountKindListAPI } from '../../../api/DiscountKind';
+import { GetDiscountConditionListAPI } from '../../../api/DiscountCondition';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -32,7 +34,8 @@ function Create() {
             model_name: '',
             release_date: new Date(),
             sequence: 1,
-            is_use: null,
+            is_use: '0',
+            discount_condition_ids: '',
             picture_1: '',
             picture_2: '',
             picture_3: '',
@@ -53,44 +56,38 @@ function Create() {
             check_name: ''
         }
     );
-
     const [lineupBodyList, setLineupBodyList] = useState([
         {
-            title: '정보 ',
+            number: 1,
             model_id: null,
-            lineup_name: '',
-            lineup_price: 1,
-            lineup_detail: ''
+            name: '',
+            price: 0,
+            detail: ''
         }
     ]);
-
     const [colorBodyList, setColorBodyList] = useState([
         {
-            title: '정보 ',
+            number: 1,
             model_id: null,
-            color_name: '',
-            color_price: 1
+            name: '',
+            price: 0
         }
     ]);
-
     const [trimBodyList, setTrimBodyList] = useState([
         {
-            title: '정보 ',
+            number: 1,
             model_id: null,
-            trim_name: '',
-            trim_price: 1,
-            trim_detail: ''
+            name: '',
+            price: 0,
+            detail: ''
         }
     ]);
-
-    const [discountBodyInfo, setDiscountBodyInfo] = useState([
-        
-    ]);
+    const [discountBodyList, setDiscountBodyList] = useState([]);
 
     const initComponent = async () => {
 		const initBrandOptionList = await GetBrandOptionListAPI();
 		const initGroupOptionList = await GetGroupOptionListAPI();
-		
+        
 		setBrandOptionList(initBrandOptionList);
 		setGroupOptionList(initGroupOptionList);
 	};
@@ -131,9 +128,9 @@ function Create() {
         setLineupBodyList([...lineupBodyList, {
             number: lineupBodyList[lineupBodyList.length - 1].number + 1,
             model_id: null,
-            lineup_name: '',
-            lineup_price: 1,
-            lineup_detail: ''
+            name: '',
+            price: 0,
+            detail: ''
         }]);
     };
 
@@ -151,9 +148,9 @@ function Create() {
         setColorBodyList([...colorBodyList, {
             number: colorBodyList[colorBodyList.length - 1].number + 1,
             model_id: null,
-            lineup_name: '',
-            lineup_price: 1,
-            lineup_detail: ''
+            name: '',
+            price: 0,
+            detail: ''
         }]);
     };
 
@@ -171,9 +168,9 @@ function Create() {
         setTrimBodyList([...trimBodyList, {
             number: trimBodyList[trimBodyList.length - 1].number + 1,
             model_id: null,
-            lineup_name: '',
-            lineup_price: 1,
-            lineup_detail: ''
+            name: '',
+            price: 0,
+            detail: ''
         }]);
     };
 
@@ -187,7 +184,27 @@ function Create() {
         setTrimBodyList(trimBodyList.map(body => body.number === number ? {...body, [name]: value} : body));
     }
 
-    const onChangeComponent = (name, value) => {
+    const onChangeDiscountComponent = (kind_id, condition_id, name, value) => {
+        setDiscountBodyList(
+            discountBodyList.map(kindBody => (
+                kindBody.idx === kind_id ? 
+                {
+                    ...kindBody, 
+                    discount_condition_list: kindBody.discount_condition_list.map(conditionBody => (
+                        conditionBody.idx === condition_id ?
+                        {
+                            ...conditionBody,
+                            [name]: value
+                        }
+                        : conditionBody
+                    ))
+                } 
+                : kindBody
+            ))
+        );
+    }
+
+    const onChangeComponent = async(name, value) => {
         setBodyInfo(
             { 
                 ...bodyInfo,
@@ -196,101 +213,189 @@ function Create() {
             }
         );
         
+        if(name === 'brand_id') {
+            const initDiscountKindList = await GetDiscountKindListAPI(0, {
+                brand_id: value
+            });
+
+            let initDiscountBodyList = [];
+            for (let i = 0; i < initDiscountKindList.length; i++) {
+                const discountInfo = initDiscountKindList[i];
+                const conditionList = await GetDiscountConditionListAPI(0, {
+                    discount_kind_id: discountInfo.idx
+                });
+
+                initDiscountBodyList.push({
+                    ...discountInfo,
+                    discount_condition_list: conditionList.map(conditionBody => (
+                        {
+                            ...conditionBody,
+                            is_use: '0'
+                        }
+                    ))
+                });
+            }
+
+            setDiscountBodyList(initDiscountBodyList);
+        }
+        
         for(var i = 1; i <= 8; i++) {
             if(name == 'picture_' + i) {
                 previewChange('preview_' + i, value);
             }
         }
-        
     }
 
     const onSaveClick = async(url) => {
         const validation = [];
         if(bodyInfo.brand_id === null) {
             validation.push({
-                title: '정보 ',
+                title: '정보',
                 name: '차량'
-            })
+            });
         }
         if(bodyInfo.group_id === '') {
             validation.push({
-                title: '정보 ',
+                title: '정보',
                 name: '차량'
-            })
+            });
         }
         if(bodyInfo.model_name === '') {
             validation.push({
-                title: '정보 ',
+                title: '정보',
                 name: '모델'
-            })
+            });
         }
         if(bodyInfo.is_new === null) {
             validation.push({
-                title: '정보 ',
+                title: '정보',
                 name: '신차여부'
-            })
+            });
         }
         if(bodyInfo.release_date === null) {
             validation.push({
-                title: '정보 ',
+                title: '정보',
                 name: '출시일'
-            })
+            });
         }
         if(bodyInfo.sequence === '') {
             validation.push({
-                title: '정보 ',
+                title: '정보',
                 name: '순서'
-            })
+            });
         }
         if(bodyInfo.is_use === null) {
             validation.push({
-                title: '정보 ',
+                title: '정보',
                 name: '사용여부'
-            })
+            });
         }
+
+        lineupBodyList.map((body, index) => {
+            if(body.name === '') {
+                validation.push({
+                    title: '공통옵션 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '옵션이름'
+                });
+            }
+            if(body.price === 0) {
+                validation.push({
+                    title: '공통옵션 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '가격'
+                });
+            }
+            if(body.detail === '') {
+                validation.push({
+                    title: '공통옵션 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '세부내용'
+                });
+            }
+        });
+
+        colorBodyList.map((body, index) => {
+            if(body.name === '') {
+                validation.push({
+                    title: '색상 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '색상이름'
+                });
+            }
+            if(body.price === 0) {
+                validation.push({
+                    title: '색상 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '가격'
+                });
+            }
+        });
+
+        trimBodyList.map((body, index) => {
+            if(body.name === '') {
+                validation.push({
+                    title: '옵션 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '옵션이름'
+                });
+            }
+            if(body.price === 0) {
+                validation.push({
+                    title: '옵션 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '가격'
+                });
+            }
+            if(body.detail === '') {
+                validation.push({
+                    title: '옵션 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '세부내용'
+                });
+            }
+        });
 
         setValidationList(validation);
 
         if(validation.length > 0) {
             setShowModal(true);
         } else {
-            const created_info = await CreateModelAPI(bodyInfo);
+            let discount_condition_id_array = [];
+            discountBodyList.map(kindBody => (
+                kindBody.discount_condition_list.filter(conditionBody => conditionBody.is_use === '0').map(conditionBody => (
+                    discount_condition_id_array.push(conditionBody.idx)
+                ))
+            ));
+
+            const created_info = await CreateModelAPI({
+                ...bodyInfo,
+                discount_condition_ids: discount_condition_id_array.join(',')
+            });
             const model_id = created_info['insertId'];
 
             //create lineup
             const tempLineupBodyList = lineupBodyList.map(body => (
                 {
                     ...body,
-                    ['model_id']: model_id
+                    model_id: model_id
                 }
             ));
             
-            setLineupBodyList(tempLineupBodyList);
             await CreateModelLineupAPI(tempLineupBodyList);
 
             //create color
             const tempColorBodyList = colorBodyList.map(body => (
                 {
                     ...body,
-                    ['model_id']: model_id
+                    model_id: model_id
                 }
             ));
 
-            setColorBodyList(tempColorBodyList);
             await CreateModelColorAPI(tempColorBodyList);
 
             //create color
             const tempTrimBodyList = trimBodyList.map(body => (
                 {
                     ...body,
-                    ['model_id']: model_id
+                    model_id: model_id
                 }
             ));
 
-            setTrimBodyList(tempTrimBodyList);
             await CreateModelTrimAPI(tempTrimBodyList);
             
-            // setShowModal(true);
             navigate(url);
         }
     };
@@ -307,28 +412,32 @@ function Create() {
                             <Col>
                                 <Space size={6}>
                                     <Input 
-                                        name='lineup_name' 
-                                        value={body.lineup_name} 
+                                        name='name' 
+                                        value={body.name} 
                                         onChange={e => {
                                             onChangeLineupComponent(body.number, e.target.name, e.target.value);
                                         }} 
-                                        placeholder="옵션 이름" style={{ width: 300 }} 
+                                        placeholder="옵션 이름"
+                                        maxLength={18} style={{ width: 300 }} 
                                     />
-                                    <Input 
-                                        name='lineup_price' 
-                                        value={body.lineup_price} 
-                                        onChange={e => {
-                                            onChangeLineupComponent(body.number, e.target.name, e.target.value);
+                                    <InputNumber 
+                                        name='price' 
+                                        value={body.price} 
+                                        onChange={number => {
+                                            onChangeLineupComponent(body.number, 'price', number);
                                         }} 
+                                        maxLength={9}
+                                        controls={false}
                                         style={{ width: 200 }} 
                                     />
                                     <Input 
-                                        name='lineup_detail' 
-                                        value={body.lineup_detail} 
+                                        name='detail' 
+                                        value={body.detail} 
                                         onChange={e => {
                                             onChangeLineupComponent(body.number, e.target.name, e.target.value);
                                         }} 
-                                        placeholder="세부 내용 입력" style={{ width: 750 }} 
+                                        placeholder="세부 내용 입력" 
+                                        maxLength={50} style={{ width: 750 }} 
                                     />
                                 </Space>
                             </Col>
@@ -369,19 +478,22 @@ function Create() {
                             <Col>
                                 <Space size={6}>
                                     <Input 
-                                        name='color_name' 
-                                        value={body.color_name} 
+                                        name='name' 
+                                        value={body.name} 
                                         onChange={e => {
                                             onChangeColorComponent(body.number, e.target.name, e.target.value);
                                         }} 
-                                        placeholder="색상 이름" style={{ width: 300 }} 
+                                        placeholder="색상 이름"
+                                        maxLength={18} style={{ width: 300 }} 
                                     />
-                                    <Input 
-                                        name='color_price' 
-                                        value={body.color_price} 
-                                        onChange={e => {
-                                            onChangeColorComponent(body.number, e.target.name, e.target.value);
+                                    <InputNumber 
+                                        name='price' 
+                                        value={body.price} 
+                                        onChange={number => {
+                                            onChangeColorComponent(body.number, 'price', number);
                                         }} 
+                                        maxLength={9}
+                                        controls={false}
                                         style={{ width: 200 }} 
                                     />
                                 </Space>
@@ -423,28 +535,32 @@ function Create() {
                             <Col>
                                 <Space size={6}>
                                     <Input 
-                                        name='trim_name' 
-                                        value={body.trim_name} 
+                                        name='name' 
+                                        value={body.name} 
                                         onChange={e => {
                                             onChangeTrimComponent(body.number, e.target.name, e.target.value);
                                         }} 
-                                        placeholder="옵션 이름" style={{ width: 300 }} 
+                                        placeholder="옵션 이름"
+                                        maxLength={18} style={{ width: 300 }} 
                                     />
-                                    <Input 
-                                        name='trim_price' 
-                                        value={body.trim_price} 
-                                        onChange={e => {
-                                            onChangeTrimComponent(body.number, e.target.name, e.target.value);
+                                    <InputNumber 
+                                        name='price' 
+                                        value={body.price} 
+                                        onChange={number => {
+                                            onChangeTrimComponent(body.number, 'price', number);
                                         }} 
+                                        maxLength={9}
+                                        controls={false}
                                         style={{ width: 200 }} 
                                     />
                                     <Input 
-                                        name='trim_detail' 
-                                        value={body.trim_detail} 
+                                        name='detail' 
+                                        value={body.detail} 
                                         onChange={e => {
                                             onChangeTrimComponent(body.number, e.target.name, e.target.value);
                                         }} 
-                                        placeholder="세부 내용 입력" style={{ width: 750 }} 
+                                        placeholder="세부 내용 입력"
+                                        maxLength={50} style={{ width: 750 }} 
                                     />
                                 </Space>
                             </Col>
@@ -471,6 +587,79 @@ function Create() {
                 </Row>
             ))
         )
+    };
+
+    const renderDiscountCarField = () => {
+        return (
+            bodyInfo.brand_id != null && bodyInfo.group_id != null ? 
+                <Space size={10}>
+                    <Input 
+                        value={brandOptionList.filter(item => item.value === bodyInfo.brand_id)[0].label} 
+                        disabled={true}
+                    />
+                    <Input 
+                        value={
+                            bodyInfo.group_id != null ? 
+                            groupOptionList.filter(item => item.value === bodyInfo.group_id)[0].label 
+                            : ''
+                        }
+                        disabled={true}
+                    />
+                    <Input 
+                        value={bodyInfo.model_name}
+                        disabled={true}
+                    />
+                </Space>
+            : '선택된 차량 정보가 없습니다.'
+        );
+    };
+
+    const renderDiscountBodyList = () => {
+        return (
+            discountBodyList.map(kindBody => (
+                <Space direction='vertical' size={20}>
+                    <Row gutter={[12]} align='middle'>
+                        <Col>
+                            <label className='main-sub-title'>{kindBody.kind_name}</label>
+                        </Col>
+                        <Col>
+                            <label className='sub-description'>{kindBody.kind_detail}</label>
+                        </Col>
+                        <Col flex="auto" />
+                    </Row>
+                    <Space direction='vertical' size={0}>
+                        {
+                            kindBody.discount_condition_list.map((conditionBody, index) => (
+                                <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
+                                    <Col span={2} className='table-header-col-section'>
+                                        <label>할인 { (index + 1) !== 10 ? '0' + (index + 1) : (index + 1) }</label>
+                                    </Col>
+                                    <Col flex="auto" className='table-value-col-section'>
+                                        <Space size={10}>
+                                            <Input value={conditionBody.condition_name} style={{ width: 300 }} readOnly={true} />
+                                            <Input value={conditionBody.discount_price} style={{ width: 200 }} readOnly={true} />
+                                            <Space size={11}>
+                                                <Switch 
+                                                    checked={
+                                                        conditionBody.is_use === '0' ? false : true
+                                                    } 
+                                                    onClick={checked => onChangeDiscountComponent(kindBody.idx, conditionBody.idx, 'is_use', checked ? '1' : '0')}
+                                                />
+                                                <label className='switch-label'>
+                                                    {
+                                                        Constants.availableOptions.filter(item => item.value === conditionBody.is_use)[0].label
+                                                    }
+                                                </label>
+                                            </Space>
+                                        </Space>
+                                    </Col>
+                                </Row>
+                            ))
+                        }
+                    </Space>
+                </Space>
+            ))
+        );
     };
 
     return(
@@ -888,116 +1077,12 @@ function Create() {
                                                 <label>차량</label>
                                             </Col>
                                             <Col flex="auto" className='table-value-col-section'>
-                                                <Space size={10}>
-                                                    <Button className='gray-button large-button'>브랜드</Button>
-                                                    <Button className='gray-button large-button'>모델그룹</Button>
-                                                    <Button className='gray-button large-button'>모델</Button>
-                                                </Space>
+                                                {renderDiscountCarField()}
                                             </Col>
                                         </Row>
                                     </Space>
                                 </Space>
-                                <Space direction='vertical' size={20}>
-                                    <Row gutter={[12]} align='middle'>
-                                        <Col>
-                                            <label className='main-sub-title'>블루멤버스 포인트 선사용</label>
-                                        </Col>
-                                        <Col>
-                                            <label className='sub-description'>개인 및 개인사업자 중 현대차 2회 이상 재구매 고객(신규 고객 제외)</label>
-                                        </Col>
-                                        <Col flex="auto" />
-                                    </Row>
-                                    <Space direction='vertical' size={0}>
-                                        <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
-                                            <Col span={2} className='table-header-col-section'>
-                                                <label>할인 01</label>
-                                            </Col>
-                                            <Col flex="auto" className='table-value-col-section'>
-                                                <Space size={10}>
-                                                    <Input value={'2회 이상 재구매 고객'} style={{ width: 300 }} />
-                                                    <Input value={'-10만원'} style={{ width: 200 }} />
-                                                    <Space size={11}>
-                                                        <Switch width='100' height={40} />
-                                                        <label className='switch-label'>사용</label>
-                                                    </Space>
-                                                </Space>
-                                            </Col>
-                                        </Row>
-                                        <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
-                                            <Col span={2} className='table-header-col-section'>
-                                                <label>할인 01</label>
-                                            </Col>
-                                            <Col flex="auto" className='table-value-col-section'>
-                                                <Space size={10}>
-                                                    <Input value={'2회 이상 재구매 고객'} style={{ width: 300 }} />
-                                                    <Input value={'-10만원'} style={{ width: 200 }} />
-                                                    <Space size={11}>
-                                                        <Switch width='100' height={40} />
-                                                        <label className='switch-label'>사용</label>
-                                                    </Space>
-                                                </Space>
-                                            </Col>
-                                        </Row>
-                                        <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
-                                            <Col span={2} className='table-header-col-section'>
-                                                <label>할인 01</label>
-                                            </Col>
-                                            <Col flex="auto" className='table-value-col-section'>
-                                                <Space size={10}>
-                                                    <Input value={'2회 이상 재구매 고객'} style={{ width: 300 }} />
-                                                    <Input value={'-10만원'} style={{ width: 200 }} />
-                                                    <Space size={11}>
-                                                        <Switch width='100' height={40} />
-                                                        <label className='switch-label'>사용</label>
-                                                    </Space>
-                                                </Space>
-                                            </Col>
-                                        </Row>
-                                    </Space>
-                                </Space>
-                                <Space direction='vertical' size={20}>
-                                    <Row gutter={[12]} align='middle'>
-                                        <Col>
-                                            <label className='main-sub-title'>10년 이상/15년 이상 노후차조건</label>
-                                        </Col>
-                                        <Col>
-                                            <label className='sub-description'>노후차 차량의 본의명의 최초 등록일이 21년 12월 31일 이전 고객 한정정</label>
-                                        </Col>
-                                        <Col flex="auto" />
-                                    </Row>
-                                    <Space direction='vertical' size={0}>
-                                        <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
-                                            <Col span={2} className='table-header-col-section'>
-                                                <label>할인 01</label>
-                                            </Col>
-                                            <Col flex="auto" className='table-value-col-section'>
-                                                <Space size={10}>
-                                                    <Input value={'2회 이상 재구매 고객'} style={{ width: 300 }} />
-                                                    <Input value={'-10만원'} style={{ width: 200 }} />
-                                                    <Space size={11}>
-                                                        <Switch width='100' height={40} />
-                                                        <label className='switch-label'>사용</label>
-                                                    </Space>
-                                                </Space>
-                                            </Col>
-                                        </Row>
-                                        <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
-                                            <Col span={2} className='table-header-col-section'>
-                                                <label>할인 01</label>
-                                            </Col>
-                                            <Col flex="auto" className='table-value-col-section'>
-                                                <Space size={10}>
-                                                    <Input value={'2회 이상 재구매 고객'} style={{ width: 300 }} />
-                                                    <Input value={'-10만원'} style={{ width: 200 }} />
-                                                    <Space size={11}>
-                                                        <Switch width='100' height={40} />
-                                                        <label className='switch-label'>사용</label>
-                                                    </Space>
-                                                </Space>
-                                            </Col>
-                                        </Row>
-                                    </Space>
-                                </Space>
+                                {renderDiscountBodyList()}
                             </Space>
                         </TabPane>
                     </Tabs>

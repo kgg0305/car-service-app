@@ -5,7 +5,7 @@ import AlertDeleteModal from '../../../components/AlertDeleteModal';
 import SearchPanel from '../../../components/SearchPanel';
 import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
-import { GetDateTimeStringFromDate } from '../../../constants/GlobalFunctions';
+import { GetDateFullTimeStringUsingKorFromDate, GetDateTimeStringFromDate } from '../../../constants/GlobalFunctions';
 
 // 목록페지
 function List() {
@@ -77,7 +77,7 @@ function List() {
 			dataIndex: 'created_date',
 			key: 'created_date',
             align: 'center',
-			render: created_date => GetDateTimeStringFromDate(new Date(created_date))
+			render: created_date => GetDateFullTimeStringUsingKorFromDate(new Date(created_date))
 		},
 		{
 			title: '사용여부',
@@ -288,7 +288,12 @@ function List() {
 		return (
 			<Row justify='center' gutter={[11]}>
 				<Col>
-					<Switch checked={dataSource.filter(item => item.idx === idx)[0].is_use === '0' ? false : true} onClick={checked => changeIsUse(idx, checked)}/>
+					<Switch 
+						checked={
+							dataSource.filter(item => item.idx === idx)[0].is_use === '0' ? false : true
+						} 
+						onClick={checked => changeIsUse(idx, checked)}
+					/>
 				</Col>
 				<Col>
 					<label className='switch-label'>

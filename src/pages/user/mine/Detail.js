@@ -1,7 +1,8 @@
-import { Col, Divider, Row, Space, Select, Button, Input, Image, Upload, Modal } from 'antd';
+import { Col, Divider, Row, Space, Select, Button, Input, Image, Upload, Modal, InputNumber } from 'antd';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { GetUserInfoAPI, UpdateUserAPI } from '../../../api/User';
+import AlertModal from '../../../components/AlertModal';
 
 const { Option } = Select;
 
@@ -10,6 +11,7 @@ function Detail() {
     let { id } = useParams(1);
     let navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
+    const [validationList, setValidationList] = useState([]);
     const [bodyInfo, setBodyInfo] = useState(
         {
             idx: id,
@@ -18,6 +20,7 @@ function Detail() {
             group_id: null,
             group_name: '',
             name: '',
+            password: '',
             user_id: '',
             phone: '',
             email: ''
@@ -44,7 +47,39 @@ function Detail() {
     }
 
     const onSaveClick = async() => {
-        await UpdateUserAPI(bodyInfo);
+        const validation = [];
+        if(bodyInfo.name === '') {
+            validation.push({
+                title: '정보',
+                name: '이름'
+            })
+        }
+        if(bodyInfo.password === '') {
+            validation.push({
+                title: '정보',
+                name: '비밀번호'
+            })
+        }
+        if(bodyInfo.phone === '') {
+            validation.push({
+                title: '정보',
+                name: '연락처'
+            })
+        }
+        if(bodyInfo.email === '') {
+            validation.push({
+                title: '정보',
+                name: '이메일'
+            })
+        }
+
+        setValidationList(validation);
+
+        if(validation.length > 0) {
+            setShowModal(true);
+        } else {
+            await UpdateUserAPI(bodyInfo);
+        }
     };
 
     const onCloseModalClick = () => {
@@ -91,7 +126,7 @@ function Detail() {
                                                 onChangeComponent(e.target.name, e.target.value);
                                             }} 
                                             placeholder="이름" 
-                                            maxLength={15} style={{ width: 150 }} 
+                                            maxLength={10} style={{ width: 150 }} 
                                         />
                                     </Col>
                                     <Col span={2} className='table-header-col-section'>
@@ -125,13 +160,15 @@ function Detail() {
                                         <label>연락처</label>
                                     </Col>
                                     <Col flex="auto" className='table-value-col-section'>
-                                        <Input 
+                                        <InputNumber 
                                             name='phone' 
                                             value={bodyInfo.phone} 
-                                            onChange={e => {
-                                                onChangeComponent(e.target.name, e.target.value);
+                                            onChange={number => {
+                                                onChangeComponent('phone', number);
                                             }} 
                                             placeholder="공백없이 - 제외한 숫자 입력" 
+                                            maxLength={12} 
+                                            controls={false}
                                             style={{ width: 200 }} 
                                         />
                                     </Col>
@@ -171,6 +208,7 @@ function Detail() {
                     </Space>
                 </Space>
             </Space>
+            <AlertModal visible={showModal} onConfirmClick={() => setShowModal(false)} validationList={validationList} />
         </>
     );
 }

@@ -10,6 +10,8 @@ import { CreateTrimAPI, CheckTrimNameAPI } from '../../../api/Trim';
 import alert_icon from '../../../assets/images/alert-icon.png';
 import { Constants } from '../../../constants/Constants';
 import AlertModal from '../../../components/AlertModal';
+import { CreateTrimSpecificationAPI } from '../../../api/TrimSpecification';
+import { GetModelTrimListAPI } from '../../../api/ModelTrim';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -23,6 +25,7 @@ function Create() {
 	const [groupOptionList, setGroupOptionList] = useState([]);
     const [modelOptionList, setModelOptionList] = useState([]);
     const [lineupOptionList, setLineupOptionList] = useState([]);
+    const [modelTrimBodyList, setModelTrimBodyList] = useState([]);
     const [bodyInfo, setBodyInfo] = useState(
         {
             title: '정보 ',
@@ -37,6 +40,13 @@ function Create() {
             check_name: ''
         }
     );
+    const [specificationBodyList, setSpecificationBodyList] = useState([
+        {
+            number: 1,
+            specification_id: null,
+            detail: ''
+        }
+    ]);
 
     const initComponent = async () => {
 		const initBrandOptionList = await GetBrandOptionListAPI();
@@ -57,9 +67,38 @@ function Create() {
     async function checkName(name) {
         const result = await CheckTrimNameAPI(name);
         onChangeComponent('check_name', result ? 'exist' : 'not-exist');
-    }
+    };
 
-    const onChangeComponent = (name, value) => {
+    const onAddSpecificationComponentClick = event => {
+        setSpecificationBodyList([...specificationBodyList, {
+            number: specificationBodyList[specificationBodyList.length - 1].number + 1,
+            specification_id: null,
+            detail: ''
+        }]);
+    };
+
+    const onDeleteSpecificationComponentClick = (number) => {
+        if(specificationBodyList.length > 1){
+            setSpecificationBodyList(specificationBodyList.filter((body) => body.number !== number));
+        }
+    };
+
+    const onChangeSpecificationComponent = (number, name, value) => {
+        setSpecificationBodyList(specificationBodyList.map(body => body.number === number ? {...body, [name]: value} : body));
+    };
+
+    const onChangeModelTrimComponent = (trim_idx, name, value) => {
+        setModelTrimBodyList(modelTrimBodyList.map(item => (
+            item.idx === trim_idx ?
+            {
+                ...item,
+                [name]: value
+            }
+            : item
+        )))
+    };
+
+    const onChangeComponent = async(name, value) => {
         setBodyInfo(
             { 
                 ...bodyInfo,
@@ -68,8 +107,24 @@ function Create() {
                 lineup_id: (name == 'brand_id' || name == 'group_id' || name == 'model_id') ? null : bodyInfo.lineup_id,
                 [name]: value
             }
-        );        
-    }
+        );
+        
+        if(name === 'brand_id' || name === 'group_id') {
+            setModelTrimBodyList([]);
+        }
+
+        if(name === 'model_id') {
+            const initModelTrimBodyList = await GetModelTrimListAPI(0, {
+                model_id: value
+            });
+            setModelTrimBodyList(initModelTrimBodyList.map(item => (
+                {
+                    ...item,
+                    is_use: '0'
+                }
+            )));
+        }
+    };
 
     const onSaveClick = async(url) => {
         const validation = [];
@@ -116,14 +171,148 @@ function Create() {
             })
         }
 
+        specificationBodyList.map((body, index) => {
+            if(body.specification_id === null) {
+                validation.push({
+                    title: '사양 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '카테고리'
+                })
+            }
+            if(body.detail === '') {
+                validation.push({
+                    title: '사양 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '상세내용'
+                })
+            }
+        });
+
         setValidationList(validation);
 
         if(validation.length > 0) {
             setShowModal(true);
         } else {
-            await CreateTrimAPI(bodyInfo);
+            const created_info = await CreateTrimAPI({
+                ...bodyInfo,
+                model_trim_ids: modelTrimBodyList.filter(item => item.is_use === '0').map(item => item.idx).join(',')
+            });
+            const trim_id = created_info['insertId'];
+
+            //create specification
+            const tempSpecificationBodyList = specificationBodyList.map(body => (
+                {
+                    ...body,
+                    trim_id: trim_id
+                }
+            ));
+            
+            await CreateTrimSpecificationAPI(tempSpecificationBodyList);
+
             navigate(url);
         }
+    };
+
+    const renderSpecificationBodyList = () => {
+        return (
+            specificationBodyList.map((body, index) => (
+                <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
+                    <Col span={2} className='table-header-col-section'>
+                        <label>사양 {body.number < 10 ? '0' + body.number : body.number}</label>
+                    </Col>
+                    <Col flex="auto" className='table-value-col-section'>
+                        <Row>
+                            <Col>
+                                <Space size={6}>
+                                    <Select
+                                        name='specification_id' 
+                                        value={body.specification_id} 
+                                        onChange={value => {
+                                            onChangeSpecificationComponent(body.number, 'specification_id', value);
+                                        }}
+                                        suffixIcon={<CaretDownOutlined />}
+                                        placeholder="선택"
+                                        style={{ width: 200 }}
+                                    >
+                                        {
+                                            Constants.specificationOptions.map((optionItem, optionIndex) => (
+                                                <Select.Option key={optionIndex} value={optionItem.value}>
+                                                    {optionItem.label}
+                                                </Select.Option>
+                                            ))
+                                        }
+                                    </Select>
+                                    <Input 
+                                        name='detail' 
+                                        value={body.detail} 
+                                        onChange={e => {
+                                            onChangeSpecificationComponent(body.number, e.target.name, e.target.value);
+                                        }} 
+                                        placeholder="세부 내용 입력" 
+                                        maxLength={50} style={{ width: 1050 }} 
+                                    />
+                                </Space>
+                            </Col>
+                            <Col flex='auto' />
+                            <Col>
+                                <Space size={13}>
+                                    { 
+                                        specificationBodyList.length == index + 1 
+                                        ? 
+                                        <>
+                                            {
+                                                specificationBodyList.length != 1 
+                                                ? <Button className='white-button' onClick={() => onDeleteSpecificationComponentClick(body.number)}>삭제</Button> 
+                                                : ''
+                                            }
+                                            <Button className='black-button' onClick={() => onAddSpecificationComponentClick(body.number)}>추가</Button>
+                                        </>
+                                        : <Button className='white-button' onClick={() => onDeleteSpecificationComponentClick(body.number)}>삭제</Button>
+                                    }
+                                </Space>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
+            ))
+        );
+    };
+
+    const renderModelTrimBodyList = () => {
+        return (
+            modelTrimBodyList.map((body, index) => (
+                <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
+                    <Col span={2} className='table-header-col-section'>
+                        <label>옵션 {(index + 1) < 10 ? '0' + (index + 1) : (index + 1)}</label>
+                    </Col>
+                    <Col flex="auto" className='table-value-col-section'>
+                        <Row>
+                            <Col>
+                                <Space size={6}>
+                                    <Input value={body.name} readOnly={true} style={{ width: 300 }} />
+                                    <Input value={body.price} readOnly={true} style={{ width: 200 }} />
+                                    <Input value={body.detail} readOnly={true} style={{ width: 700 }} />
+                                </Space>
+                            </Col>
+                            <Col flex='auto' />
+                            <Col>
+                                <Space size={11}>
+                                    <Switch 
+                                        checked={
+                                            body.is_use === '0' ? false : true
+                                        } 
+                                        onClick={checked => onChangeModelTrimComponent(body.idx, 'is_use', checked ? '1' : '0')}
+                                    />
+                                    <label className='switch-label'>
+                                        {
+                                            Constants.availableOptions.filter(item => item.value === body.is_use)[0].label
+                                        }
+                                    </label>
+                                </Space>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
+            ))
+        );
     };
 
     return(
@@ -343,31 +532,9 @@ function Create() {
                                         </Col>
                                         <Col flex="auto" />
                                     </Row>
-                                    <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
-                                        <Col span={2} className='table-header-col-section'>
-                                            <label>사양 01</label>
-                                        </Col>
-                                        <Col flex="auto" className='table-value-col-section'>
-                                            <Row>
-                                                <Col>
-                                                    <Space size={6}>
-                                                        <Select
-                                                            suffixIcon={<CaretDownOutlined />}
-                                                            placeholder="선택"
-                                                            style={{ width: 200 }}
-                                                        >
-                                                            <Option value="SK">현대</Option>
-                                                        </Select>
-                                                        <Input placeholder="세부 내용 입력" style={{ width: 1050 }} />
-                                                    </Space>
-                                                </Col>
-                                                <Col flex='auto' />
-                                                <Col>
-                                                    <Button className='black-button'>추가</Button>
-                                                </Col>
-                                            </Row>
-                                        </Col>
-                                    </Row>
+                                    <Space direction='vertical' size={0}>
+                                        {renderSpecificationBodyList()}
+                                    </Space>
                                 </Space>
                                 <Space direction='vertical' size={20}>
                                     <Row align='middle'>
@@ -377,52 +544,7 @@ function Create() {
                                         <Col flex="auto" />
                                     </Row>
                                     <Space direction='vertical' size={0}>
-                                        <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
-                                            <Col span={2} className='table-header-col-section'>
-                                                <label>옵션 01</label>
-                                            </Col>
-                                            <Col flex="auto" className='table-value-col-section'>
-                                                <Row>
-                                                    <Col>
-                                                        <Space size={6}>
-                                                            <Input placeholder="옵션 이름" style={{ width: 300 }} />
-                                                            <Input style={{ width: 200 }} value={1} />
-                                                            <Input placeholder="세부 내용 입력" style={{ width: 700 }} />
-                                                        </Space>
-                                                    </Col>
-                                                    <Col flex='auto' />
-                                                    <Col>
-                                                        <Space size={11}>
-                                                            <Switch width={100} height={40} />
-                                                            <label className='switch-label'>사용</label>
-                                                        </Space>
-                                                    </Col>
-                                                </Row>
-                                            </Col>
-                                        </Row>
-                                        <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
-                                            <Col span={2} className='table-header-col-section'>
-                                                <label>옵션 02</label>
-                                            </Col>
-                                            <Col flex="auto" className='table-value-col-section'>
-                                                <Row>
-                                                    <Col>
-                                                        <Space size={6}>
-                                                            <Input placeholder="옵션 이름" style={{ width: 300 }} />
-                                                            <Input style={{ width: 200 }} value={1} />
-                                                            <Input placeholder="세부 내용 입력" style={{ width: 700 }} />
-                                                        </Space>
-                                                    </Col>
-                                                    <Col flex='auto' />
-                                                    <Col>
-                                                        <Space size={11}>
-                                                            <Switch width={100} height={40} />
-                                                            <label className='switch-label'>사용</label>
-                                                        </Space>
-                                                    </Col>
-                                                </Row>
-                                            </Col>
-                                        </Row>
+                                        {renderModelTrimBodyList()}
                                     </Space>
                                 </Space>
                             </Space>

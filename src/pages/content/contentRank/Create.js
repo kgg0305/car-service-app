@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { GetRankInfoAPI, UpdateRankAPI } from '../../../api/Rank';
 import { GetContentInfoAPI } from '../../../api/Content';
+import AlertModal from '../../../components/AlertModal';
 
 const { Option } = Select;
 
@@ -11,6 +12,7 @@ const { Option } = Select;
 function Create() {
     let navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
+    const [validationList, setValidationList] = useState([]);
     const [rankBodyInfo, setRankBodyInfo] = useState({
         type: 2,
         ids: '',
@@ -45,23 +47,43 @@ function Create() {
 	}, []);
 
     const onSaveClick = async() => {
-        const updateRankBodyInfo = {
-            ...rankBodyInfo,
-            ids: contentBodyList.map(body => body.idx).join(','),
-            created_date: new Date()
-        };
-        const created_info = await UpdateRankAPI(updateRankBodyInfo);
-        
-        // setShowModal(true);
-        navigate('/content/contentRank');
+        const validation = [];
+        contentBodyList.map(body => {
+            if(body.idx === null) {
+                validation.push({
+                    title: '뉴스 ' + (body.number < 10 ? '0' + body.number : body.number),
+                    name: '콘텐츠 번호'
+                })
+            }
+            if(body.title === '등록되지 않은 콘텐츠입니다.') {
+                validation.push({
+                    title: '뉴스 ' + (body.number < 10 ? '0' + body.number : body.number),
+                    name: '콘텐츠 내용'
+                })
+            }
+        });
+
+        setValidationList(validation);
+
+        if(validation.length > 0) {
+            setShowModal(true);
+        } else {
+            const updateRankBodyInfo = {
+                ...rankBodyInfo,
+                ids: contentBodyList.map(body => body.idx).join(','),
+                created_date: new Date()
+            };
+            const created_info = await UpdateRankAPI(updateRankBodyInfo);
+            
+            navigate('/content/contentRank');
+        }
     };
 
     const onAddContentComponentClick = event => {
         setContentBodyList([...contentBodyList, {
             number: contentBodyList[contentBodyList.length - 1].number + 1,
-            brand_id: null,
-            group_id: null,
-            model_id: null
+            idx: null,
+            title: ''
         }]);
     };
 
@@ -190,7 +212,7 @@ function Create() {
                                 <Col>
                                     <Space size={10}>
                                         <label>최소 등록수량</label>
-                                        <Input size='large' style={{width: 130}} value={'1 / 20'} disabled />
+                                        <Input size='large' style={{width: 130}} value={contentBodyList.length + ' / 20'} disabled />
                                     </Space>
                                 </Col>
                             </Row>
@@ -201,6 +223,7 @@ function Create() {
                     </Space>
                 </Space>
             </Space>
+            <AlertModal visible={showModal} onConfirmClick={() => setShowModal(false)} validationList={validationList} />
         </>
     );
 }

@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { GetPhotoInfoAPI, UpdatePhotoAPI, DeletePhotoInfoAPI } from '../../../api/Photo';
 import { GetContentInfoAPI } from '../../../api/Content';
 import { Constants } from '../../../constants/Constants';
+import AlertModal from '../../../components/AlertModal';
 
 const { Option } = Select;
 
@@ -13,6 +14,7 @@ function Edit() {
     let { id } = useParams();
     let navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
+    const [validationList, setValidationList] = useState([]);
     const [bodyInfo, setBodyInfo] = useState(
         {
             idx: id,
@@ -57,26 +59,51 @@ function Edit() {
                 [name]: value
             }
         );
-    }
-
-    const onSaveClick = async() => {
-        const updateBodyInfo = {
-            ...bodyInfo,
-            content_ids: contentBodyList.map(body => body.idx).join(',')
-        }
-
-        await UpdatePhotoAPI(updateBodyInfo);
-        // setShowModal(true);
-        navigate('/content/photo');
     };
 
-    const onDeleteClick = async(idx) => {
-        await DeletePhotoInfoAPI(idx);
-        navigate('/content/photo');
-    }
+    const onSaveClick = async() => {
+        const validation = [];
+        if(bodyInfo.category === '') {
+            validation.push({
+                title: '정보',
+                name: '카테고리'
+            })
+        }
+        if(bodyInfo.tag === '') {
+            validation.push({
+                title: '정보',
+                name: '태그'
+            })
+        }
+        contentBodyList.map((body, index) => {
+            if(body.idx === null) {
+                validation.push({
+                    title: '뉴스 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '콘텐츠 번호'
+                })
+            }
+            if(body.title === '등록되지 않은 콘텐츠입니다.') {
+                validation.push({
+                    title: '뉴스 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
+                    name: '콘텐츠 내용'
+                })
+            }
+        });
 
-    const onCloseModalClick = () => {
-        setShowModal(false);
+        setValidationList(validation);
+
+        if(validation.length > 0) {
+            setShowModal(true);
+        } else {
+            const updateBodyInfo = {
+                ...bodyInfo,
+                content_ids: contentBodyList.map(body => body.idx).join(',')
+            }
+    
+            await UpdatePhotoAPI(updateBodyInfo);
+            
+            navigate('/content/photo');
+        }
     };
 
     const onAddContentComponentClick = event => {
@@ -280,6 +307,7 @@ function Edit() {
                     </Space>
                 </Space>
             </Space>
+            <AlertModal visible={showModal} onConfirmClick={() => setShowModal(false)} validationList={validationList} />
         </>
     );
 }

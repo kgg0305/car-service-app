@@ -6,8 +6,8 @@ export async function CreateModelColorAPI(bodyList) {
         data.push(
             {
                 model_id: body.model_id,
-                color_name: body.color_name,
-                color_price: body.color_price
+                name: body.name,
+                price: body.price
             }
         )
     });
@@ -24,8 +24,8 @@ export async function CreateModelColorAPI(bodyList) {
 export async function UpdateModelColorAPI(body) {
     var data = {
         model_id: body.model_id,
-        color_name: body.color_name,
-        color_price: body.color_price
+        name: body.name,
+        price: body.price
     };
     
     try {

@@ -12,8 +12,7 @@ const { Option } = Select;
 // 목록페지
 function List() {
 	const [offset, setOffset] = useState(0);
-	const [groupOptionList, setGroupOptionList] = useState([]);
-	const [dataSource, setDataSource] = useState();
+	const [dataSource, setDataSource] = useState([]);
 	const [searchData, setSearchData] = useState({
 		type_id: null,
 		group_id: null,
@@ -22,10 +21,8 @@ function List() {
 	
 	const initComponent = async () => {
 		const initDataSource = await GetUserListAPI(offset);
-		const initGroupOptionList = await GetGroupOptionListAPI();
 		
 		setDataSource(initDataSource);
-		setGroupOptionList(initGroupOptionList);
 	};
 
 	useEffect(() => {
@@ -48,10 +45,10 @@ function List() {
 		},
 		{
 			title: '그룹',
-			dataIndex: 'group_id',
-			key: 'group_id',
+			dataIndex: 'idx',
+			key: 'idx',
             align: 'center',
-			render: group_id => groupOptionList.filter(item => item.value === group_id).length ? groupOptionList.filter(item => item.value === group_id)[0].label : '',
+			render: idx => renderGroupField(idx)
 		},
 		{
 			title: '이름',
@@ -107,7 +104,7 @@ function List() {
 							name: 'group_id',
 							placeholder: '그룹',
 							width: 200,
-							data: groupOptionList
+							data: Constants.userTeamGroupOptions
 						}
 					]
 				},
@@ -160,6 +157,15 @@ function List() {
 		setDataSource([
 			...initDataSource
 		]);
+	};
+
+	const renderGroupField = (idx) => {
+		const userInfo = dataSource.filter(item => item.idx === idx)[0];
+		return (
+			userInfo.type_id == '0' ?
+			Constants.userTeamGroupOptions.filter(item => item.value === userInfo.group_id)[0].label :
+			Constants.userAreaGroupOptions.filter(item => item.value === userInfo.group_id)[0].label
+		);
 	};
 
     return(

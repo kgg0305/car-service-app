@@ -4,6 +4,7 @@ import { GetContentInfoAPI } from '../../../api/Content';
 import { GetRankInfoAPI } from '../../../api/Rank';
 import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
+import { GetDateTimeUntilMinuteStringUsingKorFromDate } from '../../../constants/GlobalFunctions';
 
 // 목록페지
 function List() {
@@ -30,7 +31,7 @@ function List() {
 
 		setRankBodyInfo({
 			...initDataSource,
-			created_date: new Date(initDataSource.created_date).getFullYear() + '-' + ("0" + (new Date(initDataSource.created_date).getMonth() + 1)).slice(-2) + '-' + ("0" + new Date(initDataSource.created_date).getDate()).slice(-2) + ' ' + new Date(initDataSource.created_date).getHours() + '시' + new Date(initDataSource.created_date).getMinutes() + '분'
+			created_date: GetDateTimeUntilMinuteStringUsingKorFromDate(new Date(initDataSource.created_date))
 		});
 		setDataSource(initContentBodyList);
 	};

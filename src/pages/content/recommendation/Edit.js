@@ -59,7 +59,7 @@ function Edit() {
         );
     }
 
-    const onSaveClick = async(url) => {
+    const onSaveClick = async() => {
         const validation = [];
         if(bodyInfo.publish_date === null) {
             validation.push({
@@ -95,7 +95,7 @@ function Edit() {
             await UpdateRecommendationAPI(updateBodyInfo);
             
             setBodyInfo(updateBodyInfo);
-            // setShowModal(true);
+            
             navigate('/content/recommendation');
         }
     };

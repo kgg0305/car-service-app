@@ -1,13 +1,13 @@
-import { Col, Divider, Row, Space, Button } from 'antd';
+import { Col, Divider, Row, Space, Button, Select } from 'antd';
 import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { GetBrandOptionListAPI } from '../../../api/Brand';
 import { GetGroupOptionListAPI } from '../../../api/Group';
 import { GetModelListAPI } from '../../../api/Model';
-import SearchPanel from '../../../components/SearchPanel';
 import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
-import { GetDateTimeStringFromDate } from '../../../constants/GlobalFunctions';
+import { GetDateFullTimeStringUsingKorFromDate, GetDateTimeStringFromDate } from '../../../constants/GlobalFunctions';
+import { CaretDownOutlined } from '@ant-design/icons'
 
 // 목록페지
 function List() {
@@ -19,7 +19,7 @@ function List() {
 		brand_id: null,
 		group_id: null,
 		is_new: null,
-		is_use: ''
+		is_use: null
 	});
 	
 	const initComponent = async () => {
@@ -87,7 +87,7 @@ function List() {
 			dataIndex: 'created_date',
 			key: 'created_date',
             align: 'center',
-			render: created_date => GetDateTimeStringFromDate(new Date(created_date))
+			render: created_date => GetDateFullTimeStringUsingKorFromDate(new Date(created_date))
 		},
 		{
 			title: '관리',
@@ -108,65 +108,6 @@ function List() {
                     </Col>
                 </Row>,
 		},
-	];
-
-	const searchDataSource = [
-		{
-			height: 80,
-			columns: [
-				{
-					titleText: '차량',
-					titleWidth: '154px',
-					contentItems: [
-						{
-							type: Constants.inputTypes.select,
-							name: 'brand_id',
-							placeholder: '브랜드 선택',
-							width: 400,
-							data: brandOptionList
-						},
-						{
-							type: Constants.inputTypes.select,
-							name: 'group_id',
-							placeholder: '모델그룹 선택',
-							width: 400,
-							data: groupOptionList
-						}
-					]
-				}
-			]
-		},
-		{
-			height: 80,
-			columns: [
-				{
-					titleText: '신차여부',
-					titleWidth: '154px',
-					contentItems: [
-						{
-							type: Constants.inputTypes.select,
-							name: 'is_new',
-							placeholder: ' 선택',
-							width: 150,
-							data: Constants.isNewOptions
-						}
-					]
-				},
-				{
-					titleText: '사용여부',
-					titleWidth: '154px',
-					contentItems: [
-						{
-							type: Constants.inputTypes.select,
-							name: 'is_use',
-							placeholder: '선택',
-							width: 150,
-							data: Constants.availableOptions
-						}
-					]
-				}
-			]
-		}
 	];
 
 	const tableDataSource = {
@@ -193,10 +134,39 @@ function List() {
 		]);
 	};
 
+	const onChangeSearchComponent = (name, value) => {
+		setSearchData(
+            { 
+                ...searchData,
+                group_id: name == 'brand_id' ? null : searchData.group_id,
+                [name]: value
+            }
+        );
+	};
+
+	const onClickReset = () => {
+		setSearchData(
+			{
+				brand_id: null,
+				group_id: null,
+				is_new: null,
+				is_use: '0'
+			}
+		);
+
+		onClickSearch(
+			{
+				brand_id: null,
+				group_id: null,
+				is_new: null,
+				is_use: '0'
+			}
+		);
+	};
+
 	const onClickSearch = async(searchData) => {
 		const initDataSource = await GetModelListAPI(0, searchData);
 		setOffset(0);
-		setSearchData(searchData);
 
 		setDataSource([
 			...initDataSource
@@ -212,7 +182,121 @@ function List() {
 			</Space>
 
 			{/* Search Section */}
-			<SearchPanel dataSource={searchDataSource} onSearch={onClickSearch} />
+			<Space direction='vertical' size={20}>
+				<label className='title-label'>검색</label>
+				<Space direction='vertical' size={0}>
+				<Row key={1} gutter={[0]} align="middle" style={{ height: 80 }} className='table'>
+					<Col flex="154px" className='table-header'>
+						<label className='table-header-label'>차량</label>
+					</Col>
+					<Col flex="auto" className='table-value'>
+						<Space size={6}>
+							<Select
+								name='brand_id' 
+								value={searchData.brand_id} 
+								onChange={value => {
+									onChangeSearchComponent('brand_id', value);
+								}}
+								suffixIcon={<CaretDownOutlined />}
+								placeholder="브랜드 선택"
+								size='large'
+								style={{ width: 400 }}
+							>
+								{
+									brandOptionList.map((optionItem, optionIndex) => (
+										<Select.Option key={optionIndex} value={optionItem.value}>
+											{optionItem.label}
+										</Select.Option>
+									))
+								}
+							</Select>
+							<Select
+								name='group_id' 
+								value={searchData.group_id} 
+								onChange={value => {
+									onChangeSearchComponent('group_id', value);
+								}}
+								suffixIcon={<CaretDownOutlined />}
+								placeholder="모델그룹 선택"
+								size='large'
+								style={{ width: 400 }}
+							>
+								{
+									groupOptionList.filter(item => item.brand_id == searchData.brand_id).map((optionItem, optionIndex) => (
+										<Select.Option key={optionIndex} value={optionItem.value}>
+											{optionItem.label}
+										</Select.Option>
+									))
+								}
+							</Select>
+						</Space>
+					</Col>
+				</Row>
+				<Row key={1} gutter={[0]} align="middle" style={{ height: 80 }} className='table'>
+					<Col flex="154px" className='table-header'>
+						<label className='table-header-label'>신차여부</label>
+					</Col>
+					<Col flex="auto" className='table-value'>
+						<Space size={6}>
+							<Select
+								name='is_new' 
+								value={searchData.is_new} 
+								onChange={value => {
+									onChangeSearchComponent('is_new', value);
+								}}
+								suffixIcon={<CaretDownOutlined />}
+								placeholder="선택"
+								size='large'
+								style={{ width: 150 }}
+							>
+								{
+									Constants.isNewOptions.map((optionItem, optionIndex) => (
+										<Select.Option key={optionIndex} value={optionItem.value}>
+											{optionItem.label}
+										</Select.Option>
+									))
+								}
+							</Select>
+						</Space>
+					</Col>
+					<Col flex="154px" className='table-header'>
+						<label className='table-header-label'>사용여부</label>
+					</Col>
+					<Col flex="auto" className='table-value'>
+						<Space size={6}>
+							<Select
+								name='is_use' 
+								value={searchData.is_use} 
+								onChange={value => {
+									onChangeSearchComponent('is_use', value);
+								}}
+								suffixIcon={<CaretDownOutlined />}
+								placeholder="선택"
+								size='large'
+								style={{ width: 150 }}
+							>
+								{
+									Constants.availableOptions.map((optionItem, optionIndex) => (
+										<Select.Option key={optionIndex} value={optionItem.value}>
+											{optionItem.label}
+										</Select.Option>
+									))
+								}
+							</Select>
+						</Space>
+					</Col>
+				</Row>
+				</Space>
+				
+				<Row key={2} justify="center" gutter={[17, 0]}>
+					<Col>
+						<Button className='white-button big-button' onClick={onClickReset}>초기화</Button>
+					</Col>
+					<Col>
+						<Button className='black-button big-button' onClick={() => onClickSearch(searchData)}>검색</Button>
+					</Col>
+				</Row>
+			</Space>
 
 			{/* Body Section */}
 			<TableList dataSource={tableDataSource} />

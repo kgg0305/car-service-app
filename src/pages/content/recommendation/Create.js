@@ -36,9 +36,9 @@ function Create() {
             }
         );
         
-    }
+    };
 
-    const onSaveClick = async(url) => {
+    const onSaveClick = async() => {
         const validation = [];
         if(bodyInfo.publish_date === null) {
             validation.push({
@@ -74,7 +74,7 @@ function Create() {
             const created_info = await CreateRecommendationAPI(updateBodyInfo);
             
             setBodyInfo(updateBodyInfo);
-            // setShowModal(true);
+            
             navigate('/content/recommendation');
         }
     };

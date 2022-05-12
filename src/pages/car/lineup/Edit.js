@@ -10,6 +10,8 @@ import alert_icon from '../../../assets/images/alert-icon.png';
 import { Constants } from '../../../constants/Constants';
 import AlertModal from '../../../components/AlertModal';
 import AlertDeleteModal from '../../../components/AlertDeleteModal';
+import { GetModelLineupListAPI } from '../../../api/ModelLinup';
+import { GetModelColorListAPI } from '../../../api/ModelColor';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -24,6 +26,8 @@ function Edit() {
     const [brandOptionList, setBrandOptionList] = useState([]);
 	const [groupOptionList, setGroupOptionList] = useState([]);
     const [modelOptionList, setModelOptionList] = useState([]);
+    const [modelLineupBodyList, setModelLineupBodyList] = useState([]);
+    const [modelColorBodyList, setModelColorBodyList] = useState([]);
     const [bodyInfo, setBodyInfo] = useState(
         {
             title: '정보 ',
@@ -38,6 +42,7 @@ function Edit() {
             is_use: '0',
             is_use_lineup: '',
             is_use_color: '',
+            created_date: new Date(),
             check_name: ''
         }
     );
@@ -47,11 +52,29 @@ function Edit() {
 		const initGroupOptionList = await GetGroupOptionListAPI();
         const initModelOptionList = await GetModelOptionListAPI();
         const initBodyInfo = await GetLineupInfoAPI(id);
-		
+        const initModelLineupBodyList = await GetModelLineupListAPI(0, {
+            model_id: initBodyInfo.model_id
+        });
+        const initModelColorBodyList = await GetModelColorListAPI(0, {
+            model_id: initBodyInfo.model_id
+        });
+        
 		setBrandOptionList(initBrandOptionList);
 		setGroupOptionList(initGroupOptionList);
         setModelOptionList(initModelOptionList);
 		setBodyInfo(initBodyInfo);
+        setModelLineupBodyList(initModelLineupBodyList.map(lineupBody => (
+            {
+                ...lineupBody,
+                is_use: initBodyInfo.model_lineup_ids.split(',').some(item => item === lineupBody.idx.toString()) ? '0' : '1'
+            }
+        )));
+        setModelColorBodyList(initModelColorBodyList.map(colorBody => (
+            {
+                ...colorBody,
+                is_use: initBodyInfo.model_color_ids.split(',').some(item => item === colorBody.idx.toString()) ? '0' : '1'
+            }
+        )));
 	}
 
 	useEffect(() => {
@@ -63,7 +86,29 @@ function Edit() {
         onChangeComponent('check_name', result ? 'exist' : 'not-exist');
     }
 
-    const onChangeComponent = (name, value) => {
+    const onChangeModelLineupComponent = (lineup_idx, name, value) => {
+        setModelLineupBodyList(modelLineupBodyList.map(item => (
+            item.idx === lineup_idx ?
+            {
+                ...item,
+                [name]: value
+            }
+            : item
+        )))
+    };
+
+    const onChangeModelColorComponent = (color_idx, name, value) => {
+        setModelColorBodyList(modelColorBodyList.map(item => (
+            item.idx === color_idx ?
+            {
+                ...item,
+                [name]: value
+            }
+            : item
+        )))
+    };
+
+    const onChangeComponent = async(name, value) => {
         setBodyInfo(
             { 
                 ...bodyInfo,
@@ -72,6 +117,33 @@ function Edit() {
                 [name]: value
             }
         );
+
+        if(name === 'brand_id' || name === 'group_id') {
+            setModelLineupBodyList([]);
+            setModelColorBodyList([]);
+        }
+
+        if(name === 'model_id') {
+            const initModelLineupBodyList = await GetModelLineupListAPI(0, {
+                model_id: value
+            });
+            setModelLineupBodyList(initModelLineupBodyList.map(item => (
+                {
+                    ...item,
+                    is_use: '0'
+                }
+            )));
+
+            const initModelColorBodyList = await GetModelColorListAPI(0, {
+                model_id: value
+            });
+            setModelColorBodyList(initModelColorBodyList.map(item => (
+                {
+                    ...item,
+                    is_use: '0'
+                }
+            )));
+        }
     }
 
     const onSaveClick = async(url) => {
@@ -118,7 +190,11 @@ function Edit() {
         if(validation.length > 0) {
             setShowModal(true);
         } else {
-            await UpdateLineupAPI(bodyInfo);
+            await UpdateLineupAPI({
+                ...bodyInfo,
+                model_lineup_ids: modelLineupBodyList.filter(item => item.is_use === '0').map(item => item.idx).join(','),
+                model_color_ids: modelColorBodyList.filter(item => item.is_use === '0').map(item => item.idx).join(','),
+            });
             navigate(url);
         }
     };
@@ -130,6 +206,87 @@ function Edit() {
     const deleteInfo = async() => {
         await DeleteLineupInfoAPI(id);
         navigate('/car/lineup');
+    };
+
+    const renderModelLineupBodyList = () => {
+        return (
+            modelLineupBodyList.length > 0 ?
+            modelLineupBodyList.map((body, index) => (
+                <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
+                    <Col span={2} className='table-header-col-section'>
+                        <label>공통옵션 {(index + 1) < 10 ? '0' + (index + 1) : (index + 1)}</label>
+                    </Col>
+                    <Col flex="auto" className='table-value-col-section'>
+                        <Row>
+                            <Col>
+                                <Space size={6}>
+                                    <Input value={body.name} readOnly={true} style={{ width: 300 }} />
+                                    <Input value={body.price} readOnly={true} style={{ width: 200 }} />
+                                    <Input value={body.detail} readOnly={true} style={{ width: 700 }} />
+                                </Space>
+                            </Col>
+                            <Col flex='auto' />
+                            <Col>
+                                <Space size={11}>
+                                    <Switch 
+                                        checked={
+                                            body.is_use === '0' ? false : true
+                                        } 
+                                        onClick={checked => onChangeModelLineupComponent(body.idx, 'is_use', checked ? '1' : '0')}
+                                    />
+                                    <label className='switch-label'>
+                                        {
+                                            Constants.availableOptions.filter(item => item.value === body.is_use)[0].label
+                                        }
+                                    </label>
+                                </Space>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
+            ))
+            : '선택된 정보가 없습니다.'
+        );
+    };
+
+    const renderModelColorBodyList = () => {
+        return (
+            modelColorBodyList.length > 0 ?
+            modelColorBodyList.map((body, index) => (
+                <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
+                    <Col span={2} className='table-header-col-section'>
+                        <label>색상 {(index + 1) < 10 ? '0' + (index + 1) : (index + 1)}</label>
+                    </Col>
+                    <Col flex="auto" className='table-value-col-section'>
+                        <Row>
+                            <Col>
+                                <Space size={6}>
+                                    <Input value={body.name} readOnly={true} style={{ width: 300 }} />
+                                    <Input value={body.price} readOnly={true} style={{ width: 200 }} />
+                                </Space>
+                            </Col>
+                            <Col flex='auto' />
+                            <Col>
+                                <Space size={11}>
+                                    <Switch 
+                                        checked={
+                                            body.is_use === '0' ? false : true
+                                        } 
+                                        onClick={checked => onChangeModelColorComponent(body.idx, 'is_use', checked ? '1' : '0')}
+                                    />
+                                    <label className='switch-label'>
+                                        {
+                                            Constants.availableOptions.filter(item => item.value === body.is_use)[0].label
+                                        }
+                                    </label>
+                                </Space>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
+            ))
+            : '선택된 정보가 없습니다.'
+        );
     };
     
     return(
@@ -328,29 +485,7 @@ function Edit() {
                                 </Col>
                                 <Col flex="auto" />
                             </Row>
-                            <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
-                                <Col span={2} className='table-header-col-section'>
-                                    <label>공통옵션 01</label>
-                                </Col>
-                                <Col flex="auto" className='table-value-col-section'>
-                                    <Row>
-                                        <Col>
-                                            <Space size={6}>
-                                                <Input placeholder="옵션 이름" style={{ width: 300 }} />
-                                                <Input style={{ width: 200 }} value={1} />
-                                                <Input placeholder="세부 내용 입력" style={{ width: 750 }} />
-                                            </Space>
-                                        </Col>
-                                        <Col flex='auto' />
-                                        <Col>
-                                            <Space size={11}>
-                                                <Switch width='100' height={40} />
-                                                <label className='switch-label'>사용</label>
-                                            </Space>
-                                        </Col>
-                                    </Row>
-                                </Col>
-                            </Row>
+                            {renderModelLineupBodyList()}
                         </Space>
                         <Space direction='vertical' size={20}>
                             <Row align='middle'>
@@ -359,28 +494,7 @@ function Edit() {
                                 </Col>
                                 <Col flex="auto" />
                             </Row>
-                            <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
-                                <Col span={2} className='table-header-col-section'>
-                                    <label>색상 01</label>
-                                </Col>
-                                <Col flex="auto" className='table-value-col-section'>
-                                    <Row>
-                                        <Col>
-                                            <Space size={6}>
-                                                <Input placeholder="색상 이름" style={{ width: 300 }} />
-                                                <Input style={{ width: 200 }} value={1} />
-                                            </Space>
-                                        </Col>
-                                        <Col flex='auto' />
-                                        <Col>
-                                            <Space size={11}>
-                                                <Switch width={100} height={40} />
-                                                <label className='switch-label'>사용</label>
-                                            </Space>
-                                        </Col>
-                                    </Row>
-                                </Col>
-                            </Row>
+                            {renderModelColorBodyList()}
                         </Space>
                     </Space>
 

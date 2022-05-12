@@ -92,7 +92,7 @@ function Manage() {
 				<Row justify='center'>
 					<Col>
 						<Select
-							size={'large'}
+							size='large'
 							suffixIcon={<CaretDownOutlined />}
 							placeholder={'선택'}
 							style={{ width: 130 }}
@@ -115,7 +115,7 @@ function Manage() {
 				<Row justify='center'>
 					<Col>
 						<Select
-							size={'large'}
+							size='large'
 							suffixIcon={<CaretDownOutlined />}
 							placeholder={'선택'}
 							style={{ width: 130 }}

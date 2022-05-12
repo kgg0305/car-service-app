@@ -20,3 +20,31 @@ export function GetDateTimeStringFromDate(date) {
 
     return reg_date_text1 + ' ' + reg_date_text2
 }
+
+export function GetDateFullTimeStringUsingKorFromDate(date) {
+    let year = date.getFullYear();
+    let month = ("0" + (date.getMonth() + 1)).slice(-2);
+    let day = ("0" + date.getDate()).slice(-2);
+    let hour = date.getHours();
+    let minute = date.getMinutes();
+    let seconds = date.getSeconds();
+
+    const reg_date_text1 = year + '-' + month + '-' + day;
+    const reg_date_text2 = hour + '시 ' + minute + '분 ' + seconds + '초';
+
+    return reg_date_text1 + ' ' + reg_date_text2
+}
+
+export function GetDateTimeUntilMinuteStringUsingKorFromDate(date) {
+    let year = date.getFullYear();
+    let month = ("0" + (date.getMonth() + 1)).slice(-2);
+    let day = ("0" + date.getDate()).slice(-2);
+    let hour = date.getHours();
+    let minute = date.getMinutes();
+    let seconds = date.getSeconds();
+
+    const reg_date_text1 = year + '-' + month + '-' + day;
+    const reg_date_text2 = hour + '시 ' + minute + '분';
+
+    return reg_date_text1 + ' ' + reg_date_text2
+}

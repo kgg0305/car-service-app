@@ -10,7 +10,7 @@ function ContentItem({ item, key, value, onChange}) {
             return (
                 <Select
                     key={key}
-                    size={'large'}
+                    size='large'
                     value={value}
                     onChange={value => {
                         onChange(item.name ,value);
@@ -37,7 +37,7 @@ function ContentItem({ item, key, value, onChange}) {
                 return (
                     <Link to={item.link}>
                         <Button key={key} 
-                            size={'large'}
+                            size='large'
                             className={ item.style }
                         >
                             {item.label}
@@ -47,7 +47,7 @@ function ContentItem({ item, key, value, onChange}) {
             } else {
                 return (
                     <Button key={key} 
-                        size={'large'}
+                        size='large'
                         className={ item.style }
                     >
                         {item.label}
@@ -62,7 +62,7 @@ function ContentItem({ item, key, value, onChange}) {
             return (
                 <Upload>
                     <Button key={key} 
-                        size={'large'}
+                        size='large'
                         className={ item.style }
                     >
                         {item.label}
@@ -74,7 +74,7 @@ function ContentItem({ item, key, value, onChange}) {
 
         case Constants.inputTypes.datePicker:
             return (
-                <DatePicker key={key} size={'large'} placeholder={item.placeholder} />
+                <DatePicker key={key} size='large' placeholder={item.placeholder} />
             );
             break;
 
@@ -95,7 +95,7 @@ function ContentItem({ item, key, value, onChange}) {
             return (
                 <Input 
                     key={key} 
-                    size={'large'} 
+                    size='large' 
                     value={value}
                     onChange={e => {
                         onChange(item.name, e.target.value);
