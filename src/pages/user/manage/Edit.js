@@ -119,9 +119,9 @@ function Create({ match }) {
                         <Col>
                             <Space size={10}>
                                 <Link to="/user/manage">
-                                    <Button className='white-button medium-button'>취소</Button>
+                                    <Button className='white-button' size='large'>취소</Button>
                                 </Link>
-                                <Button className='black-button medium-button' onClick={onSaveClick}>저장하고 나가기</Button>
+                                <Button className='black-button' size='large' onClick={onSaveClick}>저장하고 나가기</Button>
                             </Space>
                         </Col>
                     </Row>
@@ -149,7 +149,8 @@ function Create({ match }) {
                                             value={bodyInfo.name} 
                                             onChange={e => {
                                                 onChangeComponent(e.target.name, e.target.value);
-                                            }}
+                                            }} 
+                                            size='large' 
                                             placeholder="이름 입력" 
                                             style={{ width: 150 }} 
                                         />
@@ -163,7 +164,8 @@ function Create({ match }) {
                                             value={bodyInfo.user_id} 
                                             onChange={e => {
                                                 onChangeComponent(e.target.name, e.target.value);
-                                            }}
+                                            }} 
+                                            size='large' 
                                             placeholder="아이디 입력" 
                                             style={{ width: 150 }} 
                                         />
@@ -180,7 +182,8 @@ function Create({ match }) {
                                                 value={bodyInfo.type_id} 
                                                 onChange={value => {
                                                     onChangeComponent('type_id', value);
-                                                }}
+                                                }} 
+                                                size='large' 
                                                 suffixIcon={<CaretDownOutlined />}
                                                 placeholder="구분"
                                                 style={{ width: 150 }}
@@ -198,7 +201,8 @@ function Create({ match }) {
                                                 value={bodyInfo.group_id} 
                                                 onChange={value => {
                                                     onChangeComponent('group_id', value);
-                                                }}
+                                                }} 
+                                                size='large' 
                                                 suffixIcon={<CaretDownOutlined />}
                                                 placeholder="그룹"
                                                 style={{ width: 150 }}
@@ -226,13 +230,14 @@ function Create({ match }) {
                                     </Col>
                                     <Col flex="auto" className='table-value-col-section'>
                                         <Space size={6}>
-                                            <div className=''>
+                                            <div style={{position: 'relative'}}>
                                                 <Input 
                                                     name='password' 
                                                     value={bodyInfo.password} 
                                                     onChange={e => {
                                                         onChangeComponent(e.target.name, e.target.value);
-                                                    }}
+                                                    }} 
+                                                    size='large' 
                                                     placeholder="비밀번호 입력" 
                                                     maxLength={15} style={{ width: 250 }} 
                                                 />
@@ -248,7 +253,7 @@ function Create({ match }) {
                     
                     <Row justify="center" gutter={[17, 0]}>
                         <Col>
-                            <Button className='white-button rounded-button' icon={<PlusOutlined />} onClick={onDeleteClick}>삭제하기</Button>
+                            <Button className='white-button rounded-button' icon={<PlusOutlined />} onClick={onDeleteClick} size='large'>삭제하기</Button>
                         </Col>
                     </Row>
                 </Space>

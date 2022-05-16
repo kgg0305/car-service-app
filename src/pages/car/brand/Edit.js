@@ -173,9 +173,9 @@ function Edit() {
                         <Col>
                             <Space size={10}>
                                 <Link to="/car/brand">
-                                    <Button className='white-button medium-button'>취소</Button>
+                                    <Button className='white-button' size='large'>취소</Button>
                                 </Link>
-                                <Button className='black-button medium-button' onClick={() => onSaveClick('/car/brand')}>저장하고 나가기</Button>
+                                <Button className='black-button' size='large' onClick={() => onSaveClick('/car/brand')}>저장하고 나가기</Button>
                             </Space>
                         </Col>
                     </Row>
@@ -199,13 +199,14 @@ function Edit() {
                                     </Col>
                                     <Col span={10} className='table-value-col-section'>
                                         <Space>
-                                            <div className=''>
+                                            <div style={{position: 'relative'}}>
                                                 <Input 
                                                     name='brand_name' 
                                                     value={bodyInfo.brand_name} 
                                                     onChange={e => {
                                                         onChangeComponent(e.target.name, e.target.value);
                                                     }} 
+                                                    size='large'
                                                     placeholder="브랜드 입력" maxLength={15} style={{ width: 400 }} 
                                                 />
                                                 {
@@ -216,7 +217,7 @@ function Edit() {
                                                     : ''
                                                 }
                                             </div>
-                                            <Button className='black-button' onClick={() => checkName(bodyInfo.brand_name)}>확인</Button>
+                                            <Button className='black-button' onClick={() => checkName(bodyInfo.brand_name)} size='large'>확인</Button>
                                         </Space>
                                     </Col>
                                     <Col span={2} className='table-header-col-section'>
@@ -230,6 +231,7 @@ function Edit() {
                                                 onChange={number => {
                                                     onChangeComponent('sequence', number);
                                                 }} 
+                                                size='large'
                                                 maxLength={6} 
                                                 style={{ width: 150 }} 
                                                 controls={false}
@@ -249,6 +251,7 @@ function Edit() {
                                             onChange={value => {
                                                 onChangeComponent('nation', value);
                                             }}
+                                            size='large'
                                             suffixIcon={<CaretDownOutlined />}
                                             placeholder="선택"
                                             style={{ width: 150 }}
@@ -272,6 +275,7 @@ function Edit() {
                                             onChange={value => {
                                                 onChangeComponent('is_income', value);
                                             }}
+                                            size='large'
                                             suffixIcon={<CaretDownOutlined />}
                                             placeholder="선택"
                                             style={{ width: 150 }}
@@ -295,6 +299,7 @@ function Edit() {
                                             onChange={value => {
                                                 onChangeComponent('is_use', value);
                                             }}
+                                            size='large'
                                             suffixIcon={<CaretDownOutlined />}
                                             placeholder="선택"
                                             defaultValue="true"
@@ -321,6 +326,7 @@ function Edit() {
                                             onChange={e => {
                                                 onChangeComponent(e.target.name, e.target.value);
                                             }} 
+                                            size='large'
                                             placeholder="URL 입력" style={{ width: 400 }} 
                                         />
                                     </Col>
@@ -334,6 +340,7 @@ function Edit() {
                                             onChange={e => {
                                                 onChangeComponent(e.target.name, e.target.value);
                                             }} 
+                                            size='large'
                                             placeholder="URL 입력" style={{ width: 400 }} 
                                         />
                                     </Col>
@@ -349,6 +356,7 @@ function Edit() {
                                             onChange={e => {
                                                 onChangeComponent(e.target.name, e.target.value);
                                             }} 
+                                            size='large'
                                             placeholder="URL 입력" style={{ width: 400 }} 
                                         />
                                     </Col>
@@ -362,6 +370,7 @@ function Edit() {
                                             onChange={e => {
                                                 onChangeComponent(e.target.name, e.target.value);
                                             }} 
+                                            size='large'
                                             placeholder="URL 입력" style={{ width: 400 }} 
                                         />
                                     </Col>
@@ -394,7 +403,7 @@ function Edit() {
                                                         return true;
                                                     }}
                                                 >
-                                                    <Button className='black-button'>등록</Button>
+                                                    <Button className='black-button' size='large'>등록</Button>
                                                 </Upload>
                                             </Space>
                                         </Space>
@@ -407,7 +416,7 @@ function Edit() {
                     
                     <Row justify="center" gutter={[17, 0]}>
                         <Col>
-                            <Button className='white-button rounded-button' onClick={() => onDeleteClick()}>삭제하기</Button>
+                            <Button className='white-button rounded-button' onClick={() => onDeleteClick()} size='large'>삭제하기</Button>
                         </Col>
                     </Row>
                 </Space>

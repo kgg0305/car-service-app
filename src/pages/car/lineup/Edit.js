@@ -220,9 +220,9 @@ function Edit() {
                         <Row>
                             <Col>
                                 <Space size={6}>
-                                    <Input value={body.name} readOnly={true} style={{ width: 300 }} />
-                                    <Input value={body.price} readOnly={true} style={{ width: 200 }} />
-                                    <Input value={body.detail} readOnly={true} style={{ width: 700 }} />
+                                    <Input value={body.name} readOnly={true} size='large' style={{ width: 300 }} />
+                                    <Input value={body.price} readOnly={true} size='large' style={{ width: 200 }} />
+                                    <Input value={body.detail} readOnly={true} size='large' style={{ width: 700 }} />
                                 </Space>
                             </Col>
                             <Col flex='auto' />
@@ -261,8 +261,8 @@ function Edit() {
                         <Row>
                             <Col>
                                 <Space size={6}>
-                                    <Input value={body.name} readOnly={true} style={{ width: 300 }} />
-                                    <Input value={body.price} readOnly={true} style={{ width: 200 }} />
+                                    <Input value={body.name} readOnly={true} size='large' style={{ width: 300 }} />
+                                    <Input value={body.price} readOnly={true} size='large' style={{ width: 200 }} />
                                 </Space>
                             </Col>
                             <Col flex='auto' />
@@ -302,9 +302,9 @@ function Edit() {
                         <Col>
                             <Space size={10}>
                                 <Link to="/car/trim">
-                                    <Button className='white-button medium-button'>취소</Button>
+                                    <Button className='white-button' size='large'>취소</Button>
                                 </Link>
-                                <Button className='black-button medium-button' onClick={() => onSaveClick('/car/lineup')}>저장하고 나가기</Button>
+                                <Button className='black-button' size='large' onClick={() => onSaveClick('/car/lineup')}>저장하고 나가기</Button>
                             </Space>
                         </Col>
                     </Row>
@@ -332,8 +332,9 @@ function Edit() {
                                             value={bodyInfo.brand_id} 
                                             onChange={value => {
                                                 onChangeComponent('brand_id', value);
-                                            }}
-                                            suffixIcon={<CaretDownOutlined />}
+                                            }} 
+                                            size='large' 
+                                            suffixIcon={<CaretDownOutlined />} 
                                             placeholder="브랜드 선택"
                                             style={{ width: 300 }}
                                         >
@@ -352,8 +353,9 @@ function Edit() {
                                             value={bodyInfo.group_id} 
                                             onChange={value => {
                                                 onChangeComponent('group_id', value);
-                                            }}
-                                            suffixIcon={<CaretDownOutlined />}
+                                            }} 
+                                            size='large' 
+                                            suffixIcon={<CaretDownOutlined />} 
                                             placeholder="모델그룹 선택"
                                             style={{ width: 300 }}
                                         >
@@ -372,8 +374,9 @@ function Edit() {
                                             value={bodyInfo.model_id} 
                                             onChange={value => {
                                                 onChangeComponent('model_id', value);
-                                            }}
-                                            suffixIcon={<CaretDownOutlined />}
+                                            }} 
+                                            size='large' 
+                                            suffixIcon={<CaretDownOutlined />} 
                                             placeholder="모델 선택"
                                             style={{ width: 300 }}
                                         >
@@ -393,13 +396,14 @@ function Edit() {
                                     </Col>
                                     <Col span={10} className='table-value-col-section'>
                                         <Space>
-                                            <div className=''>
+                                            <div style={{position: 'relative'}}>
                                                 <Input 
                                                     name='lineup_name' 
                                                     value={bodyInfo.lineup_name} 
                                                     onChange={e => {
                                                         onChangeComponent(e.target.name, e.target.value);
                                                     }} 
+                                                    size='large' 
                                                     placeholder="라인업 입력" maxLength={15} style={{ width: 400 }} 
                                                 />
                                                 {
@@ -410,7 +414,7 @@ function Edit() {
                                                     : ''
                                                 }
                                             </div>
-                                            <Button className='black-button' onClick={() => checkName(bodyInfo.lineup_name)}>확인</Button>
+                                            <Button className='black-button' onClick={() => checkName(bodyInfo.lineup_name)} size='large'>확인</Button>
                                         </Space>
                                     </Col>
                                     <Col span={2} className='table-header-col-section'>
@@ -422,8 +426,9 @@ function Edit() {
                                             value={bodyInfo.fule_kind} 
                                             onChange={value => {
                                                 onChangeComponent('fule_kind', value);
-                                            }}
-                                            suffixIcon={<CaretDownOutlined />}
+                                            }} 
+                                            size='large' 
+                                            suffixIcon={<CaretDownOutlined />} 
                                             placeholder="선택"
                                             style={{ width: 150 }}
                                         >
@@ -448,6 +453,7 @@ function Edit() {
                                             onChange={e => {
                                                 onChangeComponent(e.target.name, e.target.value);
                                             }} 
+                                            size='large' 
                                             maxLength={6} style={{ width: 150 }} 
                                         />
                                     </Col>
@@ -460,8 +466,9 @@ function Edit() {
                                             value={bodyInfo.is_use} 
                                             onChange={value => {
                                                 onChangeComponent('is_use', value);
-                                            }}
-                                            suffixIcon={<CaretDownOutlined />}
+                                            }} 
+                                            size='large' 
+                                            suffixIcon={<CaretDownOutlined />} 
                                             placeholder="선택"
                                             defaultValue="true"
                                             style={{ width: 150 }}
@@ -500,7 +507,7 @@ function Edit() {
 
                     <Row justify="center" gutter={[17, 0]}>
                         <Col>
-                            <Button className='white-button rounded-button' onClick={() => onDeleteClick()}>삭제하기</Button>
+                            <Button className='white-button rounded-button' onClick={() => onDeleteClick()} size='large'>삭제하기</Button>
                         </Col>
                     </Row>
                 </Space>

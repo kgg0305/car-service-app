@@ -417,7 +417,8 @@ function Create() {
                                         onChange={e => {
                                             onChangeLineupComponent(body.number, e.target.name, e.target.value);
                                         }} 
-                                        placeholder="옵션 이름"
+                                        size='large' 
+                                        placeholder="옵션 이름" 
                                         maxLength={18} style={{ width: 300 }} 
                                     />
                                     <InputNumber 
@@ -426,8 +427,9 @@ function Create() {
                                         onChange={number => {
                                             onChangeLineupComponent(body.number, 'price', number);
                                         }} 
-                                        maxLength={9}
-                                        controls={false}
+                                        size='large' 
+                                        maxLength={9} 
+                                        controls={false} 
                                         style={{ width: 200 }} 
                                     />
                                     <Input 
@@ -436,6 +438,7 @@ function Create() {
                                         onChange={e => {
                                             onChangeLineupComponent(body.number, e.target.name, e.target.value);
                                         }} 
+                                        size='large'
                                         placeholder="세부 내용 입력" 
                                         maxLength={50} style={{ width: 750 }} 
                                     />
@@ -450,12 +453,12 @@ function Create() {
                                         <>
                                             {
                                                 lineupBodyList.length != 1 
-                                                ? <Button className='white-button' onClick={() => onDeleteLineupComponentClick(body.number)}>삭제</Button> 
+                                                ? <Button className='white-button' onClick={() => onDeleteLineupComponentClick(body.number)} size='large'>삭제</Button> 
                                                 : ''
                                             }
-                                            <Button className='black-button' onClick={() => onAddLineupComponentClick(body.number)}>추가</Button>
+                                            <Button className='black-button' onClick={() => onAddLineupComponentClick(body.number)} size='large'>추가</Button>
                                         </>
-                                        : <Button className='white-button' onClick={() => onDeleteLineupComponentClick(body.number)}>삭제</Button>
+                                        : <Button className='white-button' onClick={() => onDeleteLineupComponentClick(body.number)} size='large'>삭제</Button>
                                     }
                                 </Space>
                             </Col>
@@ -492,8 +495,9 @@ function Create() {
                                         onChange={number => {
                                             onChangeColorComponent(body.number, 'price', number);
                                         }} 
-                                        maxLength={9}
-                                        controls={false}
+                                        size='large' 
+                                        maxLength={9} 
+                                        controls={false} 
                                         style={{ width: 200 }} 
                                     />
                                 </Space>
@@ -507,12 +511,12 @@ function Create() {
                                         <>
                                             {
                                                 colorBodyList.length != 1 
-                                                ? <Button className='white-button' onClick={() => onDeleteColorComponentClick(body.number)}>삭제</Button>
+                                                ? <Button className='white-button' onClick={() => onDeleteColorComponentClick(body.number)} size='large'>삭제</Button>
                                                 : ''
                                             }
-                                            <Button className='black-button' onClick={() => onAddColorComponentClick(body.number)}>추가</Button>
+                                            <Button className='black-button' onClick={() => onAddColorComponentClick(body.number)} size='large'>추가</Button>
                                         </>
-                                        : <Button className='white-button' onClick={() => onDeleteColorComponentClick(body.number)}>삭제</Button>
+                                        : <Button className='white-button' onClick={() => onDeleteColorComponentClick(body.number)} size='large'>삭제</Button>
                                     }
                                 </Space>
                             </Col>
@@ -540,7 +544,8 @@ function Create() {
                                         onChange={e => {
                                             onChangeTrimComponent(body.number, e.target.name, e.target.value);
                                         }} 
-                                        placeholder="옵션 이름"
+                                        size='large' 
+                                        placeholder="옵션 이름" 
                                         maxLength={18} style={{ width: 300 }} 
                                     />
                                     <InputNumber 
@@ -549,8 +554,9 @@ function Create() {
                                         onChange={number => {
                                             onChangeTrimComponent(body.number, 'price', number);
                                         }} 
-                                        maxLength={9}
-                                        controls={false}
+                                        size='large' 
+                                        maxLength={9} 
+                                        controls={false} 
                                         style={{ width: 200 }} 
                                     />
                                     <Input 
@@ -559,7 +565,8 @@ function Create() {
                                         onChange={e => {
                                             onChangeTrimComponent(body.number, e.target.name, e.target.value);
                                         }} 
-                                        placeholder="세부 내용 입력"
+                                        size='large'
+                                        placeholder="세부 내용 입력" 
                                         maxLength={50} style={{ width: 750 }} 
                                     />
                                 </Space>
@@ -573,12 +580,12 @@ function Create() {
                                         <>
                                             {
                                                 trimBodyList.length != 1 
-                                                ? <Button className='white-button' onClick={() => onDeleteTrimComponentClick(body.number)}>삭제</Button>
+                                                ? <Button className='white-button' onClick={() => onDeleteTrimComponentClick(body.number)} size='large'>삭제</Button>
                                                 : ''
                                             }
-                                            <Button className='black-button' onClick={() => onAddTrimComponentClick(body.number)}>추가</Button>
+                                            <Button className='black-button' onClick={() => onAddTrimComponentClick(body.number)} size='large'>추가</Button>
                                         </>
-                                        : <Button className='white-button' onClick={() => onDeleteTrimComponentClick(body.number)}>삭제</Button>
+                                        : <Button className='white-button' onClick={() => onDeleteTrimComponentClick(body.number)} size='large'>삭제</Button>
                                     }
                                 </Space>
                             </Col>
@@ -595,6 +602,7 @@ function Create() {
                 <Space size={10}>
                     <Input 
                         value={brandOptionList.filter(item => item.value === bodyInfo.brand_id)[0].label} 
+                        size='large' 
                         disabled={true}
                     />
                     <Input 
@@ -602,11 +610,13 @@ function Create() {
                             bodyInfo.group_id != null ? 
                             groupOptionList.filter(item => item.value === bodyInfo.group_id)[0].label 
                             : ''
-                        }
+                        } 
+                        size='large' 
                         disabled={true}
                     />
                     <Input 
-                        value={bodyInfo.model_name}
+                        value={bodyInfo.model_name} 
+                        size='large' 
                         disabled={true}
                     />
                 </Space>
@@ -636,8 +646,8 @@ function Create() {
                                     </Col>
                                     <Col flex="auto" className='table-value-col-section'>
                                         <Space size={10}>
-                                            <Input value={conditionBody.condition_name} style={{ width: 300 }} readOnly={true} />
-                                            <Input value={conditionBody.discount_price} style={{ width: 200 }} readOnly={true} />
+                                            <Input value={conditionBody.condition_name} style={{ width: 300 }} size='large' readOnly={true} />
+                                            <Input value={conditionBody.discount_price} style={{ width: 200 }} size='large' readOnly={true} />
                                             <Space size={11}>
                                                 <Switch 
                                                     checked={
@@ -675,11 +685,11 @@ function Create() {
                         <Col>
                             <Space size={10}>
                                 <Link to="/car/model">
-                                    <Button className='white-button medium-button'>취소</Button>
+                                    <Button className='white-button' size='large'>취소</Button>
                                 </Link>
-                                <Button className='white-button medium-button' onClick={() => onSaveClick('/car/model')}>저장하고 나가기</Button>
+                                <Button className='white-button' size='large' onClick={() => onSaveClick('/car/model')}>저장하고 나가기</Button>
                                 
-                                <Button className='black-button medium-button' onClick={() => onSaveClick('/car/lineup')} >저장하고 라인업 등록하기</Button>
+                                <Button className='black-button' size='large' onClick={() => onSaveClick('/car/lineup')} >저장하고 라인업 등록하기</Button>
                             </Space>
                         </Col>
                     </Row>
@@ -710,6 +720,7 @@ function Create() {
                                                     onChange={value => {
                                                         onChangeComponent('brand_id', value);
                                                     }}
+                                                    size='large'
                                                     suffixIcon={<CaretDownOutlined />}
                                                     placeholder="브랜드 선택"
                                                     style={{ width: '100%' }}
@@ -730,6 +741,7 @@ function Create() {
                                                     onChange={value => {
                                                         onChangeComponent('group_id', value);
                                                     }}
+                                                    size='large'
                                                     suffixIcon={<CaretDownOutlined />}
                                                     placeholder="모델그룹 선택"
                                                     style={{ width: '100%' }}
@@ -748,13 +760,14 @@ function Create() {
                                             </Col>
                                             <Col flex="auto" className='table-value-col-section'>
                                             <Space>
-                                                    <div className=''>
+                                                    <div style={{position: 'relative'}}>
                                                         <Input 
                                                             name='model_name' 
                                                             value={bodyInfo.model_name} 
                                                             onChange={e => {
                                                                 onChangeComponent(e.target.name, e.target.value);
                                                             }} 
+                                                            size='large'
                                                             placeholder="모델명 입력" 
                                                             maxLength={15} style={{ width: 400 }} 
                                                         />
@@ -766,7 +779,7 @@ function Create() {
                                                             : ''
                                                         }
                                                     </div>
-                                                    <Button className='black-button' onClick={() => checkName(bodyInfo.model_name)}>확인</Button>
+                                                    <Button className='black-button' onClick={() => checkName(bodyInfo.model_name)} size='large'>확인</Button>
                                                 </Space>
                                             </Col>
                                         </Row>
@@ -781,6 +794,7 @@ function Create() {
                                                     onChange={value => {
                                                         onChangeComponent('is_new', value);
                                                     }}
+                                                    size='large'
                                                     suffixIcon={<CaretDownOutlined />}
                                                     placeholder="선택"
                                                     style={{ width: 150 }}
@@ -804,6 +818,7 @@ function Create() {
                                                     onChange={value => {
                                                         onChangeComponent('release_date', value.toString());
                                                     }}
+                                                    size='large'
                                                 />
                                             </Col>
                                         </Row>
@@ -819,6 +834,7 @@ function Create() {
                                                         onChange={number => {
                                                             onChangeComponent('sequence', number);
                                                         }} 
+                                                        size='large'
                                                         maxLength={6} 
                                                         style={{ width: 150 }} 
                                                         controls={false}
@@ -836,6 +852,7 @@ function Create() {
                                                     onChange={value => {
                                                         onChangeComponent('is_use', value);
                                                     }}
+                                                    size='large'
                                                     suffixIcon={<CaretDownOutlined />}
                                                     placeholder="선택"
                                                     style={{ width: 150 }}
@@ -877,7 +894,7 @@ function Create() {
                                                                         <></>
                                                                     )}
                                                                 >
-                                                                    <Button className='black-button'>등록</Button>
+                                                                    <Button className='black-button' size='large'>등록</Button>
                                                                 </Upload>
                                                             </Space>
                                                         </Col>
@@ -897,7 +914,7 @@ function Create() {
                                                                         <></>
                                                                     )}
                                                                 >
-                                                                    <Button className='black-button'>등록</Button>
+                                                                    <Button className='black-button' size='large'>등록</Button>
                                                                 </Upload>
                                                             </Space>
                                                         </Col>
@@ -917,7 +934,7 @@ function Create() {
                                                                         <></>
                                                                     )}
                                                                 >
-                                                                    <Button className='black-button'>등록</Button>
+                                                                    <Button className='black-button' size='large'>등록</Button>
                                                                 </Upload>
                                                             </Space>
                                                         </Col>
@@ -937,7 +954,7 @@ function Create() {
                                                                         <></>
                                                                     )}
                                                                 >
-                                                                    <Button className='black-button'>등록</Button>
+                                                                    <Button className='black-button' size='large'>등록</Button>
                                                                 </Upload>
                                                             </Space>
                                                         </Col>
@@ -957,7 +974,7 @@ function Create() {
                                                                         <></>
                                                                     )}
                                                                 >
-                                                                    <Button className='black-button'>등록</Button>
+                                                                    <Button className='black-button' size='large'>등록</Button>
                                                                 </Upload>
                                                             </Space>
                                                         </Col>
@@ -977,7 +994,7 @@ function Create() {
                                                                         <></>
                                                                     )}
                                                                 >
-                                                                    <Button className='black-button'>등록</Button>
+                                                                    <Button className='black-button' size='large'>등록</Button>
                                                                 </Upload>
                                                             </Space>
                                                         </Col>
@@ -997,7 +1014,7 @@ function Create() {
                                                                         <></>
                                                                     )}
                                                                 >
-                                                                    <Button className='black-button'>등록</Button>
+                                                                    <Button className='black-button' size='large'>등록</Button>
                                                                 </Upload>
                                                             </Space>
                                                         </Col>
@@ -1017,7 +1034,7 @@ function Create() {
                                                                         <></>
                                                                     )}
                                                                 >
-                                                                    <Button className='black-button'>등록</Button>
+                                                                    <Button className='black-button' size='large'>등록</Button>
                                                                 </Upload>
                                                             </Space>
                                                         </Col>

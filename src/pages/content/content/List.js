@@ -94,7 +94,7 @@ function List() {
 			render: idx => 
                 <Row justify='center'>
                     <Col>
-						<Button className='black-button small-button rounded-button' onClick={() => onDeleteClick(idx)}>삭제</Button>
+						<Button className='black-button small-button rounded-button' onClick={() => onDeleteClick(idx)} size='large'>삭제</Button>
                     </Col>
                 </Row>,
 		},

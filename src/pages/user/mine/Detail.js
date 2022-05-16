@@ -97,7 +97,7 @@ function Detail() {
                         </Col>
                         <Col flex="auto" />
                         <Col>
-                            <Button className='black-button medium-button' onClick={onSaveClick}>저장하기</Button>
+                            <Button className='black-button' size='large' onClick={onSaveClick}>저장하기</Button>
                         </Col>
                     </Row>
                     <Divider className='main-body-divider' />
@@ -125,6 +125,7 @@ function Detail() {
                                             onChange={e => {
                                                 onChangeComponent(e.target.name, e.target.value);
                                             }} 
+                                            size='large' 
                                             placeholder="이름" 
                                             maxLength={10} style={{ width: 150 }} 
                                         />
@@ -139,6 +140,7 @@ function Detail() {
                                             onChange={e => {
                                                 onChangeComponent(e.target.user_id, e.target.value);
                                             }} 
+                                            size='large' 
                                             maxLength={15} 
                                             style={{ width: 150 }} disabled />
                                     </Col>
@@ -152,6 +154,7 @@ function Detail() {
                                             onChange={e => {
                                                 onChangeComponent(e.target.name, e.target.value);
                                             }} 
+                                            size='large' 
                                             maxLength={15} 
                                             style={{ width: 150 }} disabled 
                                         />
@@ -166,6 +169,7 @@ function Detail() {
                                             onChange={number => {
                                                 onChangeComponent('phone', number);
                                             }} 
+                                            size='large' 
                                             placeholder="공백없이 - 제외한 숫자 입력" 
                                             maxLength={12} 
                                             controls={false}
@@ -184,6 +188,7 @@ function Detail() {
                                             onChange={e => {
                                                 onChangeComponent(e.target.name, e.target.value);
                                             }} 
+                                            size='large' 
                                             placeholder="비밀번호 입력" 
                                             style={{ width: 250 }} 
                                         />
@@ -198,6 +203,7 @@ function Detail() {
                                             onChange={e => {
                                                 onChangeComponent(e.target.name, e.target.value);
                                             }} 
+                                            size='large' 
                                             placeholder="이메일 입력" 
                                             style={{ width: 250 }} 
                                         />

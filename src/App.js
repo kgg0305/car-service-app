@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import useToken from './data/useToken';
 import Main from './layouts/Main';
+import AuthMain from './layouts/AuthMain';
+// Auth
+import Login from './pages/auth/Login';
 // Mine
 import UserMineDetail from './pages/user/mine/Detail';
 // Manage
@@ -18,18 +22,22 @@ import CarBrandEdit from './pages/car/brand/Edit';
 import CarGroupList from './pages/car/group/List';
 import CarGroupCreate from './pages/car/group/Create';
 import CarGroupEdit from './pages/car/group/Edit';
+import CarGroupManage from './pages/car/group/Manage';
 // Model
 import CarModelList from './pages/car/model/List';
 import CarModelCreate from './pages/car/model/Create';
 import CarModelEdit from './pages/car/model/Edit';
+import CarModelManage from './pages/car/model/Manage';
 // Lineup
 import CarLineupList from './pages/car/lineup/List';
 import CarLineupCreate from './pages/car/lineup/Create';
 import CarLineupEdit from './pages/car/lineup/Edit';
+import CarLineupManage from './pages/car/lineup/Manage';
 // Trim
 import CarTrimList from './pages/car/trim/List';
 import CarTrimCreate from './pages/car/trim/Create';
 import CarTrimEdit from './pages/car/trim/Edit';
+import CarTrimManage from './pages/car/trim/Manage';
 // Discount
 import CarDiscountList from './pages/car/discount/List';
 import CarDiscountCreate from './pages/car/discount/Create';
@@ -78,11 +86,59 @@ import ContentMovieRankEdit from './pages/content/movieRank/Edit';
 import ContentMediaList from './pages/content/media/List';
 
 function App() {
+	const { token, setToken } = useToken();
+
+	if(!token) {
+		return (
+			<AuthMain>
+				<Login setToken={setToken} />
+			</AuthMain>
+		);
+	}
+
 	return (
 		<BrowserRouter>
 			<Routes>
-				<Route exact path='/' element={ < Main headerMenuKey={"car"} /> }>
-					<Route index element={ <CarBrandList /> } />
+				<Route exact path='/' element={ <Main headerMenuKey={"car"} /> }>
+					<Route index element={<CarBrandList />} />
+
+					<Route path="/car/brand/">
+						<Route index element={<CarBrandList />} />
+						<Route path="create" element={<CarBrandCreate />} />
+						<Route path="edit/:id" element={<CarBrandEdit />} />
+					</Route>
+					<Route path="/car/group/">
+						<Route index element={<CarGroupList />} />
+						<Route path="create" element={<CarGroupCreate />} />
+						<Route path="edit/:id" element={<CarGroupEdit />} />
+						<Route path="manage/:brand_id" element={<CarGroupManage />} />
+					</Route>
+					<Route path="/car/model/">
+						<Route index element={<CarModelList />} />
+						<Route path="create" element={<CarModelCreate />} />
+						<Route path="edit/:id" element={<CarModelEdit />} />
+						<Route path="manage/:group_id" element={<CarModelManage />} />
+					</Route>
+					<Route path="/car/lineup/">
+						<Route index element={<CarLineupList />} />
+						<Route path="create" element={<CarLineupCreate />} />
+						<Route path="edit/:id" element={<CarLineupEdit />} />
+						<Route path="manage/:model_id" element={<CarLineupManage />} />
+					</Route>
+					<Route path="/car/trim/">
+						<Route index element={<CarTrimList />} />
+						<Route path="create" element={<CarTrimCreate />} />
+						<Route path="edit/:id" element={<CarTrimEdit />} />
+						<Route path="manage/:lineup_id" element={<CarTrimManage />} />
+					</Route>
+					<Route path="/car/discount/">
+						<Route index element={<CarDiscountList />} />
+						<Route path="create" element={<CarDiscountCreate />} />
+						<Route path="edit/:id" element={<CarDiscountEdit />} />
+					</Route>
+					<Route path="/car/extra/">
+						<Route index element={<CarExtraList />} />
+					</Route>
 				</Route>
 
 				{/* User */}
@@ -96,41 +152,6 @@ function App() {
 				</Route>
 				<Route path="/user/role/" element={ <Main headerMenuKey={"user"} /> }>
 					<Route index element={<UserRoleList />} />
-				</Route>
-
-				{/* Car */}
-				<Route path="/car/brand/" element={ <Main headerMenuKey={"car"} /> }>
-					<Route index element={<CarBrandList />} />
-					<Route path="create" element={<CarBrandCreate />} />
-					<Route path="edit/:id" element={<CarBrandEdit />} />
-				</Route>
-				<Route path="/car/group/" element={ <Main headerMenuKey={"car"} /> }>
-					<Route index element={<CarGroupList />} />
-					<Route path="create" element={<CarGroupCreate />} />
-					<Route path="edit/:id" element={<CarGroupEdit />} />
-				</Route>
-				<Route path="/car/model/" element={ <Main headerMenuKey={"car"} /> }>
-					<Route index element={<CarModelList />} />
-					<Route path="create" element={<CarModelCreate />} />
-					<Route path="edit/:id" element={<CarModelEdit />} />
-				</Route>
-				<Route path="/car/lineup/" element={ <Main headerMenuKey={"car"} /> }>
-					<Route index element={<CarLineupList />} />
-					<Route path="create" element={<CarLineupCreate />} />
-					<Route path="edit/:id" element={<CarLineupEdit />} />
-				</Route>
-				<Route path="/car/trim/" element={ <Main headerMenuKey={"car"} /> }>
-					<Route index element={<CarTrimList />} />
-					<Route path="create" element={<CarTrimCreate />} />
-					<Route path="edit/:id" element={<CarTrimEdit />} />
-				</Route>
-				<Route path="/car/discount/" element={ <Main headerMenuKey={"car"} /> }>
-					<Route index element={<CarDiscountList />} />
-					<Route path="create" element={<CarDiscountCreate />} />
-					<Route path="edit/:id" element={<CarDiscountEdit />} />
-				</Route>
-				<Route path="/car/extra/" element={ <Main headerMenuKey={"car"} /> }>
-					<Route index element={<CarExtraList />} />
 				</Route>
 
 				{/* Estimation */}
@@ -189,6 +210,7 @@ function App() {
 				<Route path="/content/media/" element={ <Main headerMenuKey={"content"} /> }>
 					<Route index element={<ContentMediaList />} />
 				</Route>
+				
 			</Routes>
 		</BrowserRouter>
 	);

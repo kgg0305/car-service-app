@@ -132,6 +132,7 @@ function Create() {
                                         onChange={value => {
                                             onChangeComponent(body.number, 'brand_id', value);
                                         }}
+                                        size='large'
                                         suffixIcon={<CaretDownOutlined />}
                                         placeholder="브랜드 선택"
                                         style={{ width: 400 }}
@@ -150,13 +151,14 @@ function Create() {
                                     </Col>
                                     <Col flex="auto" className='table-value-col-section'>
                                         <Space>
-                                            <div className=''>
+                                            <div style={{position: 'relative'}}>
                                                 <Input 
                                                     name='group_name' 
                                                     value={body.group_name} 
                                                     onChange={e => {
                                                         onChangeComponent(body.number, e.target.name, e.target.value);
                                                     }} 
+                                                    size='large'
                                                     placeholder="모델 그룹명 입력" 
                                                     maxLength={15} style={{ width: 400 }} 
                                                 />
@@ -168,7 +170,7 @@ function Create() {
                                                     : ''
                                                 }
                                             </div>
-                                            <Button className='black-button' onClick={() => checkName(body.number, body.group_name)}>확인</Button>
+                                            <Button className='black-button' onClick={() => checkName(body.number, body.group_name)} size='large'>확인</Button>
                                         </Space>
                                     </Col>
                                 </Row>
@@ -183,6 +185,7 @@ function Create() {
                                             onChange={value => {
                                                 onChangeComponent(body.number, 'car_kind_id', value);
                                             }}
+                                            size='large'
                                             suffixIcon={<CaretDownOutlined />}
                                             placeholder="선택"
                                             style={{ width: 150 }}
@@ -206,6 +209,7 @@ function Create() {
                                             onChange={value => {
                                                 onChangeComponent(body.number, 'is_use', value);
                                             }}
+                                            size='large'
                                             suffixIcon={<CaretDownOutlined />}
                                             placeholder="선택"
                                             style={{ width: 150 }}
@@ -241,11 +245,11 @@ function Create() {
                         <Col>
                             <Space size={10}>
                                 <Link to="/car/group">
-                                    <Button className='white-button medium-button'>취소</Button>
+                                    <Button className='white-button' size='large'>취소</Button>
                                 </Link>
-                                <Button className='white-button medium-button' onClick={() => onSaveClick('/car/group')}>저장하고 나가기</Button>
+                                <Button className='white-button' size='large' onClick={() => onSaveClick('/car/group')}>저장하고 나가기</Button>
                                 
-                                <Button className='black-button medium-button' onClick={() => onSaveClick('/car/model')}>저장하고 모델 등록하기</Button>
+                                <Button className='black-button' size='large' onClick={() => onSaveClick('/car/model')}>저장하고 모델 등록하기</Button>
                             </Space>
                         </Col>
                     </Row>

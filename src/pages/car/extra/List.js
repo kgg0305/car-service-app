@@ -3,8 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { GetBrandOptionListAPI } from '../../../api/Brand';
 import { GetGroupOptionListAPI } from '../../../api/Group';
 import { GetModelOptionListAPI } from '../../../api/Model';
-import { GetExtraListAPI } from '../../../api/Extra';
-import SearchPanel from '../../../components/SearchPanel';
+import { DownloadExtraFileAPI, GetExtraListAPI } from '../../../api/Extra';
 import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
 import { CaretDownOutlined } from '@ant-design/icons';
@@ -128,16 +127,16 @@ function List() {
 		topItems: [
 			{
 				type: Constants.inputTypes.button,
-				link: '/car/disount/create',
+				onClick: DownloadExtraFileAPI,
 				label: '엑셀 다운로드',
-				style: 'white-button big-button',
-				width: 150
+				style: 'white-button'
 			},
 			{
 				type: Constants.inputTypes.upload,
+				action: '',
+				accept: '.xlsx',
 				label: '엑셀 등록',
-				style: 'black-button big-button',
-				width: 150
+				style: 'black-button'
 			}
 		],
 		tableData: dataSource,

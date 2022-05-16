@@ -112,9 +112,9 @@ function Edit() {
                         <Col>
                             <Space size={10}>
                                 <Link to="/car/brand">
-                                    <Button className='white-button medium-button'>취소</Button>
+                                    <Button className='white-button' size='large'>취소</Button>
                                 </Link>
-                                <Button className='black-button medium-button' onClick={() => onSaveClick('/car/group')}>저장하고 나가기</Button>
+                                <Button className='black-button' size='large' onClick={() => onSaveClick('/car/group')}>저장하고 나가기</Button>
                             </Space>
                         </Col>
                     </Row>
@@ -143,6 +143,7 @@ function Edit() {
                                         onChange={value => {
                                             onChangeComponent('brand_id', value);
                                         }}
+                                        size='large'
                                         suffixIcon={<CaretDownOutlined />}
                                         placeholder="브랜드 선택"
                                         style={{ width: 400 }}
@@ -161,13 +162,14 @@ function Edit() {
                                     </Col>
                                     <Col flex="auto" className='table-value-col-section'>
                                         <Space>
-                                            <div className=''>
+                                            <div style={{position: 'relative'}}>
                                                 <Input 
                                                     name='group_name' 
                                                     value={bodyInfo.group_name} 
                                                     onChange={e => {
                                                         onChangeComponent(e.target.name, e.target.value);
                                                     }} 
+                                                    size='large'
                                                     placeholder="모델 그룹명 입력" 
                                                     maxLength={15} style={{ width: 400 }} 
                                                 />
@@ -179,7 +181,7 @@ function Edit() {
                                                     : ''
                                                 }
                                             </div>
-                                            <Button className='black-button' onClick={() => checkName(bodyInfo.group_name)}>확인</Button>
+                                            <Button className='black-button' onClick={() => checkName(bodyInfo.group_name)} size='large'>확인</Button>
                                         </Space>
                                     </Col>
                                 </Row>
@@ -194,6 +196,7 @@ function Edit() {
                                             onChange={value => {
                                                 onChangeComponent('car_kind_id', value);
                                             }}
+                                            size='large'
                                             suffixIcon={<CaretDownOutlined />}
                                             placeholder="선택"
                                             style={{ width: 150 }}
@@ -217,6 +220,7 @@ function Edit() {
                                             onChange={value => {
                                                 onChangeComponent('is_use', value);
                                             }}
+                                            size='large'
                                             suffixIcon={<CaretDownOutlined />}
                                             placeholder="선택"
                                             style={{ width: 150 }}
@@ -237,7 +241,7 @@ function Edit() {
                     
                     <Row justify="center" gutter={[17, 0]}>
                         <Col>
-                            <Button className='white-button rounded-button' onClick={() => onDeleteClick(bodyInfo.idx)}>삭제하기</Button>
+                            <Button className='white-button rounded-button' onClick={() => onDeleteClick(bodyInfo.idx)} size='large'>삭제하기</Button>
                         </Col>
                     </Row>
                 </Space>

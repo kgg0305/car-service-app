@@ -130,7 +130,8 @@ function Edit() {
                                             value={body.price_unit} 
                                             onChange={value => {
                                                 onChangeConditionComponent('price_unit', value);
-                                            }}
+                                            }} 
+                                            size='large' 
                                             className="select-after"
                                         >
                                             {
@@ -199,6 +200,7 @@ function Edit() {
                                                     onChange={value => {
                                                         onChangeComponent('brand_id', value);
                                                     }}
+                                                    size='large'
                                                     suffixIcon={<CaretDownOutlined />}
                                                     placeholder="브랜드 선택"
                                                     style={{ width: 300 }}
@@ -236,6 +238,7 @@ function Edit() {
                                                             onChange={e => {
                                                                 onChangeComponent(e.target.name, e.target.value);
                                                             }} 
+                                                            size='large'
                                                             placeholder="할인 종류 이름"
                                                             maxLength={18} style={{ width: 300 }} 
                                                         />
@@ -245,6 +248,7 @@ function Edit() {
                                                             onChange={e => {
                                                                 onChangeComponent(e.target.name, e.target.value);
                                                             }} 
+                                                            size='large'
                                                             placeholder="세부 내용 입력"
                                                             maxLength={50} style={{ width: 900 }} 
                                                         />
@@ -264,6 +268,7 @@ function Edit() {
                                                     onChange={value => {
                                                         onChangeComponent('s_date', value.toString());
                                                     }}
+                                                    size='large'
                                                     placeholder='시작일' 
                                                 />
                                                 <label>~</label>
@@ -273,6 +278,7 @@ function Edit() {
                                                     onChange={value => {
                                                         onChangeComponent('e_date', value.toString());
                                                     }}
+                                                    size='large'
                                                     placeholder='종료일' 
                                                 />
                                                 </Space>
@@ -282,7 +288,7 @@ function Edit() {
                                 </Space>
                                 <Row justify="center" gutter={[17, 0]}>
                                     <Col>
-                                        <Button className='white-button rounded-button' icon={<PlusOutlined />} onClick={() => onDeleteClick(bodyInfo.idx)}>삭제하기</Button>
+                                        <Button className='white-button rounded-button' icon={<PlusOutlined />} onClick={() => onDeleteClick(bodyInfo.idx)} size='large'>삭제하기</Button>
                                     </Col>
                                 </Row>
                             </Space>
@@ -304,6 +310,7 @@ function Edit() {
                                             <Col span={5} className='table-value-col-section'>
                                                 <Space>
                                                     <Select
+                                                        size='large'
                                                         suffixIcon={<CaretDownOutlined />}
                                                         placeholder="브랜드 선택"
                                                         style={{ width: 300 }}

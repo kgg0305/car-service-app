@@ -150,6 +150,7 @@ function Create() {
                                             onChange={e => {
                                                 onChangeComponent(body.number, e.target.name, e.target.value);
                                             }} 
+                                            size='large' 
                                             placeholder="이름 입력" 
                                             maxLength={10}
                                             style={{ width: 150 }} 
@@ -165,6 +166,7 @@ function Create() {
                                             onChange={e => {
                                                 onChangeComponent(body.number, e.target.name, e.target.value);
                                             }} 
+                                            size='large' 
                                             placeholder="아이디 입력" 
                                             maxLength={10}
                                             style={{ width: 150 }} 
@@ -182,7 +184,8 @@ function Create() {
                                                 value={body.type_id} 
                                                 onChange={value => {
                                                     onChangeComponent(body.number, 'type_id', value);
-                                                }}
+                                                }} 
+                                                size='large' 
                                                 suffixIcon={<CaretDownOutlined />}
                                                 placeholder="구분"
                                                 style={{ width: 150 }}
@@ -200,7 +203,8 @@ function Create() {
                                                 value={body.group_id} 
                                                 onChange={value => {
                                                     onChangeComponent(body.number, 'group_id', value);
-                                                }}
+                                                }} 
+                                                size='large' 
                                                 suffixIcon={<CaretDownOutlined />}
                                                 placeholder="그룹"
                                                 style={{ width: 150 }}
@@ -228,13 +232,14 @@ function Create() {
                                     </Col>
                                     <Col flex="auto" className='table-value-col-section'>
                                         <Space size={6}>
-                                            <div className=''>
+                                            <div style={{position: 'relative'}}>
                                                 <Input 
                                                     name='password' 
                                                     value={body.password} 
                                                     onChange={e => {
                                                         onChangeComponent(body.number, e.target.name, e.target.value);
                                                     }} 
+                                                    size='large' 
                                                     placeholder="비밀번호 입력" 
                                                     maxLength={15} style={{ width: 250 }} 
                                                 />
@@ -265,9 +270,9 @@ function Create() {
                         <Col>
                             <Space size={10}>
                                 <Link to="/user/manage">
-                                    <Button className='white-button medium-button'>취소</Button>
+                                    <Button className='white-button' size='large'>취소</Button>
                                 </Link>
-                                <Button className='black-button medium-button' onClick={onSaveClick}>저장하고 나가기</Button>
+                                <Button className='black-button' size='large' onClick={onSaveClick}>저장하고 나가기</Button>
                             </Space>
                         </Col>
                     </Row>
@@ -282,7 +287,7 @@ function Create() {
                     
                     <Row justify="center" gutter={[17, 0]}>
                         <Col>
-                            <Button className='white-button rounded-button' icon={<PlusOutlined />} onClick={onAddComponentClick}>사용자 추가하기</Button>
+                            <Button className='white-button rounded-button' icon={<PlusOutlined />} onClick={onAddComponentClick} size='large'>사용자 추가하기</Button>
                         </Col>
                     </Row>
                 </Space>

@@ -78,7 +78,7 @@ function List() {
 				<Row justify='center'>
 					<Col>
 						<Space size={15} split={<Divider type="vertical" />}>
-							<Link to="/car/group">
+							<Link to={"/car/group/manage/" + idx}>
 								<Button className='white-button small-button rounded-button'>그룹관리</Button>
 							</Link>
 							<Link to={"/car/brand/edit/" + idx}>

@@ -43,6 +43,30 @@ export async function UpdateFileAPI(body) {
     }
 }
 
+export async function DownloadFileAPI() {
+    try {
+        const response = await axios.post(process.env.REACT_APP_API_URL + '/file/download/extra', null,
+            {
+                headers:
+                {
+                    'Content-Disposition': "attachment; filename=template.xlsx",
+                    'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                },
+                responseType: 'arraybuffer',
+            }
+        ).then((response) => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', '취득세.xlsx');
+            document.body.appendChild(link);
+            link.click();
+        }).catch((error) => console.log(error));
+    } catch (e) {
+        return e;
+    }
+}
+
 export async function DeleteFileInfoAPI(idx) {
     try {
         const response = await axios.delete(process.env.REACT_APP_API_URL + '/file/' + idx);

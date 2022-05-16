@@ -192,13 +192,14 @@ function Create() {
                                 </Col>
                                 <Col span={10} className='table-value-col-section'>
                                     <Space>
-                                        <div className=''>
+                                        <div style={{position: 'relative'}}>
                                             <Input 
                                                 name='brand_name' 
                                                 value={body.brand_name} 
                                                 onChange={e => {
                                                     onChangeComponent(body.number, e.target.name, e.target.value);
                                                 }} 
+                                                size='large' 
                                                 placeholder="브랜드 입력" maxLength={15} style={{ width: 400 }} 
                                             />
                                             {
@@ -209,7 +210,7 @@ function Create() {
                                                 : ''
                                             }
                                         </div>
-                                        <Button className='black-button' onClick={() => checkName(body.number, body.brand_name)}>확인</Button>
+                                        <Button className='black-button' onClick={() => checkName(body.number, body.brand_name)} size='large'>확인</Button>
                                     </Space>
                                 </Col>
                                 <Col span={2} className='table-header-col-section'>
@@ -222,6 +223,7 @@ function Create() {
                                             onChange={number => {
                                                 onChangeComponent(body.number, 'sequence', number);
                                             }}
+                                            size='large' 
                                             maxLength={6} 
                                             style={{ width: 150 }} 
                                             controls={false}
@@ -241,6 +243,7 @@ function Create() {
                                         onChange={value => {
                                             onChangeComponent(body.number, 'nation', value);
                                         }}
+                                        size='large' 
                                         suffixIcon={<CaretDownOutlined />}
                                         placeholder="선택"
                                         style={{ width: 150 }}
@@ -264,6 +267,7 @@ function Create() {
                                         onChange={value => {
                                             onChangeComponent(body.number, 'is_income', value);
                                         }}
+                                        size='large' 
                                         suffixIcon={<CaretDownOutlined />}
                                         placeholder="선택"
                                         style={{ width: 150 }}
@@ -287,6 +291,7 @@ function Create() {
                                         onChange={value => {
                                             onChangeComponent(body.number, 'is_use', value);
                                         }}
+                                        size='large' 
                                         suffixIcon={<CaretDownOutlined />}
                                         placeholder="선택"
                                         defaultValue="true"
@@ -312,6 +317,7 @@ function Create() {
                                         onChange={e => {
                                             onChangeComponent(body.number, e.target.name, e.target.value);
                                         }}
+                                        size='large' 
                                         placeholder="URL 입력" style={{ width: 400 }} 
                                     />
                                 </Col>
@@ -324,6 +330,7 @@ function Create() {
                                         onChange={e => {
                                             onChangeComponent(body.number, e.target.name, e.target.value);
                                         }}
+                                        size='large' 
                                         placeholder="URL 입력" style={{ width: 400 }} 
                                     />
                                 </Col>
@@ -338,6 +345,7 @@ function Create() {
                                         onChange={e => {
                                             onChangeComponent(body.number, e.target.name, e.target.value);
                                         }}
+                                        size='large' 
                                         placeholder="URL 입력" style={{ width: 400 }} 
                                     />
                                 </Col>
@@ -350,6 +358,7 @@ function Create() {
                                         onChange={e => {
                                             onChangeComponent(body.number, e.target.name, e.target.value);
                                         }}
+                                        size='large' 
                                         placeholder="URL 입력" style={{ width: 400 }} 
                                     />
                                 </Col>
@@ -382,11 +391,10 @@ function Create() {
                                                     return true;
                                                 }}
                                             >
-                                                <Button className='black-button'>등록</Button>
+                                                <Button className='black-button' size='large'>등록</Button>
                                             </Upload>
                                         </Space>
                                     </Space>
-                                    
                                 </Col>
                             </Row>
                         </Space>
@@ -409,11 +417,11 @@ function Create() {
                         <Col>
                             <Space size={10}>
                                 <Link to="/car/brand">
-                                    <Button className='white-button medium-button'>취소</Button>
+                                    <Button className='white-button' size='large'>취소</Button>
                                 </Link>
-                                <Button className='white-button medium-button' onClick={() => onSaveClick('/car/brand')}>저장하고 나가기</Button>
+                                <Button className='white-button' size='large' onClick={() => onSaveClick('/car/brand')}>저장하고 나가기</Button>
                                 
-                                <Button className='black-button medium-button' onClick={() => onSaveClick('/car/group')}>저장하고 모델그룹 등록하기</Button>
+                                <Button className='black-button' size='large' onClick={() => onSaveClick('/car/group')}>저장하고 모델그룹 등록하기</Button>
                             </Space>
                         </Col>
                     </Row>
@@ -428,7 +436,7 @@ function Create() {
                     
                     <Row justify="center" gutter={[17, 0]}>
                         <Col>
-                            <Button className='white-button rounded-button' icon={<PlusOutlined />} onClick={onAddComponentClick}>브랜드 추가하기</Button>
+                            <Button className='white-button rounded-button' icon={<PlusOutlined />} onClick={onAddComponentClick} size='large'>브랜드 추가하기</Button>
                         </Col>
                     </Row>
                 </Space>

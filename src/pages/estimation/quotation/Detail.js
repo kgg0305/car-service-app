@@ -104,9 +104,9 @@ function Detail() {
                         <Col>
                             <Space size={10}>
                                 <Link to="/estimation/quotation">
-                                    <Button className='white-button medium-button'>취소</Button>
+                                    <Button className='white-button' size='large'>취소</Button>
                                 </Link>
-                                <Button className='black-button medium-button' onClick={onSaveClick}>저장하고 나가기</Button>
+                                <Button className='black-button' size='large' onClick={onSaveClick}>저장하고 나가기</Button>
                             </Space>
                         </Col>
                     </Row>
@@ -362,7 +362,7 @@ function Detail() {
                     
                     <Row justify="center" gutter={[17, 0]}>
                         <Col>
-                            <Button className='white-button rounded-button' onClick={() => onDeleteClick(bodyInfo.idx)}>삭제하기</Button>
+                            <Button className='white-button rounded-button' onClick={() => onDeleteClick(bodyInfo.idx)} size='large'>삭제하기</Button>
                         </Col>
                     </Row>
                 </Space>
@@ -373,7 +373,7 @@ function Detail() {
                 closable={false}
                 visible={showModal}
                 footer={[
-                    <Button className='alert-button' onClick={onCloseModalClick}>확인</Button>
+                    <Button className='alert-button' onClick={onCloseModalClick} size='large'>확인</Button>
                 ]}
             >
                 <Space direction='vertical' size={10} align='center' style={{width:'100%'}}>

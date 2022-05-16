@@ -227,8 +227,9 @@ function Create() {
                                         value={body.specification_id} 
                                         onChange={value => {
                                             onChangeSpecificationComponent(body.number, 'specification_id', value);
-                                        }}
-                                        suffixIcon={<CaretDownOutlined />}
+                                        }} 
+                                        size='large'
+                                        suffixIcon={<CaretDownOutlined />} 
                                         placeholder="선택"
                                         style={{ width: 200 }}
                                     >
@@ -246,6 +247,7 @@ function Create() {
                                         onChange={e => {
                                             onChangeSpecificationComponent(body.number, e.target.name, e.target.value);
                                         }} 
+                                        size='large'
                                         placeholder="세부 내용 입력" 
                                         maxLength={50} style={{ width: 1050 }} 
                                     />
@@ -260,12 +262,12 @@ function Create() {
                                         <>
                                             {
                                                 specificationBodyList.length != 1 
-                                                ? <Button className='white-button' onClick={() => onDeleteSpecificationComponentClick(body.number)}>삭제</Button> 
+                                                ? <Button className='white-button' onClick={() => onDeleteSpecificationComponentClick(body.number)} size='large'>삭제</Button> 
                                                 : ''
                                             }
-                                            <Button className='black-button' onClick={() => onAddSpecificationComponentClick(body.number)}>추가</Button>
+                                            <Button className='black-button' onClick={() => onAddSpecificationComponentClick(body.number)} size='large'>추가</Button>
                                         </>
-                                        : <Button className='white-button' onClick={() => onDeleteSpecificationComponentClick(body.number)}>삭제</Button>
+                                        : <Button className='white-button' onClick={() => onDeleteSpecificationComponentClick(body.number)} size='large'>삭제</Button>
                                     }
                                 </Space>
                             </Col>
@@ -287,9 +289,9 @@ function Create() {
                         <Row>
                             <Col>
                                 <Space size={6}>
-                                    <Input value={body.name} readOnly={true} style={{ width: 300 }} />
-                                    <Input value={body.price} readOnly={true} style={{ width: 200 }} />
-                                    <Input value={body.detail} readOnly={true} style={{ width: 700 }} />
+                                    <Input value={body.name} readOnly={true} size='large' style={{ width: 300 }} />
+                                    <Input value={body.price} readOnly={true} size='large' style={{ width: 200 }} />
+                                    <Input value={body.detail} readOnly={true} size='large' style={{ width: 700 }} />
                                 </Space>
                             </Col>
                             <Col flex='auto' />
@@ -328,9 +330,9 @@ function Create() {
                         <Col>
                             <Space size={10}>
                                 <Link to="/car/trim">
-                                    <Button className='white-button medium-button'>취소</Button>
+                                    <Button className='white-button' size='large'>취소</Button>
                                 </Link>
-                                <Button className='black-button medium-button' onClick={() => onSaveClick('/car/trim')}>저장하고 나가기</Button>
+                                <Button className='black-button' size='large' onClick={() => onSaveClick('/car/trim')}>저장하고 나가기</Button>
                             </Space>
                         </Col>
                     </Row>
@@ -362,7 +364,8 @@ function Create() {
                                                         onChange={value => {
                                                             onChangeComponent('brand_id', value);
                                                         }}
-                                                        suffixIcon={<CaretDownOutlined />}
+                                                        size='large' 
+                                                        suffixIcon={<CaretDownOutlined />} 
                                                         placeholder="브랜드 선택"
                                                         style={{ width: 300 }}
                                                     >
@@ -380,7 +383,8 @@ function Create() {
                                                         onChange={value => {
                                                             onChangeComponent('group_id', value);
                                                         }}
-                                                        suffixIcon={<CaretDownOutlined />}
+                                                        size='large' 
+                                                        suffixIcon={<CaretDownOutlined />} 
                                                         placeholder="모델그룹 선택"
                                                         style={{ width: 300 }}
                                                     >
@@ -398,7 +402,8 @@ function Create() {
                                                         onChange={value => {
                                                             onChangeComponent('model_id', value);
                                                         }}
-                                                        suffixIcon={<CaretDownOutlined />}
+                                                        size='large' 
+                                                        suffixIcon={<CaretDownOutlined />} 
                                                         placeholder="모델 선택"
                                                         style={{ width: 300 }}
                                                     >
@@ -416,7 +421,8 @@ function Create() {
                                                         onChange={value => {
                                                             onChangeComponent('lineup_id', value);
                                                         }}
-                                                        suffixIcon={<CaretDownOutlined />}
+                                                        size='large' 
+                                                        suffixIcon={<CaretDownOutlined />} 
                                                         placeholder="라인업 선택"
                                                         style={{ width: 400 }}
                                                     >
@@ -437,13 +443,14 @@ function Create() {
                                             </Col>
                                             <Col span={10} className='table-value-col-section'>
                                                 <Space>
-                                                    <div className=''>
+                                                    <div style={{position: 'relative'}}>
                                                         <Input 
                                                             name='trim_name' 
                                                             value={bodyInfo.trim_name} 
                                                             onChange={e => {
                                                                 onChangeComponent(e.target.name, e.target.value);
                                                             }} 
+                                                            size='large'
                                                             placeholder="트림명 입력" 
                                                             maxLength={15} style={{ width: 400 }} 
                                                         />
@@ -455,7 +462,7 @@ function Create() {
                                                             : ''
                                                         }
                                                     </div>
-                                                    <Button className='black-button' onClick={() => checkName(bodyInfo.trim_name)}>확인</Button>
+                                                    <Button className='black-button' onClick={() => checkName(bodyInfo.trim_name)} size='large'>확인</Button>
                                                 </Space>
                                             </Col>
                                             <Col span={2} className='table-header-col-section'>
@@ -468,6 +475,7 @@ function Create() {
                                                     onChange={value => {
                                                         onChangeComponent('gearbox_type', value);
                                                     }}
+                                                    size='large'
                                                     suffixIcon={<CaretDownOutlined />}
                                                     placeholder="선택"
                                                     style={{ width: 150 }}
@@ -493,7 +501,8 @@ function Create() {
                                                     onChange={number => {
                                                         onChangeComponent('price', number);
                                                     }} 
-                                                    controls={false}
+                                                    size='large' 
+                                                    controls={false} 
                                                     maxLength={9}
                                                     style={{ width: 150 }} 
                                                 />
@@ -508,6 +517,7 @@ function Create() {
                                                     onChange={value => {
                                                         onChangeComponent('is_use', value);
                                                     }}
+                                                    size='large'
                                                     suffixIcon={<CaretDownOutlined />}
                                                     placeholder="선택"
                                                     defaultValue="true"

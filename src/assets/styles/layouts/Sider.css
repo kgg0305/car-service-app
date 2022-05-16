@@ -16,6 +16,25 @@
     color: white;
 }
 
+.simple-logo {
+    height: 80px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    padding-left: 16px;
+    padding-right: 16px;
+    background: white;
+    border-bottom : 1px solid #E1E1E1;
+}
+
+.simple-logo-title {
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 23px;
+    display: flex;
+    align-items: center;
+    color: black;
+}
+
 .sider-menu-layout > li {
     margin-top: 0px!important;
     margin-bottom: 0px!important;

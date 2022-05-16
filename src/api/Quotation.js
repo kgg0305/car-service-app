@@ -19,8 +19,7 @@ export async function CreateQuotationAPI(bodyList) {
 
     for (let i = 0; i < bodyList.length; i++) {
         const body = bodyList[i];
-        const file = await CreateFileAPI('brand', 'logo', body.logo);
-
+        
         data.push(
             {
                 purchase_path: body.purchase_path,
@@ -39,7 +38,8 @@ export async function CreateQuotationAPI(bodyList) {
                 is_release: body.is_release,
                 release_date: body.release_date,
                 is_close: body.is_close,
-                note: body.note
+                note: body.note,
+                assign_to: body.assign_to
             }
         );
     }
@@ -54,7 +54,6 @@ export async function CreateQuotationAPI(bodyList) {
 }
 
 export async function UpdateQuotationAPI(body) {
-    const file = await CreateFileAPI('brand', 'logo', body.logo);
 
     var data = 
     {
@@ -74,7 +73,8 @@ export async function UpdateQuotationAPI(body) {
         is_release: body.is_release,
         release_date: body.release_date,
         is_close: body.is_close,
-        note: body.note
+        note: body.note,
+        assign_to: body.assign_to
     };
     
     try {
@@ -131,6 +131,30 @@ export async function GetQuotationCountAPI(search) {
         const response = await axios.post(process.env.REACT_APP_API_URL + '/quotation/count', search);
         
         return response.data.count;
+    } catch (e) {
+        return e;
+    }
+}
+
+export async function DownloadQuotationFileAPI() {
+    try {
+        const response = await axios.post(process.env.REACT_APP_API_URL + '/quotation/download', null,
+            {
+                headers:
+                {
+                    'Content-Disposition': "attachment; filename=template.xlsx",
+                    'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                },
+                responseType: 'arraybuffer',
+            }
+        ).then((response) => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', '견적신청.xlsx');
+            document.body.appendChild(link);
+            link.click();
+        }).catch((error) => console.log(error));
     } catch (e) {
         return e;
     }

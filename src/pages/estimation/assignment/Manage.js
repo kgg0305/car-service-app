@@ -218,9 +218,9 @@ function Manage() {
                         <Col>
                             <Space size={10}>
                                 <Link to="/car/group">
-                                    <Button className='white-button medium-button'>취소</Button>
+                                    <Button className='white-button' size='large'>취소</Button>
                                 </Link>
-                                <Button className='black-button medium-button'>저장하고 나가기</Button>
+                                <Button className='black-button' size='large'>저장하고 나가기</Button>
                             </Space>
                         </Col>
                     </Row>

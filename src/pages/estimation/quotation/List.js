@@ -2,8 +2,7 @@ import { Col, Divider, Row, Space, Button, Input, Select, DatePicker } from 'ant
 import { CaretDownOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import { GetGroupOptionListAPI } from '../../../api/Group';
-import { GetQuotationListAPI } from '../../../api/Quotation';
+import { DownloadQuotationFileAPI, GetQuotationListAPI, UpdateQuotationAPI } from '../../../api/Quotation';
 import { GetUserOptionListAPI } from '../../../api/User';
 import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
@@ -13,7 +12,6 @@ import moment from 'moment';
 function List() {
 	const [offset, setOffset] = useState(0);
 	const [dataSource, setDataSource] = useState([]);
-	const [groupOptionList, setGroupOptionList] = useState([]);
 	const [userOptionList, setUserOptionList] = useState([]);
 	const [searchData, setSearchData] = useState({
 		date_type: '0',
@@ -37,7 +35,6 @@ function List() {
 
 	const initComponent = async () => {
 		const initDataSource = await GetQuotationListAPI(offset);
-		const initGroupOptionList = await GetGroupOptionListAPI();
 		const initUserOptionList = await GetUserOptionListAPI();
 		
 		setSummaryData({
@@ -50,7 +47,6 @@ function List() {
 		});
 
 		setDataSource(initDataSource);
-		setGroupOptionList(initGroupOptionList);
 		setUserOptionList(initUserOptionList);
 	};
 
@@ -106,14 +102,14 @@ function List() {
 			dataIndex: 'area',
 			key: 'area',
             align: 'center',
-			render: path => renderGroupSelect(),
+			render: path => renderAreaGroupSelect(),
 		},
 		{
 			title: '인원',
-			dataIndex: 'member',
-			key: 'member',
+			dataIndex: 'idx',
+			key: 'idx',
             align: 'center',
-			render: path => renderUserSelect(),
+			render: idx => renderUserSelect(idx),
 		},
 		{
 			title: '관리',
@@ -137,10 +133,9 @@ function List() {
 		topItems: [
 			{
 				type: Constants.inputTypes.button,
-				link: '#',
+				onClick: DownloadQuotationFileAPI,
 				label: '엑셀로 내려받기',
-				style: 'black-button big-button',
-				width: 150
+				style: 'black-button'
 			}
 		],
 		subItems: [
@@ -314,7 +309,19 @@ function List() {
 		]);
 	};
 
-	const renderGroupSelect = () => {
+	const onAssignToChange = async(idx, value) => {
+		let quotation_info = dataSource.filter(item => item.idx === idx)[0];
+		quotation_info.assign_to = value;
+		await UpdateQuotationAPI(quotation_info);
+		setDataSource(dataSource.map(item => (
+			{
+				...item,
+				assign_to: item.idx === idx ? value : item.assign_to
+			}
+		)));
+	};
+
+	const renderAreaGroupSelect = () => {
 		return (
 			<Row justify='center'>
 				<Col>
@@ -325,7 +332,7 @@ function List() {
 						style={{ width: 130 }}
 					>
 						{
-							groupOptionList.map((optionItem, optionIndex) => (
+							Constants.userAreaGroupOptions.map((optionItem, optionIndex) => (
 								<Select.Option key={optionIndex} value={optionItem.value}>
 									{optionItem.label}
 								</Select.Option>
@@ -337,12 +344,18 @@ function List() {
 		);
 	};
 
-	const renderUserSelect = () => {
+	const renderUserSelect = (idx) => {
+		const quotation_info = dataSource.filter(item => item.idx === idx)[0];
 		return (
 			<Row justify='center'>
 				<Col>
 					<Select
 						size='large'
+						name='assign_to' 
+						value={quotation_info.assign_to} 
+						onChange={value => {
+							onAssignToChange(idx, value);
+						}}
 						suffixIcon={<CaretDownOutlined />}
 						placeholder={'선택'}
 						style={{ width: 130 }}

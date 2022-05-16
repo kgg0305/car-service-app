@@ -7,7 +7,7 @@ import { GetGroupOptionListAPI } from '../../../api/Group';
 import SearchPanel from '../../../components/SearchPanel';
 import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
-import { GetQuotationCountAPI } from '../../../api/Quotation';
+import { DownloadQuotationFileAPI, GetQuotationCountAPI } from '../../../api/Quotation';
 
 // 목록페지
 function List() {
@@ -208,7 +208,7 @@ function List() {
 		topItems: [
 			{
 				type: Constants.inputTypes.button,
-				link: '#',
+				onClick: DownloadQuotationFileAPI,
 				label: '엑셀로 내려받기',
 				style: 'black-button big-button',
 				width: 150

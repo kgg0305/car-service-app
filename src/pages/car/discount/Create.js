@@ -225,8 +225,9 @@ function Create() {
                                             value={body.brand_id} 
                                             onChange={value => {
                                                 onChangeComponent(body.number, 'brand_id', value);
-                                            }}
-                                            suffixIcon={<CaretDownOutlined />}
+                                            }} 
+                                            size='large' 
+                                            suffixIcon={<CaretDownOutlined />} 
                                             placeholder="브랜드 선택"
                                             style={{ width: 300 }}
                                         >
@@ -279,6 +280,7 @@ function Create() {
                                             <Space>
                                                 <Select
                                                     value={body.brand_id}
+                                                    size='large' 
                                                     suffixIcon={<CaretDownOutlined />}
                                                     placeholder="브랜드 선택"
                                                     style={{ width: 300 }}
@@ -295,7 +297,8 @@ function Create() {
                                                 <Input 
                                                     value={kindBody.kind_name}
                                                     placeholder="할인 종류 이름" style={{ width: 300 }} 
-                                                    disabled={true}
+                                                    size='large' 
+                                                    maxLength={18} disabled={true}
                                                 />
                                             </Space>
                                         </Col>
@@ -337,6 +340,7 @@ function Create() {
                                         onChange={e => {
                                             onChangeKindComponent(body.number, kindBody.number, e.target.name, e.target.value);
                                         }} 
+                                        size='large'
                                         placeholder="할인 종류 이름" 
                                         maxLength={18} style={{ width: 300 }} 
                                     />
@@ -346,7 +350,8 @@ function Create() {
                                         onChange={e => {
                                             onChangeKindComponent(body.number, kindBody.number, e.target.name, e.target.value);
                                         }} 
-                                        placeholder="세부 내용 입력"
+                                        size='large'
+                                        placeholder="세부 내용 입력" 
                                         maxLength={50} style={{ width: 900 }} 
                                     />
                                 </Space>
@@ -356,12 +361,12 @@ function Create() {
                                     <>
                                         {
                                             body.kindBodyList.length != 1 
-                                            ? <Button className='white-button' onClick={() => onDeleteKindComponentClick(body.number, kindBody.number)}>삭제</Button> 
+                                            ? <Button className='white-button' onClick={() => onDeleteKindComponentClick(body.number, kindBody.number)} size='large'>삭제</Button> 
                                             : ''
                                         }
-                                        <Button className='black-button' onClick={() => onAddKindComponentClick(body.number)}>추가</Button>
+                                        <Button className='black-button' onClick={() => onAddKindComponentClick(body.number)} size='large'>추가</Button>
                                     </>
-                                    : <Button className='white-button' onClick={() => onDeleteKindComponentClick(body.number, kindBody.number)}>삭제</Button>
+                                    : <Button className='white-button' onClick={() => onDeleteKindComponentClick(body.number, kindBody.number)} size='large'>삭제</Button>
                                 }
                             </Space>
                         </Col>
@@ -378,6 +383,7 @@ function Create() {
                                     onChange={value => {
                                         onChangeKindComponent(body.number, kindBody.number, 's_date', value.toString());
                                     }}
+                                    size='large'
                                     placeholder='시작일' 
                                 />
                                 <label>~</label>
@@ -387,6 +393,7 @@ function Create() {
                                     onChange={value => {
                                         onChangeKindComponent(body.number, kindBody.number, 'e_date', value.toString());
                                     }}
+                                    size='large'
                                     placeholder='종료일' 
                                 />
                             </Space>
@@ -412,7 +419,8 @@ function Create() {
                                     value={conditionBody.condition_name} 
                                     onChange={e => {
                                         onChangeConditionComponent(bodyNumber, kindBody.number, conditionBody.number, e.target.name, e.target.value);
-                                    }} 
+                                    }}  
+                                    size='large' 
                                     placeholder="할인조건 입력" style={{ width: 400 }} 
                                 />
                                 <Input 
@@ -420,7 +428,8 @@ function Create() {
                                     value={conditionBody.discount_price} 
                                     onChange={e => {
                                         onChangeConditionComponent(bodyNumber, kindBody.number, conditionBody.number, e.target.name, e.target.value);
-                                    }} 
+                                    }}  
+                                    size='large' 
                                     addonAfter={
                                         <Select
                                             name='price_unit' 
@@ -462,9 +471,9 @@ function Create() {
                         <Col>
                             <Space size={10}>
                                 <Link to="/car/discount">
-                                    <Button className='white-button medium-button'>취소</Button>
+                                    <Button className='white-button' size='large'>취소</Button>
                                 </Link>
-                                <Button className='black-button medium-button' onClick={onSaveClick}>저장하고 나가기</Button>
+                                <Button className='black-button' size='large' onClick={onSaveClick}>저장하고 나가기</Button>
                             </Space>
                         </Col>
                     </Row>

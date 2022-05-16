@@ -1,18 +1,19 @@
 import axios from 'axios';
 
-export async function CheckUserNameAPI(brandName) {
+export async function LoginUser(body) {
     try {
-        const response = await axios.post(process.env.REACT_APP_API_URL + '/user/check-name', {
-            brand_name: brandName
+        const response = await axios.post(process.env.REACT_APP_API_URL + '/auth/login', {
+            user_id: body.user_id,
+            password: body.password,
         });
     
-        return response.data.exist;
+        return response.data;
     } catch (e) {
         return e;
     }
 }
 
-export async function CreateUserAPI(bodyList) {
+export async function CreateAuthAPI(bodyList) {
     
     var data = [];
 
@@ -33,7 +34,7 @@ export async function CreateUserAPI(bodyList) {
     }
 
     try {
-        const response = await axios.post(process.env.REACT_APP_API_URL + '/user', data);
+        const response = await axios.post(process.env.REACT_APP_API_URL + '/auth', data);
     
         return response.data;
     } catch (e) {
@@ -41,7 +42,7 @@ export async function CreateUserAPI(bodyList) {
     }
 }
 
-export async function UpdateUserAPI(body) {
+export async function UpdateAuthAPI(body) {
 
     var data = 
     {
@@ -55,7 +56,7 @@ export async function UpdateUserAPI(body) {
     };
     
     try {
-        const response = await axios.put(process.env.REACT_APP_API_URL + '/user/' + body.idx, data);
+        const response = await axios.put(process.env.REACT_APP_API_URL + '/auth/' + body.idx, data);
     
         return response.data;
     } catch (e) {
@@ -63,9 +64,9 @@ export async function UpdateUserAPI(body) {
     }
 }
 
-export async function GetUserListAPI(offset, search) {
+export async function GetAuthListAPI(offset, search) {
     try {
-        const response = await axios.post(process.env.REACT_APP_API_URL + '/user/list/' + offset, search);
+        const response = await axios.post(process.env.REACT_APP_API_URL + '/auth/list/' + offset, search);
         
         return response.data;
     } catch (e) {
@@ -73,9 +74,9 @@ export async function GetUserListAPI(offset, search) {
     }
 }
 
-export async function GetUserOptionListAPI(offset, search) {
+export async function GetAuthOptionListAPI(offset, search) {
     try {
-        const response = await axios.get(process.env.REACT_APP_API_URL + '/user/option-list');
+        const response = await axios.get(process.env.REACT_APP_API_URL + '/auth/option-list');
         
         return response.data;
     } catch (e) {
@@ -83,9 +84,9 @@ export async function GetUserOptionListAPI(offset, search) {
     }
 }
 
-export async function GetUserInfoAPI(idx) {
+export async function GetAuthInfoAPI(idx) {
     try {
-        const response = await axios.get(process.env.REACT_APP_API_URL + '/user/' + idx);
+        const response = await axios.get(process.env.REACT_APP_API_URL + '/auth/' + idx);
     
         return response.data;
     } catch (e) {
@@ -93,9 +94,9 @@ export async function GetUserInfoAPI(idx) {
     }
 }
 
-export async function DeleteUserInfoAPI(idx) {
+export async function DeleteAuthInfoAPI(idx) {
     try {
-        const response = await axios.delete(process.env.REACT_APP_API_URL + '/user/' + idx);
+        const response = await axios.delete(process.env.REACT_APP_API_URL + '/auth/' + idx);
     
         return response.data;
     } catch (e) {

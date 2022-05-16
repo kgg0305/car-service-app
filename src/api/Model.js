@@ -45,7 +45,7 @@ export async function CreateModelAPI(body) {
 }
 
 export async function UpdateModelAPI(body) {
-    console.log(body)
+
     var data = {
         group_id: body.group_id,
         brand_id: body.brand_id,

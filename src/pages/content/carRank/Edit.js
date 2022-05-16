@@ -1,5 +1,5 @@
 import { Col, Divider, Row, Space, Select, Button, Input } from 'antd';
-import { CaretDownOutlined } from '@ant-design/icons'
+import { CaretDownOutlined, CaretUpFilled, CaretDownFilled } from '@ant-design/icons'
 import { Link, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { GetRankInfoAPI, UpdateRankAPI } from '../../../api/Rank';
@@ -126,11 +126,45 @@ function Edit() {
         }
     };
 
+    const onUpMoveClick = (index) => {
+        if(index > 0) {
+            const current_item = modelBodyList[index];
+            const top_item = modelBodyList[index - 1];
+
+            setModelBodyList(modelBodyList.map((item, itemIndex) => (
+                itemIndex === index ? 
+                top_item : 
+                itemIndex === index - 1 ? 
+                current_item :
+                item
+            )));
+        }
+    };
+
+    const onDownMoveClick = async(index) => {
+        if(index < modelBodyList.length - 1) {
+            const current_item = modelBodyList[index];
+            const bottom_item = modelBodyList[index + 1];
+
+            setModelBodyList(modelBodyList.map((item, itemIndex) => (
+                itemIndex === index ? 
+                bottom_item : 
+                itemIndex === index + 1 ? 
+                current_item :
+                item
+            )));
+        }
+    };
+
     const renderModelBodyList = () => {
         return (
             modelBodyList.map((body, index) => (
                 <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
                     <Col span={2} className='table-header-col-section'>
+                        <Space direction='vertical' style={{ paddingLeft: '10px' }}>
+                            <CaretUpFilled style={{ fontSize: '30px', cursor: 'pointer' }} onClick={() => onUpMoveClick(index)} />
+                            <CaretDownFilled style={{ fontSize: '30px', cursor: 'pointer' }}  onClick={() => onDownMoveClick(index)} />
+                        </Space>
                         <label>순서 { body.number !== 10 ? '0' + body.number : body.number }</label>
                     </Col>
                     <Col flex="auto" className='table-value-col-section'>
@@ -140,8 +174,9 @@ function Edit() {
                                 value={body.brand_id} 
                                 onChange={value => {
                                     onChangeModelComponent(body.number, 'brand_id', value);
-                                }}
-                                suffixIcon={<CaretDownOutlined />}
+                                }} 
+                                size='large' 
+                                suffixIcon={<CaretDownOutlined />} 
                                 placeholder="브랜드 선택"
                                 style={{ width: 300 }}
                             >
@@ -158,8 +193,9 @@ function Edit() {
                                 value={body.group_id} 
                                 onChange={value => {
                                     onChangeModelComponent(body.number, 'group_id', value);
-                                }}
-                                suffixIcon={<CaretDownOutlined />}
+                                }} 
+                                size='large' 
+                                suffixIcon={<CaretDownOutlined />} 
                                 placeholder="모델그룹 선택"
                                 style={{ width: 300 }}
                             >
@@ -176,8 +212,9 @@ function Edit() {
                                 value={body.idx} 
                                 onChange={value => {
                                     onChangeModelComponent(body.number, 'idx', value);
-                                }}
-                                suffixIcon={<CaretDownOutlined />}
+                                }} 
+                                size='large' 
+                                suffixIcon={<CaretDownOutlined />} 
                                 placeholder="모델 선택"
                                 style={{ width: 300 }}
                             >
@@ -200,12 +237,12 @@ function Edit() {
                                 <>
                                     {
                                         modelBodyList.length != 1 
-                                        ? <Button className='white-button' onClick={() => onDeleteModelComponentClick(body.number)}>삭제</Button> 
+                                        ? <Button className='white-button' onClick={() => onDeleteModelComponentClick(body.number)} size='large'>삭제</Button> 
                                         : ''
                                     }
-                                    <Button className='black-button' onClick={() => onAddModelComponentClick(body.number)}>추가</Button>
+                                    <Button className='black-button' onClick={() => onAddModelComponentClick(body.number)} size='large'>추가</Button>
                                 </>
-                                : <Button className='white-button' onClick={() => onDeleteModelComponentClick(body.number)}>삭제</Button>
+                                : <Button className='white-button' onClick={() => onDeleteModelComponentClick(body.number)} size='large'>삭제</Button>
                             }
                         </Space>
                     </Col>
@@ -227,9 +264,9 @@ function Edit() {
                         <Col>
                             <Space size={10}>
                                 <Link to="/content/carRank">
-                                    <Button className='white-button medium-button'>취소</Button>
+                                    <Button className='white-button' size='large'>취소</Button>
                                 </Link>
-                                <Button className='black-button medium-button' onClick={onSaveClick}>저장하고 나가기</Button>
+                                <Button className='black-button' size='large' onClick={onSaveClick}>저장하고 나가기</Button>
                             </Space>
                         </Col>
                     </Row>

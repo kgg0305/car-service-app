@@ -12,7 +12,7 @@ function AlertDeleteModal({ visible, onConfirmClick, onCancelClick }) {
             visible={visible}
             footer={[
                 <Space size={150}>
-                    <Button className='alert-button' onClick={onConfirmClick}>확인</Button>
+                    <Button className='alert-button' onClick={onConfirmClick} size='large'>확인</Button>
                     <Button className='alert-button' onClick={onCancelClick}>취소</Button>
                 </Space>
             ]}

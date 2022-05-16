@@ -73,7 +73,7 @@ function Edit() {
                         <label>사진 { (index + 1) !== 10 ? '0' + (index + 1) : (index + 1) }</label>
                         <Image src={ window.location.origin + '/uploads/brand/' + body.picture } width={150} height={150} />
                         <Upload>
-                            <Button className='black-button'>등록</Button>
+                            <Button className='black-button' size='large'>등록</Button>
                         </Upload>
                     </Space>
                 </Col>
@@ -94,9 +94,9 @@ function Edit() {
                         <Col>
                             <Space size={10}>
                                 <Link to="/car/brand">
-                                    <Button className='white-button medium-button'>취소</Button>
+                                    <Button className='white-button' size='large'>취소</Button>
                                 </Link>
-                                <Button className='black-button medium-button'>저장하고 나가기</Button>
+                                <Button className='black-button' size='large'>저장하고 나가기</Button>
                             </Space>
                         </Col>
                     </Row>

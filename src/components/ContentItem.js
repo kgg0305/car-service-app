@@ -46,7 +46,9 @@ function ContentItem({ item, key, value, onChange}) {
                 );
             } else {
                 return (
-                    <Button key={key} 
+                    <Button 
+                        key={key} 
+                        onClick={() => item.onClick()}
                         size='large'
                         className={ item.style }
                     >
@@ -60,7 +62,7 @@ function ContentItem({ item, key, value, onChange}) {
 
         case Constants.inputTypes.upload:
             return (
-                <Upload>
+                <Upload action={item.action} accept={item.accept} showUploadList={false}>
                     <Button key={key} 
                         size='large'
                         className={ item.style }

@@ -6,6 +6,7 @@ import { CreateRecommendationAPI } from '../../../api/Recommendation';
 import { GetContentInfoAPI } from '../../../api/Content';
 import AlertModal from '../../../components/AlertModal';
 import { GetDateStringFromDate } from '../../../constants/GlobalFunctions';
+import { CaretUpFilled, CaretDownFilled } from '@ant-design/icons';
 
 const { Option } = Select;
 
@@ -125,11 +126,45 @@ function Create() {
         }
     };
 
+    const onUpMoveClick = (index) => {
+        if(index > 0) {
+            const current_item = contentBodyList[index];
+            const top_item = contentBodyList[index - 1];
+
+            setContentBodyList(contentBodyList.map((item, itemIndex) => (
+                itemIndex === index ? 
+                top_item : 
+                itemIndex === index - 1 ? 
+                current_item :
+                item
+            )));
+        }
+    };
+
+    const onDownMoveClick = async(index) => {
+        if(index < contentBodyList.length - 1) {
+            const current_item = contentBodyList[index];
+            const bottom_item = contentBodyList[index + 1];
+
+            setContentBodyList(contentBodyList.map((item, itemIndex) => (
+                itemIndex === index ? 
+                bottom_item : 
+                itemIndex === index + 1 ? 
+                current_item :
+                item
+            )));
+        }
+    };
+
     const renderContentBodyList = () => {
         return (
             contentBodyList.map((body, index) => (
                 <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
                     <Col span={2} className='table-header-col-section'>
+                        <Space direction='vertical' style={{ paddingLeft: '10px' }}>
+                            <CaretUpFilled style={{ fontSize: '30px', cursor: 'pointer' }} onClick={() => onUpMoveClick(index)} />
+                            <CaretDownFilled style={{ fontSize: '30px', cursor: 'pointer' }}  onClick={() => onDownMoveClick(index)} />
+                        </Space>
                         <label>순서 { body.number !== 10 ? '0' + body.number : body.number }</label>
                     </Col>
                     <Col flex="auto" className='table-value-col-section'>
@@ -139,17 +174,19 @@ function Create() {
                                 value={body.idx} 
                                 onChange={number => {
                                     onChangeContentComponent(body.number, 'idx', number);
-                                }}
-                                controls={false}
-                                placeholder='콘텐츠 번호 또는 줌 자동차 뉴스의 URL 입력'
-                                style={{ width:500 }} 
+                                }} 
+                                size='large' 
+                                controls={false} 
+                                placeholder='콘텐츠 번호 또는 줌 자동차 뉴스의 URL 입력' 
+                                style={{ width:500 }}
                             />
                             <Input 
                                 name='title' 
-                                value={body.title} 
-                                readOnly={true}
-                                placeholder='콘텐츠 번호 또는 줌 자동차 뉴스의 URL 입력'
-                                style={{ width:500 }} 
+                                value={body.title}  
+                                size='large' 
+                                readOnly={true} 
+                                placeholder='콘텐츠 번호 또는 줌 자동차 뉴스의 URL 입력' 
+                                style={{ width:500 }}
                             />
                         </Space>
                     </Col>
@@ -162,12 +199,12 @@ function Create() {
                                 <>
                                     {
                                         contentBodyList.length != 1 
-                                        ? <Button className='white-button' onClick={() => onDeleteContentComponentClick(body.number)}>삭제</Button> 
+                                        ? <Button className='white-button' onClick={() => onDeleteContentComponentClick(body.number)} size='large'>삭제</Button> 
                                         : ''
                                     }
-                                    <Button className='black-button' onClick={() => onAddContentComponentClick(body.number)}>추가</Button>
+                                    <Button className='black-button' onClick={() => onAddContentComponentClick(body.number)} size='large'>추가</Button>
                                 </>
-                                : <Button className='white-button' onClick={() => onDeleteContentComponentClick(body.number)}>삭제</Button>
+                                : <Button className='white-button' onClick={() => onDeleteContentComponentClick(body.number)} size='large'>삭제</Button>
                             }
                         </Space>
                     </Col>
@@ -189,9 +226,9 @@ function Create() {
                         <Col>
                             <Space size={10}>
                                 <Link to="/content/recommendation">
-                                    <Button className='white-button medium-button'>취소</Button>
+                                    <Button className='white-button' size='large'>취소</Button>
                                 </Link>
-                                <Button className='black-button medium-button' onClick={onSaveClick}>저장하고 나가기</Button>
+                                <Button className='black-button' size='large' onClick={onSaveClick}>저장하고 나가기</Button>
                             </Space>
                         </Col>
                     </Row>

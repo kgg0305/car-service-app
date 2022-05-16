@@ -6,7 +6,7 @@ import { GetGroupOptionListAPI } from '../../../api/Group';
 import { GetModelListAPI } from '../../../api/Model';
 import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
-import { GetDateFullTimeStringUsingKorFromDate, GetDateTimeStringFromDate } from '../../../constants/GlobalFunctions';
+import { GetDateFullTimeStringUsingKorFromDate } from '../../../constants/GlobalFunctions';
 import { CaretDownOutlined } from '@ant-design/icons'
 
 // 목록페지
@@ -98,7 +98,7 @@ function List() {
                 <Row justify='center'>
                     <Col>
                         <Space size={15} split={<Divider type="vertical" />}>
-                            <Link to="/car/lineup">
+                            <Link to={"/car/lineup/manage/" + idx}>
                                 <Button className='white-button small-button rounded-button'>라인업관리</Button>
                             </Link>
                             <Link to={"/car/model/edit/" + idx}>
