@@ -241,7 +241,10 @@ function Edit() {
                 }
             ));
             
-            await CreateTrimSpecificationAPI(tempSpecificationBodyList);
+            if(tempSpecificationBodyList.length > 0) {
+                await CreateTrimSpecificationAPI(tempSpecificationBodyList);
+            }
+            
             navigate(url);
         }
     };

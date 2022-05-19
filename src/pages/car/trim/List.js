@@ -1,48 +1,35 @@
 import { Col, Divider, Row, Space, Button, Select } from 'antd';
 import { Link } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
-import { GetBrandOptionListAPI } from '../../../api/Brand';
-import { GetGroupOptionListAPI } from '../../../api/Group';
-import { GetModelOptionListAPI } from '../../../api/Model';
-import { GetLineupOptionListAPI } from '../../../api/Lineup';
+import React, { useEffect } from 'react';
 import { GetTrimListAPI } from '../../../api/Trim';
 import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
 import { CaretDownOutlined } from '@ant-design/icons'
+import { useDispatch, useSelector } from 'react-redux';
+import { init, reset, search, setSearch, showMore } from '../../../store/reducers/car/trim/list';
 
 // 목록페지
 function List() {
-	const [offset, setOffset] = useState(0);
-	const [brandOptionList, setBrandOptionList] = useState([]);
-	const [groupOptionList, setGroupOptionList] = useState([]);
-	const [modelOptionList, setModelOptionList] = useState([]);
-	const [lineupOptionList, setLineupOptionList] = useState([]);
-	const [dataSource, setDataSource] = useState();
-	const [searchData, setSearchData] = useState({
-		brand_id: null,
-		group_id: null,
-		model_id: null,
-		lineup_id: null,
-		is_use: null
-	});
-	
-	const initComponent = async () => {
-		const initDataSource = await GetTrimListAPI(offset);
-		const initBrandOptionList = await GetBrandOptionListAPI();
-		const initGroupOptionList = await GetGroupOptionListAPI();
-		const initModelOptionList = await GetModelOptionListAPI();
-		const initLineupOptionList = await GetLineupOptionListAPI();
-		
-		setDataSource(initDataSource);
-		setBrandOptionList(initBrandOptionList);
-		setGroupOptionList(initGroupOptionList);
-		setModelOptionList(initModelOptionList);
-		setLineupOptionList(initLineupOptionList);
-	};
+	const { offset, brandOptionList, groupOptionList, modelOptionList, lineupOptionList, dataSource, searchData } = useSelector(state => ({
+        offset: state.trimList.offset,
+        brandOptionList: state.trimList.brandOptionList,
+		groupOptionList: state.trimList.groupOptionList,
+		modelOptionList: state.trimList.modelOptionList,
+		lineupOptionList: state.trimList.lineupOptionList,
+        dataSource: state.trimList.dataSource,
+        searchData: state.trimList.searchData,
+    }));
+
+    const dispatch = useDispatch();
 
 	useEffect(() => {
-		initComponent();
-	}, []);
+		dispatch(init());
+	}, [dispatch]);
+
+	const onClickTableMore = () => dispatch(showMore(offset + 10));
+	const onClickSearch = () => dispatch(search(searchData));
+	const onClickReset = () => dispatch(reset());
+	const onChangeSearchComponent = (name, value) => dispatch(setSearch(name, value));
 
 	const columns = [
 		{
@@ -116,59 +103,6 @@ function List() {
 		],
 		tableData: dataSource,
 		tableColumns: columns
-	};
-
-	const onClickTableMore = async() => {
-		const initDataSource = await GetTrimListAPI(offset + 10, searchData);
-		setOffset(offset + initDataSource.length);
-		
-		setDataSource([
-			...dataSource,
-			...initDataSource
-		]);
-	};
-
-	const onChangeSearchComponent = (name, value) => {
-		setSearchData(
-            { 
-                ...searchData,
-                group_id: name == 'brand_id' ? null : searchData.group_id,
-                model_id: (name == 'brand_id' || name == 'group_id') ? null : searchData.model_id,
-                lineup_id: (name == 'brand_id' || name == 'group_id' || name == 'model_id') ? null : searchData.lineup_id,
-                [name]: value
-            }
-        );
-	};
-
-	const onClickReset = () => {
-		setSearchData(
-			{
-				brand_id: null,
-				group_id: null,
-				model_id: null,
-				lineup_id: null,
-				is_use: null
-			}
-		);
-
-		onClickSearch(
-			{
-				brand_id: null,
-				group_id: null,
-				model_id: null,
-				lineup_id: null,
-				is_use: null
-			}
-		);
-	};
-
-	const onClickSearch = async(searchData) => {
-		const initDataSource = await GetTrimListAPI(0, searchData);
-		setOffset(0);
-
-		setDataSource([
-			...initDataSource
-		]);
 	};
 
     return(

@@ -1,38 +1,20 @@
 import { Space, Input, Button, Form } from 'antd';
-import PropTypes from 'prop-types';
-import { useState } from 'react';
-import { LoginUser } from '../../api/Auth';
+import { useSelector, useDispatch } from 'react-redux';
 import styles from '../../assets/styles/pages/auth/Auth.module.css';
+import { login, setForm } from '../../store/reducers/auth';
 
-function Login({ setToken }) {
-    const [showUserIDAlert, setShowUserIDAlert] = useState(false);
-    const [showPasswordAlert, setShowPasswordAlert] = useState(false);
-    const [username, setUserName] = useState();
-    const [password, setPassword] = useState();
+function Login() {
+    const { validation_user_id, validation_password, form_user_id, form_password } = useSelector(state => ({
+        validation_user_id: state.auth.validation.user_id,
+        validation_password: state.auth.validation.password,
+        form_user_id: state.auth.form.user_id,
+        form_password: state.auth.form.password,
+    }));
 
-    const handleSubmit = async() => {
-        const result = await LoginUser({
-            user_id: username,
-            password: password
-        });
+    const dispatch = useDispatch();
 
-        setShowUserIDAlert(false);
-        setShowPasswordAlert(false);
-
-        switch (result.status) {
-            case 'successful':
-                setToken(result.token);
-                break;
-            case 'no-user':
-                setShowUserIDAlert(true);
-                break;
-            case 'no-password':
-                setShowPasswordAlert(true);
-                break;
-            default:
-                break;
-        }
-    }
+    const handleSubmit = () => dispatch(login(form_user_id, form_password));
+    const onFormChange = (name, value) => dispatch(setForm({name:name, value:value}));
 
     return (
         <div className={styles.bodyPanel}>
@@ -42,13 +24,13 @@ function Login({ setToken }) {
                     <Space direction='vertical' align='center' size={30}>
                         <Space direction='vertical' size={5}>
                             <label className={styles.fieldLabel}>사용자 아이디</label>
-                            <Input onChange={e => setUserName(e.target.value)} size='large' style={{ width: 300 }} />
-                            <label hidden={!showUserIDAlert} className={styles.validationLabel }>등록되지 않은 아이디입니다.</label>
+                            <Input name='user_id' value={form_user_id} onChange={e => onFormChange(e.target.name, e.target.value)} size='large' style={{ width: 300 }} />
+                            <label hidden={!validation_user_id} className={styles.validationLabel }>등록되지 않은 아이디입니다.</label>
                         </Space>
                         <Space direction='vertical' size={5}>
                             <label className={styles.fieldLabel}>비밀번호</label>
-                            <Input.Password onChange={e => setPassword(e.target.value)} size='large' style={{ width: 300 }} />
-                            <label hidden={!showPasswordAlert} className={styles.validationLabel }>잘못된 비밀번호입니다.</label>
+                            <Input.Password name='password' value={form_password} onChange={e => onFormChange(e.target.name, e.target.value)} size='large' style={{ width: 300 }} />
+                            <label hidden={!validation_password} className={styles.validationLabel }>잘못된 비밀번호입니다.</label>
                         </Space>
                         <Button htmlType='submit' className={styles.submitButton} size='large' style={{width: 300}}>로그인</Button>
                     </Space>
@@ -57,10 +39,6 @@ function Login({ setToken }) {
             </Space>
         </div>
     );
-}
-
-Login.propTypes = {
-    setToken: PropTypes.func.isRequired
 }
 
 export default Login;

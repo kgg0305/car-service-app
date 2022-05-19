@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import useToken from './data/useToken';
+import { useSelector } from 'react-redux';
 import Main from './layouts/Main';
 import AuthMain from './layouts/AuthMain';
 // Auth
@@ -86,12 +86,14 @@ import ContentMovieRankEdit from './pages/content/movieRank/Edit';
 import ContentMediaList from './pages/content/media/List';
 
 function App() {
-	const { token, setToken } = useToken();
+	const { token } = useSelector(state => ({
+        token: state.auth.token
+    }));
 
 	if(!token) {
 		return (
 			<AuthMain>
-				<Login setToken={setToken} />
+				<Login />
 			</AuthMain>
 		);
 	}

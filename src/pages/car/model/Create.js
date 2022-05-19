@@ -2,18 +2,12 @@ import { Col, Divider, Row, Space, Select, Button, Input, Image, Upload, Tabs, D
 import { CaretDownOutlined } from '@ant-design/icons'
 import { Link, useNavigate } from 'react-router-dom';
 import moment from 'moment';
-import React, { useState, useEffect } from 'react';
-import { GetBrandOptionListAPI } from '../../../api/Brand';
-import { GetGroupOptionListAPI } from '../../../api/Group';
-import { CreateModelAPI, CheckModelNameAPI } from '../../../api/Model';
-import preview_default_image from '../../../assets/images/preview-default-image.png';
+import React, { useEffect } from 'react';
 import { Constants } from '../../../constants/Constants';
-import { CreateModelLineupAPI } from '../../../api/ModelLinup';
-import { CreateModelColorAPI } from '../../../api/ModelColor';
-import { CreateModelTrimAPI } from '../../../api/ModelTrim';
 import AlertModal from '../../../components/AlertModal';
-import { GetDiscountKindListAPI } from '../../../api/DiscountKind';
-import { GetDiscountConditionListAPI } from '../../../api/DiscountCondition';
+import { useDispatch, useSelector } from 'react-redux';
+import { init, save, setBody, closeValidation, checkName, removeRedirectTo, addLineupBody, deleteLineupBody, setLineupBody, addColorBody, deleteColorBody, setColorBody, addTrimBody, deleteTrimBody, setTrimBody, setDiscountBody, preveiew } from '../../../store/reducers/car/model/create';
+import { GetDateStringFromDate } from '../../../constants/GlobalFunctions';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -21,384 +15,45 @@ const { TabPane } = Tabs;
 // 등록페지
 function Create() {
     let navigate = useNavigate();
-    const [showModal, setShowModal] = useState(false);
-    const [validationList, setValidationList] = useState([]);
-    const [brandOptionList, setBrandOptionList] = useState([]);
-	const [groupOptionList, setGroupOptionList] = useState([]);
-    const [bodyInfo, setBodyInfo] = useState(
-        {
-            title: '정보 ',
-            brand_id: null,
-            group_id: null,
-            is_new: null,
-            model_name: '',
-            release_date: new Date(),
-            sequence: 1,
-            is_use: '0',
-            discount_condition_ids: '',
-            picture_1: '',
-            picture_2: '',
-            picture_3: '',
-            picture_4: '',
-            picture_5: '',
-            picture_6: '',
-            picture_7: '',
-            picture_8: '',
-            preview_1: preview_default_image,
-            preview_2: preview_default_image,
-            preview_3: preview_default_image,
-            preview_4: preview_default_image,
-            preview_5: preview_default_image,
-            preview_6: preview_default_image,
-            preview_7: preview_default_image,
-            preview_8: preview_default_image,
-            created_date: new Date(),
-            check_name: ''
+
+    const { redirectTo, validation, brandOptionList, groupOptionList, bodyInfo, lineupBodyList, colorBodyList, trimBodyList, discountBodyList } = useSelector(state => ({
+        redirectTo: state.modelCreate.redirectTo,
+        validation: state.modelCreate.validation,
+        brandOptionList: state.modelCreate.brandOptionList,
+        groupOptionList: state.modelCreate.groupOptionList,
+        bodyInfo: state.modelCreate.bodyInfo,
+        lineupBodyList: state.modelCreate.lineupBodyList,
+        colorBodyList: state.modelCreate.colorBodyList,
+        trimBodyList: state.modelCreate.trimBodyList,
+        discountBodyList: state.modelCreate.discountBodyList
+    }));
+
+    const dispatch = useDispatch();
+
+	useEffect(() => {
+        if(redirectTo) {
+            const redirectURL = redirectTo;
+            dispatch(removeRedirectTo());
+            navigate(redirectURL);
         }
-    );
-    const [lineupBodyList, setLineupBodyList] = useState([
-        {
-            number: 1,
-            model_id: null,
-            name: '',
-            price: 0,
-            detail: ''
-        }
-    ]);
-    const [colorBodyList, setColorBodyList] = useState([
-        {
-            number: 1,
-            model_id: null,
-            name: '',
-            price: 0
-        }
-    ]);
-    const [trimBodyList, setTrimBodyList] = useState([
-        {
-            number: 1,
-            model_id: null,
-            name: '',
-            price: 0,
-            detail: ''
-        }
-    ]);
-    const [discountBodyList, setDiscountBodyList] = useState([]);
+		dispatch(init());
+	}, [redirectTo, dispatch]);
 
-    const initComponent = async () => {
-		const initBrandOptionList = await GetBrandOptionListAPI();
-		const initGroupOptionList = await GetGroupOptionListAPI();
-        
-		setBrandOptionList(initBrandOptionList);
-		setGroupOptionList(initGroupOptionList);
-	};
-
-    useEffect(() => {
-		initComponent();
-	}, []);
-
-    async function checkName(name) {
-        const result = await CheckModelNameAPI(name);
-        onChangeComponent('check_name', result ? 'exist' : 'not-exist');
-    }
-
-    function getBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
-        });
-    }
-
-    const previewChange = async (name, file) => {
-
-        if (!file.url && !file.preview) {
-            file.preview = await getBase64(file.originFileObj);
-        }
-
-        setBodyInfo(
-            { 
-                ...bodyInfo,
-                [name]: file.preview
-            }
-        );
-    };
-
-    const onAddLineupComponentClick = event => {
-        setLineupBodyList([...lineupBodyList, {
-            number: lineupBodyList[lineupBodyList.length - 1].number + 1,
-            model_id: null,
-            name: '',
-            price: 0,
-            detail: ''
-        }]);
-    };
-
-    const onDeleteLineupComponentClick = (number) => {
-        if(lineupBodyList.length > 1){
-            setLineupBodyList(lineupBodyList.filter((body) => body.number !== number));
-        }
-    };
-
-    const onChangeLineupComponent = (number, name, value) => {
-        setLineupBodyList(lineupBodyList.map(body => body.number === number ? {...body, [name]: value} : body));
-    }
-
-    const onAddColorComponentClick = event => {
-        setColorBodyList([...colorBodyList, {
-            number: colorBodyList[colorBodyList.length - 1].number + 1,
-            model_id: null,
-            name: '',
-            price: 0,
-            detail: ''
-        }]);
-    };
-
-    const onDeleteColorComponentClick = (number) => {
-        if(colorBodyList.length > 1){
-            setColorBodyList(colorBodyList.filter((body) => body.number !== number));
-        }
-    };
-
-    const onChangeColorComponent = (number, name, value) => {
-        setColorBodyList(colorBodyList.map(body => body.number === number ? {...body, [name]: value} : body));
-    }
-
-    const onAddTrimComponentClick = event => {
-        setTrimBodyList([...trimBodyList, {
-            number: trimBodyList[trimBodyList.length - 1].number + 1,
-            model_id: null,
-            name: '',
-            price: 0,
-            detail: ''
-        }]);
-    };
-
-    const onDeleteTrimComponentClick = (number) => {
-        if(trimBodyList.length > 1){
-            setTrimBodyList(trimBodyList.filter((body) => body.number !== number));
-        }
-    };
-
-    const onChangeTrimComponent = (number, name, value) => {
-        setTrimBodyList(trimBodyList.map(body => body.number === number ? {...body, [name]: value} : body));
-    }
-
-    const onChangeDiscountComponent = (kind_id, condition_id, name, value) => {
-        setDiscountBodyList(
-            discountBodyList.map(kindBody => (
-                kindBody.idx === kind_id ? 
-                {
-                    ...kindBody, 
-                    discount_condition_list: kindBody.discount_condition_list.map(conditionBody => (
-                        conditionBody.idx === condition_id ?
-                        {
-                            ...conditionBody,
-                            [name]: value
-                        }
-                        : conditionBody
-                    ))
-                } 
-                : kindBody
-            ))
-        );
-    }
-
-    const onChangeComponent = async(name, value) => {
-        setBodyInfo(
-            { 
-                ...bodyInfo,
-                group_id: name == 'brand_id' ? null : bodyInfo.group_id,
-                [name]: value
-            }
-        );
-        
-        if(name === 'brand_id') {
-            const initDiscountKindList = await GetDiscountKindListAPI(0, {
-                brand_id: value
-            });
-
-            let initDiscountBodyList = [];
-            for (let i = 0; i < initDiscountKindList.length; i++) {
-                const discountInfo = initDiscountKindList[i];
-                const conditionList = await GetDiscountConditionListAPI(0, {
-                    discount_kind_id: discountInfo.idx
-                });
-
-                initDiscountBodyList.push({
-                    ...discountInfo,
-                    discount_condition_list: conditionList.map(conditionBody => (
-                        {
-                            ...conditionBody,
-                            is_use: '0'
-                        }
-                    ))
-                });
-            }
-
-            setDiscountBodyList(initDiscountBodyList);
-        }
-        
-        for(var i = 1; i <= 8; i++) {
-            if(name == 'picture_' + i) {
-                previewChange('preview_' + i, value);
-            }
-        }
-    }
-
-    const onSaveClick = async(url) => {
-        const validation = [];
-        if(bodyInfo.brand_id === null) {
-            validation.push({
-                title: '정보',
-                name: '차량'
-            });
-        }
-        if(bodyInfo.group_id === '') {
-            validation.push({
-                title: '정보',
-                name: '차량'
-            });
-        }
-        if(bodyInfo.model_name === '') {
-            validation.push({
-                title: '정보',
-                name: '모델'
-            });
-        }
-        if(bodyInfo.is_new === null) {
-            validation.push({
-                title: '정보',
-                name: '신차여부'
-            });
-        }
-        if(bodyInfo.release_date === null) {
-            validation.push({
-                title: '정보',
-                name: '출시일'
-            });
-        }
-        if(bodyInfo.sequence === '') {
-            validation.push({
-                title: '정보',
-                name: '순서'
-            });
-        }
-        if(bodyInfo.is_use === null) {
-            validation.push({
-                title: '정보',
-                name: '사용여부'
-            });
-        }
-
-        lineupBodyList.map((body, index) => {
-            if(body.name === '') {
-                validation.push({
-                    title: '공통옵션 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
-                    name: '옵션이름'
-                });
-            }
-            if(body.price === 0) {
-                validation.push({
-                    title: '공통옵션 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
-                    name: '가격'
-                });
-            }
-            if(body.detail === '') {
-                validation.push({
-                    title: '공통옵션 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
-                    name: '세부내용'
-                });
-            }
-        });
-
-        colorBodyList.map((body, index) => {
-            if(body.name === '') {
-                validation.push({
-                    title: '색상 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
-                    name: '색상이름'
-                });
-            }
-            if(body.price === 0) {
-                validation.push({
-                    title: '색상 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
-                    name: '가격'
-                });
-            }
-        });
-
-        trimBodyList.map((body, index) => {
-            if(body.name === '') {
-                validation.push({
-                    title: '옵션 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
-                    name: '옵션이름'
-                });
-            }
-            if(body.price === 0) {
-                validation.push({
-                    title: '옵션 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
-                    name: '가격'
-                });
-            }
-            if(body.detail === '') {
-                validation.push({
-                    title: '옵션 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
-                    name: '세부내용'
-                });
-            }
-        });
-
-        setValidationList(validation);
-
-        if(validation.length > 0) {
-            setShowModal(true);
-        } else {
-            let discount_condition_id_array = [];
-            discountBodyList.map(kindBody => (
-                kindBody.discount_condition_list.filter(conditionBody => conditionBody.is_use === '0').map(conditionBody => (
-                    discount_condition_id_array.push(conditionBody.idx)
-                ))
-            ));
-
-            const created_info = await CreateModelAPI({
-                ...bodyInfo,
-                discount_condition_ids: discount_condition_id_array.join(',')
-            });
-            const model_id = created_info['insertId'];
-
-            //create lineup
-            const tempLineupBodyList = lineupBodyList.map(body => (
-                {
-                    ...body,
-                    model_id: model_id
-                }
-            ));
-            
-            await CreateModelLineupAPI(tempLineupBodyList);
-
-            //create color
-            const tempColorBodyList = colorBodyList.map(body => (
-                {
-                    ...body,
-                    model_id: model_id
-                }
-            ));
-
-            await CreateModelColorAPI(tempColorBodyList);
-
-            //create color
-            const tempTrimBodyList = trimBodyList.map(body => (
-                {
-                    ...body,
-                    model_id: model_id
-                }
-            ));
-
-            await CreateModelTrimAPI(tempTrimBodyList);
-            
-            navigate(url);
-        }
-    };
+    const onCloseValidationClick = () => dispatch(closeValidation());
+    const onCheckNameClick = (name) => dispatch(checkName(name));
+    const onPreviewChange = (number, file) => dispatch(preveiew(number, file));
+    const onChangeComponent = (name, value) => dispatch(setBody(name, value));
+    const onAddLineupComponentClick = () => dispatch(addLineupBody());
+    const onDeleteLineupComponentClick = (number) => dispatch(deleteLineupBody(number));
+    const onChangeLineupComponent = (number, name, value) => dispatch(setLineupBody(number, name, value));
+    const onAddColorComponentClick = () => dispatch(addColorBody());
+    const onDeleteColorComponentClick = (number) => dispatch(deleteColorBody(number));
+    const onChangeColorComponent = (number, name, value) => dispatch(setColorBody(number, name, value));
+    const onAddTrimComponentClick = () => dispatch(addTrimBody());
+    const onDeleteTrimComponentClick = (number) => dispatch(deleteTrimBody(number));
+    const onChangeTrimComponent = (number, name, value) => dispatch(setTrimBody(number, name, value));
+    const onChangeDiscountComponent = (kind_id, condition_id, name, value) => dispatch(setDiscountBody(kind_id, condition_id, name, value));
+    const onSaveClick = (url) => dispatch(save(url, bodyInfo, lineupBodyList, colorBodyList, trimBodyList, discountBodyList));
 
     const renderLineupBodyList = () => {
         return (
@@ -779,7 +434,7 @@ function Create() {
                                                             : ''
                                                         }
                                                     </div>
-                                                    <Button className='black-button' onClick={() => checkName(bodyInfo.model_name)} size='large'>확인</Button>
+                                                    <Button className='black-button' onClick={() => onCheckNameClick(bodyInfo.model_name)} size='large'>확인</Button>
                                                 </Space>
                                             </Col>
                                         </Row>
@@ -816,7 +471,7 @@ function Create() {
                                                     name='release_date' 
                                                     value={moment(bodyInfo.release_date)} 
                                                     onChange={value => {
-                                                        onChangeComponent('release_date', value.toString());
+                                                        onChangeComponent('release_date', GetDateStringFromDate(new Date(value.toString())));
                                                     }}
                                                     size='large'
                                                 />
@@ -882,17 +537,18 @@ function Create() {
                                                             <label className='picture-header-label'>사진 01 (대표)</label>
                                                             <Space direction='vertical' align='center' size={6}>
                                                                 <Image src={bodyInfo.preview_1} width={150} height={150} />
-                                                                <Upload
+                                                                <Upload 
                                                                     accept='.png'
-                                                                    action='http://127.0.0.1:4200/model/logo'
                                                                     fileList={[bodyInfo.picture_1]}
                                                                     name='picture_1' 
-                                                                    onChange={async info => {
-                                                                        onChangeComponent('picture_1', info.file);
+                                                                    showUploadList={false}
+                                                                    onChange={info => {
+                                                                        onPreviewChange(1, info.file);
                                                                     }}
-                                                                    itemRender={(originNode, file, currFileList) => (
-                                                                        <></>
-                                                                    )}
+                                                                    beforeUpload={file => {
+                                                                        onChangeComponent('picture_1', file);
+                                                                        return true;
+                                                                    }}
                                                                 >
                                                                     <Button className='black-button' size='large'>등록</Button>
                                                                 </Upload>
@@ -902,17 +558,18 @@ function Create() {
                                                             <label className='picture-header-label'>사진 02 (대표)</label>
                                                             <Space direction='vertical' align='center' size={6}>
                                                                 <Image src={bodyInfo.preview_2} width={150} height={150} />
-                                                                <Upload
+                                                                <Upload 
                                                                     accept='.png'
-                                                                    action='http://127.0.0.1:4200/model/logo'
                                                                     fileList={[bodyInfo.picture_2]}
                                                                     name='picture_2' 
-                                                                    onChange={async info => {
-                                                                        onChangeComponent('picture_2', info.file);
+                                                                    showUploadList={false}
+                                                                    onChange={info => {
+                                                                        onPreviewChange(2, info.file);
                                                                     }}
-                                                                    itemRender={(originNode, file, currFileList) => (
-                                                                        <></>
-                                                                    )}
+                                                                    beforeUpload={file => {
+                                                                        onChangeComponent('picture_2', file);
+                                                                        return true;
+                                                                    }}
                                                                 >
                                                                     <Button className='black-button' size='large'>등록</Button>
                                                                 </Upload>
@@ -922,17 +579,18 @@ function Create() {
                                                             <label className='picture-header-label'>사진 03 (대표)</label>
                                                             <Space direction='vertical' align='center' size={6}>
                                                                 <Image src={bodyInfo.preview_3} width={150} height={150} />
-                                                                <Upload
+                                                                <Upload 
                                                                     accept='.png'
-                                                                    action='http://127.0.0.1:4200/model/logo'
                                                                     fileList={[bodyInfo.picture_3]}
                                                                     name='picture_3' 
-                                                                    onChange={async info => {
-                                                                        onChangeComponent('picture_3', info.file);
+                                                                    showUploadList={false}
+                                                                    onChange={info => {
+                                                                        onPreviewChange(3, info.file);
                                                                     }}
-                                                                    itemRender={(originNode, file, currFileList) => (
-                                                                        <></>
-                                                                    )}
+                                                                    beforeUpload={file => {
+                                                                        onChangeComponent('picture_3', file);
+                                                                        return true;
+                                                                    }}
                                                                 >
                                                                     <Button className='black-button' size='large'>등록</Button>
                                                                 </Upload>
@@ -942,17 +600,18 @@ function Create() {
                                                             <label className='picture-header-label'>사진 04 (대표)</label>
                                                             <Space direction='vertical' align='center' size={6}>
                                                                 <Image src={bodyInfo.preview_4} width={150} height={150} />
-                                                                <Upload
+                                                                <Upload 
                                                                     accept='.png'
-                                                                    action='http://127.0.0.1:4200/model/logo'
                                                                     fileList={[bodyInfo.picture_4]}
                                                                     name='picture_4' 
-                                                                    onChange={async info => {
-                                                                        onChangeComponent('picture_4', info.file);
+                                                                    showUploadList={false}
+                                                                    onChange={info => {
+                                                                        onPreviewChange(4, info.file);
                                                                     }}
-                                                                    itemRender={(originNode, file, currFileList) => (
-                                                                        <></>
-                                                                    )}
+                                                                    beforeUpload={file => {
+                                                                        onChangeComponent('picture_4', file);
+                                                                        return true;
+                                                                    }}
                                                                 >
                                                                     <Button className='black-button' size='large'>등록</Button>
                                                                 </Upload>
@@ -962,17 +621,18 @@ function Create() {
                                                             <label className='picture-header-label'>사진 05 (대표)</label>
                                                             <Space direction='vertical' align='center' size={6}>
                                                                 <Image src={bodyInfo.preview_5} width={150} height={150} />
-                                                                <Upload
+                                                                <Upload 
                                                                     accept='.png'
-                                                                    action='http://127.0.0.1:4200/model/logo'
                                                                     fileList={[bodyInfo.picture_5]}
                                                                     name='picture_5' 
-                                                                    onChange={async info => {
-                                                                        onChangeComponent('picture_5', info.file);
+                                                                    showUploadList={false}
+                                                                    onChange={info => {
+                                                                        onPreviewChange(5, info.file);
                                                                     }}
-                                                                    itemRender={(originNode, file, currFileList) => (
-                                                                        <></>
-                                                                    )}
+                                                                    beforeUpload={file => {
+                                                                        onChangeComponent('picture_5', file);
+                                                                        return true;
+                                                                    }}
                                                                 >
                                                                     <Button className='black-button' size='large'>등록</Button>
                                                                 </Upload>
@@ -982,17 +642,18 @@ function Create() {
                                                             <label className='picture-header-label'>사진 06 (대표)</label>
                                                             <Space direction='vertical' align='center' size={6}>
                                                                 <Image src={bodyInfo.preview_6} width={150} height={150} />
-                                                                <Upload
+                                                                <Upload 
                                                                     accept='.png'
-                                                                    action='http://127.0.0.1:4200/model/logo'
                                                                     fileList={[bodyInfo.picture_6]}
                                                                     name='picture_6' 
-                                                                    onChange={async info => {
-                                                                        onChangeComponent('picture_6', info.file);
+                                                                    showUploadList={false}
+                                                                    onChange={info => {
+                                                                        onPreviewChange(6, info.file);
                                                                     }}
-                                                                    itemRender={(originNode, file, currFileList) => (
-                                                                        <></>
-                                                                    )}
+                                                                    beforeUpload={file => {
+                                                                        onChangeComponent('picture_6', file);
+                                                                        return true;
+                                                                    }}
                                                                 >
                                                                     <Button className='black-button' size='large'>등록</Button>
                                                                 </Upload>
@@ -1002,17 +663,18 @@ function Create() {
                                                             <label className='picture-header-label'>사진 07 (대표)</label>
                                                             <Space direction='vertical' align='center' size={6}>
                                                                 <Image src={bodyInfo.preview_7} width={150} height={150} />
-                                                                <Upload
+                                                                <Upload 
                                                                     accept='.png'
-                                                                    action='http://127.0.0.1:4200/model/logo'
                                                                     fileList={[bodyInfo.picture_7]}
                                                                     name='picture_7' 
-                                                                    onChange={async info => {
-                                                                        onChangeComponent('picture_7', info.file);
+                                                                    showUploadList={false}
+                                                                    onChange={info => {
+                                                                        onPreviewChange(7, info.file);
                                                                     }}
-                                                                    itemRender={(originNode, file, currFileList) => (
-                                                                        <></>
-                                                                    )}
+                                                                    beforeUpload={file => {
+                                                                        onChangeComponent('picture_7', file);
+                                                                        return true;
+                                                                    }}
                                                                 >
                                                                     <Button className='black-button' size='large'>등록</Button>
                                                                 </Upload>
@@ -1022,17 +684,18 @@ function Create() {
                                                             <label className='picture-header-label'>사진 08 (대표)</label>
                                                             <Space direction='vertical' align='center' size={6}>
                                                                 <Image src={bodyInfo.preview_8} width={150} height={150} />
-                                                                <Upload
+                                                                <Upload 
                                                                     accept='.png'
-                                                                    action='http://127.0.0.1:4200/model/logo'
                                                                     fileList={[bodyInfo.picture_8]}
                                                                     name='picture_8' 
-                                                                    onChange={async info => {
-                                                                        onChangeComponent('picture_8', info.file);
+                                                                    showUploadList={false}
+                                                                    onChange={info => {
+                                                                        onPreviewChange(8, info.file);
                                                                     }}
-                                                                    itemRender={(originNode, file, currFileList) => (
-                                                                        <></>
-                                                                    )}
+                                                                    beforeUpload={file => {
+                                                                        onChangeComponent('picture_8', file);
+                                                                        return true;
+                                                                    }}
                                                                 >
                                                                     <Button className='black-button' size='large'>등록</Button>
                                                                 </Upload>
@@ -1105,7 +768,7 @@ function Create() {
                     </Tabs>
                 </Space>
             </Space>
-            <AlertModal visible={showModal} onConfirmClick={() => setShowModal(false)} validationList={validationList} />
+            <AlertModal visible={validation.show} onConfirmClick={onCloseValidationClick} validationList={validation.list} />
         </>
     );
 }

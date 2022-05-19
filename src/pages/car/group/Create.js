@@ -1,109 +1,43 @@
 import { Col, Divider, Row, Space, Select, Button, Input } from 'antd';
 import { CaretDownOutlined, PlusOutlined } from '@ant-design/icons'
 import { Link, useNavigate } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
-import { GetBrandOptionListAPI } from '../../../api/Brand';
-import { CheckGroupNameAPI, CreateGroupAPI } from '../../../api/Group';
-import { GetCarKindOptionListAPI } from '../../../api/CarKind';
+import React, { useEffect } from 'react';
 import { Constants } from '../../../constants/Constants';
 import AlertModal from '../../../components/AlertModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { addBody, deleteBody, init, save, setBody, closeValidation, checkName, removeRedirectTo } from '../../../store/reducers/car/group/create';
 
 const { Option } = Select;
 
 // 등록페지
 function Create() {
     let navigate = useNavigate();
-    const [showModal, setShowModal] = useState(false);
-    const [validationList, setValidationList] = useState([]);
-    const [brandOptionList, setBrandOptionList] = useState([]);
-	const [carKindOptionList, setCarKindOptionList] = useState([]);
-    const [showDeleteButton, setShowDeleteButton] = useState(false);
-    const [bodyList, setBodyList] = useState([
-        {
-            number: 1,
-            brand_id: null,
-            group_name: '',
-            car_kind_id: null,
-            is_use: '0',
-            check_name: ''
+
+    const { redirectTo, validation, brandOptionList, carKindOptionList, bodyList } = useSelector(state => ({
+        redirectTo: state.groupCreate.redirectTo,
+        validation: state.groupCreate.validation,
+        brandOptionList: state.groupCreate.brandOptionList,
+        carKindOptionList: state.groupCreate.carKindOptionList,
+        bodyList: state.groupCreate.bodyList
+    }));
+
+    const dispatch = useDispatch();
+
+	useEffect(() => {
+        if(redirectTo) {
+            const redirectURL = redirectTo;
+            dispatch(removeRedirectTo());
+            navigate(redirectURL);
         }
-    ]);
+		dispatch(init());
+	}, [redirectTo, dispatch]);
 
-    const initComponent = async () => {
-		const initBrandOptionList = await GetBrandOptionListAPI();
-		const initCarKindOptionList = await GetCarKindOptionListAPI();
-		
-		setBrandOptionList(initBrandOptionList);
-		setCarKindOptionList(initCarKindOptionList);
-	};
-
-    useEffect(() => {
-		initComponent();
-	}, []);
-
-    async function checkName(number, name) {
-        const result = await CheckGroupNameAPI(name);
-        onChangeComponent(number, 'check_name', result ? 'exist' : 'not-exist');
-    }
-
-    const onAddComponentClick = event => {
-        if(bodyList.length < 10){
-            setShowDeleteButton(true);
-            setBodyList([...bodyList, {
-                number: bodyList[bodyList.length - 1].number + 1,
-                brand_id: null,
-                group_name: '',
-                car_kind_id: null,
-                is_use: '0'
-            }]);
-        }
-    };
-
-    const onDeleteComponentClick = (number) => {
-        if(bodyList.length > 1){
-            if(bodyList.length === 2){
-                setShowDeleteButton(false);
-            }
-            setBodyList(bodyList.filter((body) => body.number !== number));
-        }
-    };
-
-    const onChangeComponent = (number, name, value) => {
-        setBodyList(bodyList.map(body => body.number === number ? {...body, [name]: value} : body));
-    }
-
-    const onSaveClick = async(url) => {
-        const validation = [];
-        bodyList.map((body, index) => {
-            if(body.brand_id === null) {
-                validation.push({
-                    title: '정보 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
-                    name: '브랜드'
-                })
-            }
-            if(body.group_name === '') {
-                validation.push({
-                    title: '정보 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
-                    name: '모델그룹'
-                })
-            }
-            if(body.car_kind_id === null) {
-                validation.push({
-                    title: '정보 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
-                    name: '차종'
-                })
-            }
-        });
-
-        setValidationList(validation);
-
-        if(validation.length > 0) {
-            setShowModal(true);
-        } else {
-            await CreateGroupAPI(bodyList);
-            navigate(url);
-        }
-    };
+    const onCloseValidationClick = () => dispatch(closeValidation());
+    const onCheckNameClick = (number, name) => dispatch(checkName(number, name));
+    const onAddComponentClick = () => dispatch(addBody());
+    const onDeleteComponentClick = (number) => dispatch(deleteBody(number));
+    const onChangeComponent = (number, name, value) => dispatch(setBody(number, name, value));
+    const onSaveClick = (url) => dispatch(save(url, bodyList));
 
     const renderBodyList = () => {
         return (
@@ -117,7 +51,7 @@ function Create() {
                                 </Col>
                                 <Col flex="auto" />
                                 <Col>
-                                    { showDeleteButton ? <Button className='white-button big-button' style={{width: 129, fontWeight: 500}} onClick={() => onDeleteComponentClick(body.number)}>정보삭제</Button> : <></> }
+                                    { bodyList.length > 1 ? <Button className='white-button big-button' style={{width: 129, fontWeight: 500}} onClick={() => onDeleteComponentClick(body.number)}>정보삭제</Button> : <></> }
                                 </Col>
                             </Row>
                             <Space direction='vertical' size={0}>
@@ -170,7 +104,7 @@ function Create() {
                                                     : ''
                                                 }
                                             </div>
-                                            <Button className='black-button' onClick={() => checkName(body.number, body.group_name)} size='large'>확인</Button>
+                                            <Button className='black-button' onClick={() => onCheckNameClick(body.number, body.group_name)} size='large'>확인</Button>
                                         </Space>
                                     </Col>
                                 </Row>
@@ -269,7 +203,7 @@ function Create() {
                     </Row>
                 </Space>
             </Space>
-            <AlertModal visible={showModal} onConfirmClick={() => setShowModal(false)} validationList={validationList} />
+            <AlertModal visible={validation.show} onConfirmClick={onCloseValidationClick} validationList={validation.list} />
         </>
     );
 }

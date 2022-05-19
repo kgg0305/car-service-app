@@ -1,44 +1,34 @@
 import { Col, Divider, Row, Space, Button, Select } from 'antd';
 import { Link } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
-import { GetLineupListAPI } from '../../../api/Lineup';
-import { GetBrandOptionListAPI } from '../../../api/Brand';
-import { GetGroupOptionListAPI } from '../../../api/Group';
-import { GetModelOptionListAPI } from '../../../api/Model';
+import React, { useEffect } from 'react';
 import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
 import { GetDateFullTimeStringUsingKorFromDate } from '../../../constants/GlobalFunctions';
 import { CaretDownOutlined } from '@ant-design/icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { init, reset, search, setSearch, showMore } from '../../../store/reducers/car/lineup/list';
 
 // 목록페지
 function List() {
-	const [offset, setOffset] = useState(0);
-	const [brandOptionList, setBrandOptionList] = useState([]);
-	const [groupOptionList, setGroupOptionList] = useState([]);
-	const [modelOptionList, setModelOptionList] = useState([]);
-	const [dataSource, setDataSource] = useState();
-	const [searchData, setSearchData] = useState({
-		brand_id: null,
-		group_id: null,
-		model_id: null,
-		is_use: null
-	});
-	
-	const initComponent = async () => {
-		const initDataSource = await GetLineupListAPI(offset);
-		const initBrandOptionList = await GetBrandOptionListAPI();
-		const initGroupOptionList = await GetGroupOptionListAPI();
-		const initModelOptionList = await GetModelOptionListAPI();
-		
-		setDataSource(initDataSource);
-		setBrandOptionList(initBrandOptionList);
-		setGroupOptionList(initGroupOptionList);
-		setModelOptionList(initModelOptionList);
-	};
+	const { offset, brandOptionList, groupOptionList, modelOptionList, dataSource, searchData } = useSelector(state => ({
+        offset: state.lineupList.offset,
+        brandOptionList: state.lineupList.brandOptionList,
+		groupOptionList: state.lineupList.groupOptionList,
+		modelOptionList: state.lineupList.modelOptionList,
+        dataSource: state.lineupList.dataSource,
+        searchData: state.lineupList.searchData,
+    }));
+
+    const dispatch = useDispatch();
 
 	useEffect(() => {
-		initComponent();
-	}, []);
+		dispatch(init());
+	}, [dispatch]);
+
+	const onClickTableMore = () => dispatch(showMore(offset + 10));
+	const onClickSearch = () => dispatch(search(searchData));
+	const onClickReset = () => dispatch(reset());
+	const onChangeSearchComponent = (name, value) => dispatch(setSearch(name, value));
 
 	const columns = [
 		{
@@ -80,10 +70,10 @@ function List() {
 		},
         {
 			title: '등록일',
-			dataIndex: 'created_date',
-			key: 'created_date',
+			dataIndex: 'created_at',
+			key: 'created_at',
             align: 'center',
-			render: created_date => GetDateFullTimeStringUsingKorFromDate(new Date(created_date))
+			render: created_at => GetDateFullTimeStringUsingKorFromDate(new Date(created_at))
 		},
 		{
 			title: '관리',
@@ -118,56 +108,6 @@ function List() {
 		],
 		tableData: dataSource,
 		tableColumns: columns
-	};
-
-	const onClickTableMore = async() => {
-		const initDataSource = await GetLineupListAPI(offset + 10, searchData);
-		setOffset(offset + initDataSource.length);
-		
-		setDataSource([
-			...dataSource,
-			...initDataSource
-		]);
-	};
-
-	const onChangeSearchComponent = (name, value) => {
-		setSearchData(
-            { 
-                ...searchData,
-                group_id: name == 'brand_id' ? null : searchData.group_id,
-                model_id: (name == 'brand_id' || name == 'group_id') ? null : searchData.model_id,
-                [name]: value
-            }
-        );
-	};
-
-	const onClickReset = () => {
-		setSearchData(
-			{
-				brand_id: null,
-				group_id: null,
-				model_id: null,
-				is_use: null
-			}
-		);
-
-		onClickSearch(
-			{
-				brand_id: null,
-				group_id: null,
-				model_id: null,
-				is_use: null
-			}
-		);
-	};
-
-	const onClickSearch = async(searchData) => {
-		const initDataSource = await GetLineupListAPI(0, searchData);
-		setOffset(0);
-
-		setDataSource([
-			...initDataSource
-		]);
 	};
 
     return(

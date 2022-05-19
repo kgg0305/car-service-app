@@ -48,3 +48,12 @@ export function GetDateTimeUntilMinuteStringUsingKorFromDate(date) {
 
     return reg_date_text1 + ' ' + reg_date_text2
 }
+
+export function GetBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+}

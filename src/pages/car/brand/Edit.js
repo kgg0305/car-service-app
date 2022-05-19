@@ -1,12 +1,12 @@
 import { Col, Divider, Row, Space, Select, Button, Input, InputNumber, Image, Upload } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons'
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
-import { CheckBrandNameAPI, GetBrandInfoAPI, UpdateBrandAPI, DeleteBrandInfoAPI } from '../../../api/Brand';
-import preview_default_image from '../../../assets/images/preview-default-image.png';
+import React, { useEffect } from 'react';
 import { Constants } from '../../../constants/Constants';
 import AlertModal from '../../../components/AlertModal';
 import AlertDeleteModal from '../../../components/AlertDeleteModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { closeValidation, checkName, closeConfirm, showConfirm, init, preveiew, setBody, remove, removeRedirectTo, save } from '../../../store/reducers/car/brand/edit';
 
 const { Option } = Select;
 
@@ -14,151 +14,33 @@ const { Option } = Select;
 function Edit() {
     let { id } = useParams();
     let navigate = useNavigate();
-    const [showModal, setShowModal] = useState(false);
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [validationList, setValidationList] = useState([]);
-    const [bodyInfo, setBodyInfo] = useState(
-        {
-            idx: id,
-            brand_name: '',
-            sequence: 1,
-            nation: null,
-            is_income: null,
-            is_use: '0',
-            public_uri: '',
-            room_uri: '',
-            service_uri: '',
-            deposit_uri: '',
-            logo: {},
-            preview: preview_default_image,
-            check_name: ''
-        }
-    );
 
-    const initComponent = async () => {
-		const initBodyInfo = await GetBrandInfoAPI(id);
-		setBodyInfo({
-            ...initBodyInfo,
-            preview: window.location.origin + '/uploads/brand/' + initBodyInfo.logo
-        });
-	}
+    const { redirectTo, validation, confirm, bodyInfo } = useSelector(state => ({
+        redirectTo: state.brandEdit.redirectTo,
+        validation: state.brandEdit.validation,
+        confirm: state.brandEdit.confirm,
+        bodyInfo: state.brandEdit.bodyInfo
+    }));
+
+    const dispatch = useDispatch();
 
 	useEffect(() => {
-		initComponent();
-	}, []);
-
-    async function checkName(name) {
-        const result = await CheckBrandNameAPI(name);
-        onChangeComponent('check_name', result ? 'exist' : 'not-exist');
-    }
-
-    function getBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
-        });
-    }
-
-    const previewChange = async (file) => {
-
-        if (!file.url && !file.preview) {
-            file.preview = await getBase64(file.originFileObj);
+        if(redirectTo) {
+            const redirectURL = redirectTo;
+            dispatch(removeRedirectTo());
+            navigate(redirectURL);
         }
+		dispatch(init(id));
+	}, [redirectTo, dispatch]);
 
-        setBodyInfo(
-            { 
-                ...bodyInfo,
-                ['preview']: file.preview
-            }
-        );
-    };
-
-    const onChangeComponent = (name, value) => {
-        setBodyInfo(
-            { 
-                ...bodyInfo,
-                [name]: value
-            }
-        );
-    }
-
-    const onSaveClick = async(url) => {
-        const validation = [];
-        if(bodyInfo.brand_name === '') {
-            validation.push({
-                title: '정보 ',
-                name: '브랜드'
-            })
-        }
-        if(bodyInfo.sequence === null) {
-            validation.push({
-                title: '정보 ',
-                name: '순서'
-            })
-        }
-        if(bodyInfo.nation === null) {
-            validation.push({
-                title: '정보 ',
-                name: '국가'
-            })
-        }
-        if(bodyInfo.is_income === null) {
-            validation.push({
-                title: '정보 ',
-                name: '수입여부'
-            })
-        }
-        if(bodyInfo.public_uri === '') {
-            validation.push({
-                title: '정보 ',
-                name: '공식사이트'
-            })
-        }
-        if(bodyInfo.room_uri === '') {
-            validation.push({
-                title: '정보 ',
-                name: '전시장 안내'
-            })
-        }
-        if(bodyInfo.service_uri === '') {
-            validation.push({
-                title: '정보 ',
-                name: '서비스 센터'
-            })
-        }
-        if(bodyInfo.deposit_uri === '') {
-            validation.push({
-                title: '정보 ',
-                name: '보증금 안내'
-            })
-        }
-        if(bodyInfo.preview === preview_default_image) {
-            validation.push({
-                title: '정보 ',
-                name: '로고'
-            })
-        }
-
-        setValidationList(validation);
-
-        if(validation.length > 0) {
-            setShowModal(true);
-        } else {
-            await UpdateBrandAPI(bodyInfo);
-            navigate(url);
-        }
-    };
-
-    const onDeleteClick = async() => {
-        setShowDeleteModal(true);
-    };
-
-    const deleteInfo = async() => {
-        await DeleteBrandInfoAPI(id);
-        navigate('/car/brand');
-    };
+    const onCloseValidationClick = () => dispatch(closeValidation());
+    const onCloseConfirmClick = () => dispatch(closeConfirm());
+    const onCheckNameClick = (name) => dispatch(checkName(name));
+    const onPreviewChange = (file) => dispatch(preveiew(file));
+    const onChangeComponent = (name, value) => dispatch(setBody(name, value));
+    const onSaveClick = (url) => dispatch(save(url, bodyInfo));
+    const onDeleteClick = async() => dispatch(showConfirm());
+    const deleteInfo = async() => dispatch(remove('/car/brand', id));
 
     return(
         <>
@@ -217,7 +99,7 @@ function Edit() {
                                                     : ''
                                                 }
                                             </div>
-                                            <Button className='black-button' onClick={() => checkName(bodyInfo.brand_name)} size='large'>확인</Button>
+                                            <Button className='black-button' onClick={() => onCheckNameClick(bodyInfo.brand_name)} size='large'>확인</Button>
                                         </Space>
                                     </Col>
                                     <Col span={2} className='table-header-col-section'>
@@ -381,7 +263,7 @@ function Edit() {
                                     </Col>
                                     <Col flex="auto" className='table-value-col-section'>
                                         <Space direction='horizontal' align='end' size={20}>
-                                            <Image  src={bodyInfo.preview} width={150} height={150} />
+                                            <Image src={bodyInfo.preview ? bodyInfo.preview : window.location.origin + '/uploads/brand/' + bodyInfo.logo } width={150} height={150} />
                                             <Space direction='vertical' size={34}>
                                                 <label className='logo-description-label'>
                                                     이미지 권장 크기는 90 * 60이며, *.png로 등록하셔야 합니다. <br/>
@@ -389,17 +271,14 @@ function Edit() {
                                                 </label>
                                                 <Upload 
                                                     accept='.png'
-                                                    // action='http://127.0.0.1:4200/file/brand'
                                                     fileList={[bodyInfo.logo]}
                                                     name='logo' 
                                                     showUploadList={false}
                                                     onChange={info => {
-                                                        previewChange(info.file);
+                                                        onPreviewChange(info.file);
                                                     }}
                                                     beforeUpload={file => {
                                                         onChangeComponent('logo', file);
-                                                
-                                                        // Prevent upload
                                                         return true;
                                                     }}
                                                 >
@@ -421,8 +300,8 @@ function Edit() {
                     </Row>
                 </Space>
             </Space>
-            <AlertModal visible={showModal} onConfirmClick={() => setShowModal(false)} validationList={validationList} />
-            <AlertDeleteModal visible={showDeleteModal} onConfirmClick={() => deleteInfo()} onCancelClick={() => setShowDeleteModal(false)} />
+            <AlertModal visible={validation.show} onConfirmClick={onCloseValidationClick} validationList={validation.list} />
+            <AlertDeleteModal visible={confirm.show} onConfirmClick={() => deleteInfo()} onCancelClick={onCloseConfirmClick} />
         </>
     );
 }

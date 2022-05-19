@@ -1,13 +1,12 @@
 import { Col, Divider, Row, Space, Select, Button, Input } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons'
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
-import { GetBrandOptionListAPI } from '../../../api/Brand';
-import { CheckGroupNameAPI, DeleteGroupInfoAPI, GetGroupInfoAPI, UpdateGroupAPI } from '../../../api/Group';
-import { GetCarKindOptionListAPI } from '../../../api/CarKind';
+import React, { useEffect } from 'react';
 import { Constants } from '../../../constants/Constants';
 import AlertModal from '../../../components/AlertModal';
 import AlertDeleteModal from '../../../components/AlertDeleteModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { closeValidation, checkName, closeConfirm, showConfirm, init, setBody, remove, removeRedirectTo, save } from '../../../store/reducers/car/group/edit';
 
 const { Option } = Select;
 
@@ -15,89 +14,34 @@ const { Option } = Select;
 function Edit() {
     let { id } = useParams();
     let navigate = useNavigate();
-    const [showModal, setShowModal] = useState(false);
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [validationList, setValidationList] = useState([]);
-    const [brandOptionList, setBrandOptionList] = useState([]);
-	const [carKindOptionList, setCarKindOptionList] = useState([]);
-    const [bodyInfo, setBodyInfo] = useState(
-        {
-            idx: 1,
-            brand_id: null,
-            group_name: '',
-            car_kind_id: null,
-            is_use: 0,
-            check_name: ''
-        }
-    );
 
-    const initComponent = async () => {
-        const initBrandOptionList = await GetBrandOptionListAPI();
-		const initCarKindOptionList = await GetCarKindOptionListAPI();
-		const initBodyInfo = await GetGroupInfoAPI(id);
+    const { redirectTo, validation, confirm, brandOptionList, carKindOptionList, bodyInfo } = useSelector(state => ({
+        redirectTo: state.groupEdit.redirectTo,
+        validation: state.groupEdit.validation,
+        confirm: state.groupEdit.confirm,
+        brandOptionList: state.groupEdit.brandOptionList,
+        carKindOptionList: state.groupEdit.carKindOptionList,
+        bodyInfo: state.groupEdit.bodyInfo
+    }));
 
-        setBrandOptionList(initBrandOptionList);
-		setCarKindOptionList(initCarKindOptionList);
-		setBodyInfo(initBodyInfo);
-	}
+    const dispatch = useDispatch();
 
 	useEffect(() => {
-		initComponent();
-	}, []);
-
-    async function checkName(name) {
-        const result = await CheckGroupNameAPI(name);
-        onChangeComponent('check_name', result ? 'exist' : 'not-exist');
-    }
-
-    const onChangeComponent = (name, value) => {
-        setBodyInfo(
-            { 
-                ...bodyInfo,
-                [name]: value
-            }
-        );
-    }
-
-    const onSaveClick = async(url) => {
-        const validation = [];
-        if(bodyInfo.brand_id === null) {
-            validation.push({
-                title: '정보 ',
-                name: '브랜드'
-            })
+        if(redirectTo) {
+            const redirectURL = redirectTo;
+            dispatch(removeRedirectTo());
+            navigate(redirectURL);
         }
-        if(bodyInfo.group_name === '') {
-            validation.push({
-                title: '정보 ',
-                name: '모델그룹'
-            })
-        }
-        if(bodyInfo.car_kind_id === null) {
-            validation.push({
-                title: '정보 ',
-                name: '차종'
-            })
-        }
+		dispatch(init(id));
+	}, [redirectTo, dispatch]);
 
-        setValidationList(validation);
-
-        if(validation.length > 0) {
-            setShowModal(true);
-        } else {
-            await UpdateGroupAPI(bodyInfo);
-            navigate(url);
-        }
-    };
-
-    const onDeleteClick = async() => {
-        setShowDeleteModal(true);
-    };
-
-    const deleteInfo = async() => {
-        await DeleteGroupInfoAPI(id);
-        navigate('/car/group');
-    };
+    const onCloseValidationClick = () => dispatch(closeValidation());
+    const onCloseConfirmClick = () => dispatch(closeConfirm());
+    const onCheckNameClick = (name) => dispatch(checkName(name));
+    const onChangeComponent = (name, value) => dispatch(setBody(name, value));
+    const onSaveClick = (url) => dispatch(save(url, bodyInfo));
+    const onDeleteClick = async() => dispatch(showConfirm());
+    const deleteInfo = async() => dispatch(remove('/car/group', id));
 
     return(
         <>
@@ -111,7 +55,7 @@ function Edit() {
                         <Col flex="auto" />
                         <Col>
                             <Space size={10}>
-                                <Link to="/car/brand">
+                                <Link to="/car/group">
                                     <Button className='white-button' size='large'>취소</Button>
                                 </Link>
                                 <Button className='black-button' size='large' onClick={() => onSaveClick('/car/group')}>저장하고 나가기</Button>
@@ -181,7 +125,7 @@ function Edit() {
                                                     : ''
                                                 }
                                             </div>
-                                            <Button className='black-button' onClick={() => checkName(bodyInfo.group_name)} size='large'>확인</Button>
+                                            <Button className='black-button' onClick={() => onCheckNameClick(bodyInfo.group_name)} size='large'>확인</Button>
                                         </Space>
                                     </Col>
                                 </Row>
@@ -246,8 +190,8 @@ function Edit() {
                     </Row>
                 </Space>
             </Space>
-            <AlertModal visible={showModal} onConfirmClick={() => setShowModal(false)} validationList={validationList} />
-            <AlertDeleteModal visible={showDeleteModal} onConfirmClick={() => deleteInfo()} onCancelClick={() => setShowDeleteModal(false)} />
+            <AlertModal visible={validation.show} onConfirmClick={onCloseValidationClick} validationList={validation.list} />
+            <AlertDeleteModal visible={confirm.show} onConfirmClick={() => deleteInfo()} onCancelClick={onCloseConfirmClick} />
         </>
     );
 }

@@ -1,38 +1,32 @@
-import { Col, Divider, Row, Space, Button } from 'antd';
+import { Col, Divider, Row, Space, Button, Select } from 'antd';
 import { Link } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
-import { GetBrandOptionListAPI } from '../../../api/Brand';
-import { GetGroupListAPI } from '../../../api/Group';
-import { GetCarKindOptionListAPI } from '../../../api/CarKind';
-import SearchPanel from '../../../components/SearchPanel';
+import React, { useEffect } from 'react';
 import TableList from '../../../components/TableList';
 import { Constants } from '../../../constants/Constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { init, reset, search, setSearch, showMore } from '../../../store/reducers/car/group/list';
+import { CaretDownOutlined } from '@ant-design/icons';
 
 // 목록페지
 function List() {
-	const [offset, setOffset] = useState(0);
-	const [brandOptionList, setBrandOptionList] = useState([]);
-	const [carKindOptionList, setCarKindOptionList] = useState([]);
-	const [dataSource, setDataSource] = useState();
-	const [searchData, setSearchData] = useState({
-		brand_id: null,
-		car_kind_id: null,
-		is_use: null
-	});
-	
-	const initComponent = async () => {
-		const initDataSource = await GetGroupListAPI(offset);
-		const initBrandOptionList = await GetBrandOptionListAPI();
-		const initCarKindOptionList = await GetCarKindOptionListAPI();
-		
-		setDataSource(initDataSource);
-		setBrandOptionList(initBrandOptionList);
-		setCarKindOptionList(initCarKindOptionList);
-	};
+	const { offset, brandOptionList, carKindOptionList, dataSource, searchData } = useSelector(state => ({
+        offset: state.groupList.offset,
+        brandOptionList: state.groupList.brandOptionList,
+		carKindOptionList: state.groupList.carKindOptionList,
+        dataSource: state.groupList.dataSource,
+        searchData: state.groupList.searchData,
+    }));
+
+    const dispatch = useDispatch();
 
 	useEffect(() => {
-		initComponent();
-	}, []);
+		dispatch(init());
+	}, [dispatch]);
+
+	const onClickTableMore = () => dispatch(showMore(offset + 10));
+	const onClickSearch = () => dispatch(search(searchData));
+	const onClickReset = () => dispatch(reset());
+	const onChangeSearchComponent = (name, value) => dispatch(setSearch(name, value));
 	
 	const columns = [
 		{
@@ -87,53 +81,6 @@ function List() {
 		},
 	];
 
-	const searchDataSource = [
-		{
-			height: 80,
-			columns: [
-				{
-					titleText: '차량',
-					titleWidth: '154px',
-					contentItems: [
-						{
-							type: Constants.inputTypes.select,
-							name: 'brand_id',
-							placeholder: '브랜드 선택',
-							width: 400,
-							data: brandOptionList
-						}
-					]
-				},
-				{
-					titleText: '사용여부',
-					titleWidth: '154px',
-					contentItems: [
-						{
-							type: Constants.inputTypes.select,
-							name: 'is_use',
-							placeholder: '선택',
-							width: 150,
-							data: Constants.availableOptions
-						}
-					]
-				},
-				{
-					titleText: '차종',
-					titleWidth: '154px',
-					contentItems: [
-						{
-							type: Constants.inputTypes.select,
-							name: 'car_kind_id',
-							placeholder: '선택',
-							width: 150,
-							data: carKindOptionList
-						}
-					]
-				}
-			]
-		}
-	];
-
 	const tableDataSource = {
 		topItems: [
 			{
@@ -148,26 +95,6 @@ function List() {
 		tableColumns: columns
 	};
 
-	const onClickTableMore = async() => {
-		const initDataSource = await GetGroupListAPI(offset + 10, searchData);
-		setOffset(offset + initDataSource.length);
-		
-		setDataSource([
-			...dataSource,
-			...initDataSource
-		]);
-	};
-
-	const onClickSearch = async(searchData) => {
-		const initDataSource = await GetGroupListAPI(0, searchData);
-		setOffset(0);
-		setSearchData(searchData);
-
-		setDataSource([
-			...initDataSource
-		]);
-	};
-
     return(
 		<Space direction='vertical' size={18} className='main-layout'>
 			{/* Page Header */}
@@ -177,7 +104,100 @@ function List() {
 			</Space>
 
 			{/* Search Section */}
-			<SearchPanel dataSource={searchDataSource} onSearch={onClickSearch} />
+			<Space direction='vertical' size={20}>
+				<label className='title-label'>검색</label>
+				<Space direction='vertical' size={0}>
+				<Row key={1} gutter={[0]} align="middle" style={{ height: 80 }} className='table'>
+					<Col flex="154px" className='table-header'>
+						<label className='table-header-label'>차량</label>
+					</Col>
+					<Col flex="auto" className='table-value'>
+						<Space size={6}>
+							<Select
+								name='brand_id' 
+								value={searchData.brand_id} 
+								onChange={value => {
+									onChangeSearchComponent('brand_id', value);
+								}}
+								suffixIcon={<CaretDownOutlined />}
+								placeholder="브랜드 선택"
+								size='large'
+								style={{ width: 300 }}
+							>
+								{
+									brandOptionList.map((optionItem, optionIndex) => (
+										<Select.Option key={optionIndex} value={optionItem.value}>
+											{optionItem.label}
+										</Select.Option>
+									))
+								}
+							</Select>
+						</Space>
+					</Col>
+					<Col flex="154px" className='table-header'>
+						<label className='table-header-label'>사용여부</label>
+					</Col>
+					<Col flex="auto" className='table-value'>
+						<Space size={6}>
+							<Select
+								name='is_use' 
+								value={searchData.is_use} 
+								onChange={value => {
+									onChangeSearchComponent('is_use', value);
+								}}
+								suffixIcon={<CaretDownOutlined />}
+								placeholder="선택"
+								size='large'
+								style={{ width: 150 }}
+							>
+								{
+									Constants.availableOptions.map((optionItem, optionIndex) => (
+										<Select.Option key={optionIndex} value={optionItem.value}>
+											{optionItem.label}
+										</Select.Option>
+									))
+								}
+							</Select>
+						</Space>
+					</Col>
+					<Col flex="154px" className='table-header'>
+						<label className='table-header-label'>차종</label>
+					</Col>
+					<Col flex="auto" className='table-value'>
+						<Space size={6}>
+							<Select
+								name='car_kind_id' 
+								value={searchData.car_kind_id} 
+								onChange={value => {
+									onChangeSearchComponent('car_kind_id', value);
+								}}
+								suffixIcon={<CaretDownOutlined />}
+								placeholder="선택"
+								size='large'
+								style={{ width: 150 }}
+							>
+								{
+									carKindOptionList.map((optionItem, optionIndex) => (
+										<Select.Option key={optionIndex} value={optionItem.value}>
+											{optionItem.label}
+										</Select.Option>
+									))
+								}
+							</Select>
+						</Space>
+					</Col>
+				</Row>
+				</Space>
+				
+				<Row key={2} justify="center" gutter={[17, 0]}>
+					<Col>
+						<Button className='white-button big-button' onClick={onClickReset}>초기화</Button>
+					</Col>
+					<Col>
+						<Button className='black-button big-button' onClick={() => onClickSearch(searchData)}>검색</Button>
+					</Col>
+				</Row>
+			</Space>
 
 			{/* Body Section */}
 			<TableList dataSource={tableDataSource} />

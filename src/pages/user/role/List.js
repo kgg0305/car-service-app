@@ -105,7 +105,10 @@ function List() {
         //create role
         const tempRoleBodyList = dataSource.filter(body => body.idx === null);
 
-        await CreateUserRoleAPI(tempRoleBodyList);
+        if(tempRoleBodyList.length > 0) {
+            await CreateUserRoleAPI(tempRoleBodyList);
+        }
+
         const initDataSource = await GetUserRoleListAPI(0);
         setDataSource(initDataSource.map((item, index) => (
             {

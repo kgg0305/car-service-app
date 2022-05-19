@@ -1,17 +1,13 @@
-import { Col, Divider, Row, Space, Select, Button, Input, Image, Upload, Modal, Tabs, DatePicker, Switch } from 'antd';
+import { Col, Divider, Row, Space, Select, Button, Input, Tabs, Switch } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons'
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
-import { GetBrandOptionListAPI } from '../../../api/Brand';
-import { GetGroupOptionListAPI } from '../../../api/Group';
-import { GetModelOptionListAPI } from '../../../api/Model';
-import { CheckLineupNameAPI, DeleteLineupInfoAPI, UpdateLineupAPI, GetLineupInfoAPI } from '../../../api/Lineup';
-import alert_icon from '../../../assets/images/alert-icon.png';
+import React, { useEffect } from 'react';
 import { Constants } from '../../../constants/Constants';
 import AlertModal from '../../../components/AlertModal';
 import AlertDeleteModal from '../../../components/AlertDeleteModal';
-import { GetModelLineupListAPI } from '../../../api/ModelLinup';
-import { GetModelColorListAPI } from '../../../api/ModelColor';
+import { setColorBody, setLineupBody } from '../../../store/reducers/car/lineup/edit';
+import { useDispatch, useSelector } from 'react-redux';
+import { closeValidation, checkName, closeConfirm, showConfirm, init, setBody, remove, removeRedirectTo, save } from '../../../store/reducers/car/lineup/edit';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -20,198 +16,44 @@ const { TabPane } = Tabs;
 function Edit() {
     let { id } = useParams();
     let navigate = useNavigate();
-    const [showModal, setShowModal] = useState(false);
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [validationList, setValidationList] = useState([]);
-    const [brandOptionList, setBrandOptionList] = useState([]);
-	const [groupOptionList, setGroupOptionList] = useState([]);
-    const [modelOptionList, setModelOptionList] = useState([]);
-    const [modelLineupBodyList, setModelLineupBodyList] = useState([]);
-    const [modelColorBodyList, setModelColorBodyList] = useState([]);
-    const [bodyInfo, setBodyInfo] = useState(
-        {
-            title: '정보 ',
-            brand_id: null,
-            group_id: null,
-            model_id: null,
-            model_lineup_ids: '',
-            model_color_ids: '',
-            lineup_name: '',
-            fule_kind: null,
-            year_type: new Date().getFullYear(),
-            is_use: '0',
-            is_use_lineup: '',
-            is_use_color: '',
-            created_date: new Date(),
-            check_name: ''
-        }
-    );
 
-    const initComponent = async () => {
-        const initBrandOptionList = await GetBrandOptionListAPI();
-		const initGroupOptionList = await GetGroupOptionListAPI();
-        const initModelOptionList = await GetModelOptionListAPI();
-        const initBodyInfo = await GetLineupInfoAPI(id);
-        const initModelLineupBodyList = await GetModelLineupListAPI(0, {
-            model_id: initBodyInfo.model_id
-        });
-        const initModelColorBodyList = await GetModelColorListAPI(0, {
-            model_id: initBodyInfo.model_id
-        });
-        
-		setBrandOptionList(initBrandOptionList);
-		setGroupOptionList(initGroupOptionList);
-        setModelOptionList(initModelOptionList);
-		setBodyInfo(initBodyInfo);
-        setModelLineupBodyList(initModelLineupBodyList.map(lineupBody => (
-            {
-                ...lineupBody,
-                is_use: initBodyInfo.model_lineup_ids.split(',').some(item => item === lineupBody.idx.toString()) ? '0' : '1'
-            }
-        )));
-        setModelColorBodyList(initModelColorBodyList.map(colorBody => (
-            {
-                ...colorBody,
-                is_use: initBodyInfo.model_color_ids.split(',').some(item => item === colorBody.idx.toString()) ? '0' : '1'
-            }
-        )));
-	}
+    const { redirectTo, validation, confirm, brandOptionList, groupOptionList, modelOptionList, bodyInfo, lineupBodyList, colorBodyList } = useSelector(state => ({
+        redirectTo: state.lineupEdit.redirectTo,
+        validation: state.lineupEdit.validation,
+        confirm: state.lineupEdit.confirm,
+        brandOptionList: state.lineupEdit.brandOptionList,
+        groupOptionList: state.lineupEdit.groupOptionList,
+        modelOptionList: state.lineupEdit.modelOptionList,
+        bodyInfo: state.lineupEdit.bodyInfo,
+        lineupBodyList: state.lineupEdit.lineupBodyList,
+        colorBodyList: state.lineupEdit.colorBodyList,
+    }));
+
+    const dispatch = useDispatch();
 
 	useEffect(() => {
-		initComponent();
-	}, []);
-
-    async function checkName(name) {
-        const result = await CheckLineupNameAPI(name);
-        onChangeComponent('check_name', result ? 'exist' : 'not-exist');
-    }
-
-    const onChangeModelLineupComponent = (lineup_idx, name, value) => {
-        setModelLineupBodyList(modelLineupBodyList.map(item => (
-            item.idx === lineup_idx ?
-            {
-                ...item,
-                [name]: value
-            }
-            : item
-        )))
-    };
-
-    const onChangeModelColorComponent = (color_idx, name, value) => {
-        setModelColorBodyList(modelColorBodyList.map(item => (
-            item.idx === color_idx ?
-            {
-                ...item,
-                [name]: value
-            }
-            : item
-        )))
-    };
-
-    const onChangeComponent = async(name, value) => {
-        setBodyInfo(
-            { 
-                ...bodyInfo,
-                group_id: name == 'brand_id' ? null : bodyInfo.group_id,
-                model_id: (name == 'brand_id' || name == 'group_id') ? null : bodyInfo.model_id,
-                [name]: value
-            }
-        );
-
-        if(name === 'brand_id' || name === 'group_id') {
-            setModelLineupBodyList([]);
-            setModelColorBodyList([]);
+        if(redirectTo) {
+            const redirectURL = redirectTo;
+            dispatch(removeRedirectTo());
+            navigate(redirectURL);
         }
+		dispatch(init(id));
+	}, [redirectTo, dispatch]);
 
-        if(name === 'model_id') {
-            const initModelLineupBodyList = await GetModelLineupListAPI(0, {
-                model_id: value
-            });
-            setModelLineupBodyList(initModelLineupBodyList.map(item => (
-                {
-                    ...item,
-                    is_use: '0'
-                }
-            )));
-
-            const initModelColorBodyList = await GetModelColorListAPI(0, {
-                model_id: value
-            });
-            setModelColorBodyList(initModelColorBodyList.map(item => (
-                {
-                    ...item,
-                    is_use: '0'
-                }
-            )));
-        }
-    }
-
-    const onSaveClick = async(url) => {
-        const validation = [];
-        if(bodyInfo.brand_id === null) {
-            validation.push({
-                title: '정보 ',
-                name: '차량(브랜드)'
-            })
-        }
-        if(bodyInfo.group_id === null) {
-            validation.push({
-                title: '정보 ',
-                name: '차량(모델그룹)'
-            })
-        }
-        if(bodyInfo.model_id === null) {
-            validation.push({
-                title: '정보 ',
-                name: '차량(모델)'
-            })
-        }
-        if(bodyInfo.lineup_name === '') {
-            validation.push({
-                title: '정보 ',
-                name: '라인업'
-            })
-        }
-        if(bodyInfo.fule_kind === null) {
-            validation.push({
-                title: '정보 ',
-                name: '연료'
-            })
-        }
-        if(bodyInfo.year_type === '') {
-            validation.push({
-                title: '정보 ',
-                name: '연식'
-            })
-        }
-
-        setValidationList(validation);
-
-        if(validation.length > 0) {
-            setShowModal(true);
-        } else {
-            await UpdateLineupAPI({
-                ...bodyInfo,
-                model_lineup_ids: modelLineupBodyList.filter(item => item.is_use === '0').map(item => item.idx).join(','),
-                model_color_ids: modelColorBodyList.filter(item => item.is_use === '0').map(item => item.idx).join(','),
-            });
-            navigate(url);
-        }
-    };
-
-    const onDeleteClick = async() => {
-        setShowDeleteModal(true);
-    };
-
-    const deleteInfo = async() => {
-        await DeleteLineupInfoAPI(id);
-        navigate('/car/lineup');
-    };
+    const onCloseValidationClick = () => dispatch(closeValidation());
+    const onCloseConfirmClick = () => dispatch(closeConfirm());
+    const onCheckNameClick = (name) => dispatch(checkName(name));
+    const onChangeComponent = (name, value) => dispatch(setBody(name, value));
+    const onChangeLineupComponent = (idx, name, value) => dispatch(setLineupBody(idx, name, value));
+    const onChangeColorComponent = (idx, name, value) => dispatch(setColorBody(idx, name, value));
+    const onSaveClick = (url) => dispatch(save(url, bodyInfo, lineupBodyList, colorBodyList));
+    const onDeleteClick = async() => dispatch(showConfirm());
+    const deleteInfo = async() => dispatch(remove('/car/lineup', id));
 
     const renderModelLineupBodyList = () => {
         return (
-            modelLineupBodyList.length > 0 ?
-            modelLineupBodyList.map((body, index) => (
+            lineupBodyList.length > 0 ?
+            lineupBodyList.map((body, index) => (
                 <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
                     <Col span={2} className='table-header-col-section'>
                         <label>공통옵션 {(index + 1) < 10 ? '0' + (index + 1) : (index + 1)}</label>
@@ -232,7 +74,7 @@ function Edit() {
                                         checked={
                                             body.is_use === '0' ? false : true
                                         } 
-                                        onClick={checked => onChangeModelLineupComponent(body.idx, 'is_use', checked ? '1' : '0')}
+                                        onClick={checked => onChangeLineupComponent(body.idx, 'is_use', checked ? '1' : '0')}
                                     />
                                     <label className='switch-label'>
                                         {
@@ -251,8 +93,8 @@ function Edit() {
 
     const renderModelColorBodyList = () => {
         return (
-            modelColorBodyList.length > 0 ?
-            modelColorBodyList.map((body, index) => (
+            colorBodyList.length > 0 ?
+            colorBodyList.map((body, index) => (
                 <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
                     <Col span={2} className='table-header-col-section'>
                         <label>색상 {(index + 1) < 10 ? '0' + (index + 1) : (index + 1)}</label>
@@ -272,7 +114,7 @@ function Edit() {
                                         checked={
                                             body.is_use === '0' ? false : true
                                         } 
-                                        onClick={checked => onChangeModelColorComponent(body.idx, 'is_use', checked ? '1' : '0')}
+                                        onClick={checked => onChangeColorComponent(body.idx, 'is_use', checked ? '1' : '0')}
                                     />
                                     <label className='switch-label'>
                                         {
@@ -414,7 +256,7 @@ function Edit() {
                                                     : ''
                                                 }
                                             </div>
-                                            <Button className='black-button' onClick={() => checkName(bodyInfo.lineup_name)} size='large'>확인</Button>
+                                            <Button className='black-button' onClick={() => onCheckNameClick(bodyInfo.lineup_name)} size='large'>확인</Button>
                                         </Space>
                                     </Col>
                                     <Col span={2} className='table-header-col-section'>
@@ -512,8 +354,8 @@ function Edit() {
                     </Row>
                 </Space>
             </Space>
-            <AlertModal visible={showModal} onConfirmClick={() => setShowModal(false)} validationList={validationList} />
-            <AlertDeleteModal visible={showDeleteModal} onConfirmClick={() => deleteInfo(bodyInfo.idx)} onCancelClick={() => setShowDeleteModal(false)} />
+            <AlertModal visible={validation.show} onConfirmClick={onCloseValidationClick} validationList={validation.list} />
+            <AlertDeleteModal visible={confirm.show} onConfirmClick={() => deleteInfo()} onCancelClick={onCloseConfirmClick} />
         </>
     );
 }

@@ -4,14 +4,17 @@ import { Menu, Space, Divider, Row, Col, Button } from "antd";
 import { Link } from 'react-router-dom';
 import setting_icon from '../assets/images/setting-icon.png'
 import { Constants } from '../constants/Constants';
-import useToken from "../data/useToken";
+import { useDispatch, useSelector } from "react-redux";
+import { removeToken } from "../store/reducers/auth";
 
 function Header() {
-    const { token, removeToken } = useToken();
+    const { token } = useSelector(state => ({
+        token: state.auth.token
+    }));
 
-    const onLogoutClick = () => {
-        removeToken();
-    };
+    const dispatch = useDispatch();
+
+    const onLogoutClick = () => dispatch(removeToken());
 
     return(
         <Row justify="middle">

@@ -1,171 +1,43 @@
 import { Col, Divider, Row, Space, Select, Button, Input, Image, Upload, InputNumber } from 'antd';
 import { CaretDownOutlined, PlusOutlined } from '@ant-design/icons'
 import { Link, useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
-import { CheckBrandNameAPI, CreateBrandAPI } from '../../../api/Brand';
-import preview_default_image from '../../../assets/images/preview-default-image.png';
+import React, { useEffect } from 'react';
 import styles from '../../../assets/styles/pages/car/brand/Create.module.css';
 import { Constants } from '../../../constants/Constants';
 import AlertModal from '../../../components/AlertModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { addBody, deleteBody, init, preveiew, save, setBody, closeValidation, checkName, removeRedirectTo } from '../../../store/reducers/car/brand/create';
 
 const { Option } = Select;
 
 // 등록페지
 function Create() {
     let navigate = useNavigate();
-    const [showModal, setShowModal] = useState(false);
-    const [validationList, setValidationList] = useState([]);
-    const [showDeleteButton, setShowDeleteButton] = useState(false);
-    const [bodyList, setBodyList] = useState([
-        {
-            number: 1,
-            brand_name: '',
-            sequence: 1,
-            nation: null,
-            is_income: null,
-            is_use: '0',
-            public_uri: '',
-            room_uri: '',
-            service_uri: '',
-            deposit_uri: '',
-            logo: {},
-            preview: preview_default_image,
-            check_name: ''
+
+    const { redirectTo, validation, bodyList } = useSelector(state => ({
+        redirectTo: state.brandCreate.redirectTo,
+        validation: state.brandCreate.validation,
+        bodyList: state.brandCreate.bodyList
+    }));
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if(redirectTo) {
+            const redirectURL = redirectTo;
+            dispatch(removeRedirectTo());
+            navigate(redirectURL);
         }
-    ]);
+		dispatch(init());
+	}, [redirectTo, dispatch]);
 
-    async function checkName(number, name) {
-        const result = await CheckBrandNameAPI(name);
-        onChangeComponent(number, 'check_name', result ? 'exist' : 'not-exist');
-    }
-
-    function getBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
-        });
-    }
-
-    const previewChange = async (number, file) => {
-
-        if (!file.url && !file.preview) {
-            file.preview = await getBase64(file.originFileObj);
-        }
-
-        setBodyList(
-            [
-                ...bodyList.filter((body) => body.number !== number), 
-                { 
-                    ...bodyList.filter((body) => body.number === number)[0],
-                    ['preview']: file.preview
-                }
-            ]
-        );
-    };
-
-    const onAddComponentClick = event => {
-        if(bodyList.length < 10){
-            setShowDeleteButton(true);
-            setBodyList([...bodyList, {
-                number: bodyList[bodyList.length - 1].number + 1,
-                brand_name: '',
-                sequence: bodyList[bodyList.length - 1].number + 1,
-                nation: null,
-                is_income: null,
-                is_use: 0,
-                public_uri: '',
-                room_uri: '',
-                service_uri: '',
-                deposit_uri: '',
-                logo: {},
-                preview: preview_default_image,
-            }]);
-        }
-    };
-
-    const onDeleteComponentClick = (number) => {
-        if(bodyList.length > 1){
-            if(bodyList.length === 2){
-                setShowDeleteButton(false);
-            }
-            setBodyList(bodyList.filter((body) => body.number !== number));
-        }
-    };
-
-    const onChangeComponent = (number, name, value) => {
-        setBodyList(bodyList.map(body => body.number === number ? {...body, [name]: value} : body));
-    }
-
-    const onSaveClick = async(url) => {
-        const validation = [];
-        bodyList.map((body, index) => {
-            if(body.brand_name === '') {
-                validation.push({
-                    title: '정보 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
-                    name: '브랜드'
-                })
-            }
-            if(body.sequence === null) {
-                validation.push({
-                    title: '정보 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
-                    name: '순서'
-                })
-            }
-            if(body.nation === null) {
-                validation.push({
-                    title: '정보 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
-                    name: '국가'
-                })
-            }
-            if(body.is_income === null) {
-                validation.push({
-                    title: '정보 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
-                    name: '수입여부'
-                })
-            }
-            if(body.public_uri === '') {
-                validation.push({
-                    title: '정보 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
-                    name: '공식사이트'
-                })
-            }
-            if(body.room_uri === '') {
-                validation.push({
-                    title: '정보 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
-                    name: '전시장 안내'
-                })
-            }
-            if(body.service_uri === '') {
-                validation.push({
-                    title: '정보 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
-                    name: '서비스 센터'
-                })
-            }
-            if(body.deposit_uri === '') {
-                validation.push({
-                    title: '정보 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
-                    name: '보증금 안내'
-                })
-            }
-            if(body.preview === preview_default_image) {
-                validation.push({
-                    title: '정보 ' + ((index + 1) < 10 ? '0' + (index + 1) : (index + 1)),
-                    name: '로고'
-                })
-            }
-        });
-
-        setValidationList(validation);
-
-        if(validation.length > 0) {
-            setShowModal(true);
-        } else {
-            await CreateBrandAPI(bodyList);
-            navigate(url);
-        }
-    };
+    const onCloseValidationClick = () => dispatch(closeValidation());
+    const onCheckNameClick = (number, name) => dispatch(checkName(number, name));
+    const onPreviewChange = (number, file) => dispatch(preveiew(number, file));
+    const onAddComponentClick = () => dispatch(addBody());
+    const onDeleteComponentClick = (number) => dispatch(deleteBody(number));
+    const onChangeComponent = (number, name, value) => dispatch(setBody(number, name, value));
+    const onSaveClick = (url) => dispatch(save(url, bodyList));
 
     const renderBodyList = () => {
         return (
@@ -179,7 +51,7 @@ function Create() {
                             <Col flex="auto" />
                             <Col>
                                 { 
-                                    showDeleteButton 
+                                    bodyList.length > 1 
                                     ? <Button className='white-button big-button' style={{width: 129, fontWeight: 500}} onClick={() => onDeleteComponentClick(body.number)}>정보삭제</Button> 
                                     : ''
                                 }
@@ -210,7 +82,7 @@ function Create() {
                                                 : ''
                                             }
                                         </div>
-                                        <Button className='black-button' onClick={() => checkName(body.number, body.brand_name)} size='large'>확인</Button>
+                                        <Button className='black-button' onClick={() => onCheckNameClick(body.number, body.brand_name)} size='large'>확인</Button>
                                     </Space>
                                 </Col>
                                 <Col span={2} className='table-header-col-section'>
@@ -382,12 +254,10 @@ function Create() {
                                                 name='logo' 
                                                 showUploadList={false}
                                                 onChange={info => {
-                                                    previewChange(body.number, info.file);
+                                                    onPreviewChange(body.number, info.file);
                                                 }}
                                                 beforeUpload={file => {
                                                     onChangeComponent(body.number, 'logo', file);
-                                            
-                                                    // Prevent upload
                                                     return true;
                                                 }}
                                             >
@@ -441,7 +311,7 @@ function Create() {
                     </Row>
                 </Space>
             </Space>
-            <AlertModal visible={showModal} onConfirmClick={() => setShowModal(false)} validationList={validationList} />
+            <AlertModal visible={validation.show} onConfirmClick={onCloseValidationClick} validationList={validation.list} />
         </>
     );
 }
