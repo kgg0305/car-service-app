@@ -1,97 +1,83 @@
-import { Col, Divider, Row, Space, Button, Image, Modal, Input } from 'antd';
-import React, { useState, useEffect } from 'react';
-import { GetContentInfoAPI } from '../../../api/Content';
-import { GetRankInfoAPI } from '../../../api/Rank';
-import TableList from '../../../components/TableList';
-import { Constants } from '../../../constants/Constants';
-import { GetDateTimeUntilMinuteStringUsingKorFromDate } from '../../../constants/GlobalFunctions';
+import { Divider, Row, Space } from "antd";
+import React, { useEffect } from "react";
+import TableList from "../../../components/TableList";
+import { Constants } from "../../../constants/Constants";
+import { useDispatch, useSelector } from "react-redux";
+import { init, showMore } from "../../../store/reducers/content/movieRank/list";
 
 // 목록페지
 function List() {
-    const [offset, setOffset] = useState(0);
-	const [rankBodyInfo, setRankBodyInfo] = useState({
-		idx: null,
-		type: 2,
-		ids: '',
-		created_date: ''
-	});
-	const [dataSource, setDataSource] = useState([]);
-	
-	const initComponent = async ( ) => {
-		const initDataSource = await GetRankInfoAPI(2);
+  const { offset, dataSource, bodyInfo } = useSelector((state) => ({
+    offset: state.movieRankList.offset,
+    dataSource: state.movieRankList.dataSource,
+    bodyInfo: state.movieRankList.bodyInfo,
+  }));
 
-		var initContentBodyList = [];
-        for (let index = 0; index < initDataSource.ids.split(',').length; index++) {
-            const id = initDataSource.ids.split(',')[index];
-            initContentBodyList.push({
-                ...(await GetContentInfoAPI(id)), 
-                number: index + 1
-            });
-        }
+  const dispatch = useDispatch();
 
-		setRankBodyInfo({
-			...initDataSource,
-			created_date: GetDateTimeUntilMinuteStringUsingKorFromDate(new Date(initDataSource.created_date))
-		});
-		setDataSource(initContentBodyList);
-	};
+  useEffect(() => {
+    dispatch(init());
+  }, [dispatch]);
 
-	useEffect(() => {
-		initComponent();
-	}, []);
-	
-	const columns = [
-		{
-			title: '순위',
-			dataIndex: 'number',
-			key: 'number',
-            align: 'center',
-		},
-		{
-			title: '콘텐츠',
-			dataIndex: 'title',
-			key: 'title',
-            align: 'center',
-		}
-	];
+  const onTableMoreClick = () => dispatch(showMore(offset + 10));
 
-	const tableList = {
-        title: '등록일 ' + rankBodyInfo.created_date,
-        topItems: [
-            {
-				type: Constants.inputTypes.button,
-				link: '/content/movieRank/edit',
-				label: '순위 수정',
-				style: 'white-button big-button',
-				width: 150
-			},
-			{
-				type: Constants.inputTypes.button,
-				link: '/content/movieRank/create',
-				label: '순위 등록',
-				style: 'black-button big-button',
-				width: 150
-			}
-		],
-		tableData: dataSource,
-		tableColumns: columns
-	};
+  const columns = [
+    {
+      title: "순위",
+      dataIndex: "number",
+      key: "number",
+      align: "center",
+    },
+    {
+      title: "콘텐츠",
+      dataIndex: "title",
+      key: "title",
+      align: "center",
+    },
+  ];
 
-    return(
-        <>
-            <Space direction='vertical' size={18} className='main-layout'>
-                {/* Page Header */}
-                <Space direction='vertical' size={18}>
-                    <label className='main-header-title'>동영상 인기순위</label>
-                    <Divider className='main-body-divider' />
-                </Space>
+  const tableList = {
+    title: "등록일 " + bodyInfo.created_at,
+    topItems: [
+      {
+        type: Constants.inputTypes.button,
+        link: "/content/movieRank/edit",
+        label: "순위 수정",
+        style: "white-button big-button",
+        width: 150,
+      },
+      {
+        type: Constants.inputTypes.button,
+        link: "/content/movieRank/create",
+        label: "순위 등록",
+        style: "black-button big-button",
+        width: 150,
+      },
+    ],
+    tableData: dataSource,
+    tableColumns: columns,
+  };
 
-                {/* Body Section */}
-                <TableList dataSource={tableList} />
+  return (
+    <>
+      <Space direction="vertical" size={18} className="main-layout">
+        {/* Page Header */}
+        <Space direction="vertical" size={18}>
+          <label className="main-header-title">동영상 인기순위</label>
+          <Divider className="main-body-divider" />
+        </Space>
 
-            </Space>
-        </>
-    );
+        {/* Body Section */}
+        <TableList dataSource={tableList} />
+
+        <Row justify="center">
+          <label className="show-more-label" onClick={onTableMoreClick}>
+            더보기
+          </label>
+        </Row>
+      </Space>
+    </>
+  );
 }
 
 export default List;

@@ -1,267 +1,228 @@
-import { Col, Divider, Row, Space, Select, Button, Input, InputNumber } from 'antd';
-import { CaretUpFilled, CaretDownFilled } from '@ant-design/icons'
-import { Link, useNavigate } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
-import { GetRankInfoAPI, UpdateRankAPI } from '../../../api/Rank';
-import { GetContentInfoAPI } from '../../../api/Content';
-import AlertModal from '../../../components/AlertModal';
+import {
+  Col,
+  Divider,
+  Row,
+  Space,
+  Select,
+  Button,
+  Input,
+  InputNumber,
+} from "antd";
+import { CaretUpFilled, CaretDownFilled } from "@ant-design/icons";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import React, { useEffect } from "react";
+import AlertModal from "../../../components/AlertModal";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  init,
+  save,
+  setBody,
+  closeValidation,
+  removeRedirectTo,
+  addContent,
+  deleteContent,
+  moveUp,
+  moveDown,
+  setContent,
+  closeConfirm,
+  showConfirm,
+  remove,
+} from "../../../store/reducers/content/contentRank/edit";
 
 const { Option } = Select;
 
 // 수정페지
 function Edit() {
-    let navigate = useNavigate();
-    const [showModal, setShowModal] = useState(false);
-    const [validationList, setValidationList] = useState([]);
-    const [rankBodyInfo, setRankBodyInfo] = useState({
-        type: 2,
-        ids: '',
-        created_date: null
-    });
-    const [contentBodyList, setContentBodyList] = useState([
-        {
-            number: 1,
-            idx: null,
-            title: ''
-        }
-    ]);
+  let { id } = useParams();
+  let navigate = useNavigate();
 
-    const initComponent = async () => {
-		const initRankBodyInfo = await GetRankInfoAPI(2);
-		const initContentBodyList = [];
+  const { redirectTo, validation, confirm, bodyInfo, contentBodyList } =
+    useSelector((state) => ({
+      redirectTo: state.contentRankEdit.redirectTo,
+      validation: state.contentRankEdit.validation,
+      confirm: state.contentRankEdit.confirm,
+      bodyInfo: state.contentRankEdit.bodyInfo,
+      contentBodyList: state.contentRankEdit.contentBodyList,
+    }));
 
-        for (let index = 0; index < initRankBodyInfo.ids.split(',').length; index++) {
-            const id = initRankBodyInfo.ids.split(',')[index];
-            initContentBodyList.push({
-                ...(await GetContentInfoAPI(id)),
-                number: index + 1
-            });
-        }
+  const dispatch = useDispatch();
 
-		setRankBodyInfo(initRankBodyInfo);
-		setContentBodyList(initContentBodyList);
-	};
-
-    useEffect(() => {
-		initComponent();
-	}, []);
-
-    const onSaveClick = async() => {
-        const validation = [];
-        contentBodyList.map(body => {
-            if(body.idx === null) {
-                validation.push({
-                    title: '뉴스 ' + (body.number < 10 ? '0' + body.number : body.number),
-                    name: '콘텐츠 번호'
-                })
-            }
-            if(body.title === '등록되지 않은 콘텐츠입니다.') {
-                validation.push({
-                    title: '뉴스 ' + (body.number < 10 ? '0' + body.number : body.number),
-                    name: '콘텐츠 내용'
-                })
-            }
-        });
-
-        setValidationList(validation);
-
-        if(validation.length > 0) {
-            setShowModal(true);
-        } else {
-            const updateRankBodyInfo = {
-                ...rankBodyInfo,
-                ids: contentBodyList.map(body => body.idx).join(','),
-                created_date: new Date()
-            };
-            const created_info = await UpdateRankAPI(updateRankBodyInfo);
-            
-            navigate('/content/contentRank');
-        }
-    };
-
-    const onAddContentComponentClick = event => {
-        setContentBodyList([...contentBodyList, {
-            number: contentBodyList[contentBodyList.length - 1].number + 1,
-            idx: null,
-            title: ''
-        }]);
-    };
-
-    const onChangeContentComponent = async(number, name, value) => {
-        await setContentBodyList(contentBodyList.map(body => body.number === number ? {...body, [name]: value} : body));
-        if(name == 'idx') {
-            const contentInfo = await GetContentInfoAPI(value);
-            if(contentInfo) {
-                setContentBodyList(
-                    contentBodyList.map(
-                        body => body.number === number ? 
-                        {
-                            ...body, 
-                            ['title']: contentInfo.title,
-                            [name]: value
-                        } 
-                        : body
-                    )
-                );
-            } else {
-                setContentBodyList(
-                    contentBodyList.map(
-                        body => body.number === number ? 
-                        {
-                            ...body, 
-                            ['title']: '등록되지 않은 콘텐츠입니다.',
-                            [name]: value
-                        } 
-                        : body
-                    )
-                );
-            }
-        }
+  useEffect(() => {
+    if (redirectTo) {
+      const redirectURL = redirectTo;
+      dispatch(removeRedirectTo());
+      navigate(redirectURL);
     }
+    dispatch(init(id));
+  }, [redirectTo, dispatch]);
 
-    const onDeleteContentComponentClick = (number) => {
-        if(contentBodyList.length > 1){
-            setContentBodyList(contentBodyList.filter((body) => body.number !== number));
-        }
-    };
+  const onCloseValidationClick = () => dispatch(closeValidation());
+  const onCloseConfirmClick = () => dispatch(closeConfirm());
+  const onComponentChange = (name, value) => dispatch(setBody(name, value));
+  const onAddContentComponentClick = () => dispatch(addContent());
+  const onContentComponentChange = (number, name, value) =>
+    dispatch(setContent(number, name, value));
+  const onDeleteContentComponentClick = (number) =>
+    dispatch(deleteContent(number));
+  const onUpMoveClick = (index) => dispatch(moveUp(index, contentBodyList));
+  const onDownMoveClick = (index) => dispatch(moveDown(index, contentBodyList));
+  const onSaveClick = () =>
+    dispatch(save("/content/contentRank", bodyInfo, contentBodyList));
+  const onDeleteClick = async () => dispatch(showConfirm());
+  const deleteInfo = async () => dispatch(remove("/content/contentRank", id));
 
-    const onUpMoveClick = (index) => {
-        if(index > 0) {
-            const current_item = contentBodyList[index];
-            const top_item = contentBodyList[index - 1];
+  const renderContentBodyList = () => {
+    return contentBodyList.map((body, index) => (
+      <Row
+        gutter={[0]}
+        align="middle"
+        style={{ height: 80 }}
+        className="table-layout"
+      >
+        <Col span={2} className="table-header-col-section">
+          <Space direction="vertical" style={{ paddingLeft: "10px" }}>
+            <CaretUpFilled
+              style={{ fontSize: "30px", cursor: "pointer" }}
+              onClick={() => onUpMoveClick(index)}
+            />
+            <CaretDownFilled
+              style={{ fontSize: "30px", cursor: "pointer" }}
+              onClick={() => onDownMoveClick(index)}
+            />
+          </Space>
+          <label>
+            순서 {body.number !== 10 ? "0" + body.number : body.number}
+          </label>
+        </Col>
+        <Col flex="auto" className="table-value-col-section">
+          <Space size={10}>
+            <InputNumber
+              name="idx"
+              value={body.idx}
+              onChange={(number) => {
+                onContentComponentChange(body.number, "idx", number);
+              }}
+              size="large"
+              controls={false}
+              placeholder="콘텐츠 번호 또는 줌 자동차 뉴스의 URL 입력"
+              style={{ width: 500 }}
+            />
+            <Input
+              name="title"
+              value={body.title}
+              size="large"
+              readOnly={true}
+              placeholder="콘텐츠 번호 또는 줌 자동차 뉴스의 URL 입력"
+              style={{ width: 500 }}
+            />
+          </Space>
+        </Col>
+        <Col flex="auto" />
+        <Col className="table-value-col-section">
+          <Space size={13}>
+            {contentBodyList.length == index + 1 ? (
+              <>
+                {contentBodyList.length != 1 ? (
+                  <Button
+                    className="white-button"
+                    onClick={() => onDeleteContentComponentClick(body.number)}
+                    size="large"
+                  >
+                    삭제
+                  </Button>
+                ) : (
+                  ""
+                )}
+                <Button
+                  className="black-button"
+                  onClick={() => onAddContentComponentClick(body.number)}
+                  size="large"
+                >
+                  추가
+                </Button>
+              </>
+            ) : (
+              <Button
+                className="white-button"
+                onClick={() => onDeleteContentComponentClick(body.number)}
+                size="large"
+              >
+                삭제
+              </Button>
+            )}
+          </Space>
+        </Col>
+      </Row>
+    ));
+  };
 
-            setContentBodyList(contentBodyList.map((item, itemIndex) => (
-                itemIndex === index ? 
-                top_item : 
-                itemIndex === index - 1 ? 
-                current_item :
-                item
-            )));
-        }
-    };
+  return (
+    <>
+      <Space direction="vertical" size={18} className="main-layout">
+        {/* Page Header */}
+        <Space direction="vertical" size={18}>
+          <Row justify="middle">
+            <Col>
+              <label className="main-header-title">콘텐츠 인기순위 수정</label>
+            </Col>
+            <Col flex="auto" />
+            <Col>
+              <Space size={10}>
+                <Link to="/content/contentRank">
+                  <Button className="white-button" size="large">
+                    취소
+                  </Button>
+                </Link>
+                <Button
+                  className="black-button"
+                  size="large"
+                  onClick={onSaveClick}
+                >
+                  저장하고 나가기
+                </Button>
+              </Space>
+            </Col>
+          </Row>
+          <Divider className="main-body-divider" />
+        </Space>
 
-    const onDownMoveClick = async(index) => {
-        if(index < contentBodyList.length - 1) {
-            const current_item = contentBodyList[index];
-            const bottom_item = contentBodyList[index + 1];
-
-            setContentBodyList(contentBodyList.map((item, itemIndex) => (
-                itemIndex === index ? 
-                bottom_item : 
-                itemIndex === index + 1 ? 
-                current_item :
-                item
-            )));
-        }
-    };
-
-    const renderContentBodyList = () => {
-        return (
-            contentBodyList.map((body, index) => (
-                <Row gutter={[0]} align="middle" style={{ height:80 }} className='table-layout'>
-                    <Col span={2} className='table-header-col-section'>
-                        <Space direction='vertical' style={{ paddingLeft: '10px' }}>
-                            <CaretUpFilled style={{ fontSize: '30px', cursor: 'pointer' }} onClick={() => onUpMoveClick(index)} />
-                            <CaretDownFilled style={{ fontSize: '30px', cursor: 'pointer' }}  onClick={() => onDownMoveClick(index)} />
-                        </Space>
-                        <label>순서 { body.number !== 10 ? '0' + body.number : body.number }</label>
-                    </Col>
-                    <Col flex="auto" className='table-value-col-section'>
-                        <Space size={10}>
-                            <InputNumber 
-                                name='idx' 
-                                value={body.idx} 
-                                onChange={number => {
-                                    onChangeContentComponent(body.number, 'idx', number);
-                                }} 
-                                size='large' 
-                                controls={false}
-                                placeholder='콘텐츠 번호 또는 줌 자동차 뉴스의 URL 입력'
-                                style={{ width:500 }} 
-                            />
-                            <Input 
-                                name='title' 
-                                value={body.title}  
-                                size='large' 
-                                readOnly={true}
-                                placeholder='콘텐츠 번호 또는 줌 자동차 뉴스의 URL 입력'
-                                style={{ width:500 }} 
-                            />
-                        </Space>
-                    </Col>
-                    <Col flex='auto' />
-                    <Col className='table-value-col-section'>
-                        <Space size={13}>
-                            { 
-                                contentBodyList.length == index + 1 
-                                ? 
-                                <>
-                                    {
-                                        contentBodyList.length != 1 
-                                        ? <Button className='white-button' onClick={() => onDeleteContentComponentClick(body.number)} size='large'>삭제</Button> 
-                                        : ''
-                                    }
-                                    <Button className='black-button' onClick={() => onAddContentComponentClick(body.number)} size='large'>추가</Button>
-                                </>
-                                : <Button className='white-button' onClick={() => onDeleteContentComponentClick(body.number)} size='large'>삭제</Button>
-                            }
-                        </Space>
-                    </Col>
-                </Row>
-            ))
-        );
-    };
-
-    return(
-        <>
-            <Space direction='vertical' size={18} className='main-layout'>
-                {/* Page Header */}
-                <Space direction='vertical' size={18}>
-                    <Row justify='middle'>
-                        <Col>
-                            <label className='main-header-title'>콘텐츠 인기순위 수정</label>
-                        </Col>
-                        <Col flex="auto" />
-                        <Col>
-                            <Space size={10}>
-                                <Link to="/content/contentRank">
-                                    <Button className='white-button' size='large'>취소</Button>
-                                </Link>
-                                <Button className='black-button' size='large' onClick={onSaveClick}>저장하고 나가기</Button>
-                            </Space>
-                        </Col>
-                    </Row>
-                    <Divider className='main-body-divider' />
-                </Space>
-
-                {/* Body Section */}
-                <Space direction='vertical' size={20} style={{paddingBottom: 117}}>
-                    <Space direction='vertical' size={0} split={<Divider />}>
-                        <Row align='middle'>
-                            <Col>
-                                <label className='main-sub-title'>콘텐츠  선택</label>
-                            </Col>
-                            <Col flex="auto" />
-                        </Row>
-                        <Space direction='vertical' size={20}>
-                            <Row gutter={[30]}>
-                                <Col>
-                                    <Space size={10}>
-                                        <label>최소 등록수량</label>
-                                        <Input size='large' style={{width: 130}} value={contentBodyList.length + ' / 20'} disabled />
-                                    </Space>
-                                </Col>
-                            </Row>
-                            <Space direction='vertical' size={0}>
-                                {renderContentBodyList()}
-                            </Space>
-                        </Space>
-                    </Space>
-                </Space>
+        {/* Body Section */}
+        <Space direction="vertical" size={20} style={{ paddingBottom: 117 }}>
+          <Space direction="vertical" size={0} split={<Divider />}>
+            <Row align="middle">
+              <Col>
+                <label className="main-sub-title">콘텐츠 선택</label>
+              </Col>
+              <Col flex="auto" />
+            </Row>
+            <Space direction="vertical" size={20}>
+              <Row gutter={[30]}>
+                <Col>
+                  <Space size={10}>
+                    <label>최소 등록수량</label>
+                    <Input
+                      size="large"
+                      style={{ width: 130 }}
+                      value={contentBodyList.length + " / 20"}
+                      disabled
+                    />
+                  </Space>
+                </Col>
+              </Row>
+              <Space direction="vertical" size={0}>
+                {renderContentBodyList()}
+              </Space>
             </Space>
-            <AlertModal visible={showModal} onConfirmClick={() => setShowModal(false)} validationList={validationList} />
-        </>
-    );
+          </Space>
+        </Space>
+      </Space>
+      <AlertModal
+        visible={validation.show}
+        onConfirmClick={onCloseValidationClick}
+        validationList={validation.list}
+      />
+    </>
+  );
 }
 
 export default Edit;
