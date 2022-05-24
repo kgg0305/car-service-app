@@ -9,9 +9,9 @@ import Login from "./pages/auth/Login";
 // Mine
 import UserMineDetail from "./pages/user/mine/Detail";
 // Manage
-import UserManageList from "./pages/user/group/List";
-import UserManageCreate from "./pages/user/group/Create";
-import UserManageEdit from "./pages/user/group/Edit";
+import UserManageList from "./pages/user/manage/List";
+import UserManageCreate from "./pages/user/manage/Create";
+import UserManageEdit from "./pages/user/manage/Edit";
 // Role
 import UserRoleList from "./pages/user/role/List";
 // Brand
