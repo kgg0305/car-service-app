@@ -1,4 +1,5 @@
 import axios from "axios";
+import { GetDateTimeStringFromDate } from "../constants/GlobalFunctions";
 
 const base_url = process.env.REACT_APP_API_URL + "/car-kind";
 const token = JSON.parse(sessionStorage.getItem("token"));
@@ -20,6 +21,12 @@ const create = async (bodyList) => {
   bodyList.map((body) => {
     data.push({
       kind_name: body.kind_name,
+
+      created_at: GetDateTimeStringFromDate(new Date()),
+      created_by: token.idx,
+      updated_at: GetDateTimeStringFromDate(new Date()),
+      updated_by: token.idx,
+      is_deleted: false,
     });
   });
 
@@ -35,6 +42,12 @@ const create = async (bodyList) => {
 const update = async (body) => {
   var data = {
     kind_name: body.kind_name,
+
+    created_at: GetDateTimeStringFromDate(new Date(body.created_at)),
+    created_by: body.created_by,
+    updated_at: GetDateTimeStringFromDate(new Date()),
+    updated_by: token.idx,
+    is_deleted: body.is_deleted,
   };
 
   try {

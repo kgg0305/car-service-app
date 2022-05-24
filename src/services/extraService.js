@@ -1,4 +1,5 @@
 import axios from "axios";
+import { GetDateTimeStringFromDate } from "../constants/GlobalFunctions";
 
 const base_url = process.env.REACT_APP_API_URL + "/extra";
 const token = JSON.parse(sessionStorage.getItem("token"));
@@ -26,6 +27,12 @@ const create = async (body) => {
       fee: body.fee,
       discount: body.discount,
       transfer: body.transfer,
+
+      created_at: GetDateTimeStringFromDate(new Date()),
+      created_by: token.idx,
+      updated_at: GetDateTimeStringFromDate(new Date()),
+      updated_by: token.idx,
+      is_deleted: false,
     },
   ];
 
@@ -48,6 +55,12 @@ const update = async (body) => {
     fee: body.fee,
     discount: body.discount,
     transfer: body.transfer,
+
+    created_at: GetDateTimeStringFromDate(new Date(body.created_at)),
+    created_by: body.created_by,
+    updated_at: GetDateTimeStringFromDate(new Date()),
+    updated_by: token.idx,
+    is_deleted: body.is_deleted,
   };
 
   try {
