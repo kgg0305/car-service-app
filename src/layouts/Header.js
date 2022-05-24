@@ -6,7 +6,7 @@ import setting_icon from "../assets/images/setting-icon.png";
 import { Constants } from "../constants/Constants";
 import { useDispatch, useSelector } from "react-redux";
 import { removeToken } from "../store/reducers/auth";
-import { setHeaderMenu } from "../store/reducers/menu";
+import { setHeaderMenu, setSideMenu } from "../store/reducers/menu";
 
 function Header() {
   const { token } = useSelector((state) => ({
@@ -24,6 +24,15 @@ function Header() {
     dispatch(setHeaderMenu(key));
   };
 
+  const onUserClick = () => {
+    dispatch(setHeaderMenu("user"));
+    dispatch(setSideMenu("mine"));
+  };
+
+  const onSettingClick = () => {
+    dispatch(setHeaderMenu("user"));
+  };
+
   return (
     <Row justify="middle">
       <Col flex="auto" style={{ height: 80 }}>
@@ -31,6 +40,7 @@ function Header() {
           className="top-menu-layout"
           mode="horizontal"
           defaultSelectedKeys={[headerMenu.key]}
+          selectedKeys={[headerMenu.key]}
           onClick={(key) => onMenuClick(key.key)}
         >
           {Constants.headerMenus.map((item) => (
@@ -43,12 +53,12 @@ function Header() {
       <Col flex="auto"></Col>
       <Col>
         <Space align="center">
-          <Link to={"/user/mine/1"}>
+          <Link to={"/user/mine/1"} onClick={onUserClick}>
             <Button className="top-menu-user" type="link" block>
               {token.name}님
             </Button>
           </Link>
-          <Link to={"/user/mine/1"}>
+          <Link to={"/user/mine/1"} onClick={onSettingClick}>
             <img src={setting_icon} />
           </Link>
           <Divider className="top-menu-divider" type="vertical" />
