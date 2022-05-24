@@ -1,36 +1,40 @@
-import { brandService } from "../../../../services/brandService";
-import { carKindService } from "../../../../services/carKindService";
-import { groupService } from "../../../../services/groupService";
+import { lineupService } from "../../../../services/lineupService";
+import { trimService } from "../../../../services/trimService";
 
-const prefix = "car/group/manage/";
+const prefix = "car/trim/manage/";
 
 const INIT = prefix + "INIT";
+const REMOVE_REDIRECTTO = prefix + "REMOVE_REDIRECTTO";
 const SHOW_MORE = prefix + "SHOW_MORE";
-const SEARCH = prefix + "SEARCH";
-const SET_SEARCH = prefix + "SET_SEARCH";
+const SHOW_CONFIRM = prefix + "SHOW_CONFIRM";
+const CLOSE_CONFIRM = prefix + "CLOSE_CONFIRM";
+const REMOVE = prefix + "REMOVE";
+const SET_USE = prefix + "SET_USE";
 
-export const init = () => async (dispatch) => {
+export const init = (lineup_id) => async (dispatch) => {
   try {
-    const dataSource = await groupService.getList(0);
-    const brandOptionList = await brandService.getOptionList();
-    const carKindOptionList = await carKindService.getOptionList();
+    const dataSource = await trimService.getList(0, {
+      lineup_id: lineup_id,
+    });
+    const lineupBodyInfo = await lineupService.get(lineup_id);
 
     dispatch({
       type: INIT,
       payload: {
         dataSource: dataSource,
-        brandOptionList: brandOptionList,
-        carKindOptionList: carKindOptionList,
+        lineupBodyInfo: lineupBodyInfo,
       },
     });
   } catch (e) {
     console.log(e);
   }
 };
-
+export const removeRedirectTo = () => ({
+  type: REMOVE_REDIRECTTO,
+});
 export const showMore = (offset) => async (dispatch) => {
   try {
-    const dataSource = await groupService.getList(offset);
+    const dataSource = await trimService.getList(offset);
 
     dispatch({
       type: SHOW_MORE,
@@ -43,60 +47,88 @@ export const showMore = (offset) => async (dispatch) => {
     console.log(e);
   }
 };
-
-export const search = (searchData) => async (dispatch) => {
+export const showConfirm = (idx) => ({
+  type: SHOW_CONFIRM,
+  payload: {
+    idx: idx,
+  },
+});
+export const closeConfirm = () => ({
+  type: CLOSE_CONFIRM,
+});
+export const remove = (url, idx) => async (dispatch) => {
   try {
-    const dataSource = await groupService.getList(0, searchData);
+    await trimService.remove(idx);
 
     dispatch({
-      type: SEARCH,
+      type: REMOVE,
       payload: {
-        offset: 0,
-        dataSource: dataSource,
-        searchData: searchData,
+        url: url,
       },
     });
   } catch (e) {
     console.log(e);
   }
 };
+export const setUse = (idx, value, dataSource) => async (dispatch) => {
+  const trim_info = {
+    ...dataSource.filter((item) => item.idx === idx)[0],
+    is_use: value,
+  };
 
-export const reset = () => async (dispatch) => {
-  try {
-    dispatch(init());
-  } catch (e) {
-    console.log(e);
-  }
+  await trimService.update(trim_info);
+
+  dispatch({
+    type: SET_USE,
+    payload: {
+      idx: idx,
+      value: value,
+    },
+  });
 };
-
-export const setSearch = (name, value) => ({
-  type: SET_SEARCH,
-  payload: {
-    name: name,
-    value: value,
-  },
-});
 
 const initialState = {
+  redirectTo: "",
   offset: 0,
-  brandOptionList: [],
-  carKindOptionList: [],
+  confirm: {
+    show: false,
+    idx: null,
+  },
   dataSource: [],
-  searchData: {
-    brand_id: null,
-    is_use: null,
-    car_kind_id: null,
+  lineupBodyInfo: {
+    lineup_name: "",
   },
 };
 
-export default function manage(state = initialState, action) {
+export default function list(state = initialState, action) {
   switch (action.type) {
     case INIT:
       return {
         ...initialState,
-        brandOptionList: action.payload.brandOptionList,
-        carKindOptionList: action.payload.carKindOptionList,
+        lineupBodyInfo: action.payload.lineupBodyInfo,
         dataSource: action.payload.dataSource,
+      };
+    case REMOVE_REDIRECTTO:
+      return {
+        ...state,
+        redirectTo: "",
+      };
+    case SHOW_CONFIRM:
+      return {
+        ...state,
+        confirm: {
+          ...state.confirm,
+          show: true,
+          idx: action.payload.idx,
+        },
+      };
+    case CLOSE_CONFIRM:
+      return {
+        ...state,
+        confirm: {
+          ...state.confirm,
+          show: false,
+        },
       };
     case SHOW_MORE:
       return {
@@ -104,20 +136,21 @@ export default function manage(state = initialState, action) {
         dataSource: [...state.dataSource, ...action.payload.dataSource],
         offset: action.payload.offset,
       };
-    case SEARCH:
+    case SET_USE:
       return {
         ...state,
-        offset: action.payload.offset,
-        dataSource: action.payload.dataSource,
-        searchData: action.payload.searchData,
+        dataSource: state.dataSource.map((item) => ({
+          ...item,
+          is_use:
+            item.idx === action.payload.idx
+              ? action.payload.value
+              : item.is_use,
+        })),
       };
-    case SET_SEARCH:
+    case REMOVE:
       return {
         ...state,
-        searchData: {
-          ...state.searchData,
-          [action.payload.name]: action.payload.value,
-        },
+        redirectTo: action.payload.url,
       };
     default:
       return state;

@@ -6,15 +6,19 @@ import brandList from "./car/brand/list";
 import groupCreate from "./car/group/create";
 import groupEdit from "./car/group/edit";
 import groupList from "./car/group/list";
+import groupManage from "./car/group/manage";
 import modelCreate from "./car/model/create";
 import modelEdit from "./car/model/edit";
 import modelList from "./car/model/list";
+import modelManage from "./car/model/manage";
 import lineupCreate from "./car/lineup/create";
 import lineupEdit from "./car/lineup/edit";
 import lineupList from "./car/lineup/list";
+import lineupManage from "./car/lineup/manage";
 import trimCreate from "./car/trim/create";
 import trimEdit from "./car/trim/edit";
 import trimList from "./car/trim/list";
+import trimManage from "./car/trim/manage";
 import discountCreate from "./car/discount/create";
 import discountEdit from "./car/discount/edit";
 import discountList from "./car/discount/list";
@@ -64,15 +68,19 @@ const rootReducers = combineReducers({
   groupCreate,
   groupEdit,
   groupList,
+  groupManage,
   modelCreate,
   modelEdit,
   modelList,
+  modelManage,
   lineupCreate,
   lineupEdit,
   lineupList,
+  lineupManage,
   trimCreate,
   trimEdit,
   trimList,
+  trimManage,
   discountCreate,
   discountEdit,
   discountList,

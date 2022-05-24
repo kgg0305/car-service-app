@@ -1,46 +1,53 @@
 import { Col, Divider, Row, Space, Button, Select, Switch } from "antd";
-import { Link, useParams } from "react-router-dom";
-import React, { useState, useEffect } from "react";
-import {
-  DeleteLineupInfoAPI,
-  GetLineupListAPI,
-  UpdateLineupAPI,
-} from "../../../api/Lineup";
-import { GetBrandOptionListAPI } from "../../../api/Brand";
-import { GetGroupOptionListAPI } from "../../../api/Group";
-import { GetModelInfoAPI, GetModelOptionListAPI } from "../../../api/Model";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
 import TableList from "../../../components/TableList";
 import { Constants } from "../../../constants/Constants";
 import { GetDateFullTimeStringUsingKorFromDate } from "../../../constants/GlobalFunctions";
-import { CaretDownOutlined } from "@ant-design/icons";
 import AlertDeleteModal from "../../../components/AlertDeleteModal";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  init,
+  showMore,
+  removeRedirectTo,
+  showConfirm,
+  remove,
+  setUse,
+  closeConfirm,
+} from "../../../store/reducers/car/lineup/manage";
 
 // 목록페지
 function Manage() {
   let { model_id } = useParams();
-  const [offset, setOffset] = useState(0);
-  const [showDeleteModal, setShowDeleteModal] = useState({
-    idx: null,
-    show: false,
-  });
-  const [dataSource, setDataSource] = useState([]);
-  const [modelBodyInfo, setModelBodyInfo] = useState({
-    model_name: "",
-  });
+  let navigate = useNavigate();
 
-  const initComponent = async () => {
-    const initDataSource = await GetLineupListAPI(offset, {
-      model_id: model_id,
-    });
-    const initModelBodyInfo = await GetModelInfoAPI(model_id);
+  const { redirectTo, offset, confirm, modelBodyInfo, dataSource } =
+    useSelector((state) => ({
+      redirectTo: state.lineupManage.redirectTo,
+      offset: state.lineupManage.offset,
+      confirm: state.lineupManage.confirm,
+      modelBodyInfo: state.lineupManage.modelBodyInfo,
+      dataSource: state.lineupManage.dataSource,
+    }));
 
-    setDataSource(initDataSource);
-    setModelBodyInfo(initModelBodyInfo);
-  };
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    initComponent();
-  }, []);
+    if (redirectTo) {
+      const redirectURL = redirectTo;
+      dispatch(removeRedirectTo());
+      navigate(redirectURL);
+    }
+    dispatch(init(model_id));
+  }, [redirectTo, dispatch]);
+
+  const onTableMoreClick = () => dispatch(showMore(offset + 10));
+  const onDeleteClick = async (idx) => dispatch(showConfirm(idx));
+  const deleteInfo = async (idx) =>
+    dispatch(remove("/car/lineup/manage/" + model_id, idx));
+  const onIsUseChange = (idx, value) =>
+    dispatch(setUse(idx, value, dataSource));
+  const onCloseConfirmClick = () => dispatch(closeConfirm());
 
   const columns = [
     {
@@ -82,11 +89,11 @@ function Manage() {
     },
     {
       title: "등록일",
-      dataIndex: "created_date",
-      key: "created_date",
+      dataIndex: "created_at",
+      key: "created_at",
       align: "center",
-      render: (created_date) =>
-        GetDateFullTimeStringUsingKorFromDate(new Date(created_date)),
+      render: (created_at) =>
+        GetDateFullTimeStringUsingKorFromDate(new Date(created_at)),
     },
     {
       title: "관리",
@@ -120,46 +127,6 @@ function Manage() {
     title: modelBodyInfo.model_name,
     tableData: dataSource,
     tableColumns: columns,
-  };
-
-  const onTableMoreClick = async () => {
-    const initDataSource = await GetLineupListAPI(offset + 10, {
-      model_id: model_id,
-    });
-    setOffset(offset + initDataSource.length);
-
-    setDataSource([...dataSource, ...initDataSource]);
-  };
-
-  const onIsUseChange = async (idx, value) => {
-    const lineup_info = {
-      ...dataSource.filter((item) => item.idx === idx)[0],
-      is_use: value,
-    };
-
-    await UpdateLineupAPI(lineup_info);
-
-    setDataSource(
-      dataSource.map((item) => ({
-        ...item,
-        is_use: item.idx === idx ? value : item.is_use,
-      }))
-    );
-  };
-
-  const onDeleteClick = async (idx) => {
-    setShowDeleteModal({
-      idx: idx,
-      show: true,
-    });
-  };
-
-  const deleteInfo = async () => {
-    await DeleteLineupInfoAPI(showDeleteModal.idx);
-    const initDataSource = await GetLineupListAPI(0, {
-      model_id: model_id,
-    });
-    setDataSource(initDataSource);
   };
 
   const renderIsUseField = (idx) => {
@@ -204,11 +171,9 @@ function Manage() {
         </Row>
       </Space>
       <AlertDeleteModal
-        visible={showDeleteModal.show}
-        onConfirmClick={() => deleteInfo()}
-        onCancelClick={() =>
-          setShowDeleteModal({ ...showDeleteModal, show: false })
-        }
+        visible={confirm.show}
+        onConfirmClick={() => deleteInfo(confirm.idx)}
+        onCancelClick={onCloseConfirmClick}
       />
     </>
   );

@@ -1,7 +1,8 @@
+import { brandService } from "../../../../services/brandService";
+import { groupService } from "../../../../services/groupService";
 import { modelService } from "../../../../services/modelService";
-import { lineupService } from "../../../../services/lineupService";
 
-const prefix = "car/lineup/manage/";
+const prefix = "car/model/manage/";
 
 const INIT = prefix + "INIT";
 const REMOVE_REDIRECTTO = prefix + "REMOVE_REDIRECTTO";
@@ -11,18 +12,18 @@ const CLOSE_CONFIRM = prefix + "CLOSE_CONFIRM";
 const REMOVE = prefix + "REMOVE";
 const SET_USE = prefix + "SET_USE";
 
-export const init = (model_id) => async (dispatch) => {
+export const init = (group_id) => async (dispatch) => {
   try {
-    const dataSource = await lineupService.getList(0, {
-      model_id: model_id,
+    const dataSource = await modelService.getList(0, {
+      group_id: group_id,
     });
-    const modelBodyInfo = await modelService.get(model_id);
+    const groupBodyInfo = await groupService.get(group_id);
 
     dispatch({
       type: INIT,
       payload: {
         dataSource: dataSource,
-        modelBodyInfo: modelBodyInfo,
+        groupBodyInfo: groupBodyInfo,
       },
     });
   } catch (e) {
@@ -34,7 +35,7 @@ export const removeRedirectTo = () => ({
 });
 export const showMore = (offset) => async (dispatch) => {
   try {
-    const dataSource = await lineupService.getList(offset);
+    const dataSource = await modelService.getList(offset);
 
     dispatch({
       type: SHOW_MORE,
@@ -58,7 +59,7 @@ export const closeConfirm = () => ({
 });
 export const remove = (url, idx) => async (dispatch) => {
   try {
-    await lineupService.remove(idx);
+    await modelService.remove(idx);
 
     dispatch({
       type: REMOVE,
@@ -71,12 +72,12 @@ export const remove = (url, idx) => async (dispatch) => {
   }
 };
 export const setUse = (idx, value, dataSource) => async (dispatch) => {
-  const lineup_info = {
+  const model_info = {
     ...dataSource.filter((item) => item.idx === idx)[0],
     is_use: value,
   };
 
-  await lineupService.update(lineup_info);
+  await modelService.update(model_info);
 
   dispatch({
     type: SET_USE,
@@ -95,8 +96,8 @@ const initialState = {
     idx: null,
   },
   dataSource: [],
-  modelBodyInfo: {
-    brand_name: "",
+  groupBodyInfo: {
+    group_name: "",
   },
 };
 
@@ -105,7 +106,7 @@ export default function list(state = initialState, action) {
     case INIT:
       return {
         ...initialState,
-        modelBodyInfo: action.payload.modelBodyInfo,
+        groupBodyInfo: action.payload.groupBodyInfo,
         dataSource: action.payload.dataSource,
       };
     case REMOVE_REDIRECTTO:

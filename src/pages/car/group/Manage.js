@@ -1,44 +1,52 @@
 import { Col, Divider, Row, Space, Button, Switch } from "antd";
-import { Link, useParams } from "react-router-dom";
-import React, { useState, useEffect } from "react";
-import { GetBrandInfoAPI, GetBrandOptionListAPI } from "../../../api/Brand";
-import {
-  DeleteGroupInfoAPI,
-  GetGroupListAPI,
-  UpdateGroupAPI,
-} from "../../../api/Group";
-import { GetCarKindOptionListAPI } from "../../../api/CarKind";
-import SearchPanel from "../../../components/SearchPanel";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
 import TableList from "../../../components/TableList";
 import { Constants } from "../../../constants/Constants";
 import AlertDeleteModal from "../../../components/AlertDeleteModal";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  init,
+  showMore,
+  removeRedirectTo,
+  showConfirm,
+  remove,
+  setUse,
+  closeConfirm,
+} from "../../../store/reducers/car/group/manage";
 
 // 목록페지
 function Manage() {
   let { brand_id } = useParams();
-  const [offset, setOffset] = useState(0);
-  const [showDeleteModal, setShowDeleteModal] = useState({
-    idx: null,
-    show: false,
-  });
-  const [dataSource, setDataSource] = useState([]);
-  const [brandBodyInfo, setBrandBodyInfo] = useState({
-    brand_name: "",
-  });
+  let navigate = useNavigate();
 
-  const initComponent = async () => {
-    const initDataSource = await GetGroupListAPI(offset, {
-      brand_id: brand_id,
-    });
-    const initBrandBodyInfo = await GetBrandInfoAPI(brand_id);
+  const { redirectTo, offset, confirm, brandBodyInfo, dataSource } =
+    useSelector((state) => ({
+      redirectTo: state.groupManage.redirectTo,
+      offset: state.groupManage.offset,
+      confirm: state.groupManage.confirm,
+      brandBodyInfo: state.groupManage.brandBodyInfo,
+      dataSource: state.groupManage.dataSource,
+    }));
 
-    setDataSource(initDataSource);
-    setBrandBodyInfo(initBrandBodyInfo);
-  };
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    initComponent();
-  }, []);
+    if (redirectTo) {
+      const redirectURL = redirectTo;
+      dispatch(removeRedirectTo());
+      navigate(redirectURL);
+    }
+    dispatch(init(brand_id));
+  }, [redirectTo, dispatch]);
+
+  const onTableMoreClick = () => dispatch(showMore(offset + 10));
+  const onDeleteClick = async (idx) => dispatch(showConfirm(idx));
+  const deleteInfo = async (idx) =>
+    dispatch(remove("/car/group/manage/" + brand_id, idx));
+  const onIsUseChange = (idx, value) =>
+    dispatch(setUse(idx, value, dataSource));
+  const onCloseConfirmClick = () => dispatch(closeConfirm());
 
   const columns = [
     {
@@ -106,48 +114,6 @@ function Manage() {
     tableColumns: columns,
   };
 
-  const onTableMoreClick = async () => {
-    const initDataSource = await GetGroupListAPI(offset + 10, {
-      brand_id,
-      brand_id,
-    });
-    setOffset(offset + initDataSource.length);
-
-    setDataSource([...dataSource, ...initDataSource]);
-  };
-
-  const onIsUseChange = async (idx, value) => {
-    const group_info = {
-      ...dataSource.filter((item) => item.idx === idx)[0],
-      is_use: value,
-    };
-
-    await UpdateGroupAPI(group_info);
-
-    setDataSource(
-      dataSource.map((item) => ({
-        ...item,
-        is_use: item.idx === idx ? value : item.is_use,
-      }))
-    );
-  };
-
-  const onDeleteClick = async (idx) => {
-    setShowDeleteModal({
-      idx: idx,
-      show: true,
-    });
-  };
-
-  const deleteInfo = async () => {
-    await DeleteGroupInfoAPI(showDeleteModal.idx);
-    const initDataSource = await GetGroupListAPI(0, {
-      brand_id,
-      brand_id,
-    });
-    setDataSource(initDataSource);
-  };
-
   const renderIsUseField = (idx) => {
     return (
       <Switch
@@ -190,11 +156,9 @@ function Manage() {
         </Row>
       </Space>
       <AlertDeleteModal
-        visible={showDeleteModal.show}
-        onConfirmClick={() => deleteInfo()}
-        onCancelClick={() =>
-          setShowDeleteModal({ ...showDeleteModal, show: false })
-        }
+        visible={confirm.show}
+        onConfirmClick={() => deleteInfo(confirm.idx)}
+        onCancelClick={onCloseConfirmClick}
       />
     </>
   );

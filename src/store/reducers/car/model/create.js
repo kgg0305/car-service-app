@@ -401,7 +401,6 @@ const initialState = {
     preview_6: preview_default_image,
     preview_7: preview_default_image,
     preview_8: preview_default_image,
-    created_date: new Date(),
     check_name: "",
   },
   lineupBodyList: [

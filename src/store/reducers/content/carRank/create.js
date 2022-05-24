@@ -200,7 +200,6 @@ const initialState = {
   bodyInfo: {
     type: null,
     ids: "",
-    created_date: null,
   },
   modelBodyList: [],
 };

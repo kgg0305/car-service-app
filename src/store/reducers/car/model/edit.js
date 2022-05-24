@@ -526,7 +526,6 @@ const initialState = {
     preview_6: "",
     preview_7: "",
     preview_8: "",
-    created_date: new Date(),
     check_name: "",
   },
   lineupBodyList: [],

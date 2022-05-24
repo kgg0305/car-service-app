@@ -1,43 +1,52 @@
 import { Col, Divider, Row, Space, Button, Select, Switch } from "antd";
-import { Link, useParams } from "react-router-dom";
-import React, { useState, useEffect } from "react";
-import { GetLineupInfoAPI } from "../../../api/Lineup";
-import {
-  DeleteTrimInfoAPI,
-  GetTrimListAPI,
-  UpdateTrimAPI,
-} from "../../../api/Trim";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
 import TableList from "../../../components/TableList";
 import { Constants } from "../../../constants/Constants";
-import { CaretDownOutlined } from "@ant-design/icons";
 import AlertDeleteModal from "../../../components/AlertDeleteModal";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  init,
+  showMore,
+  removeRedirectTo,
+  showConfirm,
+  remove,
+  setUse,
+  closeConfirm,
+} from "../../../store/reducers/car/trim/manage";
 
 // 목록페지
 function Manage() {
   let { lineup_id } = useParams();
-  const [offset, setOffset] = useState(0);
-  const [showDeleteModal, setShowDeleteModal] = useState({
-    idx: null,
-    show: false,
-  });
-  const [dataSource, setDataSource] = useState([]);
-  const [lineupBodyInfo, setLineupBodyInfo] = useState({
-    lineup_name: "",
-  });
+  let navigate = useNavigate();
 
-  const initComponent = async () => {
-    const initDataSource = await GetTrimListAPI(offset, {
-      lineup_id: lineup_id,
-    });
-    const initLineupBodyInfo = await GetLineupInfoAPI(lineup_id);
+  const { redirectTo, offset, confirm, lineupBodyInfo, dataSource } =
+    useSelector((state) => ({
+      redirectTo: state.trimManage.redirectTo,
+      offset: state.trimManage.offset,
+      confirm: state.trimManage.confirm,
+      lineupBodyInfo: state.trimManage.lineupBodyInfo,
+      dataSource: state.trimManage.dataSource,
+    }));
 
-    setDataSource(initDataSource);
-    setLineupBodyInfo(initLineupBodyInfo);
-  };
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    initComponent();
-  }, []);
+    if (redirectTo) {
+      const redirectURL = redirectTo;
+      dispatch(removeRedirectTo());
+      navigate(redirectURL);
+    }
+    dispatch(init(lineup_id));
+  }, [redirectTo, dispatch]);
+
+  const onTableMoreClick = () => dispatch(showMore(offset + 10));
+  const onDeleteClick = async (idx) => dispatch(showConfirm(idx));
+  const deleteInfo = async (idx) =>
+    dispatch(remove("/car/trim/manage/" + lineup_id, idx));
+  const onIsUseChange = (idx, value) =>
+    dispatch(setUse(idx, value, dataSource));
+  const onCloseConfirmClick = () => dispatch(closeConfirm());
 
   const columns = [
     {
@@ -117,46 +126,6 @@ function Manage() {
     tableColumns: columns,
   };
 
-  const onTableMoreClick = async () => {
-    const initDataSource = await GetTrimListAPI(offset + 10, {
-      lineup_id: lineup_id,
-    });
-    setOffset(offset + initDataSource.length);
-
-    setDataSource([...dataSource, ...initDataSource]);
-  };
-
-  const onIsUseChange = async (idx, value) => {
-    const trim_info = {
-      ...dataSource.filter((item) => item.idx === idx)[0],
-      is_use: value,
-    };
-
-    await UpdateTrimAPI(trim_info);
-
-    setDataSource(
-      dataSource.map((item) => ({
-        ...item,
-        is_use: item.idx === idx ? value : item.is_use,
-      }))
-    );
-  };
-
-  const onDeleteClick = async (idx) => {
-    setShowDeleteModal({
-      idx: idx,
-      show: true,
-    });
-  };
-
-  const deleteInfo = async () => {
-    await DeleteTrimInfoAPI(showDeleteModal.idx);
-    const initDataSource = await GetTrimListAPI(0, {
-      lineup_id: lineup_id,
-    });
-    setDataSource(initDataSource);
-  };
-
   const renderIsUseField = (idx) => {
     return (
       <Switch
@@ -199,11 +168,9 @@ function Manage() {
         </Row>
       </Space>
       <AlertDeleteModal
-        visible={showDeleteModal.show}
-        onConfirmClick={() => deleteInfo()}
-        onCancelClick={() =>
-          setShowDeleteModal({ ...showDeleteModal, show: false })
-        }
+        visible={confirm.show}
+        onConfirmClick={() => deleteInfo(confirm.idx)}
+        onCancelClick={onCloseConfirmClick}
       />
     </>
   );

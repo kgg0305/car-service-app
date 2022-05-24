@@ -260,7 +260,6 @@ const initialState = {
     is_use: "0",
     is_use_lineup: "",
     is_use_color: "",
-    created_date: new Date(),
     check_name: "",
   },
   lineupBodyList: [],
