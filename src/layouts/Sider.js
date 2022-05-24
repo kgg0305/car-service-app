@@ -4,14 +4,24 @@ import { Menu, Space } from "antd";
 import { Link } from "react-router-dom";
 import logo from "../assets/images/logo.png";
 import { Constants } from "../constants/Constants";
+import { useDispatch, useSelector } from "react-redux";
+import { setSideMenu } from "../store/reducers/menu";
 
-function GetSiderMenus(headerMenuKey) {
-  return Constants.siderMenus.filter(
-    (item) => item.headerMenu === headerMenuKey
-  );
-}
+function Sider() {
+  const { headerMenu } = useSelector((state) => ({
+    headerMenu: state.menu.headerMenu,
+  }));
 
-function Sider({ headerMenuKey }) {
+  const { sideMenu } = useSelector((state) => ({
+    sideMenu: state.menu.sideMenu,
+  }));
+
+  const dispatch = useDispatch();
+
+  const onMenuClick = (key) => {
+    dispatch(setSideMenu(key));
+  };
+
   return (
     <>
       <Space className="logo" size={15}>
@@ -22,13 +32,17 @@ function Sider({ headerMenuKey }) {
         className="sider-menu-layout"
         theme="light"
         mode="inline"
-        defaultSelectedKeys={["0"]}
+        defaultSelectedKeys={[sideMenu.key]}
+        selectedKeys={[sideMenu.key]}
+        onClick={(key) => onMenuClick(key.key)}
       >
-        {GetSiderMenus(headerMenuKey).map((item, index) => (
-          <Menu.Item key={index}>
-            <Link to={item.link}>{item.label}</Link>
-          </Menu.Item>
-        ))}
+        {Constants.siderMenus
+          .filter((sideMenu) => sideMenu.headerMenu === headerMenu.key)
+          .map((item, index) => (
+            <Menu.Item key={index}>
+              <Link to={item.link}>{item.label}</Link>
+            </Menu.Item>
+          ))}
       </Menu>
     </>
   );

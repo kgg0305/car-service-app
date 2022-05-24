@@ -6,15 +6,23 @@ import setting_icon from "../assets/images/setting-icon.png";
 import { Constants } from "../constants/Constants";
 import { useDispatch, useSelector } from "react-redux";
 import { removeToken } from "../store/reducers/auth";
+import { setHeaderMenu } from "../store/reducers/menu";
 
 function Header() {
   const { token } = useSelector((state) => ({
     token: state.auth.token,
   }));
 
+  const { headerMenu } = useSelector((state) => ({
+    headerMenu: state.menu.headerMenu,
+  }));
+
   const dispatch = useDispatch();
 
   const onLogoutClick = () => dispatch(removeToken());
+  const onMenuClick = (key) => {
+    dispatch(setHeaderMenu(key));
+  };
 
   return (
     <Row justify="middle">
@@ -22,10 +30,11 @@ function Header() {
         <Menu
           className="top-menu-layout"
           mode="horizontal"
-          defaultSelectedKeys={["0"]}
+          defaultSelectedKeys={[headerMenu.key]}
+          onClick={(key) => onMenuClick(key.key)}
         >
-          {Constants.headerMenus.map((item, index) => (
-            <Menu.Item key={index}>
+          {Constants.headerMenus.map((item) => (
+            <Menu.Item key={item.key}>
               <Link to={item.link}>{item.label}</Link>
             </Menu.Item>
           ))}

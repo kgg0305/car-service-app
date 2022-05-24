@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import menu from "./menu";
 import auth from "./auth";
 import brandCreate from "./car/brand/create";
 import brandEdit from "./car/brand/edit";
@@ -61,6 +62,7 @@ import manageList from "./user/manage/list";
 import roleList from "./user/role/list";
 
 const rootReducers = combineReducers({
+  menu,
   auth,
   brandCreate,
   brandEdit,

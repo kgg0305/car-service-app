@@ -101,10 +101,10 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route exact path="/" element={<Main headerMenuKey={"car"} />}>
+        <Route exact path="/" element={<Main />}>
           <Route index element={<CarBrandList />} />
         </Route>
-        <Route exact path="car" element={<Main headerMenuKey={"car"} />}>
+        <Route exact path="car" element={<Main />}>
           <Route path="brand">
             <Route index element={<CarBrandList />} />
             <Route path="create" element={<CarBrandCreate />} />
@@ -145,24 +145,20 @@ function App() {
         </Route>
 
         {/* User */}
-        <Route path="/user/mine/:id" element={<Main headerMenuKey={"user"} />}>
+        <Route path="/user/mine/:id" element={<Main />}>
           <Route index element={<UserMineDetail />} />
         </Route>
-        <Route path="/user/manage/" element={<Main headerMenuKey={"user"} />}>
+        <Route path="/user/manage/" element={<Main />}>
           <Route index element={<UserManageList />} />
           <Route path="create" element={<UserManageCreate />} />
           <Route path="edit/:id" element={<UserManageEdit />} />
         </Route>
-        <Route path="/user/role/" element={<Main headerMenuKey={"user"} />}>
+        <Route path="/user/role/" element={<Main />}>
           <Route index element={<UserRoleList />} />
         </Route>
 
         {/* Estimation */}
-        <Route
-          exact
-          path="estimation"
-          element={<Main headerMenuKey={"estimation"} />}
-        >
+        <Route exact path="estimation" element={<Main />}>
           <Route path="quotation">
             <Route index element={<EstimationQuotationList />} />
             <Route path="detail/:id" element={<EstimationQuotationDetail />} />
@@ -180,11 +176,7 @@ function App() {
         </Route>
 
         {/* Content */}
-        <Route
-          exact
-          path="content"
-          element={<Main headerMenuKey={"content"} />}
-        >
+        <Route exact path="content" element={<Main />}>
           <Route path="content">
             <Route index element={<ContentContentList />} />
           </Route>

@@ -7,15 +7,15 @@ import SiderContent from "./Sider";
 
 const { Header, Content, Sider } = Layout;
 
-function Main({ headerMenuKey, removeToken }) {
+function Main() {
   return (
     <Layout className="main-layout">
       <Sider width="auto" theme="light">
-        <SiderContent headerMenuKey={headerMenuKey} />
+        <SiderContent />
       </Sider>
       <Layout className="site-layout">
         <Header className="header-layout">
-          <HeaderContent removeToken={() => removeToken()} />
+          <HeaderContent />
         </Header>
         <Content className="content-layout">
           <Outlet />
