@@ -25,7 +25,7 @@ function List() {
     dispatch(init());
   }, [dispatch]);
 
-  const onTableMoreClick = () => dispatch(showMore(offset + 10));
+  const onTableMoreClick = () => dispatch(showMore());
   const onClickAdd = () => dispatch(add(addData, offset));
   const onChangeAddComponent = (name, value) => dispatch(setAdd(name, value));
 

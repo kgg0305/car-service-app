@@ -30,10 +30,10 @@ function List() {
     dispatch(init());
   }, [dispatch]);
 
-  const onTableMoreClick = () => dispatch(showMore(offset + 10));
-  const onClickSearch = () => dispatch(search(searchData));
-  const onClickReset = () => dispatch(reset());
-  const onChangeSearchComponent = (name, value) =>
+  const onTableMoreClick = () => dispatch(showMore());
+  const onSearchClick = () => dispatch(search());
+  const onResetClick = () => dispatch(reset());
+  const onSearchComponentChange = (name, value) =>
     dispatch(setSearch(name, value));
 
   const columns = [
@@ -138,7 +138,7 @@ function List() {
                   name="brand_id"
                   value={searchData.brand_id}
                   onChange={(value) => {
-                    onChangeSearchComponent("brand_id", value);
+                    onSearchComponentChange("brand_id", value);
                   }}
                   suffixIcon={<CaretDownOutlined />}
                   placeholder="브랜드 선택"
@@ -162,7 +162,7 @@ function List() {
                   name="is_use"
                   value={searchData.is_use}
                   onChange={(value) => {
-                    onChangeSearchComponent("is_use", value);
+                    onSearchComponentChange("is_use", value);
                   }}
                   suffixIcon={<CaretDownOutlined />}
                   placeholder="선택"
@@ -186,7 +186,7 @@ function List() {
                   name="car_kind_id"
                   value={searchData.car_kind_id}
                   onChange={(value) => {
-                    onChangeSearchComponent("car_kind_id", value);
+                    onSearchComponentChange("car_kind_id", value);
                   }}
                   suffixIcon={<CaretDownOutlined />}
                   placeholder="선택"
@@ -206,14 +206,14 @@ function List() {
 
         <Row key={2} justify="center" gutter={[17, 0]}>
           <Col>
-            <Button className="white-button big-button" onClick={onClickReset}>
+            <Button className="white-button big-button" onClick={onResetClick}>
               초기화
             </Button>
           </Col>
           <Col>
             <Button
               className="black-button big-button"
-              onClick={() => onClickSearch(searchData)}
+              onClick={() => onSearchClick(searchData)}
             >
               검색
             </Button>

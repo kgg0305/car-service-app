@@ -37,10 +37,10 @@ function List() {
     dispatch(init());
   }, [dispatch]);
 
-  const onTableMoreClick = () => dispatch(showMore(offset + 10));
-  const onClickSearch = () => dispatch(search(searchData));
-  const onClickReset = () => dispatch(reset());
-  const onChangeSearchComponent = (name, value) =>
+  const onTableMoreClick = () => dispatch(showMore());
+  const onSearchClick = () => dispatch(search());
+  const onResetClick = () => dispatch(reset());
+  const onSearchComponentChange = (name, value) =>
     dispatch(setSearch(name, value));
 
   const columns = [
@@ -149,7 +149,7 @@ function List() {
                   name="brand_id"
                   value={searchData.brand_id}
                   onChange={(value) => {
-                    onChangeSearchComponent("brand_id", value);
+                    onSearchComponentChange("brand_id", value);
                   }}
                   suffixIcon={<CaretDownOutlined />}
                   placeholder="브랜드 선택"
@@ -166,7 +166,7 @@ function List() {
                   name="idx"
                   value={searchData.idx}
                   onChange={(value) => {
-                    onChangeSearchComponent("idx", value);
+                    onSearchComponentChange("idx", value);
                   }}
                   suffixIcon={<CaretDownOutlined />}
                   placeholder="할인종류 선택"
@@ -198,7 +198,7 @@ function List() {
               <Space size={6}>
                 <Button
                   key={1}
-                  onClick={() => onChangeSearchComponent("date_period", 0)}
+                  onClick={() => onSearchComponentChange("date_period", 0)}
                   size="large"
                   className={
                     searchData.date_period === 0
@@ -210,7 +210,7 @@ function List() {
                 </Button>
                 <Button
                   key={2}
-                  onClick={() => onChangeSearchComponent("date_period", 1)}
+                  onClick={() => onSearchComponentChange("date_period", 1)}
                   size="large"
                   className={
                     searchData.date_period === 1
@@ -222,7 +222,7 @@ function List() {
                 </Button>
                 <Button
                   key={3}
-                  onClick={() => onChangeSearchComponent("date_period", 2)}
+                  onClick={() => onSearchComponentChange("date_period", 2)}
                   size="large"
                   className={
                     searchData.date_period === 2
@@ -234,7 +234,7 @@ function List() {
                 </Button>
                 <Button
                   key={4}
-                  onClick={() => onChangeSearchComponent("date_period", 3)}
+                  onClick={() => onSearchComponentChange("date_period", 3)}
                   size="large"
                   className={
                     searchData.date_period === 3
@@ -246,7 +246,7 @@ function List() {
                 </Button>
                 <Button
                   key={5}
-                  onClick={() => onChangeSearchComponent("date_period", 4)}
+                  onClick={() => onSearchComponentChange("date_period", 4)}
                   size="large"
                   className={
                     searchData.date_period === 4
@@ -258,7 +258,7 @@ function List() {
                 </Button>
                 <Button
                   key={6}
-                  onClick={() => onChangeSearchComponent("date_period", 5)}
+                  onClick={() => onSearchComponentChange("date_period", 5)}
                   size="large"
                   className={
                     searchData.date_period === 5
@@ -270,7 +270,7 @@ function List() {
                 </Button>
                 <Button
                   key={7}
-                  onClick={() => onChangeSearchComponent("date_period", 6)}
+                  onClick={() => onSearchComponentChange("date_period", 6)}
                   size="large"
                   className={
                     searchData.date_period === 6
@@ -285,7 +285,7 @@ function List() {
                   name="s_date"
                   value={searchData.s_date ? moment(searchData.s_date) : ""}
                   onChange={(value) => {
-                    onChangeSearchComponent("s_date", value.toString());
+                    onSearchComponentChange("s_date", value.toString());
                   }}
                   placeholder="시작일"
                   size="large"
@@ -295,7 +295,7 @@ function List() {
                   name="e_date"
                   value={searchData.e_date ? moment(searchData.e_date) : ""}
                   onChange={(value) => {
-                    onChangeSearchComponent("e_date", value.toString());
+                    onSearchComponentChange("e_date", value.toString());
                   }}
                   placeholder="종료일"
                   size="large"
@@ -307,14 +307,14 @@ function List() {
 
         <Row key={2} justify="center" gutter={[17, 0]}>
           <Col>
-            <Button className="white-button big-button" onClick={onClickReset}>
+            <Button className="white-button big-button" onClick={onResetClick}>
               초기화
             </Button>
           </Col>
           <Col>
             <Button
               className="black-button big-button"
-              onClick={() => onClickSearch(searchData)}
+              onClick={() => onSearchClick(searchData)}
             >
               검색
             </Button>

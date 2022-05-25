@@ -43,10 +43,10 @@ function List() {
     dispatch(init());
   }, [dispatch]);
 
-  const onTableMoreClick = () => dispatch(showMore(offset + 10));
-  const onClickSearch = () => dispatch(search(searchData));
-  const onClickReset = () => dispatch(reset());
-  const onChangeSearchComponent = (name, value) =>
+  const onTableMoreClick = () => dispatch(showMore());
+  const onSearchClick = () => dispatch(search());
+  const onResetClick = () => dispatch(reset());
+  const onSearchComponentChange = (name, value) =>
     dispatch(setSearch(name, value));
   const onAssignToChange = (idx, value) =>
     dispatch(assign(dataSource, idx, value));
@@ -271,7 +271,7 @@ function List() {
                   name="date_type"
                   value={searchData.date_type}
                   onChange={(value) => {
-                    onChangeSearchComponent("date_type", value);
+                    onSearchComponentChange("date_type", value);
                   }}
                   suffixIcon={<CaretDownOutlined />}
                   placeholder="등록일"
@@ -286,7 +286,7 @@ function List() {
                 </Select>
                 <Button
                   key={1}
-                  onClick={() => onChangeSearchComponent("date_period", 0)}
+                  onClick={() => onSearchComponentChange("date_period", 0)}
                   size="large"
                   className={
                     searchData.date_period === 0
@@ -298,7 +298,7 @@ function List() {
                 </Button>
                 <Button
                   key={2}
-                  onClick={() => onChangeSearchComponent("date_period", 1)}
+                  onClick={() => onSearchComponentChange("date_period", 1)}
                   size="large"
                   className={
                     searchData.date_period === 1
@@ -310,7 +310,7 @@ function List() {
                 </Button>
                 <Button
                   key={3}
-                  onClick={() => onChangeSearchComponent("date_period", 2)}
+                  onClick={() => onSearchComponentChange("date_period", 2)}
                   size="large"
                   className={
                     searchData.date_period === 2
@@ -322,7 +322,7 @@ function List() {
                 </Button>
                 <Button
                   key={4}
-                  onClick={() => onChangeSearchComponent("date_period", 3)}
+                  onClick={() => onSearchComponentChange("date_period", 3)}
                   size="large"
                   className={
                     searchData.date_period === 3
@@ -334,7 +334,7 @@ function List() {
                 </Button>
                 <Button
                   key={5}
-                  onClick={() => onChangeSearchComponent("date_period", 4)}
+                  onClick={() => onSearchComponentChange("date_period", 4)}
                   size="large"
                   className={
                     searchData.date_period === 4
@@ -346,7 +346,7 @@ function List() {
                 </Button>
                 <Button
                   key={6}
-                  onClick={() => onChangeSearchComponent("date_period", 5)}
+                  onClick={() => onSearchComponentChange("date_period", 5)}
                   size="large"
                   className={
                     searchData.date_period === 5
@@ -358,7 +358,7 @@ function List() {
                 </Button>
                 <Button
                   key={7}
-                  onClick={() => onChangeSearchComponent("date_period", 6)}
+                  onClick={() => onSearchComponentChange("date_period", 6)}
                   size="large"
                   className={
                     searchData.date_period === 6
@@ -373,7 +373,7 @@ function List() {
                   name="s_date"
                   value={searchData.s_date ? moment(searchData.s_date) : ""}
                   onChange={(value) => {
-                    onChangeSearchComponent(
+                    onSearchComponentChange(
                       "s_date",
                       GetDateStringFromDate(new Date(value.toString()))
                     );
@@ -386,7 +386,7 @@ function List() {
                   name="e_date"
                   value={searchData.e_date ? moment(searchData.e_date) : ""}
                   onChange={(value) => {
-                    onChangeSearchComponent(
+                    onSearchComponentChange(
                       "e_date",
                       GetDateStringFromDate(new Date(value.toString()))
                     );
@@ -413,7 +413,7 @@ function List() {
                   name="purchase_method"
                   value={searchData.purchase_method}
                   onChange={(value) => {
-                    onChangeSearchComponent("purchase_method", value);
+                    onSearchComponentChange("purchase_method", value);
                   }}
                   suffixIcon={<CaretDownOutlined />}
                   placeholder="구입방법"
@@ -432,7 +432,7 @@ function List() {
                   name="search_type"
                   value={searchData.search_type}
                   onChange={(value) => {
-                    onChangeSearchComponent("search_type", value);
+                    onSearchComponentChange("search_type", value);
                   }}
                   suffixIcon={<CaretDownOutlined />}
                   placeholder="검색구분"
@@ -451,7 +451,7 @@ function List() {
                   name="search_text"
                   value={searchData.search_text}
                   onChange={(e) => {
-                    onChangeSearchComponent(e.target.name, e.target.value);
+                    onSearchComponentChange(e.target.name, e.target.value);
                   }}
                   size="large"
                   style={{ width: 200 }}
@@ -461,7 +461,7 @@ function List() {
                   name="purchase_path"
                   value={searchData.purchase_path}
                   onChange={(e) => {
-                    onChangeSearchComponent(e.target.name, e.target.value);
+                    onSearchComponentChange(e.target.name, e.target.value);
                   }}
                   size="large"
                   style={{ width: 200 }}
@@ -484,7 +484,7 @@ function List() {
               <Space size={6}>
                 <Button
                   key={1}
-                  onClick={() => onChangeSearchComponent("status", 0)}
+                  onClick={() => onSearchComponentChange("status", 0)}
                   size="large"
                   className={
                     (searchData.status === 0
@@ -496,7 +496,7 @@ function List() {
                 </Button>
                 <Button
                   key={2}
-                  onClick={() => onChangeSearchComponent("status", 1)}
+                  onClick={() => onSearchComponentChange("status", 1)}
                   size="large"
                   className={
                     (searchData.status === 1
@@ -508,7 +508,7 @@ function List() {
                 </Button>
                 <Button
                   key={3}
-                  onClick={() => onChangeSearchComponent("status", 2)}
+                  onClick={() => onSearchComponentChange("status", 2)}
                   size="large"
                   className={
                     (searchData.status === 2
@@ -520,7 +520,7 @@ function List() {
                 </Button>
                 <Button
                   key={4}
-                  onClick={() => onChangeSearchComponent("status", 3)}
+                  onClick={() => onSearchComponentChange("status", 3)}
                   size="large"
                   className={
                     (searchData.status === 3
@@ -532,7 +532,7 @@ function List() {
                 </Button>
                 <Button
                   key={5}
-                  onClick={() => onChangeSearchComponent("status", 4)}
+                  onClick={() => onSearchComponentChange("status", 4)}
                   size="large"
                   className={
                     (searchData.status === 4
@@ -544,7 +544,7 @@ function List() {
                 </Button>
                 <Button
                   key={6}
-                  onClick={() => onChangeSearchComponent("status", 5)}
+                  onClick={() => onSearchComponentChange("status", 5)}
                   size="large"
                   className={
                     (searchData.status === 5
@@ -561,14 +561,14 @@ function List() {
 
         <Row key={2} justify="center" gutter={[17, 0]}>
           <Col>
-            <Button className="white-button big-button" onClick={onClickReset}>
+            <Button className="white-button big-button" onClick={onResetClick}>
               초기화
             </Button>
           </Col>
           <Col>
             <Button
               className="black-button big-button"
-              onClick={() => onClickSearch(searchData)}
+              onClick={() => onSearchClick(searchData)}
             >
               검색
             </Button>

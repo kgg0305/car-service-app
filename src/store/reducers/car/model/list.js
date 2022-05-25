@@ -28,8 +28,10 @@ export const init = () => async (dispatch) => {
   }
 };
 
-export const showMore = (offset) => async (dispatch) => {
+export const showMore = () => async (dispatch, getState) => {
   try {
+    const state = getState();
+    const offset = state.modelList.offset + 10;
     const dataSource = await modelService.getList(offset);
 
     dispatch({
@@ -44,16 +46,16 @@ export const showMore = (offset) => async (dispatch) => {
   }
 };
 
-export const search = (searchData) => async (dispatch) => {
+export const search = () => async (dispatch, getState) => {
   try {
+    const state = getState();
+    const searchData = state.modelList.searchData;
     const dataSource = await modelService.getList(0, searchData);
 
     dispatch({
       type: SEARCH,
       payload: {
-        offset: 0,
         dataSource: dataSource,
-        searchData: searchData,
       },
     });
   } catch (e) {
@@ -108,9 +110,7 @@ export default function list(state = initialState, action) {
     case SEARCH:
       return {
         ...state,
-        offset: action.payload.offset,
         dataSource: action.payload.dataSource,
-        searchData: action.payload.searchData,
       };
     case SET_SEARCH:
       return {

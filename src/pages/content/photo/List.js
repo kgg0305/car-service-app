@@ -26,7 +26,7 @@ function List() {
     dispatch(init());
   }, [dispatch]);
 
-  const onTableMoreClick = () => dispatch(showMore(offset + 10));
+  const onTableMoreClick = () => dispatch(showMore());
   const onShowDetailModalClick = (content_ids) =>
     dispatch(showDetailModal(content_ids));
   const onCloseDetailModalClick = () => dispatch(closeDetailModal());

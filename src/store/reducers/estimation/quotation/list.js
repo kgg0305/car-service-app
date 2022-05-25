@@ -36,8 +36,10 @@ export const init = () => async (dispatch) => {
   }
 };
 
-export const showMore = (offset) => async (dispatch) => {
+export const showMore = () => async (dispatch, getState) => {
   try {
+    const state = getState();
+    const offset = state.quotationList.offset + 10;
     const dataSource = await quotationService.getList(offset);
     const summaryData = {
       quotation: dataSource.length,
@@ -61,8 +63,10 @@ export const showMore = (offset) => async (dispatch) => {
   }
 };
 
-export const search = (searchData) => async (dispatch) => {
+export const search = () => async (dispatch, getState) => {
   try {
+    const state = getState();
+    const searchData = state.quotationList.searchData;
     const dataSource = await quotationService.getList(0, searchData);
     const summaryData = {
       quotation: dataSource.length,
@@ -76,10 +80,8 @@ export const search = (searchData) => async (dispatch) => {
     dispatch({
       type: SEARCH,
       payload: {
-        offset: 0,
         summaryData: summaryData,
         dataSource: dataSource,
-        searchData: searchData,
       },
     });
   } catch (e) {
@@ -207,10 +209,8 @@ export default function list(state = initialState, action) {
     case SEARCH:
       return {
         ...state,
-        offset: action.payload.offset,
         summaryData: action.payload.summaryData,
         dataSource: action.payload.dataSource,
-        searchData: action.payload.searchData,
       };
     case SET_SEARCH:
       return {

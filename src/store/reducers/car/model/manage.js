@@ -33,8 +33,10 @@ export const init = (group_id) => async (dispatch) => {
 export const removeRedirectTo = () => ({
   type: REMOVE_REDIRECTTO,
 });
-export const showMore = (offset) => async (dispatch) => {
+export const showMore = () => async (dispatch, getState) => {
   try {
+    const state = getState();
+    const offset = state.modelManage.offset + 10;
     const dataSource = await modelService.getList(offset);
 
     dispatch({

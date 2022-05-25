@@ -19,7 +19,7 @@ function List() {
     dispatch(init());
   }, [dispatch]);
 
-  const onTableMoreClick = () => dispatch(showMore(offset + 10));
+  const onTableMoreClick = () => dispatch(showMore());
 
   const columns = [
     {

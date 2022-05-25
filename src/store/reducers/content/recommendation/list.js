@@ -40,8 +40,10 @@ export const init = () => async (dispatch) => {
   }
 };
 
-export const showMore = (offset) => async (dispatch) => {
+export const showMore = () => async (dispatch, getState) => {
   try {
+    const state = getState();
+    const offset = state.recommendationList.offset + 10;
     const initDataSource = await recommendationService.getList(offset);
 
     let initTempDataSource = [];

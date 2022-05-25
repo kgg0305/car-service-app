@@ -46,8 +46,10 @@ export const init = () => async (dispatch) => {
   }
 };
 
-export const showMore = (offset) => async (dispatch) => {
+export const showMore = () => async (dispatch, getState) => {
   try {
+    const state = getState();
+    const offset = state.carRankList.offset + 10;
     const initDataSource = await rankService.getList(offset);
 
     let initTempDataSource = [];

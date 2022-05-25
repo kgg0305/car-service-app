@@ -32,8 +32,10 @@ export const init = (lineup_id) => async (dispatch) => {
 export const removeRedirectTo = () => ({
   type: REMOVE_REDIRECTTO,
 });
-export const showMore = (offset) => async (dispatch) => {
+export const showMore = () => async (dispatch, getState) => {
   try {
+    const state = getState();
+    const offset = state.trimManage.offset + 10;
     const dataSource = await trimService.getList(offset);
 
     dispatch({

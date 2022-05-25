@@ -41,7 +41,7 @@ function Manage() {
     dispatch(init(group_id));
   }, [redirectTo, dispatch]);
 
-  const onTableMoreClick = () => dispatch(showMore(offset + 10));
+  const onTableMoreClick = () => dispatch(showMore());
   const onDeleteClick = async (idx) => dispatch(showConfirm(idx));
   const deleteInfo = async (idx) =>
     dispatch(remove("/car/model/manage/" + group_id, idx));
