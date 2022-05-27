@@ -372,11 +372,7 @@ function Edit() {
                     <Col flex="auto" className="table-value-col-section">
                       <InputNumber
                         name="fuel_efficiency"
-                        value={
-                          detailBodyInfo.fuel_efficiency
-                            ? detailBodyInfo.fuel_efficiency
-                            : 0
-                        }
+                        value={detailBodyInfo.fuel_efficiency}
                         onChange={(number) => {
                           onDetailComponentChange("fuel_efficiency", number);
                         }}
@@ -398,11 +394,7 @@ function Edit() {
                     <Col span={10} className="table-value-col-section">
                       <InputNumber
                         name="amount_mowing"
-                        value={
-                          detailBodyInfo.amount_mowing
-                            ? detailBodyInfo.amount_mowing
-                            : 0
-                        }
+                        value={detailBodyInfo.amount_mowing}
                         onChange={(number) => {
                           onDetailComponentChange("amount_mowing", number);
                         }}
@@ -417,11 +409,7 @@ function Edit() {
                     <Col flex="auto" className="table-value-col-section">
                       <Input
                         name="engine_type"
-                        value={
-                          detailBodyInfo.engine_type
-                            ? detailBodyInfo.engine_type
-                            : ""
-                        }
+                        value={detailBodyInfo.engine_type}
                         onChange={(e) => {
                           onDetailComponentChange(
                             e.target.name,
@@ -446,11 +434,7 @@ function Edit() {
                       <Space size={6}>
                         <InputNumber
                           name="max_torque1"
-                          value={
-                            detailBodyInfo.max_torque1
-                              ? detailBodyInfo.max_torque1
-                              : 0
-                          }
+                          value={detailBodyInfo.max_torque1}
                           onChange={(number) => {
                             onDetailComponentChange("max_torque1", number);
                           }}
@@ -461,11 +445,7 @@ function Edit() {
                         <label>/</label>
                         <InputNumber
                           name="max_torque2"
-                          value={
-                            detailBodyInfo.max_torque2
-                              ? detailBodyInfo.max_torque2
-                              : 0
-                          }
+                          value={detailBodyInfo.max_torque2}
                           onChange={(number) => {
                             onDetailComponentChange("max_torque2", number);
                           }}
@@ -482,11 +462,7 @@ function Edit() {
                       <Space size={6}>
                         <InputNumber
                           name="highest_output1"
-                          value={
-                            detailBodyInfo.highest_output1
-                              ? detailBodyInfo.highest_output1
-                              : 0
-                          }
+                          value={detailBodyInfo.highest_output1}
                           onChange={(number) => {
                             onDetailComponentChange("highest_output1", number);
                           }}
@@ -497,11 +473,7 @@ function Edit() {
                         <label>/</label>
                         <InputNumber
                           name="highest_output2"
-                          value={
-                            detailBodyInfo.highest_output2
-                              ? detailBodyInfo.highest_output2
-                              : 0
-                          }
+                          value={detailBodyInfo.highest_output2}
                           onChange={(number) => {
                             onDetailComponentChange("highest_output2", number);
                           }}
@@ -524,11 +496,7 @@ function Edit() {
                     <Col span={10} className="table-value-col-section">
                       <InputNumber
                         name="emissions_CO2"
-                        value={
-                          detailBodyInfo.emissions_CO2
-                            ? detailBodyInfo.emissions_CO2
-                            : 0
-                        }
+                        value={detailBodyInfo.emissions_CO2}
                         onChange={(number) => {
                           onDetailComponentChange("emissions_CO2", number);
                         }}
@@ -544,9 +512,7 @@ function Edit() {
                       <Space size={6}>
                         <InputNumber
                           name="tire1"
-                          value={
-                            detailBodyInfo.tire1 ? detailBodyInfo.tire1 : 0
-                          }
+                          value={detailBodyInfo.tire1}
                           onChange={(number) => {
                             onDetailComponentChange("tire1", number);
                           }}
@@ -557,9 +523,7 @@ function Edit() {
                         <label>/</label>
                         <InputNumber
                           name="tire2"
-                          value={
-                            detailBodyInfo.tire2 ? detailBodyInfo.tire2 : 0
-                          }
+                          value={detailBodyInfo.tire2}
                           onChange={(number) => {
                             onDetailComponentChange("tire2", number);
                           }}
@@ -570,9 +534,7 @@ function Edit() {
                         <label>R</label>
                         <InputNumber
                           name="tire3"
-                          value={
-                            detailBodyInfo.tire3 ? detailBodyInfo.tire3 : 0
-                          }
+                          value={detailBodyInfo.tire3}
                           onChange={(number) => {
                             onDetailComponentChange("tire3", number);
                           }}
@@ -595,11 +557,7 @@ function Edit() {
                     <Col span={10} className="table-value-col-section">
                       <Input
                         name="driving_method"
-                        value={
-                          detailBodyInfo.driving_method
-                            ? detailBodyInfo.driving_method
-                            : ""
-                        }
+                        value={detailBodyInfo.driving_method}
                         onChange={(e) => {
                           onDetailComponentChange(
                             e.target.name,
@@ -617,9 +575,7 @@ function Edit() {
                     <Col flex="auto" className="table-value-col-section">
                       <Input
                         name="gearbox"
-                        value={
-                          detailBodyInfo.gearbox ? detailBodyInfo.gearbox : ""
-                        }
+                        value={detailBodyInfo.gearbox}
                         onChange={(e) => {
                           onDetailComponentChange(
                             e.target.name,
@@ -644,11 +600,7 @@ function Edit() {
                     <Col span={10} className="table-value-col-section">
                       <InputNumber
                         name="fuel_tank"
-                        value={
-                          detailBodyInfo.fuel_tank
-                            ? detailBodyInfo.fuel_tank
-                            : 0
-                        }
+                        value={detailBodyInfo.fuel_tank}
                         onChange={(number) => {
                           onDetailComponentChange("fuel_tank", number);
                         }}
@@ -663,11 +615,7 @@ function Edit() {
                     <Col flex="auto" className="table-value-col-section">
                       <InputNumber
                         name="tolerance_weight"
-                        value={
-                          detailBodyInfo.tolerance_weight
-                            ? detailBodyInfo.tolerance_weight
-                            : 0
-                        }
+                        value={detailBodyInfo.tolerance_weight}
                         onChange={(number) => {
                           onDetailComponentChange("tolerance_weight", number);
                         }}
@@ -689,11 +637,7 @@ function Edit() {
                     <Col flex="auto" className="table-value-col-section">
                       <InputNumber
                         name="boarding_capacity"
-                        value={
-                          detailBodyInfo.boarding_capacity
-                            ? detailBodyInfo.boarding_capacity
-                            : 0
-                        }
+                        value={detailBodyInfo.boarding_capacity}
                         onChange={(number) => {
                           onDetailComponentChange("boarding_capacity", number);
                         }}
@@ -725,11 +669,7 @@ function Edit() {
                     <Col span={10} className="table-value-col-section">
                       <InputNumber
                         name="whole_height"
-                        value={
-                          detailBodyInfo.whole_height
-                            ? detailBodyInfo.whole_height
-                            : 0
-                        }
+                        value={detailBodyInfo.whole_height}
                         onChange={(number) => {
                           onDetailComponentChange("whole_height", number);
                         }}
@@ -744,11 +684,7 @@ function Edit() {
                     <Col flex="auto" className="table-value-col-section">
                       <InputNumber
                         name="full_width"
-                        value={
-                          detailBodyInfo.full_width
-                            ? detailBodyInfo.full_width
-                            : 0
-                        }
+                        value={detailBodyInfo.full_width}
                         onChange={(number) => {
                           onDetailComponentChange("full_width", number);
                         }}
@@ -770,11 +706,7 @@ function Edit() {
                     <Col span={10} className="table-value-col-section">
                       <InputNumber
                         name="wheelbase"
-                        value={
-                          detailBodyInfo.wheelbase
-                            ? detailBodyInfo.wheelbase
-                            : 0
-                        }
+                        value={detailBodyInfo.wheelbase}
                         onChange={(number) => {
                           onDetailComponentChange("wheelbase", number);
                         }}
@@ -789,11 +721,7 @@ function Edit() {
                     <Col flex="auto" className="table-value-col-section">
                       <InputNumber
                         name="whole_length"
-                        value={
-                          detailBodyInfo.whole_length
-                            ? detailBodyInfo.whole_length
-                            : 0
-                        }
+                        value={detailBodyInfo.whole_length}
                         onChange={(number) => {
                           onDetailComponentChange("whole_length", number);
                         }}
@@ -845,11 +773,7 @@ function Edit() {
                     <Col flex="auto" className="table-value-col-section">
                       <InputNumber
                         name="fuel_efficiency"
-                        value={
-                          detailBodyInfo.fuel_efficiency
-                            ? detailBodyInfo.fuel_efficiency
-                            : 0
-                        }
+                        value={detailBodyInfo.fuel_efficiency}
                         onChange={(number) => {
                           onDetailComponentChange("fuel_efficiency", number);
                         }}
@@ -871,11 +795,7 @@ function Edit() {
                     <Col span={10} className="table-value-col-section">
                       <InputNumber
                         name="amount_mowing"
-                        value={
-                          detailBodyInfo.amount_mowing
-                            ? detailBodyInfo.amount_mowing
-                            : 0
-                        }
+                        value={detailBodyInfo.amount_mowing}
                         onChange={(number) => {
                           onDetailComponentChange("amount_mowing", number);
                         }}
@@ -890,11 +810,7 @@ function Edit() {
                     <Col flex="auto" className="table-value-col-section">
                       <Input
                         name="engine_type"
-                        value={
-                          detailBodyInfo.engine_type
-                            ? detailBodyInfo.engine_type
-                            : ""
-                        }
+                        value={detailBodyInfo.engine_type}
                         onChange={(e) => {
                           onDetailComponentChange(
                             e.target.name,
@@ -919,11 +835,7 @@ function Edit() {
                       <Space size={6}>
                         <InputNumber
                           name="max_torque1"
-                          value={
-                            detailBodyInfo.max_torque1
-                              ? detailBodyInfo.max_torque1
-                              : 0
-                          }
+                          value={detailBodyInfo.max_torque1}
                           onChange={(number) => {
                             onDetailComponentChange("max_torque1", number);
                           }}
@@ -934,11 +846,7 @@ function Edit() {
                         <label>/</label>
                         <InputNumber
                           name="max_torque2"
-                          value={
-                            detailBodyInfo.max_torque2
-                              ? detailBodyInfo.max_torque2
-                              : 0
-                          }
+                          value={detailBodyInfo.max_torque2}
                           onChange={(number) => {
                             onDetailComponentChange("max_torque2", number);
                           }}
@@ -955,11 +863,7 @@ function Edit() {
                       <Space size={6}>
                         <InputNumber
                           name="highest_output1"
-                          value={
-                            detailBodyInfo.highest_output1
-                              ? detailBodyInfo.highest_output1
-                              : 0
-                          }
+                          value={detailBodyInfo.highest_output1}
                           onChange={(number) => {
                             onDetailComponentChange("highest_output1", number);
                           }}
@@ -970,11 +874,7 @@ function Edit() {
                         <label>/</label>
                         <InputNumber
                           name="highest_output2"
-                          value={
-                            detailBodyInfo.highest_output2
-                              ? detailBodyInfo.highest_output2
-                              : 0
-                          }
+                          value={detailBodyInfo.highest_output2}
                           onChange={(number) => {
                             onDetailComponentChange("highest_output2", number);
                           }}
@@ -997,11 +897,7 @@ function Edit() {
                     <Col span={10} className="table-value-col-section">
                       <InputNumber
                         name="zero_back"
-                        value={
-                          detailBodyInfo.zero_back
-                            ? detailBodyInfo.zero_back
-                            : 0
-                        }
+                        value={detailBodyInfo.zero_back}
                         onChange={(number) => {
                           onDetailComponentChange("zero_back", number);
                         }}
@@ -1016,11 +912,7 @@ function Edit() {
                     <Col span={10} className="table-value-col-section">
                       <InputNumber
                         name="emissions_CO2"
-                        value={
-                          detailBodyInfo.emissions_CO2
-                            ? detailBodyInfo.emissions_CO2
-                            : 0
-                        }
+                        value={detailBodyInfo.emissions_CO2}
                         onChange={(number) => {
                           onDetailComponentChange("emissions_CO2", number);
                         }}
@@ -1043,9 +935,7 @@ function Edit() {
                       <Space size={6}>
                         <InputNumber
                           name="tire1"
-                          value={
-                            detailBodyInfo.tire1 ? detailBodyInfo.tire1 : 0
-                          }
+                          value={detailBodyInfo.tire1}
                           onChange={(number) => {
                             onDetailComponentChange("tire1", number);
                           }}
@@ -1056,9 +946,7 @@ function Edit() {
                         <label>/</label>
                         <InputNumber
                           name="tire2"
-                          value={
-                            detailBodyInfo.tire2 ? detailBodyInfo.tire2 : 0
-                          }
+                          value={detailBodyInfo.tire2}
                           onChange={(number) => {
                             onDetailComponentChange("tire2", number);
                           }}
@@ -1069,9 +957,7 @@ function Edit() {
                         <label>R</label>
                         <InputNumber
                           name="tire3"
-                          value={
-                            detailBodyInfo.tire3 ? detailBodyInfo.tire3 : 0
-                          }
+                          value={detailBodyInfo.tire3}
                           onChange={(number) => {
                             onDetailComponentChange("tire3", number);
                           }}
@@ -1087,11 +973,7 @@ function Edit() {
                     <Col span={10} className="table-value-col-section">
                       <Input
                         name="driving_method"
-                        value={
-                          detailBodyInfo.driving_method
-                            ? detailBodyInfo.driving_method
-                            : ""
-                        }
+                        value={detailBodyInfo.driving_method}
                         onChange={(e) => {
                           onDetailComponentChange(
                             e.target.name,
@@ -1116,9 +998,7 @@ function Edit() {
                     <Col flex="auto" className="table-value-col-section">
                       <Input
                         name="gearbox"
-                        value={
-                          detailBodyInfo.gearbox ? detailBodyInfo.gearbox : ""
-                        }
+                        value={detailBodyInfo.gearbox}
                         onChange={(e) => {
                           onDetailComponentChange(
                             e.target.name,
@@ -1136,11 +1016,7 @@ function Edit() {
                     <Col span={10} className="table-value-col-section">
                       <InputNumber
                         name="fuel_tank"
-                        value={
-                          detailBodyInfo.fuel_tank
-                            ? detailBodyInfo.fuel_tank
-                            : 0
-                        }
+                        value={detailBodyInfo.fuel_tank}
                         onChange={(number) => {
                           onDetailComponentChange("fuel_tank", number);
                         }}
@@ -1162,11 +1038,7 @@ function Edit() {
                     <Col flex="auto" className="table-value-col-section">
                       <InputNumber
                         name="tolerance_weight"
-                        value={
-                          detailBodyInfo.tolerance_weight
-                            ? detailBodyInfo.tolerance_weight
-                            : 0
-                        }
+                        value={detailBodyInfo.tolerance_weight}
                         onChange={(number) => {
                           onDetailComponentChange("tolerance_weight", number);
                         }}
@@ -1181,11 +1053,7 @@ function Edit() {
                     <Col flex="auto" className="table-value-col-section">
                       <InputNumber
                         name="boarding_capacity"
-                        value={
-                          detailBodyInfo.boarding_capacity
-                            ? detailBodyInfo.boarding_capacity
-                            : 0
-                        }
+                        value={detailBodyInfo.boarding_capacity}
                         onChange={(number) => {
                           onDetailComponentChange("boarding_capacity", number);
                         }}
@@ -1217,11 +1085,7 @@ function Edit() {
                     <Col span={10} className="table-value-col-section">
                       <InputNumber
                         name="whole_height"
-                        value={
-                          detailBodyInfo.whole_height
-                            ? detailBodyInfo.whole_height
-                            : 0
-                        }
+                        value={detailBodyInfo.whole_height}
                         onChange={(number) => {
                           onDetailComponentChange("whole_height", number);
                         }}
@@ -1236,11 +1100,7 @@ function Edit() {
                     <Col flex="auto" className="table-value-col-section">
                       <InputNumber
                         name="full_width"
-                        value={
-                          detailBodyInfo.full_width
-                            ? detailBodyInfo.full_width
-                            : 0
-                        }
+                        value={detailBodyInfo.full_width}
                         onChange={(number) => {
                           onDetailComponentChange("full_width", number);
                         }}
@@ -1262,11 +1122,7 @@ function Edit() {
                     <Col span={10} className="table-value-col-section">
                       <InputNumber
                         name="wheelbase"
-                        value={
-                          detailBodyInfo.wheelbase
-                            ? detailBodyInfo.wheelbase
-                            : 0
-                        }
+                        value={detailBodyInfo.wheelbase}
                         onChange={(number) => {
                           onDetailComponentChange("wheelbase", number);
                         }}
@@ -1281,11 +1137,7 @@ function Edit() {
                     <Col flex="auto" className="table-value-col-section">
                       <InputNumber
                         name="whole_length"
-                        value={
-                          detailBodyInfo.whole_length
-                            ? detailBodyInfo.whole_length
-                            : 0
-                        }
+                        value={detailBodyInfo.whole_length}
                         onChange={(number) => {
                           onDetailComponentChange("whole_length", number);
                         }}
@@ -1323,11 +1175,7 @@ function Edit() {
                   <Col span={10} className="table-value-col-section">
                     <InputNumber
                       name="center_town"
-                      value={
-                        detailBodyInfo.center_town
-                          ? detailBodyInfo.center_town
-                          : 0
-                      }
+                      value={detailBodyInfo.center_town}
                       onChange={(number) => {
                         onDetailComponentChange("center_town", number);
                       }}
@@ -1342,11 +1190,7 @@ function Edit() {
                   <Col flex="auto" className="table-value-col-section">
                     <InputNumber
                       name="expressway"
-                      value={
-                        detailBodyInfo.expressway
-                          ? detailBodyInfo.expressway
-                          : 0
-                      }
+                      value={detailBodyInfo.expressway}
                       onChange={(number) => {
                         onDetailComponentChange("expressway", number);
                       }}
@@ -1368,9 +1212,7 @@ function Edit() {
                   <Col span={10} className="table-value-col-section">
                     <InputNumber
                       name="combined"
-                      value={
-                        detailBodyInfo.combined ? detailBodyInfo.combined : 0
-                      }
+                      value={detailBodyInfo.combined}
                       onChange={(number) => {
                         onDetailComponentChange("combined", number);
                       }}
@@ -1385,11 +1227,7 @@ function Edit() {
                   <Col flex="auto" className="table-value-col-section">
                     <InputNumber
                       name="room_temperature"
-                      value={
-                        detailBodyInfo.room_temperature
-                          ? detailBodyInfo.room_temperature
-                          : 0
-                      }
+                      value={detailBodyInfo.room_temperature}
                       onChange={(number) => {
                         onDetailComponentChange("room_temperature", number);
                       }}
@@ -1412,11 +1250,7 @@ function Edit() {
                     <Space size={6}>
                       <InputNumber
                         name="low_temperature"
-                        value={
-                          detailBodyInfo.low_temperature
-                            ? detailBodyInfo.low_temperature
-                            : 0
-                        }
+                        value={detailBodyInfo.low_temperature}
                         onChange={(number) => {
                           onDetailComponentChange("low_temperature", number);
                         }}
@@ -1449,11 +1283,7 @@ function Edit() {
                   <Col span={10} className="table-value-col-section">
                     <InputNumber
                       name="battery_capacity"
-                      value={
-                        detailBodyInfo.battery_capacity
-                          ? detailBodyInfo.battery_capacity
-                          : 0
-                      }
+                      value={detailBodyInfo.battery_capacity}
                       onChange={(number) => {
                         onDetailComponentChange("battery_capacity", number);
                       }}
@@ -1468,11 +1298,7 @@ function Edit() {
                   <Col flex="auto" className="table-value-col-section">
                     <Input
                       name="charging_method"
-                      value={
-                        detailBodyInfo.charging_method
-                          ? detailBodyInfo.charging_method
-                          : ""
-                      }
+                      value={detailBodyInfo.charging_method}
                       onChange={(e) => {
                         onDetailComponentChange(e.target.name, e.target.value);
                       }}
@@ -1494,11 +1320,7 @@ function Edit() {
                   <Col span={10} className="table-value-col-section">
                     <Input
                       name="fast_charging"
-                      value={
-                        detailBodyInfo.fast_charging
-                          ? detailBodyInfo.fast_charging
-                          : ""
-                      }
+                      value={detailBodyInfo.fast_charging}
                       onChange={(e) => {
                         onDetailComponentChange(e.target.name, e.target.value);
                       }}
@@ -1513,11 +1335,7 @@ function Edit() {
                   <Col flex="auto" className="table-value-col-section">
                     <Input
                       name="slow_charging"
-                      value={
-                        detailBodyInfo.slow_charging
-                          ? detailBodyInfo.slow_charging
-                          : ""
-                      }
+                      value={detailBodyInfo.slow_charging}
                       onChange={(e) => {
                         onDetailComponentChange(e.target.name, e.target.value);
                       }}
@@ -1549,11 +1367,7 @@ function Edit() {
                   <Col span={10} className="table-value-col-section">
                     <Input
                       name="driving_method"
-                      value={
-                        detailBodyInfo.driving_method
-                          ? detailBodyInfo.driving_method
-                          : ""
-                      }
+                      value={detailBodyInfo.driving_method}
                       onChange={(e) => {
                         onDetailComponentChange(e.target.name, e.target.value);
                       }}
@@ -1568,9 +1382,7 @@ function Edit() {
                   <Col flex="auto" className="table-value-col-section">
                     <InputNumber
                       name="max_speed"
-                      value={
-                        detailBodyInfo.max_speed ? detailBodyInfo.max_speed : 0
-                      }
+                      value={detailBodyInfo.max_speed}
                       onChange={(number) => {
                         onDetailComponentChange("max_speed", number);
                       }}
@@ -1593,11 +1405,7 @@ function Edit() {
                     <Space size={6}>
                       <InputNumber
                         name="highest_output1"
-                        value={
-                          detailBodyInfo.highest_output1
-                            ? detailBodyInfo.highest_output1
-                            : 0
-                        }
+                        value={detailBodyInfo.highest_output1}
                         onChange={(number) => {
                           onDetailComponentChange("highest_output1", number);
                         }}
@@ -1608,11 +1416,7 @@ function Edit() {
                       <label>/</label>
                       <InputNumber
                         name="highest_output2"
-                        value={
-                          detailBodyInfo.highest_output2
-                            ? detailBodyInfo.highest_output2
-                            : 0
-                        }
+                        value={detailBodyInfo.highest_output2}
                         onChange={(number) => {
                           onDetailComponentChange("highest_output2", number);
                         }}
@@ -1629,11 +1433,7 @@ function Edit() {
                     <Space size={6}>
                       <InputNumber
                         name="max_torque1"
-                        value={
-                          detailBodyInfo.max_torque1
-                            ? detailBodyInfo.max_torque1
-                            : 0
-                        }
+                        value={detailBodyInfo.max_torque1}
                         onChange={(number) => {
                           onDetailComponentChange("max_torque1", number);
                         }}
@@ -1644,11 +1444,7 @@ function Edit() {
                       <label>/</label>
                       <InputNumber
                         name="max_torque2"
-                        value={
-                          detailBodyInfo.max_torque2
-                            ? detailBodyInfo.max_torque2
-                            : 0
-                        }
+                        value={detailBodyInfo.max_torque2}
                         onChange={(number) => {
                           onDetailComponentChange("max_torque2", number);
                         }}
@@ -1671,9 +1467,7 @@ function Edit() {
                   <Col span={10} className="table-value-col-section">
                     <InputNumber
                       name="zero_back"
-                      value={
-                        detailBodyInfo.zero_back ? detailBodyInfo.zero_back : 0
-                      }
+                      value={detailBodyInfo.zero_back}
                       onChange={(number) => {
                         onDetailComponentChange("zero_back", number);
                       }}
