@@ -41,6 +41,8 @@ export const init = (idx) => async (dispatch) => {
     const groupOptionList = await groupService.getOptionList();
     const modelOptionList = await modelService.getOptionList();
     const lineupOptionList = await lineupService.getOptionList();
+    const brandBodyInfo = await brandService.get(bodyInfo.brand_id);
+    const lineupBodyInfo = await lineupService.get(bodyInfo.lineup_id);
     const detailBodyInfo = JSON.parse(bodyInfo.detail_meta)
       ? JSON.parse(bodyInfo.detail_meta)
       : {};
@@ -60,6 +62,8 @@ export const init = (idx) => async (dispatch) => {
         trimBodyList: trimBodyList,
         specificationIdList: specificationIdList,
         detailBodyInfo: detailBodyInfo,
+        brandBodyInfo: brandBodyInfo,
+        lineupBodyInfo: lineupBodyInfo,
       },
     });
   } catch (e) {
@@ -379,6 +383,8 @@ export default function edit(state = initialState, action) {
         lineupOptionList: action.payload.lineupOptionList,
         specificationIdList: action.payload.specificationIdList,
         detailBodyInfo: action.payload.detailBodyInfo,
+        brandBodyInfo: action.payload.brandBodyInfo,
+        lineupBodyInfo: action.payload.lineupBodyInfo,
       };
     case REMOVE_REDIRECTTO:
       return {
