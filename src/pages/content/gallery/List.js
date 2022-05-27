@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import TableList from "../../../components/TableList";
 import { useDispatch, useSelector } from "react-redux";
 import { init, showMore } from "../../../store/reducers/content/gallery/list";
+import { GetDateFullTimeStringUsingKorFromDate } from "../../../constants/GlobalFunctions";
 
 // 목록페지
 function List() {
@@ -24,49 +25,49 @@ function List() {
   const columns = [
     {
       title: "노출순서",
-      dataIndex: "order",
-      key: "order",
+      dataIndex: "idx",
+      key: "idx",
       align: "center",
     },
     {
       title: "이미지",
-      dataIndex: "picture",
-      key: "picture",
+      dataIndex: "idx",
+      key: "idx",
       align: "center",
-      render: (path) => <Image src={path} />,
+      render: (idx) => renderPicture(idx),
     },
     {
       title: "브랜드",
-      dataIndex: "brand_id",
-      key: "brand_id",
+      dataIndex: "idx",
+      key: "idx",
       align: "center",
-      render: (brand_id) =>
-        brandOptionList.filter((item) => item.value == brand_id).length
-          ? brandOptionList.filter((item) => item.value == brand_id)[0].label
-          : "",
+      render: (idx) => renderBrandField(idx),
     },
     {
       title: "모델",
-      dataIndex: "model_name",
-      key: "model_name",
+      dataIndex: "idx",
+      key: "idx",
       align: "center",
+      render: (idx) => renderModelField(idx),
     },
     {
       title: "등록일",
-      dataIndex: "created_date",
-      key: "created_date",
+      dataIndex: "created_at",
+      key: "created_at",
       align: "center",
+      render: (created_at) =>
+        GetDateFullTimeStringUsingKorFromDate(new Date(created_at)),
     },
     {
       title: "관리",
-      dataIndex: "model_id",
-      key: "model_id",
+      dataIndex: "idx",
+      key: "idx",
       align: "center",
-      render: (model_id) => (
+      render: (idx) => (
         <Row justify="center">
           <Col>
             <Space size={15} split={<Divider type="vertical" />}>
-              <Link to={"/content/gallery/edit/" + model_id}>
+              <Link to={"/content/gallery/edit/" + idx}>
                 <Button className="black-button small-button rounded-button">
                   수정
                 </Button>
@@ -81,6 +82,42 @@ function List() {
   const tableList = {
     tableData: dataSource,
     tableColumns: columns,
+  };
+
+  const renderPicture = (idx) => {
+    const gallery_info = dataSource.filter((item) => item.idx === idx)[0];
+    const image_path = gallery_info["picture_" + gallery_info.picture_index];
+    return (
+      <Image
+        src={
+          image_path
+            ? window.location.origin + "/uploads/model/" + image_path
+            : ""
+        }
+      />
+    );
+  };
+
+  const renderBrandField = (idx) => {
+    const gallery_info = dataSource.filter((item) => item.idx === idx)[0];
+    const brand_name = brandOptionList.filter(
+      (item) => item.value == gallery_info.brand_id
+    ).length
+      ? brandOptionList.filter((item) => item.value == gallery_info.brand_id)[0]
+          .label
+      : "";
+    return (
+      <Link to={"/car/brand/edit/" + gallery_info.brand_id}>{brand_name}</Link>
+    );
+  };
+
+  const renderModelField = (idx) => {
+    const gallery_info = dataSource.filter((item) => item.idx === idx)[0];
+    return (
+      <Link to={"/car/model/edit/" + gallery_info.model_id}>
+        {gallery_info.model_name}
+      </Link>
+    );
   };
 
   return (

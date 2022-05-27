@@ -57,9 +57,13 @@ function ContentItem({ item, key, value, onChange }) {
     case Constants.inputTypes.upload:
       return (
         <Upload
-          action={item.action}
+          name={item.name}
           accept={item.accept}
           showUploadList={false}
+          beforeUpload={(file) => {
+            item.action(file);
+            return true;
+          }}
         >
           <Button key={key} size="large" className={item.style}>
             {item.label}

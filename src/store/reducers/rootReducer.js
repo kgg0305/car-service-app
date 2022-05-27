@@ -39,10 +39,8 @@ import recommendationList from "./content/recommendation/list";
 import photoCreate from "./content/photo/create";
 import photoEdit from "./content/photo/edit";
 import photoList from "./content/photo/list";
-import galleryCreate from "./content/gallery/create";
 import galleryEdit from "./content/gallery/edit";
 import galleryList from "./content/gallery/list";
-import popularCreate from "./content/popular/create";
 import popularEdit from "./content/popular/edit";
 import popularList from "./content/popular/list";
 import carRankCreate from "./content/carRank/create";
@@ -100,10 +98,8 @@ const rootReducers = combineReducers({
   photoCreate,
   photoEdit,
   photoList,
-  galleryCreate,
   galleryEdit,
   galleryList,
-  popularCreate,
   popularEdit,
   popularList,
   carRankCreate,

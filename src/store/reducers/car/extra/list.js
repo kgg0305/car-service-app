@@ -86,6 +86,11 @@ export const download = () => {
   extraService.download();
 };
 
+export const uploadExcel = (excel) => async (dispatch) => {
+  await extraService.uploadExcel(excel);
+  dispatch(init());
+};
+
 const initialState = {
   offset: 0,
   brandOptionList: [],

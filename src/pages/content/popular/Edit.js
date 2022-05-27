@@ -1,4 +1,4 @@
-import { Col, Divider, Row, Space, Select, Button, Image, Upload } from "antd";
+import { Col, Divider, Row, Space, Select, Button, Image } from "antd";
 import { CaretDownOutlined } from "@ant-design/icons";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import React, { useEffect } from "react";
@@ -26,7 +26,7 @@ function Edit() {
     redirectTo,
     validation,
     confirm,
-    bodyList,
+    bodyInfo,
     brandOptionList,
     groupOptionList,
     modelOptionList,
@@ -35,7 +35,7 @@ function Edit() {
     redirectTo: state.popularEdit.redirectTo,
     validation: state.popularEdit.validation,
     confirm: state.popularEdit.confirm,
-    bodyList: state.popularEdit.bodyList,
+    bodyInfo: state.popularEdit.bodyInfo,
     brandOptionList: state.popularEdit.brandOptionList,
     groupOptionList: state.popularEdit.groupOptionList,
     modelOptionList: state.popularEdit.modelOptionList,
@@ -56,26 +56,42 @@ function Edit() {
   const onCloseValidationClick = () => dispatch(closeValidation());
   const onCloseConfirmClick = () => dispatch(closeConfirm());
   const onComponentChange = (name, value) => dispatch(setBody(name, value));
-  const onSaveClick = (url) =>
-    dispatch(save("/content/gallery", bodyList, modelBodyInfo));
+  const onPictureClick = (picture_index) =>
+    dispatch(setBody("picture_index", picture_index));
+  const onSaveClick = () => dispatch(save("/content/popular"));
   const onDeleteClick = async () => dispatch(showConfirm());
-  const deleteInfo = async () => dispatch(remove("/content/gallery", id));
+  const deleteInfo = async () => dispatch(remove("/content/popular", id));
 
   const renderPictureList = () => {
-    return bodyList.map((body, index) => (
+    const image_path_array = [
+      modelBodyInfo.picture_1,
+      modelBodyInfo.picture_2,
+      modelBodyInfo.picture_3,
+      modelBodyInfo.picture_4,
+      modelBodyInfo.picture_5,
+      modelBodyInfo.picture_6,
+      modelBodyInfo.picture_7,
+      modelBodyInfo.picture_8,
+    ];
+    return image_path_array.map((path, index) => (
       <Col style={{ textAlign: "center" }}>
         <Space direction="vertical" size={5}>
           <label>사진 {index + 1 !== 10 ? "0" + (index + 1) : index + 1}</label>
           <Image
-            src={window.location.origin + "/uploads/brand/" + body.picture}
+            className={
+              bodyInfo.picture_index === index + 1 ? "picture-selected" : ""
+            }
+            src={window.location.origin + "/uploads/model/" + path}
             width={150}
             height={150}
           />
-          <Upload>
-            <Button className="black-button" size="large">
-              등록
-            </Button>
-          </Upload>
+          <Button
+            className="black-button"
+            size="large"
+            onClick={() => onPictureClick(index + 1)}
+          >
+            선택
+          </Button>
         </Space>
       </Col>
     ));
@@ -88,7 +104,7 @@ function Edit() {
         <Space direction="vertical" size={18}>
           <Row justify="middle">
             <Col>
-              <label className="main-header-title">인기포토 수정</label>
+              <label className="main-header-title">포토갤러리 수정</label>
             </Col>
             <Col flex="auto" />
             <Col>
@@ -98,7 +114,11 @@ function Edit() {
                     취소
                   </Button>
                 </Link>
-                <Button className="black-button" size="large">
+                <Button
+                  className="black-button"
+                  size="large"
+                  onClick={onSaveClick}
+                >
                   저장하고 나가기
                 </Button>
               </Space>
@@ -131,12 +151,13 @@ function Edit() {
                     <Space size={6}>
                       <Select
                         name="brand_id"
-                        value={modelBodyInfo.brand_id}
+                        value={bodyInfo.brand_id}
                         onChange={(value) => {
                           onComponentChange("brand_id", value);
                         }}
                         suffixIcon={<CaretDownOutlined />}
                         placeholder="브랜드 선택"
+                        size="large"
                         style={{ width: 250 }}
                       >
                         {brandOptionList.map((optionItem, optionIndex) => (
@@ -150,41 +171,47 @@ function Edit() {
                       </Select>
                       <Select
                         name="group_id"
-                        value={modelBodyInfo.group_id}
+                        value={bodyInfo.group_id}
                         onChange={(value) => {
                           onComponentChange("group_id", value);
                         }}
                         suffixIcon={<CaretDownOutlined />}
                         placeholder="모델그룹 선택"
+                        size="large"
                         style={{ width: 250 }}
                       >
-                        {groupOptionList.map((optionItem, optionIndex) => (
-                          <Select.Option
-                            key={optionIndex}
-                            value={optionItem.value}
-                          >
-                            {optionItem.label}
-                          </Select.Option>
-                        ))}
+                        {groupOptionList
+                          .filter((item) => item.brand_id == bodyInfo.brand_id)
+                          .map((optionItem, optionIndex) => (
+                            <Select.Option
+                              key={optionIndex}
+                              value={optionItem.value}
+                            >
+                              {optionItem.label}
+                            </Select.Option>
+                          ))}
                       </Select>
                       <Select
                         name="model_id"
-                        value={modelBodyInfo.idx}
+                        value={bodyInfo.model_id}
                         onChange={(value) => {
                           onComponentChange("model_id", value);
                         }}
                         suffixIcon={<CaretDownOutlined />}
                         placeholder="모델 선택"
+                        size="large"
                         style={{ width: 250 }}
                       >
-                        {modelOptionList.map((optionItem, optionIndex) => (
-                          <Select.Option
-                            key={optionIndex}
-                            value={optionItem.value}
-                          >
-                            {optionItem.label}
-                          </Select.Option>
-                        ))}
+                        {modelOptionList
+                          .filter((item) => item.group_id === bodyInfo.group_id)
+                          .map((optionItem, optionIndex) => (
+                            <Select.Option
+                              key={optionIndex}
+                              value={optionItem.value}
+                            >
+                              {optionItem.label}
+                            </Select.Option>
+                          ))}
                       </Select>
                     </Space>
                   </Col>

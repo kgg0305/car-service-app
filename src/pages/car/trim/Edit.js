@@ -31,6 +31,7 @@ import {
   closeConfirm,
   showConfirm,
   remove,
+  setDetailBody,
 } from "../../../store/reducers/car/trim/edit";
 
 const { Option } = Select;
@@ -50,9 +51,12 @@ function Edit() {
     modelOptionList,
     lineupOptionList,
     bodyInfo,
+    brandBodyInfo,
+    lineupBodyInfo,
     specificationBodyList,
     trimBodyList,
     specificationIdList,
+    detailBodyInfo,
   } = useSelector((state) => ({
     redirectTo: state.trimEdit.redirectTo,
     validation: state.trimEdit.validation,
@@ -62,9 +66,12 @@ function Edit() {
     modelOptionList: state.trimEdit.modelOptionList,
     lineupOptionList: state.trimEdit.lineupOptionList,
     bodyInfo: state.trimEdit.bodyInfo,
+    brandBodyInfo: state.trimEdit.brandBodyInfo,
+    lineupBodyInfo: state.trimEdit.lineupBodyInfo,
     specificationBodyList: state.trimEdit.specificationBodyList,
     trimBodyList: state.trimEdit.trimBodyList,
     specificationIdList: state.trimEdit.specificationIdList,
+    detailBodyInfo: state.trimEdit.detailBodyInfo,
   }));
 
   const dispatch = useDispatch();
@@ -90,6 +97,8 @@ function Edit() {
     dispatch(deleteSpecificationBody(number));
   const onChangeTrimComponent = (idx, name, value) =>
     dispatch(setTrimBody(idx, name, value));
+  const onDetailComponentChange = (name, value) =>
+    dispatch(setDetailBody(name, value));
   const onSaveClick = (url) =>
     dispatch(
       save(
@@ -268,6 +277,1212 @@ function Edit() {
         </Col>
       </Row>
     ));
+  };
+
+  const renderDetailCarField = () => {
+    return bodyInfo.lineup_id != null ? (
+      <Space size={10}>
+        <Input
+          value={
+            brandOptionList.filter(
+              (item) => item.value === bodyInfo.brand_id
+            )[0].label
+          }
+          size="large"
+          disabled={true}
+        />
+        <Input
+          value={
+            bodyInfo.group_id != null
+              ? groupOptionList.filter(
+                  (item) => item.value === bodyInfo.group_id
+                )[0].label
+              : ""
+          }
+          size="large"
+          disabled={true}
+        />
+        <Input
+          value={
+            bodyInfo.model_id != null
+              ? modelOptionList.filter(
+                  (item) => item.value === bodyInfo.model_id
+                )[0].label
+              : ""
+          }
+          size="large"
+          disabled={true}
+        />
+        <Input
+          value={
+            bodyInfo.lineup_id != null
+              ? lineupOptionList.filter(
+                  (item) => item.value === bodyInfo.lineup_id
+                )[0].label
+              : ""
+          }
+          size="large"
+          disabled={true}
+        />
+        <Input value={bodyInfo.trim_name} size="large" disabled={true} />
+      </Space>
+    ) : (
+      "선택된 차량 정보가 없습니다."
+    );
+  };
+
+  const renderDetailBody = () => {
+    if (bodyInfo.lineup_id != null) {
+      if (lineupBodyInfo.fule_kind !== "3") {
+        if (brandBodyInfo.is_income === "0") {
+          return (
+            <Space direction="vertical" size={40}>
+              <Space direction="vertical" size={20}>
+                <Row gutter={[12]} align="middle">
+                  <Col>
+                    <label className="main-sub-title">제원</label>
+                  </Col>
+                  <Col flex="auto" />
+                </Row>
+                <Space direction="vertical" size={0}>
+                  <Row
+                    gutter={[0]}
+                    align="middle"
+                    style={{ height: 80 }}
+                    className="table-layout"
+                  >
+                    <Col span={2} className="table-header-col-section">
+                      <label>연료</label>
+                    </Col>
+                    <Col span={10} className="table-value-col-section">
+                      <Input
+                        value={
+                          Constants.fuelTypeOptions.filter(
+                            (item) => item.value === lineupBodyInfo.fule_kind
+                          )[0].label
+                        }
+                        size="large"
+                        style={{ width: 150 }}
+                        disabled
+                      />
+                    </Col>
+                    <Col span={2} className="table-header-col-section">
+                      <label>연비 [km/l]</label>
+                    </Col>
+                    <Col flex="auto" className="table-value-col-section">
+                      <InputNumber
+                        name="fuel_efficiency"
+                        value={detailBodyInfo.fuel_efficiency}
+                        onChange={(number) => {
+                          onDetailComponentChange("fuel_efficiency", number);
+                        }}
+                        size="large"
+                        controls={false}
+                        style={{ width: 150 }}
+                      />
+                    </Col>
+                  </Row>
+                  <Row
+                    gutter={[0]}
+                    align="middle"
+                    style={{ height: 80 }}
+                    className="table-layout"
+                  >
+                    <Col span={2} className="table-header-col-section">
+                      <label>베기량 [CC]</label>
+                    </Col>
+                    <Col span={10} className="table-value-col-section">
+                      <InputNumber
+                        name="amount_mowing"
+                        value={detailBodyInfo.amount_mowing}
+                        onChange={(number) => {
+                          onDetailComponentChange("amount_mowing", number);
+                        }}
+                        size="large"
+                        controls={false}
+                        style={{ width: 150 }}
+                      />
+                    </Col>
+                    <Col span={2} className="table-header-col-section">
+                      <label>엔진형식</label>
+                    </Col>
+                    <Col flex="auto" className="table-value-col-section">
+                      <Input
+                        name="engine_type"
+                        value={detailBodyInfo.engine_type}
+                        onChange={(e) => {
+                          onDetailComponentChange(
+                            e.target.name,
+                            e.target.value
+                          );
+                        }}
+                        placeholder="엔진형식 입력"
+                        style={{ width: 200 }}
+                      />
+                    </Col>
+                  </Row>
+                  <Row
+                    gutter={[0]}
+                    align="middle"
+                    style={{ height: 80 }}
+                    className="table-layout"
+                  >
+                    <Col span={2} className="table-header-col-section">
+                      <label>최대토크 [kg.m/rpm]</label>
+                    </Col>
+                    <Col span={10} className="table-value-col-section">
+                      <Space size={6}>
+                        <InputNumber
+                          name="max_torque1"
+                          value={detailBodyInfo.max_torque1}
+                          onChange={(number) => {
+                            onDetailComponentChange("max_torque1", number);
+                          }}
+                          size="large"
+                          controls={false}
+                          style={{ width: 100 }}
+                        />
+                        <label>/</label>
+                        <InputNumber
+                          name="max_torque2"
+                          value={detailBodyInfo.max_torque2}
+                          onChange={(number) => {
+                            onDetailComponentChange("max_torque2", number);
+                          }}
+                          size="large"
+                          controls={false}
+                          style={{ width: 100 }}
+                        />
+                      </Space>
+                    </Col>
+                    <Col span={2} className="table-header-col-section">
+                      <label>최고출력 [ps/rpm]</label>
+                    </Col>
+                    <Col flex="auto" className="table-value-col-section">
+                      <Space size={6}>
+                        <InputNumber
+                          name="highest_output1"
+                          value={detailBodyInfo.highest_output1}
+                          onChange={(number) => {
+                            onDetailComponentChange("highest_output1", number);
+                          }}
+                          size="large"
+                          controls={false}
+                          style={{ width: 100 }}
+                        />
+                        <label>/</label>
+                        <InputNumber
+                          name="highest_output2"
+                          value={detailBodyInfo.highest_output2}
+                          onChange={(number) => {
+                            onDetailComponentChange("highest_output2", number);
+                          }}
+                          size="large"
+                          controls={false}
+                          style={{ width: 100 }}
+                        />
+                      </Space>
+                    </Col>
+                  </Row>
+                  <Row
+                    gutter={[0]}
+                    align="middle"
+                    style={{ height: 80 }}
+                    className="table-layout"
+                  >
+                    <Col span={2} className="table-header-col-section">
+                      <label>CO2배출량 [g/km]</label>
+                    </Col>
+                    <Col span={10} className="table-value-col-section">
+                      <InputNumber
+                        name="emissions_CO2"
+                        value={detailBodyInfo.emissions_CO2}
+                        onChange={(number) => {
+                          onDetailComponentChange("emissions_CO2", number);
+                        }}
+                        size="large"
+                        controls={false}
+                        style={{ width: 150 }}
+                      />
+                    </Col>
+                    <Col span={2} className="table-header-col-section">
+                      <label>타이어</label>
+                    </Col>
+                    <Col flex="auto" className="table-value-col-section">
+                      <Space size={6}>
+                        <InputNumber
+                          name="tire1"
+                          value={detailBodyInfo.tire1}
+                          onChange={(number) => {
+                            onDetailComponentChange("tire1", number);
+                          }}
+                          size="large"
+                          controls={false}
+                          style={{ width: 100 }}
+                        />
+                        <label>/</label>
+                        <InputNumber
+                          name="tire2"
+                          value={detailBodyInfo.tire2}
+                          onChange={(number) => {
+                            onDetailComponentChange("tire2", number);
+                          }}
+                          size="large"
+                          controls={false}
+                          style={{ width: 60 }}
+                        />
+                        <label>R</label>
+                        <InputNumber
+                          name="tire3"
+                          value={detailBodyInfo.tire3}
+                          onChange={(number) => {
+                            onDetailComponentChange("tire3", number);
+                          }}
+                          size="large"
+                          controls={false}
+                          style={{ width: 60 }}
+                        />
+                      </Space>
+                    </Col>
+                  </Row>
+                  <Row
+                    gutter={[0]}
+                    align="middle"
+                    style={{ height: 80 }}
+                    className="table-layout"
+                  >
+                    <Col span={2} className="table-header-col-section">
+                      <label>구동방식</label>
+                    </Col>
+                    <Col span={10} className="table-value-col-section">
+                      <Input
+                        name="driving_method"
+                        value={detailBodyInfo.driving_method}
+                        onChange={(e) => {
+                          onDetailComponentChange(
+                            e.target.name,
+                            e.target.value
+                          );
+                        }}
+                        size="large"
+                        placeholder="구동방식 입력"
+                        style={{ width: 200 }}
+                      />
+                    </Col>
+                    <Col span={2} className="table-header-col-section">
+                      <label>변속기</label>
+                    </Col>
+                    <Col flex="auto" className="table-value-col-section">
+                      <Input
+                        name="gearbox"
+                        value={detailBodyInfo.gearbox}
+                        onChange={(e) => {
+                          onDetailComponentChange(
+                            e.target.name,
+                            e.target.value
+                          );
+                        }}
+                        size="large"
+                        placeholder="변속기 입력"
+                        style={{ width: 200 }}
+                      />
+                    </Col>
+                  </Row>
+                  <Row
+                    gutter={[0]}
+                    align="middle"
+                    style={{ height: 80 }}
+                    className="table-layout"
+                  >
+                    <Col span={2} className="table-header-col-section">
+                      <label>연료탱크 [ l ]</label>
+                    </Col>
+                    <Col span={10} className="table-value-col-section">
+                      <InputNumber
+                        name="fuel_tank"
+                        value={detailBodyInfo.fuel_tank}
+                        onChange={(number) => {
+                          onDetailComponentChange("fuel_tank", number);
+                        }}
+                        size="large"
+                        controls={false}
+                        style={{ width: 150 }}
+                      />
+                    </Col>
+                    <Col span={2} className="table-header-col-section">
+                      <label>공차중량 [kg]</label>
+                    </Col>
+                    <Col flex="auto" className="table-value-col-section">
+                      <InputNumber
+                        name="tolerance_weight"
+                        value={detailBodyInfo.tolerance_weight}
+                        onChange={(number) => {
+                          onDetailComponentChange("tolerance_weight", number);
+                        }}
+                        size="large"
+                        controls={false}
+                        style={{ width: 150 }}
+                      />
+                    </Col>
+                  </Row>
+                  <Row
+                    gutter={[0]}
+                    align="middle"
+                    style={{ height: 80 }}
+                    className="table-layout"
+                  >
+                    <Col span={2} className="table-header-col-section">
+                      <label>승차정원 [명]</label>
+                    </Col>
+                    <Col flex="auto" className="table-value-col-section">
+                      <InputNumber
+                        name="boarding_capacity"
+                        value={detailBodyInfo.boarding_capacity}
+                        onChange={(number) => {
+                          onDetailComponentChange("boarding_capacity", number);
+                        }}
+                        size="large"
+                        controls={false}
+                        style={{ width: 150 }}
+                      />
+                    </Col>
+                  </Row>
+                </Space>
+              </Space>
+              <Space direction="vertical" size={20}>
+                <Row gutter={[12]} align="middle">
+                  <Col>
+                    <label className="main-sub-title">크기</label>
+                  </Col>
+                  <Col flex="auto" />
+                </Row>
+                <Space direction="vertical" size={0}>
+                  <Row
+                    gutter={[0]}
+                    align="middle"
+                    style={{ height: 80 }}
+                    className="table-layout"
+                  >
+                    <Col span={2} className="table-header-col-section">
+                      <label>전고 [mm]</label>
+                    </Col>
+                    <Col span={10} className="table-value-col-section">
+                      <InputNumber
+                        name="whole_height"
+                        value={detailBodyInfo.whole_height}
+                        onChange={(number) => {
+                          onDetailComponentChange("whole_height", number);
+                        }}
+                        size="large"
+                        controls={false}
+                        style={{ width: 150 }}
+                      />
+                    </Col>
+                    <Col span={2} className="table-header-col-section">
+                      <label>전폭 [mm]</label>
+                    </Col>
+                    <Col flex="auto" className="table-value-col-section">
+                      <InputNumber
+                        name="full_width"
+                        value={detailBodyInfo.full_width}
+                        onChange={(number) => {
+                          onDetailComponentChange("full_width", number);
+                        }}
+                        size="large"
+                        controls={false}
+                        style={{ width: 150 }}
+                      />
+                    </Col>
+                  </Row>
+                  <Row
+                    gutter={[0]}
+                    align="middle"
+                    style={{ height: 80 }}
+                    className="table-layout"
+                  >
+                    <Col span={2} className="table-header-col-section">
+                      <label>휠베이스 [mm]</label>
+                    </Col>
+                    <Col span={10} className="table-value-col-section">
+                      <InputNumber
+                        name="wheelbase"
+                        value={detailBodyInfo.wheelbase}
+                        onChange={(number) => {
+                          onDetailComponentChange("wheelbase", number);
+                        }}
+                        size="large"
+                        controls={false}
+                        style={{ width: 150 }}
+                      />
+                    </Col>
+                    <Col span={2} className="table-header-col-section">
+                      <label>전장 [mm]</label>
+                    </Col>
+                    <Col flex="auto" className="table-value-col-section">
+                      <InputNumber
+                        name="whole_length"
+                        value={detailBodyInfo.whole_length}
+                        onChange={(number) => {
+                          onDetailComponentChange("whole_length", number);
+                        }}
+                        size="large"
+                        controls={false}
+                        style={{ width: 150 }}
+                      />
+                    </Col>
+                  </Row>
+                </Space>
+              </Space>
+            </Space>
+          );
+        } else {
+          return (
+            <Space direction="vertical" size={40}>
+              <Space direction="vertical" size={20}>
+                <Row gutter={[12]} align="middle">
+                  <Col>
+                    <label className="main-sub-title">제원</label>
+                  </Col>
+                  <Col flex="auto" />
+                </Row>
+                <Space direction="vertical" size={0}>
+                  <Row
+                    gutter={[0]}
+                    align="middle"
+                    style={{ height: 80 }}
+                    className="table-layout"
+                  >
+                    <Col span={2} className="table-header-col-section">
+                      <label>연료</label>
+                    </Col>
+                    <Col span={10} className="table-value-col-section">
+                      <Input
+                        value={
+                          Constants.fuelTypeOptions.filter(
+                            (item) => item.value === lineupBodyInfo.fule_kind
+                          )[0].label
+                        }
+                        size="large"
+                        style={{ width: 150 }}
+                        disabled
+                      />
+                    </Col>
+                    <Col span={2} className="table-header-col-section">
+                      <label>연비 [km/l]</label>
+                    </Col>
+                    <Col flex="auto" className="table-value-col-section">
+                      <InputNumber
+                        name="fuel_efficiency"
+                        value={detailBodyInfo.fuel_efficiency}
+                        onChange={(number) => {
+                          onDetailComponentChange("fuel_efficiency", number);
+                        }}
+                        size="large"
+                        controls={false}
+                        style={{ width: 150 }}
+                      />
+                    </Col>
+                  </Row>
+                  <Row
+                    gutter={[0]}
+                    align="middle"
+                    style={{ height: 80 }}
+                    className="table-layout"
+                  >
+                    <Col span={2} className="table-header-col-section">
+                      <label>베기량 [CC]</label>
+                    </Col>
+                    <Col span={10} className="table-value-col-section">
+                      <InputNumber
+                        name="amount_mowing"
+                        value={detailBodyInfo.amount_mowing}
+                        onChange={(number) => {
+                          onDetailComponentChange("amount_mowing", number);
+                        }}
+                        size="large"
+                        controls={false}
+                        style={{ width: 150 }}
+                      />
+                    </Col>
+                    <Col span={2} className="table-header-col-section">
+                      <label>엔진형식</label>
+                    </Col>
+                    <Col flex="auto" className="table-value-col-section">
+                      <Input
+                        name="engine_type"
+                        value={detailBodyInfo.engine_type}
+                        onChange={(e) => {
+                          onDetailComponentChange(
+                            e.target.name,
+                            e.target.value
+                          );
+                        }}
+                        placeholder="엔진형식 입력"
+                        style={{ width: 200 }}
+                      />
+                    </Col>
+                  </Row>
+                  <Row
+                    gutter={[0]}
+                    align="middle"
+                    style={{ height: 80 }}
+                    className="table-layout"
+                  >
+                    <Col span={2} className="table-header-col-section">
+                      <label>최대토크 [kg.m/rpm]</label>
+                    </Col>
+                    <Col span={10} className="table-value-col-section">
+                      <Space size={6}>
+                        <InputNumber
+                          name="max_torque1"
+                          value={detailBodyInfo.max_torque1}
+                          onChange={(number) => {
+                            onDetailComponentChange("max_torque1", number);
+                          }}
+                          size="large"
+                          controls={false}
+                          style={{ width: 100 }}
+                        />
+                        <label>/</label>
+                        <InputNumber
+                          name="max_torque2"
+                          value={detailBodyInfo.max_torque2}
+                          onChange={(number) => {
+                            onDetailComponentChange("max_torque2", number);
+                          }}
+                          size="large"
+                          controls={false}
+                          style={{ width: 100 }}
+                        />
+                      </Space>
+                    </Col>
+                    <Col span={2} className="table-header-col-section">
+                      <label>최고출력 [ps/rpm]</label>
+                    </Col>
+                    <Col flex="auto" className="table-value-col-section">
+                      <Space size={6}>
+                        <InputNumber
+                          name="highest_output1"
+                          value={detailBodyInfo.highest_output1}
+                          onChange={(number) => {
+                            onDetailComponentChange("highest_output1", number);
+                          }}
+                          size="large"
+                          controls={false}
+                          style={{ width: 100 }}
+                        />
+                        <label>/</label>
+                        <InputNumber
+                          name="highest_output2"
+                          value={detailBodyInfo.highest_output2}
+                          onChange={(number) => {
+                            onDetailComponentChange("highest_output2", number);
+                          }}
+                          size="large"
+                          controls={false}
+                          style={{ width: 100 }}
+                        />
+                      </Space>
+                    </Col>
+                  </Row>
+                  <Row
+                    gutter={[0]}
+                    align="middle"
+                    style={{ height: 80 }}
+                    className="table-layout"
+                  >
+                    <Col span={2} className="table-header-col-section">
+                      <label>제로백 [초]</label>
+                    </Col>
+                    <Col span={10} className="table-value-col-section">
+                      <InputNumber
+                        name="zero_back"
+                        value={detailBodyInfo.zero_back}
+                        onChange={(number) => {
+                          onDetailComponentChange("zero_back", number);
+                        }}
+                        size="large"
+                        controls={false}
+                        style={{ width: 150 }}
+                      />
+                    </Col>
+                    <Col span={2} className="table-header-col-section">
+                      <label>CO2배출량 [g/km]</label>
+                    </Col>
+                    <Col span={10} className="table-value-col-section">
+                      <InputNumber
+                        name="emissions_CO2"
+                        value={detailBodyInfo.emissions_CO2}
+                        onChange={(number) => {
+                          onDetailComponentChange("emissions_CO2", number);
+                        }}
+                        size="large"
+                        controls={false}
+                        style={{ width: 150 }}
+                      />
+                    </Col>
+                  </Row>
+                  <Row
+                    gutter={[0]}
+                    align="middle"
+                    style={{ height: 80 }}
+                    className="table-layout"
+                  >
+                    <Col span={2} className="table-header-col-section">
+                      <label>타이어</label>
+                    </Col>
+                    <Col flex="auto" className="table-value-col-section">
+                      <Space size={6}>
+                        <InputNumber
+                          name="tire1"
+                          value={detailBodyInfo.tire1}
+                          onChange={(number) => {
+                            onDetailComponentChange("tire1", number);
+                          }}
+                          size="large"
+                          controls={false}
+                          style={{ width: 100 }}
+                        />
+                        <label>/</label>
+                        <InputNumber
+                          name="tire2"
+                          value={detailBodyInfo.tire2}
+                          onChange={(number) => {
+                            onDetailComponentChange("tire2", number);
+                          }}
+                          size="large"
+                          controls={false}
+                          style={{ width: 60 }}
+                        />
+                        <label>R</label>
+                        <InputNumber
+                          name="tire3"
+                          value={detailBodyInfo.tire3}
+                          onChange={(number) => {
+                            onDetailComponentChange("tire3", number);
+                          }}
+                          size="large"
+                          controls={false}
+                          style={{ width: 60 }}
+                        />
+                      </Space>
+                    </Col>
+                    <Col span={2} className="table-header-col-section">
+                      <label>구동방식</label>
+                    </Col>
+                    <Col span={10} className="table-value-col-section">
+                      <Input
+                        name="driving_method"
+                        value={detailBodyInfo.driving_method}
+                        onChange={(e) => {
+                          onDetailComponentChange(
+                            e.target.name,
+                            e.target.value
+                          );
+                        }}
+                        size="large"
+                        placeholder="구동방식 입력"
+                        style={{ width: 200 }}
+                      />
+                    </Col>
+                  </Row>
+                  <Row
+                    gutter={[0]}
+                    align="middle"
+                    style={{ height: 80 }}
+                    className="table-layout"
+                  >
+                    <Col span={2} className="table-header-col-section">
+                      <label>변속기</label>
+                    </Col>
+                    <Col flex="auto" className="table-value-col-section">
+                      <Input
+                        name="gearbox"
+                        value={detailBodyInfo.gearbox}
+                        onChange={(e) => {
+                          onDetailComponentChange(
+                            e.target.name,
+                            e.target.value
+                          );
+                        }}
+                        size="large"
+                        placeholder="변속기 입력"
+                        style={{ width: 200 }}
+                      />
+                    </Col>
+                    <Col span={2} className="table-header-col-section">
+                      <label>연료탱크 [ l ]</label>
+                    </Col>
+                    <Col span={10} className="table-value-col-section">
+                      <InputNumber
+                        name="fuel_tank"
+                        value={detailBodyInfo.fuel_tank}
+                        onChange={(number) => {
+                          onDetailComponentChange("fuel_tank", number);
+                        }}
+                        size="large"
+                        controls={false}
+                        style={{ width: 150 }}
+                      />
+                    </Col>
+                  </Row>
+                  <Row
+                    gutter={[0]}
+                    align="middle"
+                    style={{ height: 80 }}
+                    className="table-layout"
+                  >
+                    <Col span={2} className="table-header-col-section">
+                      <label>공차중량 [kg]</label>
+                    </Col>
+                    <Col flex="auto" className="table-value-col-section">
+                      <InputNumber
+                        name="tolerance_weight"
+                        value={detailBodyInfo.tolerance_weight}
+                        onChange={(number) => {
+                          onDetailComponentChange("tolerance_weight", number);
+                        }}
+                        size="large"
+                        controls={false}
+                        style={{ width: 150 }}
+                      />
+                    </Col>
+                    <Col span={2} className="table-header-col-section">
+                      <label>승차정원 [명]</label>
+                    </Col>
+                    <Col flex="auto" className="table-value-col-section">
+                      <InputNumber
+                        name="boarding_capacity"
+                        value={detailBodyInfo.boarding_capacity}
+                        onChange={(number) => {
+                          onDetailComponentChange("boarding_capacity", number);
+                        }}
+                        size="large"
+                        controls={false}
+                        style={{ width: 150 }}
+                      />
+                    </Col>
+                  </Row>
+                </Space>
+              </Space>
+              <Space direction="vertical" size={20}>
+                <Row gutter={[12]} align="middle">
+                  <Col>
+                    <label className="main-sub-title">크기</label>
+                  </Col>
+                  <Col flex="auto" />
+                </Row>
+                <Space direction="vertical" size={0}>
+                  <Row
+                    gutter={[0]}
+                    align="middle"
+                    style={{ height: 80 }}
+                    className="table-layout"
+                  >
+                    <Col span={2} className="table-header-col-section">
+                      <label>전고 [mm]</label>
+                    </Col>
+                    <Col span={10} className="table-value-col-section">
+                      <InputNumber
+                        name="whole_height"
+                        value={detailBodyInfo.whole_height}
+                        onChange={(number) => {
+                          onDetailComponentChange("whole_height", number);
+                        }}
+                        size="large"
+                        controls={false}
+                        style={{ width: 150 }}
+                      />
+                    </Col>
+                    <Col span={2} className="table-header-col-section">
+                      <label>전폭 [mm]</label>
+                    </Col>
+                    <Col flex="auto" className="table-value-col-section">
+                      <InputNumber
+                        name="full_width"
+                        value={detailBodyInfo.full_width}
+                        onChange={(number) => {
+                          onDetailComponentChange("full_width", number);
+                        }}
+                        size="large"
+                        controls={false}
+                        style={{ width: 150 }}
+                      />
+                    </Col>
+                  </Row>
+                  <Row
+                    gutter={[0]}
+                    align="middle"
+                    style={{ height: 80 }}
+                    className="table-layout"
+                  >
+                    <Col span={2} className="table-header-col-section">
+                      <label>휠베이스 [mm]</label>
+                    </Col>
+                    <Col span={10} className="table-value-col-section">
+                      <InputNumber
+                        name="wheelbase"
+                        value={detailBodyInfo.wheelbase}
+                        onChange={(number) => {
+                          onDetailComponentChange("wheelbase", number);
+                        }}
+                        size="large"
+                        controls={false}
+                        style={{ width: 150 }}
+                      />
+                    </Col>
+                    <Col span={2} className="table-header-col-section">
+                      <label>전장 [mm]</label>
+                    </Col>
+                    <Col flex="auto" className="table-value-col-section">
+                      <InputNumber
+                        name="whole_length"
+                        value={detailBodyInfo.whole_length}
+                        onChange={(number) => {
+                          onDetailComponentChange("whole_length", number);
+                        }}
+                        size="large"
+                        controls={false}
+                        style={{ width: 150 }}
+                      />
+                    </Col>
+                  </Row>
+                </Space>
+              </Space>
+            </Space>
+          );
+        }
+      } else {
+        return (
+          <Space direction="vertical" size={40}>
+            <Space direction="vertical" size={20}>
+              <Row gutter={[12]} align="middle">
+                <Col>
+                  <label className="main-sub-title">주행가능거리</label>
+                </Col>
+                <Col flex="auto" />
+              </Row>
+              <Space direction="vertical" size={0}>
+                <Row
+                  gutter={[0]}
+                  align="middle"
+                  style={{ height: 80 }}
+                  className="table-layout"
+                >
+                  <Col span={2} className="table-header-col-section">
+                    <label>도심 [km]</label>
+                  </Col>
+                  <Col span={10} className="table-value-col-section">
+                    <InputNumber
+                      name="center_town"
+                      value={detailBodyInfo.center_town}
+                      onChange={(number) => {
+                        onDetailComponentChange("center_town", number);
+                      }}
+                      size="large"
+                      controls={false}
+                      style={{ width: 150 }}
+                    />
+                  </Col>
+                  <Col span={2} className="table-header-col-section">
+                    <label>고속도로 [km]</label>
+                  </Col>
+                  <Col flex="auto" className="table-value-col-section">
+                    <InputNumber
+                      name="expressway"
+                      value={detailBodyInfo.expressway}
+                      onChange={(number) => {
+                        onDetailComponentChange("expressway", number);
+                      }}
+                      size="large"
+                      controls={false}
+                      style={{ width: 150 }}
+                    />
+                  </Col>
+                </Row>
+                <Row
+                  gutter={[0]}
+                  align="middle"
+                  style={{ height: 80 }}
+                  className="table-layout"
+                >
+                  <Col span={2} className="table-header-col-section">
+                    <label>복합 [km]</label>
+                  </Col>
+                  <Col span={10} className="table-value-col-section">
+                    <InputNumber
+                      name="combined"
+                      value={detailBodyInfo.combined}
+                      onChange={(number) => {
+                        onDetailComponentChange("combined", number);
+                      }}
+                      size="large"
+                      controls={false}
+                      style={{ width: 150 }}
+                    />
+                  </Col>
+                  <Col span={2} className="table-header-col-section">
+                    <label>상온 [km]</label>
+                  </Col>
+                  <Col flex="auto" className="table-value-col-section">
+                    <InputNumber
+                      name="room_temperature"
+                      value={detailBodyInfo.room_temperature}
+                      onChange={(number) => {
+                        onDetailComponentChange("room_temperature", number);
+                      }}
+                      size="large"
+                      controls={false}
+                      style={{ width: 150 }}
+                    />
+                  </Col>
+                </Row>
+                <Row
+                  gutter={[0]}
+                  align="middle"
+                  style={{ height: 80 }}
+                  className="table-layout"
+                >
+                  <Col span={2} className="table-header-col-section">
+                    <label>저온 [km]</label>
+                  </Col>
+                  <Col span={10} className="table-value-col-section">
+                    <Space size={6}>
+                      <InputNumber
+                        name="low_temperature"
+                        value={detailBodyInfo.low_temperature}
+                        onChange={(number) => {
+                          onDetailComponentChange("low_temperature", number);
+                        }}
+                        size="large"
+                        controls={false}
+                        style={{ width: 150 }}
+                      />
+                    </Space>
+                  </Col>
+                </Row>
+              </Space>
+            </Space>
+            <Space direction="vertical" size={20}>
+              <Row gutter={[12]} align="middle">
+                <Col>
+                  <label className="main-sub-title">충전정보</label>
+                </Col>
+                <Col flex="auto" />
+              </Row>
+              <Space direction="vertical" size={0}>
+                <Row
+                  gutter={[0]}
+                  align="middle"
+                  style={{ height: 80 }}
+                  className="table-layout"
+                >
+                  <Col span={2} className="table-header-col-section">
+                    <label>배터리 용량 [kWh]</label>
+                  </Col>
+                  <Col span={10} className="table-value-col-section">
+                    <InputNumber
+                      name="battery_capacity"
+                      value={detailBodyInfo.battery_capacity}
+                      onChange={(number) => {
+                        onDetailComponentChange("battery_capacity", number);
+                      }}
+                      size="large"
+                      controls={false}
+                      style={{ width: 150 }}
+                    />
+                  </Col>
+                  <Col span={2} className="table-header-col-section">
+                    <label>충전방식</label>
+                  </Col>
+                  <Col flex="auto" className="table-value-col-section">
+                    <Input
+                      name="charging_method"
+                      value={detailBodyInfo.charging_method}
+                      onChange={(e) => {
+                        onDetailComponentChange(e.target.name, e.target.value);
+                      }}
+                      placeholder="충전방식 입력"
+                      size="large"
+                      style={{ width: 150 }}
+                    />
+                  </Col>
+                </Row>
+                <Row
+                  gutter={[0]}
+                  align="middle"
+                  style={{ height: 80 }}
+                  className="table-layout"
+                >
+                  <Col span={2} className="table-header-col-section">
+                    <label>급속충전</label>
+                  </Col>
+                  <Col span={10} className="table-value-col-section">
+                    <Input
+                      name="fast_charging"
+                      value={detailBodyInfo.fast_charging}
+                      onChange={(e) => {
+                        onDetailComponentChange(e.target.name, e.target.value);
+                      }}
+                      placeholder="충전방식 입력"
+                      size="large"
+                      style={{ width: 400 }}
+                    />
+                  </Col>
+                  <Col span={2} className="table-header-col-section">
+                    <label>완속충전</label>
+                  </Col>
+                  <Col flex="auto" className="table-value-col-section">
+                    <Input
+                      name="slow_charging"
+                      value={detailBodyInfo.slow_charging}
+                      onChange={(e) => {
+                        onDetailComponentChange(e.target.name, e.target.value);
+                      }}
+                      placeholder="충전방식 입력"
+                      size="large"
+                      style={{ width: 400 }}
+                    />
+                  </Col>
+                </Row>
+              </Space>
+            </Space>
+            <Space direction="vertical" size={20}>
+              <Row gutter={[12]} align="middle">
+                <Col>
+                  <label className="main-sub-title">제원</label>
+                </Col>
+                <Col flex="auto" />
+              </Row>
+              <Space direction="vertical" size={0}>
+                <Row
+                  gutter={[0]}
+                  align="middle"
+                  style={{ height: 80 }}
+                  className="table-layout"
+                >
+                  <Col span={2} className="table-header-col-section">
+                    <label>구동방식</label>
+                  </Col>
+                  <Col span={10} className="table-value-col-section">
+                    <Input
+                      name="driving_method"
+                      value={detailBodyInfo.driving_method}
+                      onChange={(e) => {
+                        onDetailComponentChange(e.target.name, e.target.value);
+                      }}
+                      placeholder="구동방식 입력"
+                      size="large"
+                      style={{ width: 200 }}
+                    />
+                  </Col>
+                  <Col span={2} className="table-header-col-section">
+                    <label>최대속도 [km/h]</label>
+                  </Col>
+                  <Col flex="auto" className="table-value-col-section">
+                    <InputNumber
+                      name="max_speed"
+                      value={detailBodyInfo.max_speed}
+                      onChange={(number) => {
+                        onDetailComponentChange("max_speed", number);
+                      }}
+                      size="large"
+                      controls={false}
+                      style={{ width: 150 }}
+                    />
+                  </Col>
+                </Row>
+                <Row
+                  gutter={[0]}
+                  align="middle"
+                  style={{ height: 80 }}
+                  className="table-layout"
+                >
+                  <Col span={2} className="table-header-col-section">
+                    <label>최고출력 [ps/rpm]</label>
+                  </Col>
+                  <Col span={10} className="table-value-col-section">
+                    <Space size={6}>
+                      <InputNumber
+                        name="highest_output1"
+                        value={detailBodyInfo.highest_output1}
+                        onChange={(number) => {
+                          onDetailComponentChange("highest_output1", number);
+                        }}
+                        size="large"
+                        controls={false}
+                        style={{ width: 100 }}
+                      />
+                      <label>/</label>
+                      <InputNumber
+                        name="highest_output2"
+                        value={detailBodyInfo.highest_output2}
+                        onChange={(number) => {
+                          onDetailComponentChange("highest_output2", number);
+                        }}
+                        size="large"
+                        controls={false}
+                        style={{ width: 100 }}
+                      />
+                    </Space>
+                  </Col>
+                  <Col span={2} className="table-header-col-section">
+                    <label>최대토크 [kg.m/rpm]</label>
+                  </Col>
+                  <Col flex="auto" className="table-value-col-section">
+                    <Space size={6}>
+                      <InputNumber
+                        name="max_torque1"
+                        value={detailBodyInfo.max_torque1}
+                        onChange={(number) => {
+                          onDetailComponentChange("max_torque1", number);
+                        }}
+                        size="large"
+                        controls={false}
+                        style={{ width: 100 }}
+                      />
+                      <label>/</label>
+                      <InputNumber
+                        name="max_torque2"
+                        value={detailBodyInfo.max_torque2}
+                        onChange={(number) => {
+                          onDetailComponentChange("max_torque2", number);
+                        }}
+                        size="large"
+                        controls={false}
+                        style={{ width: 100 }}
+                      />
+                    </Space>
+                  </Col>
+                </Row>
+                <Row
+                  gutter={[0]}
+                  align="middle"
+                  style={{ height: 80 }}
+                  className="table-layout"
+                >
+                  <Col span={2} className="table-header-col-section">
+                    <label>제로백 [초]</label>
+                  </Col>
+                  <Col span={10} className="table-value-col-section">
+                    <InputNumber
+                      name="zero_back"
+                      value={detailBodyInfo.zero_back}
+                      onChange={(number) => {
+                        onDetailComponentChange("zero_back", number);
+                      }}
+                      size="large"
+                      controls={false}
+                      style={{ width: 150 }}
+                    />
+                  </Col>
+                </Row>
+              </Space>
+            </Space>
+          </Space>
+        );
+      }
+    }
   };
 
   return (
@@ -591,237 +1806,12 @@ function Edit() {
                         <label>모델정보</label>
                       </Col>
                       <Col flex="auto" className="table-value-col-section">
-                        <Space size={10}>
-                          <Button className="gray-button large-button">
-                            브랜드
-                          </Button>
-                          <Button className="gray-button large-button">
-                            모델그룹
-                          </Button>
-                          <Button className="gray-button large-button">
-                            모델
-                          </Button>
-                          <Button className="gray-button large-button">
-                            라인업
-                          </Button>
-                          <Button className="gray-button large-button">
-                            트림명
-                          </Button>
-                        </Space>
+                        {renderDetailCarField()}
                       </Col>
                     </Row>
                   </Space>
                 </Space>
-                <Space direction="vertical" size={20}>
-                  <Row gutter={[12]} align="middle">
-                    <Col>
-                      <label className="main-sub-title">제원</label>
-                    </Col>
-                    <Col flex="auto" />
-                  </Row>
-                  <Space direction="vertical" size={0}>
-                    <Row
-                      gutter={[0]}
-                      align="middle"
-                      style={{ height: 80 }}
-                      className="table-layout"
-                    >
-                      <Col span={2} className="table-header-col-section">
-                        <label>연료</label>
-                      </Col>
-                      <Col span={10} className="table-value-col-section">
-                        <Button className="gray-button big-button">
-                          휘발유
-                        </Button>
-                      </Col>
-                      <Col span={2} className="table-header-col-section">
-                        <label>연비 [km/l]</label>
-                      </Col>
-                      <Col flex="auto" className="table-value-col-section">
-                        <Input value={0} style={{ width: 150 }} />
-                      </Col>
-                    </Row>
-                    <Row
-                      gutter={[0]}
-                      align="middle"
-                      style={{ height: 80 }}
-                      className="table-layout"
-                    >
-                      <Col span={2} className="table-header-col-section">
-                        <label>베기량 [CC]</label>
-                      </Col>
-                      <Col span={10} className="table-value-col-section">
-                        <Input value={0} style={{ width: 150 }} />
-                      </Col>
-                      <Col span={2} className="table-header-col-section">
-                        <label>엔진형식</label>
-                      </Col>
-                      <Col flex="auto" className="table-value-col-section">
-                        <Input
-                          placeholder="엔진형식 입력"
-                          style={{ width: 200 }}
-                        />
-                      </Col>
-                    </Row>
-                    <Row
-                      gutter={[0]}
-                      align="middle"
-                      style={{ height: 80 }}
-                      className="table-layout"
-                    >
-                      <Col span={2} className="table-header-col-section">
-                        <label>최대토크 [kg.m/rpm]</label>
-                      </Col>
-                      <Col span={10} className="table-value-col-section">
-                        <Space size={6}>
-                          <Input value={0} style={{ width: 100 }} />
-                          <label>/</label>
-                          <Input value={0} style={{ width: 100 }} />
-                        </Space>
-                      </Col>
-                      <Col span={2} className="table-header-col-section">
-                        <label>최고출력 [ps/rpm]</label>
-                      </Col>
-                      <Col flex="auto" className="table-value-col-section">
-                        <Space size={6}>
-                          <Input value={0} style={{ width: 100 }} />
-                          <label>/</label>
-                          <Input value={0} style={{ width: 100 }} />
-                        </Space>
-                      </Col>
-                    </Row>
-                    <Row
-                      gutter={[0]}
-                      align="middle"
-                      style={{ height: 80 }}
-                      className="table-layout"
-                    >
-                      <Col span={2} className="table-header-col-section">
-                        <label>CO2배출량 [g/km]</label>
-                      </Col>
-                      <Col span={10} className="table-value-col-section">
-                        <Input value={0} style={{ width: 150 }} />
-                      </Col>
-                      <Col span={2} className="table-header-col-section">
-                        <label>타이어</label>
-                      </Col>
-                      <Col flex="auto" className="table-value-col-section">
-                        <Space size={6}>
-                          <Input value={0} style={{ width: 100 }} />
-                          <label>/</label>
-                          <Input value={0} style={{ width: 60 }} />
-                          <label>R</label>
-                          <Input value={0} style={{ width: 60 }} />
-                        </Space>
-                      </Col>
-                    </Row>
-                    <Row
-                      gutter={[0]}
-                      align="middle"
-                      style={{ height: 80 }}
-                      className="table-layout"
-                    >
-                      <Col span={2} className="table-header-col-section">
-                        <label>구동방식</label>
-                      </Col>
-                      <Col span={10} className="table-value-col-section">
-                        <Input
-                          placeholder="구동방식 입력"
-                          style={{ width: 200 }}
-                        />
-                      </Col>
-                      <Col span={2} className="table-header-col-section">
-                        <label>변속기</label>
-                      </Col>
-                      <Col flex="auto" className="table-value-col-section">
-                        <Input
-                          placeholder="변속기 입력"
-                          style={{ width: 200 }}
-                        />
-                      </Col>
-                    </Row>
-                    <Row
-                      gutter={[0]}
-                      align="middle"
-                      style={{ height: 80 }}
-                      className="table-layout"
-                    >
-                      <Col span={2} className="table-header-col-section">
-                        <label>연료탱크 [ l ]</label>
-                      </Col>
-                      <Col span={10} className="table-value-col-section">
-                        <Input value={0} style={{ width: 150 }} />
-                      </Col>
-                      <Col span={2} className="table-header-col-section">
-                        <label>공차중량 [kg]</label>
-                      </Col>
-                      <Col flex="auto" className="table-value-col-section">
-                        <Input value={0} style={{ width: 150 }} />
-                      </Col>
-                    </Row>
-                    <Row
-                      gutter={[0]}
-                      align="middle"
-                      style={{ height: 80 }}
-                      className="table-layout"
-                    >
-                      <Col span={2} className="table-header-col-section">
-                        <label>승차정원 [명]</label>
-                      </Col>
-                      <Col flex="auto" className="table-value-col-section">
-                        <Input value={0} style={{ width: 150 }} />
-                      </Col>
-                    </Row>
-                  </Space>
-                </Space>
-                <Space direction="vertical" size={20}>
-                  <Row gutter={[12]} align="middle">
-                    <Col>
-                      <label className="main-sub-title">크기</label>
-                    </Col>
-                    <Col flex="auto" />
-                  </Row>
-                  <Space direction="vertical" size={0}>
-                    <Row
-                      gutter={[0]}
-                      align="middle"
-                      style={{ height: 80 }}
-                      className="table-layout"
-                    >
-                      <Col span={2} className="table-header-col-section">
-                        <label>전고 [mm]</label>
-                      </Col>
-                      <Col span={10} className="table-value-col-section">
-                        <Input value={0} style={{ width: 150 }} />
-                      </Col>
-                      <Col span={2} className="table-header-col-section">
-                        <label>전폭 [mm]</label>
-                      </Col>
-                      <Col flex="auto" className="table-value-col-section">
-                        <Input value={0} style={{ width: 150 }} />
-                      </Col>
-                    </Row>
-                    <Row
-                      gutter={[0]}
-                      align="middle"
-                      style={{ height: 80 }}
-                      className="table-layout"
-                    >
-                      <Col span={2} className="table-header-col-section">
-                        <label>휠베이스 [mm]</label>
-                      </Col>
-                      <Col span={10} className="table-value-col-section">
-                        <Input value={0} style={{ width: 150 }} />
-                      </Col>
-                      <Col span={2} className="table-header-col-section">
-                        <label>전장 [mm]</label>
-                      </Col>
-                      <Col flex="auto" className="table-value-col-section">
-                        <Input value={0} style={{ width: 150 }} />
-                      </Col>
-                    </Row>
-                  </Space>
-                </Space>
+                {renderDetailBody()}
               </Space>
             </TabPane>
           </Tabs>

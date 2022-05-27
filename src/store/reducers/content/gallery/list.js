@@ -1,4 +1,4 @@
-import { modelGalleryService } from "../../../../services/modelGalleryService";
+import { galleryService } from "../../../../services/galleryService";
 import { brandService } from "../../../../services/brandService";
 
 const prefix = "content/gallery/list/";
@@ -9,7 +9,7 @@ const SHOW_MORE = prefix + "SHOW_MORE";
 export const init = () => async (dispatch) => {
   try {
     const brandOptionList = await brandService.getOptionList();
-    const dataSource = await modelGalleryService.getList(0);
+    const dataSource = await galleryService.getList(0);
 
     dispatch({
       type: INIT,
@@ -27,7 +27,7 @@ export const showMore = () => async (dispatch, getState) => {
   try {
     const state = getState();
     const offset = state.galleryList.offset + 10;
-    const dataSource = await modelGalleryService.getList(offset);
+    const dataSource = await galleryService.getList(offset);
 
     dispatch({
       type: SHOW_MORE,

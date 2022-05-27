@@ -1,13 +1,13 @@
 import axios from "axios";
 import { GetDateTimeStringFromDate } from "../constants/GlobalFunctions";
 
-const base_url = process.env.REACT_APP_API_URL + "/extra";
+const base_url = process.env.REACT_APP_API_URL + "/gallery";
 const token = JSON.parse(sessionStorage.getItem("token"));
 
 const checkName = async (name) => {
   try {
     const response = await axios.post(base_url + "/check-name", {
-      model_name: name,
+      group_name: name,
     });
 
     return response.data.exist;
@@ -16,23 +16,22 @@ const checkName = async (name) => {
   }
 };
 
-const create = async (body) => {
-  var data = [
-    {
+const create = async (bodyList) => {
+  var data = [];
+  bodyList.map((body) => {
+    data.push({
+      brand_id: body.brand_id,
+      group_id: body.group_id,
       model_id: body.model_id,
-      displacement: body.displacement,
-      registered_area: body.registered_area,
-      acquisition_tax: body.acquisition_tax,
-      bond_discount: body.bond_discount,
-      consignment: body.consignment,
+      picture_index: body.picture_index,
 
       created_at: GetDateTimeStringFromDate(new Date()),
       created_by: token.idx,
       updated_at: GetDateTimeStringFromDate(new Date()),
       updated_by: token.idx,
       is_deleted: false,
-    },
-  ];
+    });
+  });
 
   try {
     const response = await axios.post(base_url, data);
@@ -45,12 +44,10 @@ const create = async (body) => {
 
 const update = async (body) => {
   var data = {
+    brand_id: body.brand_id,
+    group_id: body.group_id,
     model_id: body.model_id,
-    displacement: body.displacement,
-    registered_area: body.registered_area,
-    acquisition_tax: body.acquisition_tax,
-    bond_discount: body.bond_discount,
-    consignment: body.consignment,
+    picture_index: body.picture_index,
 
     created_at: GetDateTimeStringFromDate(new Date(body.created_at)),
     created_by: body.created_by,
@@ -129,49 +126,7 @@ const get = async (idx) => {
 //     }
 // }
 
-const download = async () => {
-  try {
-    const response = await axios
-      .post(base_url + "/download", null, {
-        headers: {
-          "Content-Disposition": "attachment; filename=template.xlsx",
-          "Content-Type":
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        },
-        responseType: "arraybuffer",
-      })
-      .then((response) => {
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", "취득세.xlsx");
-        document.body.appendChild(link);
-        link.click();
-      })
-      .catch((error) => console.log(error));
-  } catch (e) {
-    return e;
-  }
-};
-
-const uploadExcel = async (file) => {
-  var formData = new FormData();
-  formData.append("excel", file);
-
-  try {
-    const response = await axios.post(base_url + "/upload-excel", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-
-    return response.data;
-  } catch (e) {
-    return e;
-  }
-};
-
-export const extraService = {
+export const galleryService = {
   checkName,
   create,
   update,
@@ -179,6 +134,4 @@ export const extraService = {
   getOptionList,
   get,
   remove,
-  download,
-  uploadExcel,
 };

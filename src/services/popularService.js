@@ -1,7 +1,7 @@
 import axios from "axios";
 import { GetDateTimeStringFromDate } from "../constants/GlobalFunctions";
 
-const base_url = process.env.REACT_APP_API_URL + "/model-gallery";
+const base_url = process.env.REACT_APP_API_URL + "/popular";
 const token = JSON.parse(sessionStorage.getItem("token"));
 
 const checkName = async (name) => {
@@ -20,9 +20,10 @@ const create = async (bodyList) => {
   var data = [];
   bodyList.map((body) => {
     data.push({
-      order: body.order,
+      brand_id: body.brand_id,
+      group_id: body.group_id,
       model_id: body.model_id,
-      picture: body.picture,
+      picture_index: body.picture_index,
 
       created_at: GetDateTimeStringFromDate(new Date()),
       created_by: token.idx,
@@ -43,9 +44,10 @@ const create = async (bodyList) => {
 
 const update = async (body) => {
   var data = {
-    order: body.order,
+    brand_id: body.brand_id,
+    group_id: body.group_id,
     model_id: body.model_id,
-    picture: body.picture,
+    picture_index: body.picture_index,
 
     created_at: GetDateTimeStringFromDate(new Date(body.created_at)),
     created_by: body.created_by,
@@ -124,7 +126,7 @@ const get = async (idx) => {
 //     }
 // }
 
-export const modelGalleryService = {
+export const popularService = {
   checkName,
   create,
   update,

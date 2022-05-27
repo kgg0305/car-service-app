@@ -11,6 +11,7 @@ import {
   setSearch,
   showMore,
   download,
+  uploadExcel,
 } from "../../../store/reducers/car/extra/list";
 
 // 목록페지
@@ -42,7 +43,8 @@ function List() {
   const onResetClick = () => dispatch(reset());
   const onSearchComponentChange = (name, value) =>
     dispatch(setSearch(name, value));
-  const onClickDownload = () => dispatch(download());
+  const onDownloadClick = () => dispatch(download());
+  const onUploadClick = (excel) => dispatch(uploadExcel(excel));
 
   const columns = [
     {
@@ -65,32 +67,32 @@ function List() {
     },
     {
       title: "등록지역",
-      dataIndex: "region",
-      key: "region",
+      dataIndex: "registered_area",
+      key: "registered_area",
       align: "center",
     },
     {
       title: "면세조건",
-      dataIndex: "condition",
-      key: "condition",
+      dataIndex: "displacement",
+      key: "displacement",
       align: "center",
     },
     {
       title: "취득세",
-      dataIndex: "fee",
-      key: "fee",
+      dataIndex: "acquisition_tax",
+      key: "acquisition_tax",
       align: "center",
     },
     {
       title: "채권할인",
-      dataIndex: "discount",
-      key: "discount",
+      dataIndex: "bond_discount",
+      key: "bond_discount",
       align: "center",
     },
     {
       title: "탁송",
-      dataIndex: "transfer",
-      key: "transfer",
+      dataIndex: "consignment",
+      key: "consignment",
       align: "center",
     },
   ];
@@ -99,13 +101,14 @@ function List() {
     topItems: [
       {
         type: Constants.inputTypes.button,
-        onClick: onClickDownload,
+        onClick: onDownloadClick,
         label: "엑셀 다운로드",
         style: "white-button",
       },
       {
         type: Constants.inputTypes.upload,
-        action: "",
+        name: "excel",
+        action: onUploadClick,
         accept: ".xlsx",
         label: "엑셀 등록",
         style: "black-button",

@@ -28,6 +28,7 @@ const create = async (body) => {
       price: body.price,
       model_trim_ids: body.model_trim_ids,
       is_use: body.is_use,
+      detail_meta: body.detail_meta,
 
       created_at: GetDateTimeStringFromDate(new Date()),
       created_by: token.idx,
@@ -57,6 +58,7 @@ const update = async (body) => {
     price: body.price,
     model_trim_ids: body.model_trim_ids,
     is_use: body.is_use,
+    detail_meta: body.detail_meta,
 
     created_at: GetDateTimeStringFromDate(new Date(body.created_at)),
     created_by: body.created_by,

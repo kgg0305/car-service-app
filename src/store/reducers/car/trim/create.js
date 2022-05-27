@@ -14,11 +14,14 @@ const SHOW_VALIDATION = prefix + "SHOW_VALIDATION";
 const CLOSE_VALIDATION = prefix + "CLOSE_VALIDATION";
 const CHECK_NAME = prefix + "CHECK_NAME";
 const SET_BODY = prefix + "SET_BODY";
+const SET_BRAND_BODY = prefix + "SET_BRAND_BODY";
+const SET_LINEUP_BODY = prefix + "SET_LINEUP_BODY";
 const ADD_SPECIFICATION_BODY = prefix + "ADD_SPECIFICATION_BODY";
 const SET_SPECIFICATION_BODY = prefix + "SET_SPECIFICATION_BODY";
 const DELETE_SPECIFICATION_BODY = prefix + "DELETE_SPECIFICATION_BODY";
 const SET_TRIM_BODY = prefix + "SET_TRIM_BODY";
 const PUT_TRIM_BODY = prefix + "PUT_TRIM_BODY";
+const SET_DETAIL_BODY = prefix + "SET_DETAIL_BODY";
 const SAVE = prefix + "SAVE";
 
 export const init = () => async (dispatch) => {
@@ -69,6 +72,16 @@ export const checkName = (name) => async (dispatch) => {
 };
 export const setBody = (name, value) => async (dispatch) => {
   try {
+    if (name === "brand_id") {
+      const brand_info = await brandService.get(value);
+      dispatch(setBrandBody(brand_info));
+    }
+
+    if (name === "lineup_id") {
+      const lineup_info = await lineupService.get(value);
+      dispatch(setLineupBody(lineup_info));
+    }
+
     if (name === "brand_id" || name === "group_id") {
       dispatch(putTrimBody([]));
     }
@@ -98,6 +111,18 @@ export const setBody = (name, value) => async (dispatch) => {
     console.log(e);
   }
 };
+export const setBrandBody = (body) => ({
+  type: SET_BRAND_BODY,
+  payload: {
+    brandBodyInfo: body,
+  },
+});
+export const setLineupBody = (body) => ({
+  type: SET_LINEUP_BODY,
+  payload: {
+    lineupBodyInfo: body,
+  },
+});
 export const addSpecificationBody = () => ({
   type: ADD_SPECIFICATION_BODY,
 });
@@ -129,101 +154,113 @@ export const putTrimBody = (trimBodyList) => ({
     trimBodyList: trimBodyList,
   },
 });
-export const save =
-  (url, bodyInfo, specificationBodyList, trimBodyList) => async (dispatch) => {
-    const validation = [];
-    if (bodyInfo.brand_id === null) {
-      validation.push({
-        title: "정보 ",
-        name: "차량(브랜드)",
-      });
-    }
-    if (bodyInfo.group_id === null) {
-      validation.push({
-        title: "정보 ",
-        name: "차량(모델그룹)",
-      });
-    }
-    if (bodyInfo.model_id === null) {
-      validation.push({
-        title: "정보 ",
-        name: "차량(모델)",
-      });
-    }
-    if (bodyInfo.lineup_id === null) {
-      validation.push({
-        title: "정보 ",
-        name: "차량(라인업)",
-      });
-    }
-    if (bodyInfo.trim_name === "") {
-      validation.push({
-        title: "정보 ",
-        name: "트림",
-      });
-    }
-    if (bodyInfo.gearbox_type === null) {
-      validation.push({
-        title: "정보 ",
-        name: "변속기",
-      });
-    }
-    if (bodyInfo.price === "") {
-      validation.push({
-        title: "정보 ",
-        name: "가격",
-      });
-    }
-
-    specificationBodyList.map((body, index) => {
-      if (body.specification_id === null) {
-        validation.push({
-          title: "사양 " + (index + 1 < 10 ? "0" + (index + 1) : index + 1),
-          name: "카테고리",
-        });
-      }
-      if (body.detail === "") {
-        validation.push({
-          title: "사양 " + (index + 1 < 10 ? "0" + (index + 1) : index + 1),
-          name: "상세내용",
-        });
-      }
+export const setDetailBody = (name, value) => ({
+  type: SET_DETAIL_BODY,
+  payload: {
+    name: name,
+    value: value,
+  },
+});
+export const save = (url) => async (dispatch, getState) => {
+  const state = getState();
+  const bodyInfo = state.trimCreate.bodyInfo;
+  const specificationBodyList = state.trimCreate.specificationBodyList;
+  const trimBodyList = state.trimCreate.trimBodyList;
+  const detailBodyInfo = state.trimCreate.detailBodyInfo;
+  const validation = [];
+  if (bodyInfo.brand_id === null) {
+    validation.push({
+      title: "정보 ",
+      name: "차량(브랜드)",
     });
+  }
+  if (bodyInfo.group_id === null) {
+    validation.push({
+      title: "정보 ",
+      name: "차량(모델그룹)",
+    });
+  }
+  if (bodyInfo.model_id === null) {
+    validation.push({
+      title: "정보 ",
+      name: "차량(모델)",
+    });
+  }
+  if (bodyInfo.lineup_id === null) {
+    validation.push({
+      title: "정보 ",
+      name: "차량(라인업)",
+    });
+  }
+  if (bodyInfo.trim_name === "") {
+    validation.push({
+      title: "정보 ",
+      name: "트림",
+    });
+  }
+  if (bodyInfo.gearbox_type === null) {
+    validation.push({
+      title: "정보 ",
+      name: "변속기",
+    });
+  }
+  if (bodyInfo.price === "") {
+    validation.push({
+      title: "정보 ",
+      name: "가격",
+    });
+  }
 
-    if (validation.length > 0) {
-      dispatch(showValidation(validation));
-    } else {
-      try {
-        const created_info = await trimService.create({
-          ...bodyInfo,
-          model_trim_ids: trimBodyList
-            .filter((item) => item.is_use === "0")
-            .map((item) => item.idx)
-            .join(","),
-        });
-        const trim_id = created_info["insertId"];
-
-        //create specification
-        const tempSpecificationBodyList = specificationBodyList.map((body) => ({
-          ...body,
-          trim_id: trim_id,
-        }));
-
-        if (tempSpecificationBodyList.length > 0) {
-          await trimSpecificationService.create(tempSpecificationBodyList);
-        }
-
-        dispatch({
-          type: SAVE,
-          payload: {
-            url: url,
-          },
-        });
-      } catch (e) {
-        console.log(e);
-      }
+  specificationBodyList.map((body, index) => {
+    if (body.specification_id === null) {
+      validation.push({
+        title: "사양 " + (index + 1 < 10 ? "0" + (index + 1) : index + 1),
+        name: "카테고리",
+      });
     }
-  };
+    if (body.detail === "") {
+      validation.push({
+        title: "사양 " + (index + 1 < 10 ? "0" + (index + 1) : index + 1),
+        name: "상세내용",
+      });
+    }
+  });
+
+  if (validation.length > 0) {
+    dispatch(showValidation(validation));
+  } else {
+    try {
+      const created_info = await trimService.create({
+        ...bodyInfo,
+        model_trim_ids: trimBodyList
+          .filter((item) => item.is_use === "0")
+          .map((item) => item.idx)
+          .join(","),
+        detail_meta: JSON.stringify(detailBodyInfo),
+      });
+      const trim_id = created_info["insertId"];
+
+      //create specification
+      const tempSpecificationBodyList = specificationBodyList.map((body) => ({
+        ...body,
+        trim_id: trim_id,
+      }));
+
+      if (tempSpecificationBodyList.length > 0) {
+        await trimSpecificationService.create(tempSpecificationBodyList);
+      }
+
+      dispatch({
+        type: SAVE,
+        payload: {
+          url: url,
+        },
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+};
 
 const initialState = {
   redirectTo: "",
@@ -246,6 +283,12 @@ const initialState = {
     is_use: "0",
     check_name: "",
   },
+  brandBodyInfo: {
+    is_income: "0",
+  },
+  lineupBodyInfo: {
+    fule_kind: "0",
+  },
   specificationBodyList: [
     {
       number: 1,
@@ -254,6 +297,7 @@ const initialState = {
     },
   ],
   trimBodyList: [],
+  detailBodyInfo: {},
 };
 
 export default function create(state = initialState, action) {
@@ -299,6 +343,8 @@ export default function create(state = initialState, action) {
     case SET_BODY:
       return {
         ...state,
+        detailBodyInfo:
+          action.payload.name === "lineup_id" ? {} : state.detailBodyInfo,
         bodyInfo: {
           ...state.bodyInfo,
           group_id:
@@ -316,6 +362,16 @@ export default function create(state = initialState, action) {
               : state.bodyInfo.lineup_id,
           [action.payload.name]: action.payload.value,
         },
+      };
+    case SET_BRAND_BODY:
+      return {
+        ...state,
+        brandBodyInfo: action.payload.brandBodyInfo,
+      };
+    case SET_LINEUP_BODY:
+      return {
+        ...state,
+        lineupBodyInfo: action.payload.lineupBodyInfo,
       };
     case ADD_SPECIFICATION_BODY:
       return {
@@ -366,6 +422,14 @@ export default function create(state = initialState, action) {
       return {
         ...state,
         trimBodyList: action.payload.trimBodyList,
+      };
+    case SET_DETAIL_BODY:
+      return {
+        ...state,
+        detailBodyInfo: {
+          ...state.detailBodyInfo,
+          [action.payload.name]: action.payload.value,
+        },
       };
     case SAVE:
       return {

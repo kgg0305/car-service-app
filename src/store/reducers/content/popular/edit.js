@@ -1,6 +1,6 @@
 import { brandService } from "../../../../services/brandService";
 import { groupService } from "../../../../services/groupService";
-import { modelGalleryService } from "../../../../services/modelGalleryService";
+import { popularService } from "../../../../services/popularService";
 import { modelService } from "../../../../services/modelService";
 import { photoService } from "../../../../services/photoService";
 
@@ -13,6 +13,7 @@ const CLOSE_VALIDATION = prefix + "CLOSE_VALIDATION";
 const SHOW_CONFIRM = prefix + "SHOW_CONFIRM";
 const CLOSE_CONFIRM = prefix + "CLOSE_CONFIRM";
 const SET_BODY = prefix + "SET_BODY";
+const PUT_MODEL_BODY = prefix + "PUT_MODEL_BODY";
 const SAVE = prefix + "SAVE";
 const REMOVE = prefix + "REMOVE";
 
@@ -21,10 +22,8 @@ export const init = (idx) => async (dispatch) => {
     const brandOptionList = await brandService.getOptionList(idx);
     const groupOptionList = await groupService.getOptionList(idx);
     const modelOptionList = await modelService.getOptionList(idx);
-    const modelBodyInfo = await modelService.get(idx);
-    const bodyList = await modelGalleryService.getList(0, {
-      model_id: idx,
-    });
+    const bodyInfo = await popularService.get(idx);
+    const modelBodyInfo = await modelService.get(bodyInfo.model_id);
 
     dispatch({
       type: INIT,
@@ -33,7 +32,7 @@ export const init = (idx) => async (dispatch) => {
         groupOptionList: groupOptionList,
         modelOptionList: modelOptionList,
         modelBodyInfo: modelBodyInfo,
-        bodyList: bodyList,
+        bodyInfo: bodyInfo,
       },
     });
   } catch (e) {
@@ -58,52 +57,38 @@ export const showConfirm = () => ({
 export const closeConfirm = () => ({
   type: CLOSE_CONFIRM,
 });
-export const setBody = (name, value) => ({
-  type: SET_BODY,
+export const setBody = (name, value) => async (dispatch) => {
+  if (name === "model_id") {
+    const modelBodyInfo = await modelService.get(value);
+    dispatch(putModelBody(modelBodyInfo));
+  }
+
+  dispatch({
+    type: SET_BODY,
+    payload: {
+      name: name,
+      value: value,
+    },
+  });
+};
+export const putModelBody = (body) => ({
+  type: PUT_MODEL_BODY,
   payload: {
-    name: name,
-    value: value,
+    modelBodyInfo: body,
   },
 });
-export const save = (url, bodyInfo, contentBodyList) => async (dispatch) => {
+export const save = (url) => async (dispatch, getState) => {
+  const state = getState();
+  const bodyInfo = state.popularEdit.bodyInfo;
+  const contentBodyList = state.popularEdit.contentBodyList;
+
   const validation = [];
-  if (bodyInfo.category === "") {
-    validation.push({
-      title: "정보",
-      name: "카테고리",
-    });
-  }
-  if (bodyInfo.tag === "") {
-    validation.push({
-      title: "정보",
-      name: "태그",
-    });
-  }
-  contentBodyList.map((body, index) => {
-    if (body.idx === null) {
-      validation.push({
-        title: "뉴스 " + (index + 1 < 10 ? "0" + (index + 1) : index + 1),
-        name: "콘텐츠 번호",
-      });
-    }
-    if (body.title === "등록되지 않은 콘텐츠입니다.") {
-      validation.push({
-        title: "뉴스 " + (index + 1 < 10 ? "0" + (index + 1) : index + 1),
-        name: "콘텐츠 내용",
-      });
-    }
-  });
 
   if (validation.length > 0) {
     dispatch(showValidation(validation));
   } else {
     try {
-      const updateBodyInfo = {
-        ...bodyInfo,
-        content_ids: contentBodyList.map((body) => body.idx).join(","),
-      };
-
-      await photoService.update(updateBodyInfo);
+      await popularService.update(bodyInfo);
 
       dispatch({
         type: SAVE,
@@ -140,7 +125,12 @@ const initialState = {
   confirm: {
     show: false,
   },
-  bodyList: [],
+  bodyInfo: {
+    brand_id: null,
+    group_id: null,
+    model_id: null,
+    picture_index: null,
+  },
   brandOptionList: [],
   groupOptionList: [],
   modelOptionList: [],
@@ -160,7 +150,7 @@ export default function edit(state = initialState, action) {
         groupOptionList: action.payload.groupOptionList,
         modelOptionList: action.payload.modelOptionList,
         modelBodyInfo: action.payload.modelBodyInfo,
-        bodyList: action.payload.bodyList,
+        bodyInfo: action.payload.bodyInfo,
       };
     case REMOVE_REDIRECTTO:
       return {
@@ -205,8 +195,20 @@ export default function edit(state = initialState, action) {
         ...state,
         bodyInfo: {
           ...state.bodyInfo,
+          group_id:
+            action.payload.name === "brand_id" ? null : state.bodyInfo.group_id,
+          model_id:
+            action.payload.name === "brand_id" ||
+            action.payload.name === "group_id"
+              ? null
+              : state.bodyInfo.model_id,
           [action.payload.name]: action.payload.value,
         },
+      };
+    case PUT_MODEL_BODY:
+      return {
+        ...state,
+        modelBodyInfo: action.payload.modelBodyInfo,
       };
     case SAVE:
       return {

@@ -472,3 +472,8 @@ main {
 .table-value {
     padding: 0px 6px;
 }
+
+.picture-selected {
+    border: 2px solid #00A0C4;
+    border-radius: 3px;
+}

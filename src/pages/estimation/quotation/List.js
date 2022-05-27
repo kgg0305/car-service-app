@@ -50,7 +50,7 @@ function List() {
     dispatch(setSearch(name, value));
   const onAssignToChange = (idx, value) =>
     dispatch(assign(dataSource, idx, value));
-  const onClickDownload = () => dispatch(download());
+  const onDownloadClick = () => dispatch(download());
 
   const columns = [
     {
@@ -142,7 +142,7 @@ function List() {
     topItems: [
       {
         type: Constants.inputTypes.button,
-        onClick: onClickDownload,
+        onClick: onDownloadClick,
         label: "엑셀로 내려받기",
         style: "black-button",
       },
