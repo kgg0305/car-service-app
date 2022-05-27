@@ -41,7 +41,9 @@ export const init = (idx) => async (dispatch) => {
     const groupOptionList = await groupService.getOptionList();
     const modelOptionList = await modelService.getOptionList();
     const lineupOptionList = await lineupService.getOptionList();
-    const detailBodyInfo = JSON.parse(bodyInfo.detail_meta);
+    const detailBodyInfo = JSON.parse(bodyInfo.detail_meta)
+      ? JSON.parse(bodyInfo.detail_meta)
+      : {};
 
     dispatch({
       type: INIT,
