@@ -56,7 +56,7 @@ function Edit() {
   const onCloseConfirmClick = () => dispatch(closeConfirm());
   const onCheckNameClick = (name) => dispatch(checkName(name));
   const onComponentChange = (name, value) => dispatch(setBody(name, value));
-  const onSaveClick = (url) => dispatch(save(url, bodyInfo));
+  const onSaveClick = (url) => dispatch(save(url));
   const onDeleteClick = async () => dispatch(showConfirm());
   const deleteInfo = async () => dispatch(remove("/car/group", id));
 

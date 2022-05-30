@@ -1,5 +1,6 @@
 import axios from "axios";
 import { GetDateTimeStringFromDate } from "../constants/GlobalFunctions";
+import { trimService } from "./trimService";
 
 const base_url = process.env.REACT_APP_API_URL + "/lineup";
 const token = JSON.parse(sessionStorage.getItem("token"));
@@ -75,6 +76,7 @@ const update = async (body) => {
 };
 
 const remove = async (idx) => {
+  await trimService.removeByLineup(idx);
   const response = await axios.get(base_url + "/" + idx);
 
   var data = {
@@ -90,6 +92,23 @@ const remove = async (idx) => {
     const response = await axios.put(base_url + "/" + idx, data);
 
     return response.data;
+  } catch (e) {
+    return e;
+  }
+};
+
+const removeByModel = async (model_id) => {
+  try {
+    const response = await axios.post(base_url + "/list-id", {
+      model_id: model_id,
+    });
+
+    for (let i = 0; i < response.data.length; i++) {
+      const idx = response.data[i].idx;
+      await remove(idx);
+    }
+
+    return;
   } catch (e) {
     return e;
   }
@@ -143,4 +162,5 @@ export const lineupService = {
   getOptionList,
   get,
   remove,
+  removeByModel,
 };

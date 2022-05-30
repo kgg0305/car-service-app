@@ -219,9 +219,15 @@ function Edit() {
                           maxLength={15}
                           style={{ width: 250 }}
                         />
-                        <label className="danger-alert">
-                          이미 사용중인 이름 입니다.
-                        </label>
+                        {bodyInfo.danger_password ? (
+                          <label className="danger-alert">
+                            {bodyInfo.short_password
+                              ? "글자수가 부족합니다."
+                              : "사용할 수 없는 비밀번호 입니다."}
+                          </label>
+                        ) : (
+                          ""
+                        )}
                       </div>
                       <label
                         className="description-label"

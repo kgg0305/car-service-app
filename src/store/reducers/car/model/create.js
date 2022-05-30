@@ -29,16 +29,20 @@ const DELETE_TRIM_BODY = prefix + "DELETE_TRIM_BODY";
 const SET_TRIM_BODY = prefix + "SET_TRIM_BODY";
 const SET_DISCOUNT_BODY = prefix + "SET_DISCOUNT_BODY";
 const PUT_DISCOUNT_BODY = prefix + "PUT_DISCOUNT_BODY";
+const MOVE_UP = prefix + "MOVE_UP";
+const MOVE_DOWN = prefix + "MOVE_DOWN";
 const SAVE = prefix + "SAVE";
 
 export const init = () => async (dispatch) => {
   try {
+    const sequence = (await modelService.sequence()) + 1;
     const brandOptionList = await brandService.getOptionList();
     const groupOptionList = await groupService.getOptionList();
 
     dispatch({
       type: INIT,
       payload: {
+        sequence: sequence,
         brandOptionList: brandOptionList,
         groupOptionList: groupOptionList,
       },
@@ -61,30 +65,51 @@ export const closeValidation = () => ({
 });
 export const checkName = (name) => async (dispatch) => {
   try {
-    const result = await modelService.checkName(name);
+    if (name === "") {
+      dispatch(
+        showValidation([
+          {
+            title: "정보",
+            name: "모델명",
+          },
+        ])
+      );
+    } else {
+      const result = await modelService.checkName(name);
 
-    dispatch({
-      type: CHECK_NAME,
-      payload: {
-        check_name: result ? "exist" : "not-exist",
-      },
-    });
+      dispatch({
+        type: CHECK_NAME,
+        payload: {
+          check_name: result ? "exist" : "not-exist",
+        },
+      });
+    }
   } catch (e) {
     console.log(e);
   }
 };
 export const preveiew = (number, file) => async (dispatch) => {
-  if (!file.url && !file.preview) {
+  if (file && !file.url && !file.preview) {
     file.preview = await GetBase64(file.originFileObj);
   }
 
-  dispatch({
-    type: PREVIEW,
-    payload: {
-      number: number,
-      preview: file.preview,
-    },
-  });
+  if (file) {
+    dispatch({
+      type: PREVIEW,
+      payload: {
+        number: number,
+        preview: file.preview,
+      },
+    });
+  } else {
+    dispatch({
+      type: PREVIEW,
+      payload: {
+        number: number,
+        preview: preview_default_image,
+      },
+    });
+  }
 };
 export const setBody = (name, value) => async (dispatch) => {
   try {
@@ -196,177 +221,223 @@ export const setDiscountBody = (kind_id, condition_id, name, value) => ({
     value: value,
   },
 });
-export const save =
-  (
-    url,
-    bodyInfo,
-    lineupBodyList,
-    colorBodyList,
-    trimBodyList,
-    discountBodyList
-  ) =>
-  async (dispatch) => {
-    const validation = [];
-    if (bodyInfo.brand_id === null) {
-      validation.push({
-        title: "정보",
-        name: "차량",
-      });
-    }
-    if (bodyInfo.group_id === "") {
-      validation.push({
-        title: "정보",
-        name: "차량",
-      });
-    }
-    if (bodyInfo.model_name === "") {
-      validation.push({
-        title: "정보",
-        name: "모델",
-      });
-    }
-    if (bodyInfo.is_new === null) {
-      validation.push({
-        title: "정보",
-        name: "신차여부",
-      });
-    }
-    if (bodyInfo.release_date === null) {
-      validation.push({
-        title: "정보",
-        name: "출시일",
-      });
-    }
-    if (bodyInfo.sequence === "") {
-      validation.push({
-        title: "정보",
-        name: "순서",
-      });
-    }
-    if (bodyInfo.is_use === null) {
-      validation.push({
-        title: "정보",
-        name: "사용여부",
-      });
-    }
+export const deletePicture = (number) => (dispatch) => {
+  let name = "picture_" + number;
+  dispatch(setBody(name, { uid: "__AUTO__" }));
 
-    lineupBodyList.map((body, index) => {
-      if (body.name === "") {
-        validation.push({
-          title: "공통옵션 " + (index + 1 < 10 ? "0" + (index + 1) : index + 1),
-          name: "옵션이름",
-        });
-      }
-      if (body.price === 0) {
-        validation.push({
-          title: "공통옵션 " + (index + 1 < 10 ? "0" + (index + 1) : index + 1),
-          name: "가격",
-        });
-      }
-      if (body.detail === "") {
-        validation.push({
-          title: "공통옵션 " + (index + 1 < 10 ? "0" + (index + 1) : index + 1),
-          name: "세부내용",
-        });
-      }
+  dispatch(preveiew(number, null));
+};
+export const moveUp = (name, index) => (dispatch, getState) => {
+  const state = getState();
+  const bodyList = state.modelCreate[name];
+  if (index > 0) {
+    const current_item = bodyList[index];
+    const top_item = bodyList[index - 1];
+
+    dispatch({
+      type: MOVE_UP,
+      payload: {
+        name: name,
+        index: index,
+        current_item: current_item,
+        top_item: top_item,
+      },
     });
+  }
+};
+export const moveDown = (name, index) => (dispatch, getState) => {
+  const state = getState();
+  const bodyList = state.modelCreate[name];
+  if (index < bodyList.length - 1) {
+    const current_item = bodyList[index];
+    const bottom_item = bodyList[index + 1];
 
-    colorBodyList.map((body, index) => {
-      if (body.name === "") {
-        validation.push({
-          title: "색상 " + (index + 1 < 10 ? "0" + (index + 1) : index + 1),
-          name: "색상이름",
-        });
-      }
-      if (body.price === 0) {
-        validation.push({
-          title: "색상 " + (index + 1 < 10 ? "0" + (index + 1) : index + 1),
-          name: "가격",
-        });
-      }
+    dispatch({
+      type: MOVE_DOWN,
+      payload: {
+        name: name,
+        index: index,
+        current_item: current_item,
+        bottom_item: bottom_item,
+      },
     });
+  }
+};
+export const save = (url) => async (dispatch, getState) => {
+  const state = getState();
+  const bodyInfo = state.modelCreate.bodyInfo;
+  const lineupBodyList = state.modelCreate.lineupBodyList;
+  const colorBodyList = state.modelCreate.colorBodyList;
+  const trimBodyList = state.modelCreate.trimBodyList;
+  const discountBodyList = state.modelCreate.discountBodyList;
 
-    trimBodyList.map((body, index) => {
-      if (body.name === "") {
-        validation.push({
-          title: "옵션 " + (index + 1 < 10 ? "0" + (index + 1) : index + 1),
-          name: "옵션이름",
-        });
-      }
-      if (body.price === 0) {
-        validation.push({
-          title: "옵션 " + (index + 1 < 10 ? "0" + (index + 1) : index + 1),
-          name: "가격",
-        });
-      }
-      if (body.detail === "") {
-        validation.push({
-          title: "옵션 " + (index + 1 < 10 ? "0" + (index + 1) : index + 1),
-          name: "세부내용",
-        });
-      }
+  const validation = [];
+  if (bodyInfo.check_name !== "not-exist") {
+    validation.push({
+      title: "정보",
+      name: "모델명 중복체크",
     });
+  }
+  if (bodyInfo.brand_id === null) {
+    validation.push({
+      title: "정보",
+      name: "브랜드명",
+    });
+  }
+  if (bodyInfo.group_id === null) {
+    validation.push({
+      title: "정보",
+      name: "그룹명",
+    });
+  }
+  if (bodyInfo.model_name === "") {
+    validation.push({
+      title: "정보",
+      name: "모델",
+    });
+  }
+  if (bodyInfo.is_new === null) {
+    validation.push({
+      title: "정보",
+      name: "신차여부",
+    });
+  }
+  if (bodyInfo.release_date === null) {
+    validation.push({
+      title: "정보",
+      name: "출시일",
+    });
+  }
+  if (bodyInfo.sequence === "") {
+    validation.push({
+      title: "정보",
+      name: "순서",
+    });
+  }
+  if (bodyInfo.is_use === null) {
+    validation.push({
+      title: "정보",
+      name: "사용여부",
+    });
+  }
 
-    if (validation.length > 0) {
-      dispatch(showValidation(validation));
-    } else {
-      try {
-        let discount_condition_id_array = [];
-        discountBodyList.map((kindBody) =>
-          kindBody.discount_condition_list
-            .filter((conditionBody) => conditionBody.is_use === "0")
-            .map((conditionBody) =>
-              discount_condition_id_array.push(conditionBody.idx)
-            )
-        );
-
-        const created_info = await modelService.create({
-          ...bodyInfo,
-          discount_condition_ids: discount_condition_id_array.join(","),
-        });
-        const model_id = created_info["insertId"];
-
-        //create lineup
-        const tempLineupBodyList = lineupBodyList.map((body) => ({
-          ...body,
-          model_id: model_id,
-        }));
-
-        if (tempLineupBodyList.length > 0) {
-          await modelLineupService.create(tempLineupBodyList);
-        }
-
-        //create color
-        const tempColorBodyList = colorBodyList.map((body) => ({
-          ...body,
-          model_id: model_id,
-        }));
-
-        if (tempColorBodyList.length > 0) {
-          await modelColorService.create(tempColorBodyList);
-        }
-
-        //create trim
-        const tempTrimBodyList = trimBodyList.map((body) => ({
-          ...body,
-          model_id: model_id,
-        }));
-
-        if (tempTrimBodyList.length > 0) {
-          await modelTrimService.create(tempTrimBodyList);
-        }
-
-        dispatch({
-          type: SAVE,
-          payload: {
-            url: url,
-          },
-        });
-      } catch (e) {
-        console.log(e);
-      }
+  lineupBodyList.map((body, index) => {
+    if (body.name === "") {
+      validation.push({
+        title: "공통옵션 " + (index + 1 < 10 ? "0" + (index + 1) : index + 1),
+        name: "옵션이름",
+      });
     }
-  };
+    if (body.price === 0) {
+      validation.push({
+        title: "공통옵션 " + (index + 1 < 10 ? "0" + (index + 1) : index + 1),
+        name: "가격",
+      });
+    }
+    if (body.detail === "") {
+      validation.push({
+        title: "공통옵션 " + (index + 1 < 10 ? "0" + (index + 1) : index + 1),
+        name: "세부내용",
+      });
+    }
+  });
+
+  colorBodyList.map((body, index) => {
+    if (body.name === "") {
+      validation.push({
+        title: "색상 " + (index + 1 < 10 ? "0" + (index + 1) : index + 1),
+        name: "색상이름",
+      });
+    }
+    if (body.price === 0) {
+      validation.push({
+        title: "색상 " + (index + 1 < 10 ? "0" + (index + 1) : index + 1),
+        name: "가격",
+      });
+    }
+  });
+
+  trimBodyList.map((body, index) => {
+    if (body.name === "") {
+      validation.push({
+        title: "옵션 " + (index + 1 < 10 ? "0" + (index + 1) : index + 1),
+        name: "옵션이름",
+      });
+    }
+    if (body.price === 0) {
+      validation.push({
+        title: "옵션 " + (index + 1 < 10 ? "0" + (index + 1) : index + 1),
+        name: "가격",
+      });
+    }
+    if (body.detail === "") {
+      validation.push({
+        title: "옵션 " + (index + 1 < 10 ? "0" + (index + 1) : index + 1),
+        name: "세부내용",
+      });
+    }
+  });
+
+  if (validation.length > 0) {
+    dispatch(showValidation(validation));
+  } else {
+    try {
+      let discount_condition_id_array = [];
+      discountBodyList.map((kindBody) =>
+        kindBody.discount_condition_list
+          .filter((conditionBody) => conditionBody.is_use === "0")
+          .map((conditionBody) =>
+            discount_condition_id_array.push(conditionBody.idx)
+          )
+      );
+
+      const created_info = await modelService.create({
+        ...bodyInfo,
+        discount_condition_ids: discount_condition_id_array.join(","),
+      });
+      const model_id = created_info["insertId"];
+
+      //create lineup
+      const tempLineupBodyList = lineupBodyList.map((body) => ({
+        ...body,
+        model_id: model_id,
+      }));
+
+      if (tempLineupBodyList.length > 0) {
+        await modelLineupService.create(tempLineupBodyList);
+      }
+
+      //create color
+      const tempColorBodyList = colorBodyList.map((body) => ({
+        ...body,
+        model_id: model_id,
+      }));
+
+      if (tempColorBodyList.length > 0) {
+        await modelColorService.create(tempColorBodyList);
+      }
+
+      //create trim
+      const tempTrimBodyList = trimBodyList.map((body) => ({
+        ...body,
+        model_id: model_id,
+      }));
+
+      if (tempTrimBodyList.length > 0) {
+        await modelTrimService.create(tempTrimBodyList);
+      }
+
+      dispatch({
+        type: SAVE,
+        payload: {
+          url: url,
+        },
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+};
 
 const initialState = {
   redirectTo: "",
@@ -385,14 +456,14 @@ const initialState = {
     sequence: 1,
     is_use: "0",
     discount_condition_ids: "",
-    picture_1: {},
-    picture_2: {},
-    picture_3: {},
-    picture_4: {},
-    picture_5: {},
-    picture_6: {},
-    picture_7: {},
-    picture_8: {},
+    picture_1: { uid: "__AUTO__" },
+    picture_2: { uid: "__AUTO__" },
+    picture_3: { uid: "__AUTO__" },
+    picture_4: { uid: "__AUTO__" },
+    picture_5: { uid: "__AUTO__" },
+    picture_6: { uid: "__AUTO__" },
+    picture_7: { uid: "__AUTO__" },
+    picture_8: { uid: "__AUTO__" },
     preview_1: preview_default_image,
     preview_2: preview_default_image,
     preview_3: preview_default_image,
@@ -439,6 +510,10 @@ export default function create(state = initialState, action) {
         ...initialState,
         brandOptionList: action.payload.brandOptionList,
         groupOptionList: action.payload.groupOptionList,
+        bodyInfo: {
+          ...initialState.bodyInfo,
+          sequence: action.payload.sequence,
+        },
       };
     case REMOVE_REDIRECTTO:
       return {
@@ -483,6 +558,10 @@ export default function create(state = initialState, action) {
         ...state,
         bodyInfo: {
           ...state.bodyInfo,
+          check_name:
+            action.payload.name === "model_name"
+              ? ""
+              : state.bodyInfo.check_name,
           [action.payload.name]: action.payload.value,
         },
       };
@@ -603,6 +682,30 @@ export default function create(state = initialState, action) {
       return {
         ...state,
         discountBodyList: action.payload.discountBodyList,
+      };
+    case MOVE_UP:
+      return {
+        ...state,
+        [action.payload.name]: state[action.payload.name].map(
+          (item, itemIndex) =>
+            itemIndex === action.payload.index
+              ? action.payload.top_item
+              : itemIndex === action.payload.index - 1
+              ? action.payload.current_item
+              : item
+        ),
+      };
+    case MOVE_DOWN:
+      return {
+        ...state,
+        [action.payload.name]: state[action.payload.name].map(
+          (item, itemIndex) =>
+            itemIndex === action.payload.index
+              ? action.payload.bottom_item
+              : itemIndex === action.payload.index + 1
+              ? action.payload.current_item
+              : item
+        ),
       };
     case SAVE:
       return {

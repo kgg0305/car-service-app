@@ -8,6 +8,7 @@ import {
   Input,
   Tabs,
   Switch,
+  InputNumber,
 } from "antd";
 import { CaretDownOutlined } from "@ant-design/icons";
 import { Link, useParams, useNavigate } from "react-router-dom";
@@ -81,14 +82,14 @@ function Edit() {
     dispatch(setLineupBody(idx, name, value));
   const onChangeColorComponent = (idx, name, value) =>
     dispatch(setColorBody(idx, name, value));
-  const onSaveClick = (url) =>
-    dispatch(save(url, bodyInfo, lineupBodyList, colorBodyList));
+  const onSaveClick = (url) => dispatch(save(url));
   const onDeleteClick = async () => dispatch(showConfirm());
   const deleteInfo = async () => dispatch(remove("/car/lineup", id));
 
   const renderModelLineupBodyList = () => {
-    return lineupBodyList.length > 0
-      ? lineupBodyList.map((body, index) => (
+    return lineupBodyList.length > 0 ? (
+      <Space direction="vertical" size={0}>
+        {lineupBodyList.map((body, index) => (
           <Row
             gutter={[0]}
             align="middle"
@@ -110,8 +111,12 @@ function Edit() {
                       size="large"
                       style={{ width: 300 }}
                     />
-                    <Input
+                    <InputNumber
                       value={body.price}
+                      formatter={(value) =>
+                        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                      }
+                      parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
                       readOnly={true}
                       size="large"
                       style={{ width: 200 }}
@@ -149,13 +154,17 @@ function Edit() {
               </Row>
             </Col>
           </Row>
-        ))
-      : "선택된 정보가 없습니다.";
+        ))}
+      </Space>
+    ) : (
+      "선택된 정보가 없습니다."
+    );
   };
 
   const renderModelColorBodyList = () => {
-    return colorBodyList.length > 0
-      ? colorBodyList.map((body, index) => (
+    return colorBodyList.length > 0 ? (
+      <Space direction="vertical" size={0}>
+        {colorBodyList.map((body, index) => (
           <Row
             gutter={[0]}
             align="middle"
@@ -177,8 +186,12 @@ function Edit() {
                       size="large"
                       style={{ width: 300 }}
                     />
-                    <Input
+                    <InputNumber
                       value={body.price}
+                      formatter={(value) =>
+                        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                      }
+                      parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
                       readOnly={true}
                       size="large"
                       style={{ width: 200 }}
@@ -210,8 +223,11 @@ function Edit() {
               </Row>
             </Col>
           </Row>
-        ))
-      : "선택된 정보가 없습니다.";
+        ))}
+      </Space>
+    ) : (
+      "선택된 정보가 없습니다."
+    );
   };
 
   return (
@@ -226,7 +242,7 @@ function Edit() {
             <Col flex="auto" />
             <Col>
               <Space size={10}>
-                <Link to="/car/trim">
+                <Link to="/car/lineup">
                   <Button className="white-button" size="large">
                     취소
                   </Button>

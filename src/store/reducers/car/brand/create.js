@@ -15,7 +15,20 @@ const DELETE_BODY = prefix + "DELETE_BODY";
 const SET_BODY = prefix + "SET_BODY";
 const SAVE = prefix + "SAVE";
 
-export const init = () => ({ type: INIT });
+export const init = () => async (dispatch) => {
+  try {
+    const sequence = (await brandService.sequence()) + 1;
+
+    dispatch({
+      type: INIT,
+      payload: {
+        sequence: sequence,
+      },
+    });
+  } catch (e) {
+    console.log(e);
+  }
+};
 export const removeRedirectTo = () => ({
   type: REMOVE_REDIRECTTO,
 });
@@ -30,15 +43,26 @@ export const closeValidation = () => ({
 });
 export const checkName = (number, name) => async (dispatch) => {
   try {
-    const result = await brandService.checkName(name);
+    if (name === "") {
+      dispatch(
+        showValidation([
+          {
+            title: "정보 " + (number < 10 ? "0" + number : number),
+            name: "브랜드명",
+          },
+        ])
+      );
+    } else {
+      const result = await brandService.checkName(name);
 
-    dispatch({
-      type: CHECK_NAME,
-      payload: {
-        number: number,
-        check_name: result ? "exist" : "not-exist",
-      },
-    });
+      dispatch({
+        type: CHECK_NAME,
+        payload: {
+          number: number,
+          check_name: result ? "exist" : "not-exist",
+        },
+      });
+    }
   } catch (e) {
     console.log(e);
   }
@@ -55,9 +79,16 @@ export const preveiew = (number, file) => async (dispatch) => {
     },
   });
 };
-export const addBody = () => ({
-  type: ADD_BODY,
-});
+export const addBody = () => (dispatch, getState) => {
+  const state = getState();
+  const bodyList = state.brandCreate.bodyList;
+
+  if (bodyList.length < 10) {
+    dispatch({
+      type: ADD_BODY,
+    });
+  }
+};
 export const deleteBody = (number) => ({
   type: DELETE_BODY,
   payload: {
@@ -72,9 +103,18 @@ export const setBody = (number, name, value) => ({
     value: value,
   },
 });
-export const save = (url, bodyList) => async (dispatch) => {
+export const save = (url) => async (dispatch, getState) => {
+  const state = getState();
+  const bodyList = state.brandCreate.bodyList;
+
   const validation = [];
   bodyList.map((body, index) => {
+    if (body.check_name !== "not-exist") {
+      validation.push({
+        title: "정보 " + (index + 1 < 10 ? "0" + (index + 1) : index + 1),
+        name: "브랜드명 중복체크",
+      });
+    }
     if (body.brand_name === "") {
       validation.push({
         title: "정보 " + (index + 1 < 10 ? "0" + (index + 1) : index + 1),
@@ -179,6 +219,12 @@ export default function create(state = initialState, action) {
     case INIT:
       return {
         ...initialState,
+        bodyList: [
+          {
+            ...initialState.bodyList[0],
+            sequence: action.payload.sequence,
+          },
+        ],
       };
     case REMOVE_REDIRECTTO:
       return {
@@ -234,6 +280,7 @@ export default function create(state = initialState, action) {
           {
             ...initialState.bodyList[0],
             number: state.bodyList[state.bodyList.length - 1].number + 1,
+            sequence: state.bodyList[state.bodyList.length - 1].sequence + 1,
           },
         ],
       };
@@ -251,6 +298,8 @@ export default function create(state = initialState, action) {
           body.number === action.payload.number
             ? {
                 ...body,
+                check_name:
+                  action.payload.name === "brand_name" ? "" : body.check_name,
                 [action.payload.name]: action.payload.value,
               }
             : body

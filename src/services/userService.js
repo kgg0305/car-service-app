@@ -58,7 +58,7 @@ const update = async (body) => {
     created_at: GetDateTimeStringFromDate(new Date(body.created_at)),
     created_by: body.created_by,
     updated_at: GetDateTimeStringFromDate(new Date()),
-    updated_by: token.idx,
+    updated_by: token ? token.idx : body.idx,
     is_deleted: body.is_deleted,
   };
 

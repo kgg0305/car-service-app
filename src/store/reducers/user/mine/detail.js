@@ -1,4 +1,5 @@
 import { userService } from "../../../../services/userService";
+import { setToken } from "../../auth";
 
 const prefix = "user/mine/detail/";
 
@@ -83,6 +84,8 @@ export const save = (url, bodyInfo) => async (dispatch) => {
   } else {
     try {
       await userService.update(bodyInfo);
+
+      dispatch(setToken(bodyInfo));
 
       dispatch({
         type: SAVE,

@@ -61,6 +61,7 @@ function TableList({ dataSource }) {
         columns={dataSource.tableColumns}
         pagination={false}
         bordered
+        locale={{ emptyText: "등록된 정보가 없습니다." }}
       />
     </Space>
   );

@@ -57,14 +57,48 @@ export const deleteBody = (number) => ({
     number: number,
   },
 });
-export const setBody = (number, name, value) => ({
-  type: SET_BODY,
-  payload: {
-    number: number,
-    name: name,
-    value: value,
-  },
-});
+export const setBody = (number, name, value) => (dispatch) => {
+  let danger_password = false;
+  let short_password = false;
+
+  if (name == "password") {
+    const uppercaseRegExp = /(?=.*?[A-Z])/;
+    const lowercaseRegExp = /(?=.*?[a-z])/;
+    const digitsRegExp = /(?=.*?[0-9])/;
+    const specialCharRegExp = /(?=.*?[#?!@$%^&*-])/;
+    const minLengthRegExp = /.{8,}/;
+
+    const uppercasePassword = uppercaseRegExp.test(value);
+    const lowercasePassword = lowercaseRegExp.test(value);
+    const digitsPassword = digitsRegExp.test(value);
+    const specialCharPassword = specialCharRegExp.test(value);
+    const minLengthPassword = minLengthRegExp.test(value);
+
+    if (!minLengthPassword) {
+      danger_password = true;
+      short_password = true;
+    } else if (!uppercasePassword) {
+      danger_password = true;
+    } else if (!lowercasePassword) {
+      danger_password = true;
+    } else if (!digitsPassword) {
+      danger_password = true;
+    } else if (!specialCharPassword) {
+      danger_password = true;
+    }
+  }
+
+  dispatch({
+    type: SET_BODY,
+    payload: {
+      number: number,
+      name: name,
+      value: value,
+      danger_password: danger_password,
+      short_password: short_password,
+    },
+  });
+};
 export const save = (url, bodyList) => async (dispatch) => {
   const validation = [];
   bodyList.map((body, index) => {
@@ -92,7 +126,7 @@ export const save = (url, bodyList) => async (dispatch) => {
         name: "그룹",
       });
     }
-    if (body.password === "") {
+    if (body.password === "" || body.danger_password) {
       validation.push({
         title: "정보 " + (index + 1 < 10 ? "0" + (index + 1) : index + 1),
         name: "비밀번호",
@@ -133,6 +167,8 @@ const initialState = {
       group_id: null,
       password: "",
       check_name: "",
+      danger_password: false,
+      short_password: false,
     },
   ],
 };
@@ -203,8 +239,16 @@ export default function create(state = initialState, action) {
             ? {
                 ...body,
                 group_id:
-                  action.payload.name == "type_id" ? null : body.group_id,
+                  action.payload.name === "type_id" ? null : body.group_id,
                 [action.payload.name]: action.payload.value,
+                danger_password:
+                  action.payload.name === "password"
+                    ? action.payload.danger_password
+                    : state.danger_password,
+                short_password:
+                  action.payload.name === "password"
+                    ? action.payload.short_password
+                    : state.short_password,
               }
             : body
         ),

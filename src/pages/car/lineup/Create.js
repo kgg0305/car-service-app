@@ -1,4 +1,14 @@
-import { Col, Divider, Row, Space, Select, Button, Input, Switch } from "antd";
+import {
+  Col,
+  Divider,
+  Row,
+  Space,
+  Select,
+  Button,
+  Input,
+  Switch,
+  InputNumber,
+} from "antd";
 import { CaretDownOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect } from "react";
@@ -60,12 +70,12 @@ function Create() {
     dispatch(setLineupBody(idx, name, value));
   const onChangeColorComponent = (idx, name, value) =>
     dispatch(setColorBody(idx, name, value));
-  const onSaveClick = (url) =>
-    dispatch(save(url, bodyInfo, lineupBodyList, colorBodyList));
+  const onSaveClick = (url) => dispatch(save(url));
 
   const renderModelLineupBodyList = () => {
-    return lineupBodyList.length > 0
-      ? lineupBodyList.map((body, index) => (
+    return lineupBodyList.length > 0 ? (
+      <Space direction="vertical" size={0}>
+        {lineupBodyList.map((body, index) => (
           <Row
             gutter={[0]}
             align="middle"
@@ -87,8 +97,12 @@ function Create() {
                       size="large"
                       style={{ width: 300 }}
                     />
-                    <Input
+                    <InputNumber
                       value={body.price}
+                      formatter={(value) =>
+                        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                      }
+                      parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
                       readOnly={true}
                       size="large"
                       style={{ width: 200 }}
@@ -126,13 +140,17 @@ function Create() {
               </Row>
             </Col>
           </Row>
-        ))
-      : "선택된 정보가 없습니다.";
+        ))}
+      </Space>
+    ) : (
+      "선택된 정보가 없습니다."
+    );
   };
 
   const renderModelColorBodyList = () => {
-    return colorBodyList.length > 0
-      ? colorBodyList.map((body, index) => (
+    return colorBodyList.length > 0 ? (
+      <Space direction="vertical" size={0}>
+        {colorBodyList.map((body, index) => (
           <Row
             gutter={[0]}
             align="middle"
@@ -154,8 +172,12 @@ function Create() {
                       size="large"
                       style={{ width: 300 }}
                     />
-                    <Input
+                    <InputNumber
                       value={body.price}
+                      formatter={(value) =>
+                        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                      }
+                      parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
                       readOnly={true}
                       size="large"
                       style={{ width: 200 }}
@@ -187,8 +209,11 @@ function Create() {
               </Row>
             </Col>
           </Row>
-        ))
-      : "선택된 정보가 없습니다.";
+        ))}
+      </Space>
+    ) : (
+      "선택된 정보가 없습니다."
+    );
   };
 
   return (
@@ -219,7 +244,7 @@ function Create() {
                 <Button
                   className="black-button"
                   size="large"
-                  onClick={() => onSaveClick("/car/trim")}
+                  onClick={() => onSaveClick("/car/trim/create")}
                 >
                   저장하고 트림 등록하기
                 </Button>

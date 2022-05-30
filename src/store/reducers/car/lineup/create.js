@@ -52,14 +52,25 @@ export const closeValidation = () => ({
 });
 export const checkName = (name) => async (dispatch) => {
   try {
-    const result = await lineupService.checkName(name);
+    if (name === "") {
+      dispatch(
+        showValidation([
+          {
+            title: "정보",
+            name: "라인업명",
+          },
+        ])
+      );
+    } else {
+      const result = await lineupService.checkName(name);
 
-    dispatch({
-      type: CHECK_NAME,
-      payload: {
-        check_name: result ? "exist" : "not-exist",
-      },
-    });
+      dispatch({
+        type: CHECK_NAME,
+        payload: {
+          check_name: result ? "exist" : "not-exist",
+        },
+      });
+    }
   } catch (e) {
     console.log(e);
   }
@@ -136,73 +147,83 @@ export const putColorBody = (colorBodyList) => ({
     colorBodyList: colorBodyList,
   },
 });
-export const save =
-  (url, bodyInfo, lineupBodyList, colorBodyList) => async (dispatch) => {
-    const validation = [];
-    if (bodyInfo.brand_id === null) {
-      validation.push({
-        title: "정보 ",
-        name: "차량(브랜드)",
-      });
-    }
-    if (bodyInfo.group_id === null) {
-      validation.push({
-        title: "정보 ",
-        name: "차량(모델그룹)",
-      });
-    }
-    if (bodyInfo.model_id === null) {
-      validation.push({
-        title: "정보 ",
-        name: "차량(모델)",
-      });
-    }
-    if (bodyInfo.lineup_name === "") {
-      validation.push({
-        title: "정보 ",
-        name: "라인업",
-      });
-    }
-    if (bodyInfo.fule_kind === null) {
-      validation.push({
-        title: "정보 ",
-        name: "연료",
-      });
-    }
-    if (bodyInfo.year_type === "") {
-      validation.push({
-        title: "정보 ",
-        name: "연식",
-      });
-    }
+export const save = (url) => async (dispatch, getState) => {
+  const state = getState();
+  const bodyInfo = state.lineupCreate.bodyInfo;
+  const lineupBodyList = state.lineupCreate.lineupBodyList;
+  const colorBodyList = state.lineupCreate.colorBodyList;
 
-    if (validation.length > 0) {
-      dispatch(showValidation(validation));
-    } else {
-      try {
-        await lineupService.create({
-          ...bodyInfo,
-          model_lineup_ids: lineupBodyList
-            .filter((item) => item.is_use === "0")
-            .map((item) => item.idx)
-            .join(","),
-          model_color_ids: colorBodyList
-            .filter((item) => item.is_use === "0")
-            .map((item) => item.idx)
-            .join(","),
-        });
+  const validation = [];
+  if (bodyInfo.check_name !== "not-exist") {
+    validation.push({
+      title: "정보",
+      name: "라인업명 중복체크",
+    });
+  }
+  if (bodyInfo.brand_id === null) {
+    validation.push({
+      title: "정보 ",
+      name: "차량(브랜드)",
+    });
+  }
+  if (bodyInfo.group_id === null) {
+    validation.push({
+      title: "정보 ",
+      name: "차량(모델그룹)",
+    });
+  }
+  if (bodyInfo.model_id === null) {
+    validation.push({
+      title: "정보 ",
+      name: "차량(모델)",
+    });
+  }
+  if (bodyInfo.lineup_name === "") {
+    validation.push({
+      title: "정보 ",
+      name: "라인업",
+    });
+  }
+  if (bodyInfo.fule_kind === null) {
+    validation.push({
+      title: "정보 ",
+      name: "연료",
+    });
+  }
+  if (bodyInfo.year_type === "") {
+    validation.push({
+      title: "정보 ",
+      name: "연식",
+    });
+  }
 
-        dispatch({
-          type: SAVE,
-          payload: {
-            url: url,
-          },
-        });
-      } catch (e) {
-        console.log(e);
-      }
+  if (validation.length > 0) {
+    dispatch(showValidation(validation));
+  } else {
+    try {
+      await lineupService.create({
+        ...bodyInfo,
+        model_lineup_ids: lineupBodyList
+          .filter((item) => item.is_use === "0")
+          .map((item) => item.idx)
+          .join(","),
+        model_color_ids: colorBodyList
+          .filter((item) => item.is_use === "0")
+          .map((item) => item.idx)
+          .join(","),
+      });
+
+      dispatch({
+        type: SAVE,
+        payload: {
+          url: url,
+        },
+      });
+    } catch (e) {
+      console.log(e);
     }
-  };
+  }
+};
 
 const initialState = {
   redirectTo: "",
@@ -283,6 +304,10 @@ export default function create(state = initialState, action) {
             action.payload.name === "group_id"
               ? null
               : state.bodyInfo.model_id,
+          check_name:
+            action.payload.name === "lineup_name"
+              ? ""
+              : state.bodyInfo.check_name,
           [action.payload.name]: action.payload.value,
         },
       };

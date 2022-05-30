@@ -59,13 +59,47 @@ export const checkName = (name) => async (dispatch) => {
     console.log(e);
   }
 };
-export const setBody = (name, value) => ({
-  type: SET_BODY,
-  payload: {
-    name: name,
-    value: value,
-  },
-});
+export const setBody = (name, value) => (dispatch) => {
+  let danger_password = false;
+  let short_password = false;
+
+  if (name == "password") {
+    const uppercaseRegExp = /(?=.*?[A-Z])/;
+    const lowercaseRegExp = /(?=.*?[a-z])/;
+    const digitsRegExp = /(?=.*?[0-9])/;
+    const specialCharRegExp = /(?=.*?[#?!@$%^&*-])/;
+    const minLengthRegExp = /.{8,}/;
+
+    const uppercasePassword = uppercaseRegExp.test(value);
+    const lowercasePassword = lowercaseRegExp.test(value);
+    const digitsPassword = digitsRegExp.test(value);
+    const specialCharPassword = specialCharRegExp.test(value);
+    const minLengthPassword = minLengthRegExp.test(value);
+
+    if (!minLengthPassword) {
+      danger_password = true;
+      short_password = true;
+    } else if (!uppercasePassword) {
+      danger_password = true;
+    } else if (!lowercasePassword) {
+      danger_password = true;
+    } else if (!digitsPassword) {
+      danger_password = true;
+    } else if (!specialCharPassword) {
+      danger_password = true;
+    }
+  }
+
+  dispatch({
+    type: SET_BODY,
+    payload: {
+      name: name,
+      value: value,
+      danger_password: danger_password,
+      short_password: short_password,
+    },
+  });
+};
 export const save = (url, bodyInfo) => async (dispatch) => {
   const validation = [];
   if (bodyInfo.name === "") {
@@ -148,6 +182,8 @@ const initialState = {
     group_id: null,
     password: "",
     check_name: "",
+    danger_password: false,
+    short_password: false,
   },
 };
 
@@ -212,6 +248,14 @@ export default function edit(state = initialState, action) {
           group_id:
             action.payload.name == "type_id" ? null : state.bodyInfo.group_id,
           [action.payload.name]: action.payload.value,
+          danger_password:
+            action.payload.name === "password"
+              ? action.payload.danger_password
+              : state.danger_password,
+          short_password:
+            action.payload.name === "password"
+              ? action.payload.short_password
+              : state.short_password,
         },
       };
     case SAVE:

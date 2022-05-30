@@ -1,5 +1,6 @@
 import axios from "axios";
 import { GetDateTimeStringFromDate } from "../constants/GlobalFunctions";
+import { modelService } from "./modelService";
 
 const base_url = process.env.REACT_APP_API_URL + "/group";
 const token = JSON.parse(sessionStorage.getItem("token"));
@@ -66,6 +67,7 @@ const update = async (body) => {
 };
 
 const remove = async (idx) => {
+  await modelService.removeByGroup(idx);
   const response = await axios.get(base_url + "/" + idx);
 
   var data = {
@@ -81,6 +83,23 @@ const remove = async (idx) => {
     const response = await axios.put(base_url + "/" + idx, data);
 
     return response.data;
+  } catch (e) {
+    return e;
+  }
+};
+
+const removeByBrand = async (brand_id) => {
+  try {
+    const response = await axios.post(base_url + "/list-id", {
+      brand_id: brand_id,
+    });
+
+    for (let i = 0; i < response.data.length; i++) {
+      const idx = response.data[i].idx;
+      await remove(idx);
+    }
+
+    return;
   } catch (e) {
     return e;
   }
@@ -134,4 +153,5 @@ export const groupService = {
   getOptionList,
   get,
   remove,
+  removeByBrand,
 };

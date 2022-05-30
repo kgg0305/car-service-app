@@ -1,5 +1,6 @@
 import axios from "axios";
 import { GetDateTimeStringFromDate } from "../constants/GlobalFunctions";
+import { groupService } from "./groupService";
 
 const base_url = process.env.REACT_APP_API_URL + "/brand";
 const token = JSON.parse(sessionStorage.getItem("token"));
@@ -90,6 +91,7 @@ const update = async (body) => {
 };
 
 const remove = async (idx) => {
+  await groupService.removeByBrand(idx);
   const response = await axios.get(base_url + "/" + idx);
 
   var data = {
@@ -140,6 +142,16 @@ const get = async (idx) => {
   }
 };
 
+const sequence = async () => {
+  try {
+    const response = await axios.get(base_url + "/sequence");
+
+    return response.data.max_sequence;
+  } catch (e) {
+    return e;
+  }
+};
+
 // const remove = async(idx) => {
 //     try {
 //         const response = await axios.delete(base_url + '/' + idx);
@@ -174,5 +186,6 @@ export const brandService = {
   getList,
   getOptionList,
   get,
+  sequence,
   remove,
 };

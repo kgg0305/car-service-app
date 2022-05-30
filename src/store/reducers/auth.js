@@ -1,4 +1,5 @@
 import { authService } from "../../services/authService";
+import { userService } from "../../services/userService";
 
 const LOGIN = "LOGIN";
 const LOGOUT = "LOGOUT";
@@ -6,6 +7,8 @@ const SET_VALIDATION = "SET_VALIDATION";
 const SET_FORM = "SET_FORM";
 const SET_TOKEN = "SET_TOKEN";
 const REMOVE_TOKEN = "REMOVE_TOKEN";
+const SET_CHANGE_FORM = "SET_CHANGE_FORM";
+const SET_CHANGE_VALIDATION = "SET_CHANGE_VALIDATION";
 
 export const login = (user_id, password) => async (dispatch) => {
   try {
@@ -60,6 +63,89 @@ export const setToken = (token) => ({
   payload: { token: token },
 });
 export const removeToken = () => ({ type: REMOVE_TOKEN });
+export const setChangeForm = (payload) => ({
+  type: SET_CHANGE_FORM,
+  payload,
+});
+export const setChangeValidation = (payload) => ({
+  type: SET_CHANGE_VALIDATION,
+  payload,
+});
+export const changePassword = () => async (dispatch, getState) => {
+  try {
+    const state = getState();
+    const user_info = state.auth.token;
+    const new_password = state.auth.changeForm.new_password;
+    const old_password = state.auth.changeForm.old_password;
+
+    let danger_password = false;
+    let short_password = false;
+    let match_password = false;
+
+    const uppercaseRegExp = /(?=.*?[A-Z])/;
+    const lowercaseRegExp = /(?=.*?[a-z])/;
+    const digitsRegExp = /(?=.*?[0-9])/;
+    const specialCharRegExp = /(?=.*?[#?!@$%^&*-])/;
+    const minLengthRegExp = /.{8,}/;
+
+    const uppercasePassword = uppercaseRegExp.test(new_password);
+    const lowercasePassword = lowercaseRegExp.test(new_password);
+    const digitsPassword = digitsRegExp.test(new_password);
+    const specialCharPassword = specialCharRegExp.test(new_password);
+    const minLengthPassword = minLengthRegExp.test(new_password);
+
+    if (!minLengthPassword) {
+      danger_password = true;
+      short_password = true;
+    } else if (!uppercasePassword) {
+      danger_password = true;
+    } else if (!lowercasePassword) {
+      danger_password = true;
+    } else if (!digitsPassword) {
+      danger_password = true;
+    } else if (!specialCharPassword) {
+      danger_password = true;
+    }
+
+    if (user_info.password !== old_password) {
+      match_password = true;
+    }
+
+    dispatch(
+      setChangeValidation({
+        name: "danger_password",
+        value: danger_password,
+      })
+    );
+
+    dispatch(
+      setChangeValidation({
+        name: "short_password",
+        value: short_password,
+      })
+    );
+
+    dispatch(
+      setChangeValidation({
+        name: "match_password",
+        value: match_password,
+      })
+    );
+
+    if (!danger_password && !short_password && !match_password) {
+      await userService.update({
+        ...user_info,
+        password: new_password,
+      });
+
+      const updated_user_info = await userService.get(user_info.idx);
+
+      dispatch(setToken(updated_user_info));
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 const initialState = {
   token: JSON.parse(sessionStorage.getItem("token")),
@@ -70,6 +156,15 @@ const initialState = {
   form: {
     user_id: "",
     password: "",
+  },
+  changeValidation: {
+    danger_password: false,
+    short_password: false,
+    match_password: false,
+  },
+  changeForm: {
+    new_password: "",
+    old_password: "",
   },
 };
 
@@ -108,6 +203,22 @@ export default function auth(state = initialState, action) {
       return {
         ...state,
         token: null,
+      };
+    case SET_CHANGE_FORM:
+      return {
+        ...state,
+        changeForm: {
+          ...state.changeForm,
+          [action.payload.name]: action.payload.value,
+        },
+      };
+    case SET_CHANGE_VALIDATION:
+      return {
+        ...state,
+        changeValidation: {
+          ...state.changeValidation,
+          [action.payload.name]: action.payload.value,
+        },
       };
     default:
       return state;

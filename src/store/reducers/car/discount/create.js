@@ -121,6 +121,62 @@ export const save = (url, bodyList) => async (dispatch) => {
               : kindIndex + 1 + "(할인 종류 이름)"),
         });
       }
+      kindBody.conditionBodyList.map((conditionBody, conditionIndex) => {
+        if (conditionBody.condition_name === "") {
+          validation.push({
+            title:
+              "종류 " +
+              (kindIndex + 1 < 10 ? "0" + (kindIndex + 1) : kindIndex + 1) +
+              "상품 " +
+              (conditionIndex + 1 < 10
+                ? "0" + (conditionIndex + 1)
+                : conditionIndex + 1),
+            name:
+              "종류 " +
+              (kindIndex + 1 < 10 ? "0" + (kindIndex + 1) : kindIndex + 1) +
+              "상품 " +
+              (conditionIndex + 1 < 10
+                ? "0" + (conditionIndex + 1)
+                : conditionIndex + 1 + "(할인조건)"),
+          });
+        }
+        if (conditionBody.discount_price === 0) {
+          validation.push({
+            title:
+              "종류 " +
+              (kindIndex + 1 < 10 ? "0" + (kindIndex + 1) : kindIndex + 1) +
+              "상품 " +
+              (conditionIndex + 1 < 10
+                ? "0" + (conditionIndex + 1)
+                : conditionIndex + 1),
+            name:
+              "종류 " +
+              (kindIndex + 1 < 10 ? "0" + (kindIndex + 1) : kindIndex + 1) +
+              "상품 " +
+              (conditionIndex + 1 < 10
+                ? "0" + (conditionIndex + 1)
+                : conditionIndex + 1 + "(할인비용)"),
+          });
+        }
+        if (conditionBody.price_unit === "0") {
+          validation.push({
+            title:
+              "종류 " +
+              (kindIndex + 1 < 10 ? "0" + (kindIndex + 1) : kindIndex + 1) +
+              "상품 " +
+              (conditionIndex + 1 < 10
+                ? "0" + (conditionIndex + 1)
+                : conditionIndex + 1),
+            name:
+              "종류 " +
+              (kindIndex + 1 < 10 ? "0" + (kindIndex + 1) : kindIndex + 1) +
+              "상품 " +
+              (conditionIndex + 1 < 10
+                ? "0" + (conditionIndex + 1)
+                : conditionIndex + 1 + "(할인비용단위)"),
+          });
+        }
+      });
     });
   });
 

@@ -1,5 +1,7 @@
 import axios from "axios";
 import { GetDateTimeStringFromDate } from "../constants/GlobalFunctions";
+import { lineupService } from "./lineupService";
+import preview_default_image from "../assets/images/preview-default-image.png";
 
 const base_url = process.env.REACT_APP_API_URL + "/model";
 const token = JSON.parse(sessionStorage.getItem("token"));
@@ -18,11 +20,14 @@ const checkName = async (name) => {
 
 const create = async (body) => {
   let pictures = {};
-  for (let i = 0; i < 8; i++) {
-    pictures["picture_" + (i + 1)] = body["picture_" + (i + 1)];
-    if (body["preview_" + (i + 1)]) {
-      const file = await uploadImage(body["picture_" + (i + 1)]);
-      pictures["picture_" + (i + 1)] = file.filename;
+  for (let i = 1; i <= 8; i++) {
+    const picture = body["picture_" + i].uid.includes("__AUTO__")
+      ? ""
+      : body["picture_" + i];
+    pictures["picture_" + i] = picture;
+    if (picture) {
+      const file = await uploadImage(picture);
+      pictures["picture_" + i] = file.filename;
     }
   }
 
@@ -64,11 +69,17 @@ const create = async (body) => {
 
 const update = async (body) => {
   let pictures = {};
-  for (let i = 0; i < 8; i++) {
-    pictures["picture_" + (i + 1)] = body["picture_" + (i + 1)];
-    if (body["preview_" + (i + 1)]) {
-      const file = await uploadImage(body["picture_" + (i + 1)]);
-      pictures["picture_" + (i + 1)] = file.filename;
+  for (let i = 1; i <= 8; i++) {
+    const picture =
+      body["picture_" + i].uid.includes("__AUTO__") ||
+      body["picture_" + i].uid === ""
+        ? ""
+        : body["picture_" + i];
+    pictures["picture_" + i] =
+      body["picture_" + i].uid === "" ? body["preview_" + i] : picture;
+    if (picture) {
+      const file = await uploadImage(picture);
+      pictures["picture_" + i] = file.filename;
     }
   }
 
@@ -107,6 +118,7 @@ const update = async (body) => {
 };
 
 const remove = async (idx) => {
+  await lineupService.removeByModel(idx);
   const response = await axios.get(base_url + "/" + idx);
 
   var data = {
@@ -127,11 +139,38 @@ const remove = async (idx) => {
   }
 };
 
+const removeByGroup = async (group_id) => {
+  try {
+    const response = await axios.post(base_url + "/list-id", {
+      group_id: group_id,
+    });
+
+    for (let i = 0; i < response.data.length; i++) {
+      const idx = response.data[i].idx;
+      await remove(idx);
+    }
+
+    return;
+  } catch (e) {
+    return e;
+  }
+};
+
 const getList = async (offset, search) => {
   try {
     const response = await axios.post(base_url + "/list/" + offset, search);
 
     return response.data;
+  } catch (e) {
+    return e;
+  }
+};
+
+const getCount = async (search) => {
+  try {
+    const response = await axios.post(base_url + "/count", search);
+
+    return response.data.count;
   } catch (e) {
     return e;
   }
@@ -152,6 +191,16 @@ const get = async (idx) => {
     const response = await axios.get(base_url + "/" + idx);
 
     return response.data;
+  } catch (e) {
+    return e;
+  }
+};
+
+const sequence = async () => {
+  try {
+    const response = await axios.get(base_url + "/sequence");
+
+    return response.data.max_sequence;
   } catch (e) {
     return e;
   }
@@ -189,7 +238,10 @@ export const modelService = {
   create,
   update,
   getList,
+  getCount,
   getOptionList,
   get,
+  sequence,
   remove,
+  removeByGroup,
 };

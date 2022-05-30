@@ -1,4 +1,5 @@
 import { brandService } from "../../../../services/brandService";
+import { modelService } from "../../../../services/modelService";
 
 const prefix = "car/brand/list/";
 
@@ -12,11 +13,23 @@ export const init = () => async (dispatch) => {
     const brandOptionList = await brandService.getOptionList();
     const dataSource = await brandService.getList(0);
 
+    let updatedDataSource = [];
+
+    for (let i = 0; i < dataSource.length; i++) {
+      const element = dataSource[i];
+      updatedDataSource.push({
+        ...element,
+        model_count: await modelService.getCount({
+          brand_id: element.idx,
+        }),
+      });
+    }
+
     dispatch({
       type: INIT,
       payload: {
         brandOptionList: brandOptionList,
-        dataSource: dataSource,
+        dataSource: updatedDataSource,
       },
     });
   } catch (e) {
@@ -30,10 +43,22 @@ export const showMore = () => async (dispatch, getState) => {
     const offset = state.brandList.offset + 10;
     const dataSource = await brandService.getList(offset);
 
+    let updatedDataSource = [];
+
+    for (let i = 0; i < dataSource.length; i++) {
+      const element = dataSource[i];
+      updatedDataSource.push({
+        ...element,
+        model_count: await modelService.getCount({
+          brand_id: element.idx,
+        }),
+      });
+    }
+
     dispatch({
       type: SHOW_MORE,
       payload: {
-        dataSource: dataSource,
+        dataSource: updatedDataSource,
         offset: offset,
       },
     });
@@ -48,10 +73,22 @@ export const search = () => async (dispatch, getState) => {
     const searchData = state.brandList.searchData;
     const dataSource = await brandService.getList(0, searchData);
 
+    let updatedDataSource = [];
+
+    for (let i = 0; i < dataSource.length; i++) {
+      const element = dataSource[i];
+      updatedDataSource.push({
+        ...element,
+        model_count: await modelService.getCount({
+          brand_id: element.idx,
+        }),
+      });
+    }
+
     dispatch({
       type: SEARCH,
       payload: {
-        dataSource: dataSource,
+        dataSource: updatedDataSource,
       },
     });
   } catch (e) {

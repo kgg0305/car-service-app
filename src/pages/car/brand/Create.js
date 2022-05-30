@@ -59,7 +59,7 @@ function Create() {
   const onDeleteComponentClick = (number) => dispatch(deleteBody(number));
   const onComponentChange = (number, name, value) =>
     dispatch(setBody(number, name, value));
-  const onSaveClick = (url) => dispatch(save(url, bodyList));
+  const onSaveClick = (url) => dispatch(save(url));
 
   const renderBodyList = () => {
     return bodyList.map((body, index) => {
@@ -68,7 +68,7 @@ function Create() {
           <Row align="middle">
             <Col>
               <label className="main-sub-title">
-                정보 {body.number !== 10 ? "0" + body.number : body.number}
+                정보 {body.number < 10 ? "0" + body.number : body.number}
               </label>
             </Col>
             <Col flex="auto" />
@@ -398,7 +398,7 @@ function Create() {
                 <Button
                   className="black-button"
                   size="large"
-                  onClick={() => onSaveClick("/car/group")}
+                  onClick={() => onSaveClick("/car/group/create")}
                 >
                   저장하고 모델그룹 등록하기
                 </Button>

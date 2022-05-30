@@ -6,6 +6,7 @@ import Main from "./layouts/Main";
 import AuthMain from "./layouts/AuthMain";
 // Auth
 import Login from "./pages/auth/Login";
+import ChangePassword from "./pages/auth/ChangePassword";
 // Mine
 import UserMineDetail from "./pages/user/mine/Detail";
 // Manage
@@ -94,6 +95,12 @@ function App() {
     return (
       <AuthMain>
         <Login />
+      </AuthMain>
+    );
+  } else if (token.created_at === token.updated_at) {
+    return (
+      <AuthMain>
+        <ChangePassword />
       </AuthMain>
     );
   }

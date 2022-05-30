@@ -47,10 +47,15 @@ export const init = (idx) => async (dispatch) => {
       ? JSON.parse(bodyInfo.detail_meta)
       : {};
 
+    const updatedBodyInfo = {
+      ...bodyInfo,
+      origin_name: bodyInfo.trim_name,
+    };
+
     dispatch({
       type: INIT,
       payload: {
-        bodyInfo: bodyInfo,
+        bodyInfo: updatedBodyInfo,
         brandOptionList: brandOptionList,
         groupOptionList: groupOptionList,
         modelOptionList: modelOptionList,
@@ -88,16 +93,27 @@ export const showConfirm = () => ({
 export const closeConfirm = () => ({
   type: CLOSE_CONFIRM,
 });
-export const checkName = (name) => async (dispatch) => {
+export const checkName = (name) => async (dispatch, getState) => {
   try {
-    const result = await trimService.checkName(name);
+    const state = getState();
+    const bodyInfo = state.trimEdit.bodyInfo;
+    if (bodyInfo.origin_name !== name) {
+      const result = await trimService.checkName(name);
 
-    dispatch({
-      type: CHECK_NAME,
-      payload: {
-        check_name: result ? "exist" : "not-exist",
-      },
-    });
+      dispatch({
+        type: CHECK_NAME,
+        payload: {
+          check_name: result ? "exist" : "not-exist",
+        },
+      });
+    } else {
+      dispatch({
+        type: CHECK_NAME,
+        payload: {
+          check_name: "not-exist",
+        },
+      });
+    }
   } catch (e) {
     console.log(e);
   }
@@ -200,7 +216,14 @@ export const save = (url) => async (dispatch, getState) => {
   const specificationIdList = state.trimEdit.specificationIdList;
   const trimBodyList = state.trimEdit.trimBodyList;
   const detailBodyInfo = state.trimEdit.detailBodyInfo;
+
   const validation = [];
+  if (bodyInfo.check_name !== "not-exist") {
+    validation.push({
+      title: "정보",
+      name: "트림명 중복체크",
+    });
+  }
   if (bodyInfo.brand_id === null) {
     validation.push({
       title: "정보 ",
@@ -349,6 +372,7 @@ const initialState = {
     price: 0,
     is_use: null,
     check_name: "",
+    origin_name: "",
   },
   brandBodyInfo: {
     is_income: "0",
@@ -452,6 +476,10 @@ export default function edit(state = initialState, action) {
             action.payload.name === "model_id"
               ? null
               : state.bodyInfo.lineup_id,
+          check_name:
+            action.payload.name === "trim_name"
+              ? ""
+              : state.bodyInfo.check_name,
           [action.payload.name]: action.payload.value,
         },
       };

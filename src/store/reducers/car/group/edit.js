@@ -1,6 +1,7 @@
 import { brandService } from "../../../../services/brandService";
 import { carKindService } from "../../../../services/carKindService";
 import { groupService } from "../../../../services/groupService";
+import { modelService } from "../../../../services/modelService";
 
 const prefix = "car/group/edit/";
 
@@ -21,10 +22,15 @@ export const init = (idx) => async (dispatch) => {
     const brandOptionList = await brandService.getOptionList();
     const carKindOptionList = await carKindService.getOptionList();
 
+    const updatedBodyInfo = {
+      ...bodyInfo,
+      origin_name: bodyInfo.group_name,
+    };
+
     dispatch({
       type: INIT,
       payload: {
-        bodyInfo: bodyInfo,
+        bodyInfo: updatedBodyInfo,
         brandOptionList: brandOptionList,
         carKindOptionList: carKindOptionList,
       },
@@ -51,16 +57,27 @@ export const showConfirm = () => ({
 export const closeConfirm = () => ({
   type: CLOSE_CONFIRM,
 });
-export const checkName = (name) => async (dispatch) => {
+export const checkName = (name) => async (dispatch, getState) => {
   try {
-    const result = await groupService.checkName(name);
+    const state = getState();
+    const bodyInfo = state.groupEdit.bodyInfo;
+    if (bodyInfo.origin_name !== name) {
+      const result = await groupService.checkName(name);
 
-    dispatch({
-      type: CHECK_NAME,
-      payload: {
-        check_name: result ? "exist" : "not-exist",
-      },
-    });
+      dispatch({
+        type: CHECK_NAME,
+        payload: {
+          check_name: result ? "exist" : "not-exist",
+        },
+      });
+    } else {
+      dispatch({
+        type: CHECK_NAME,
+        payload: {
+          check_name: "not-exist",
+        },
+      });
+    }
   } catch (e) {
     console.log(e);
   }
@@ -72,23 +89,32 @@ export const setBody = (name, value) => ({
     value: value,
   },
 });
-export const save = (url, bodyInfo) => async (dispatch) => {
+export const save = (url) => async (dispatch, getState) => {
+  const state = getState();
+  const bodyInfo = state.groupEdit.bodyInfo;
+
   const validation = [];
+  if (bodyInfo.check_name !== "not-exist") {
+    validation.push({
+      title: "정보",
+      name: "그룹명 중복체크",
+    });
+  }
   if (bodyInfo.brand_id === null) {
     validation.push({
-      title: "정보 ",
+      title: "정보",
       name: "브랜드",
     });
   }
   if (bodyInfo.group_name === "") {
     validation.push({
-      title: "정보 ",
+      title: "정보",
       name: "모델그룹",
     });
   }
   if (bodyInfo.car_kind_id === null) {
     validation.push({
-      title: "정보 ",
+      title: "정보",
       name: "차종",
     });
   }
@@ -112,6 +138,7 @@ export const save = (url, bodyInfo) => async (dispatch) => {
 };
 export const remove = (url, idx) => async (dispatch) => {
   try {
+    await modelService.removeByGroup(idx);
     await groupService.remove(idx);
 
     dispatch({
@@ -143,6 +170,7 @@ const initialState = {
     car_kind_id: null,
     is_use: 0,
     check_name: "",
+    origin_name: "",
   },
 };
 
@@ -206,6 +234,10 @@ export default function edit(state = initialState, action) {
         ...state,
         bodyInfo: {
           ...state.bodyInfo,
+          check_name:
+            action.payload.name === "group_name"
+              ? ""
+              : state.bodyInfo.check_name,
           [action.payload.name]: action.payload.value,
         },
       };

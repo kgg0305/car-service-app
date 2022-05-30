@@ -4,6 +4,7 @@ import { lineupService } from "../../../../services/lineupService";
 import { modelColorService } from "../../../../services/modelColorService";
 import { modelLineupService } from "../../../../services/modelLineupService";
 import { modelService } from "../../../../services/modelService";
+import { trimService } from "../../../../services/trimService";
 
 const prefix = "car/lineup/edit/";
 
@@ -35,10 +36,15 @@ export const init = (idx) => async (dispatch) => {
     const groupOptionList = await groupService.getOptionList();
     const modelOptionList = await modelService.getOptionList();
 
+    const updatedBodyInfo = {
+      ...bodyInfo,
+      origin_name: bodyInfo.lineup_name,
+    };
+
     dispatch({
       type: INIT,
       payload: {
-        bodyInfo: bodyInfo,
+        bodyInfo: updatedBodyInfo,
         brandOptionList: brandOptionList,
         groupOptionList: groupOptionList,
         modelOptionList: modelOptionList,
@@ -68,16 +74,27 @@ export const showConfirm = () => ({
 export const closeConfirm = () => ({
   type: CLOSE_CONFIRM,
 });
-export const checkName = (name) => async (dispatch) => {
+export const checkName = (name) => async (dispatch, getState) => {
   try {
-    const result = await lineupService.checkName(name);
+    const state = getState();
+    const bodyInfo = state.lineupEdit.bodyInfo;
+    if (bodyInfo.origin_name !== name) {
+      const result = await lineupService.checkName(name);
 
-    dispatch({
-      type: CHECK_NAME,
-      payload: {
-        check_name: result ? "exist" : "not-exist",
-      },
-    });
+      dispatch({
+        type: CHECK_NAME,
+        payload: {
+          check_name: result ? "exist" : "not-exist",
+        },
+      });
+    } else {
+      dispatch({
+        type: CHECK_NAME,
+        payload: {
+          check_name: "not-exist",
+        },
+      });
+    }
   } catch (e) {
     console.log(e);
   }
@@ -154,75 +171,86 @@ export const putColorBody = (colorBodyList) => ({
     colorBodyList: colorBodyList,
   },
 });
-export const save =
-  (url, bodyInfo, lineupBodyList, colorBodyList) => async (dispatch) => {
-    const validation = [];
-    if (bodyInfo.brand_id === null) {
-      validation.push({
-        title: "정보 ",
-        name: "차량(브랜드)",
-      });
-    }
-    if (bodyInfo.group_id === null) {
-      validation.push({
-        title: "정보 ",
-        name: "차량(모델그룹)",
-      });
-    }
-    if (bodyInfo.model_id === null) {
-      validation.push({
-        title: "정보 ",
-        name: "차량(모델)",
-      });
-    }
-    if (bodyInfo.lineup_name === "") {
-      validation.push({
-        title: "정보 ",
-        name: "라인업",
-      });
-    }
-    if (bodyInfo.fule_kind === null) {
-      validation.push({
-        title: "정보 ",
-        name: "연료",
-      });
-    }
-    if (bodyInfo.year_type === "") {
-      validation.push({
-        title: "정보 ",
-        name: "연식",
-      });
-    }
+export const save = (url) => async (dispatch, getState) => {
+  const state = getState();
+  const bodyInfo = state.lineupEdit.bodyInfo;
+  const lineupBodyList = state.lineupEdit.lineupBodyList;
+  const colorBodyList = state.lineupEdit.colorBodyList;
 
-    if (validation.length > 0) {
-      dispatch(showValidation(validation));
-    } else {
-      try {
-        await lineupService.update({
-          ...bodyInfo,
-          model_lineup_ids: lineupBodyList
-            .filter((item) => item.is_use === "0")
-            .map((item) => item.idx)
-            .join(","),
-          model_color_ids: colorBodyList
-            .filter((item) => item.is_use === "0")
-            .map((item) => item.idx)
-            .join(","),
-        });
+  const validation = [];
+  if (bodyInfo.check_name !== "not-exist") {
+    validation.push({
+      title: "정보",
+      name: "라인업명 중복체크",
+    });
+  }
+  if (bodyInfo.brand_id === null) {
+    validation.push({
+      title: "정보 ",
+      name: "차량(브랜드)",
+    });
+  }
+  if (bodyInfo.group_id === null) {
+    validation.push({
+      title: "정보 ",
+      name: "차량(모델그룹)",
+    });
+  }
+  if (bodyInfo.model_id === null) {
+    validation.push({
+      title: "정보 ",
+      name: "차량(모델)",
+    });
+  }
+  if (bodyInfo.lineup_name === "") {
+    validation.push({
+      title: "정보 ",
+      name: "라인업",
+    });
+  }
+  if (bodyInfo.fule_kind === null) {
+    validation.push({
+      title: "정보 ",
+      name: "연료",
+    });
+  }
+  if (bodyInfo.year_type === "") {
+    validation.push({
+      title: "정보 ",
+      name: "연식",
+    });
+  }
 
-        dispatch({
-          type: SAVE,
-          payload: {
-            url: url,
-          },
-        });
-      } catch (e) {
-        console.log(e);
-      }
+  if (validation.length > 0) {
+    dispatch(showValidation(validation));
+  } else {
+    try {
+      await lineupService.update({
+        ...bodyInfo,
+        model_lineup_ids: lineupBodyList
+          .filter((item) => item.is_use === "0")
+          .map((item) => item.idx)
+          .join(","),
+        model_color_ids: colorBodyList
+          .filter((item) => item.is_use === "0")
+          .map((item) => item.idx)
+          .join(","),
+      });
+
+      dispatch({
+        type: SAVE,
+        payload: {
+          url: url,
+        },
+      });
+    } catch (e) {
+      console.log(e);
     }
-  };
+  }
+};
 export const remove = (url, idx) => async (dispatch) => {
   try {
+    await trimService.removeByLineup(idx);
     await lineupService.remove(idx);
 
     dispatch({
@@ -261,6 +289,7 @@ const initialState = {
     is_use_lineup: "",
     is_use_color: "",
     check_name: "",
+    origin_name: "",
   },
   lineupBodyList: [],
   colorBodyList: [],
@@ -350,6 +379,10 @@ export default function edit(state = initialState, action) {
             action.payload.name === "group_id"
               ? null
               : state.bodyInfo.model_id,
+          check_name:
+            action.payload.name === "lineup_name"
+              ? ""
+              : state.bodyInfo.check_name,
           [action.payload.name]: action.payload.value,
         },
       };

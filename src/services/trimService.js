@@ -97,6 +97,23 @@ const remove = async (idx) => {
   }
 };
 
+const removeByLineup = async (lineup_id) => {
+  try {
+    const response = await axios.post(base_url + "/list-id", {
+      lineup_id: lineup_id,
+    });
+
+    for (let i = 0; i < response.data.length; i++) {
+      const idx = response.data[i].idx;
+      await remove(idx);
+    }
+
+    return;
+  } catch (e) {
+    return e;
+  }
+};
+
 const getList = async (offset, search) => {
   try {
     const response = await axios.post(base_url + "/list/" + offset, search);
@@ -145,4 +162,5 @@ export const trimService = {
   getOptionList,
   get,
   remove,
+  removeByLineup,
 };

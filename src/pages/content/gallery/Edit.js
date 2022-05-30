@@ -76,7 +76,7 @@ function Edit() {
     return image_path_array.map((path, index) => (
       <Col style={{ textAlign: "center" }}>
         <Space direction="vertical" size={5}>
-          <label>사진 {index + 1 !== 10 ? "0" + (index + 1) : index + 1}</label>
+          <label>사진 {index + 1 < 10 ? "0" + (index + 1) : index + 1}</label>
           <Image
             className={
               bodyInfo.picture_index === index + 1 ? "picture-selected" : ""

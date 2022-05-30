@@ -58,7 +58,7 @@ function Create() {
               <Row align="middle">
                 <Col>
                   <label className="main-sub-title">
-                    정보 {body.number !== 10 ? "0" + body.number : body.number}
+                    정보 {body.number < 10 ? "0" + body.number : body.number}
                   </label>
                 </Col>
                 <Col flex="auto" />
@@ -215,9 +215,15 @@ function Create() {
                           maxLength={15}
                           style={{ width: 250 }}
                         />
-                        <label className="danger-alert">
-                          사용할 수 없는 비밀번호 입니다.
-                        </label>
+                        {body.danger_password ? (
+                          <label className="danger-alert">
+                            {body.short_password
+                              ? "글자수가 부족합니다."
+                              : "사용할 수 없는 비밀번호 입니다."}
+                          </label>
+                        ) : (
+                          ""
+                        )}
                       </div>
                       <label
                         className="description-label"

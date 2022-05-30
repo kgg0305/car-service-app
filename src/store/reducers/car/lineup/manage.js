@@ -36,7 +36,10 @@ export const showMore = () => async (dispatch, getState) => {
   try {
     const state = getState();
     const offset = state.lineupManage.offset + 10;
-    const dataSource = await lineupService.getList(offset);
+    const modelBodyInfo = state.lineupManage.modelBodyInfo;
+    const dataSource = await lineupService.getList(offset, {
+      model_id: modelBodyInfo.idx,
+    });
 
     dispatch({
       type: SHOW_MORE,

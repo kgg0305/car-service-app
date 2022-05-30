@@ -36,7 +36,10 @@ export const showMore = () => async (dispatch, getState) => {
   try {
     const state = getState();
     const offset = state.groupManage.offset + 10;
-    const dataSource = await groupService.getList(offset);
+    const brandBodyInfo = state.groupManage.brandBodyInfo;
+    const dataSource = await groupService.getList(offset, {
+      brand_id: brandBodyInfo.idx,
+    });
 
     dispatch({
       type: SHOW_MORE,

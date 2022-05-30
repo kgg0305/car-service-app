@@ -88,7 +88,7 @@ function Create() {
             <Row align="middle">
               <Col>
                 <label className="main-sub-title">
-                  정보 {body.number !== 10 ? "0" + body.number : body.number}
+                  정보 {body.number < 10 ? "0" + body.number : body.number}
                 </label>
               </Col>
               <Col flex="auto" />
@@ -142,7 +142,7 @@ function Create() {
             <Row align="middle">
               <Col>
                 <label className="main-sub-title">
-                  종류 {body.number !== 10 ? "0" + body.number : body.number}
+                  종류 {body.number < 10 ? "0" + body.number : body.number}
                 </label>
               </Col>
               <Col flex="auto" />
@@ -163,7 +163,7 @@ function Create() {
               <Row align="middle">
                 <Col>
                   <label className="main-sub-title">
-                    정보 {body.number !== 10 ? "0" + body.number : body.number}
+                    정보 {body.number < 10 ? "0" + body.number : body.number}
                   </label>
                 </Col>
                 <Col flex="auto" />
@@ -214,7 +214,7 @@ function Create() {
               <Row align="middle">
                 <Col>
                   <label className="main-sub-title">
-                    조건 {body.number !== 10 ? "0" + body.number : body.number}
+                    조건 {body.number < 10 ? "0" + body.number : body.number}
                   </label>
                 </Col>
                 <Col flex="auto" />
@@ -241,7 +241,7 @@ function Create() {
           <Col span={2} className="table-header-col-section">
             <label>
               상품{" "}
-              {kindBody.number !== 10 ? "0" + kindBody.number : kindBody.number}
+              {kindBody.number < 10 ? "0" + kindBody.number : kindBody.number}
             </label>
           </Col>
           <Col flex="auto" className="table-value-col-section">
@@ -326,7 +326,7 @@ function Create() {
           <Col span={2} className="table-header-col-section">
             <label>
               기간{" "}
-              {kindBody.number !== 10 ? "0" + kindBody.number : kindBody.number}
+              {kindBody.number < 10 ? "0" + kindBody.number : kindBody.number}
             </label>
           </Col>
           <Col flex="auto" className="table-value-col-section">

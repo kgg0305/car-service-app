@@ -44,22 +44,40 @@ export const closeValidation = () => ({
 });
 export const checkName = (number, name) => async (dispatch) => {
   try {
-    const result = await groupService.checkName(name);
+    if (name === "") {
+      dispatch(
+        showValidation([
+          {
+            title: "정보 " + (number < 10 ? "0" + number : number),
+            name: "모델그룹명",
+          },
+        ])
+      );
+    } else {
+      const result = await groupService.checkName(name);
 
-    dispatch({
-      type: CHECK_NAME,
-      payload: {
-        number: number,
-        check_name: result ? "exist" : "not-exist",
-      },
-    });
+      dispatch({
+        type: CHECK_NAME,
+        payload: {
+          number: number,
+          check_name: result ? "exist" : "not-exist",
+        },
+      });
+    }
   } catch (e) {
     console.log(e);
   }
 };
-export const addBody = () => ({
-  type: ADD_BODY,
-});
+export const addBody = () => (dispatch, getState) => {
+  const state = getState();
+  const bodyList = state.groupCreate.bodyList;
+
+  if (bodyList.length < 10) {
+    dispatch({
+      type: ADD_BODY,
+    });
+  }
+};
 export const deleteBody = (number) => ({
   type: DELETE_BODY,
   payload: {
@@ -74,9 +92,18 @@ export const setBody = (number, name, value) => ({
     value: value,
   },
 });
-export const save = (url, bodyList) => async (dispatch) => {
+export const save = (url) => async (dispatch, getState) => {
+  const state = getState();
+  const bodyList = state.groupCreate.bodyList;
+
   const validation = [];
   bodyList.map((body, index) => {
+    if (body.check_name !== "not-exist") {
+      validation.push({
+        title: "정보 " + (index + 1 < 10 ? "0" + (index + 1) : index + 1),
+        name: "그룹명 중복체크",
+      });
+    }
     if (body.brand_id === null) {
       validation.push({
         title: "정보 " + (index + 1 < 10 ? "0" + (index + 1) : index + 1),
@@ -202,6 +229,8 @@ export default function create(state = initialState, action) {
           body.number === action.payload.number
             ? {
                 ...body,
+                check_name:
+                  action.payload.name === "group_name" ? "" : body.check_name,
                 [action.payload.name]: action.payload.value,
               }
             : body

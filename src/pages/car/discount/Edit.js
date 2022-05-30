@@ -86,7 +86,7 @@ function Edit() {
       >
         <Col span={2} className="table-header-col-section">
           <label>
-            조건 {body.number !== 10 ? "0" + body.number : body.number}
+            조건 {body.number < 10 ? "0" + body.number : body.number}
           </label>
         </Col>
         <Col flex="auto" className="table-value-col-section">

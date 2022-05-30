@@ -99,16 +99,7 @@ function Edit() {
     dispatch(setTrimBody(idx, name, value));
   const onDetailComponentChange = (name, value) =>
     dispatch(setDetailBody(name, value));
-  const onSaveClick = (url) =>
-    dispatch(
-      save(
-        url,
-        bodyInfo,
-        specificationBodyList,
-        trimBodyList,
-        specificationIdList
-      )
-    );
+  const onSaveClick = (url) => dispatch(save(url));
   const onDeleteClick = async () => dispatch(showConfirm());
   const deleteInfo = async () => dispatch(remove("/car/trim", id));
 

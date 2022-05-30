@@ -58,14 +58,25 @@ export const closeValidation = () => ({
 });
 export const checkName = (name) => async (dispatch) => {
   try {
-    const result = await trimService.checkName(name);
+    if (name === "") {
+      dispatch(
+        showValidation([
+          {
+            title: "정보",
+            name: "트림명",
+          },
+        ])
+      );
+    } else {
+      const result = await trimService.checkName(name);
 
-    dispatch({
-      type: CHECK_NAME,
-      payload: {
-        check_name: result ? "exist" : "not-exist",
-      },
-    });
+      dispatch({
+        type: CHECK_NAME,
+        payload: {
+          check_name: result ? "exist" : "not-exist",
+        },
+      });
+    }
   } catch (e) {
     console.log(e);
   }
@@ -167,7 +178,14 @@ export const save = (url) => async (dispatch, getState) => {
   const specificationBodyList = state.trimCreate.specificationBodyList;
   const trimBodyList = state.trimCreate.trimBodyList;
   const detailBodyInfo = state.trimCreate.detailBodyInfo;
+
   const validation = [];
+  if (bodyInfo.check_name !== "not-exist") {
+    validation.push({
+      title: "정보",
+      name: "트림명 중복체크",
+    });
+  }
   if (bodyInfo.brand_id === null) {
     validation.push({
       title: "정보 ",
@@ -360,6 +378,10 @@ export default function create(state = initialState, action) {
             action.payload.name === "model_id"
               ? null
               : state.bodyInfo.lineup_id,
+          check_name:
+            action.payload.name === "trim_name"
+              ? ""
+              : state.bodyInfo.check_name,
           [action.payload.name]: action.payload.value,
         },
       };

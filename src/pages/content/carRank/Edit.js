@@ -96,7 +96,7 @@ function Edit() {
             />
           </Space>
           <label>
-            순서 {body.number !== 10 ? "0" + body.number : body.number}
+            순서 {body.number < 10 ? "0" + body.number : body.number}
           </label>
         </Col>
         <Col flex="auto" className="table-value-col-section">

@@ -19,10 +19,15 @@ export const init = (idx) => async (dispatch) => {
   try {
     const bodyInfo = await brandService.get(idx);
 
+    const updatedBodyInfo = {
+      ...bodyInfo,
+      origin_name: bodyInfo.brand_name,
+    };
+
     dispatch({
       type: INIT,
       payload: {
-        bodyInfo: bodyInfo,
+        bodyInfo: updatedBodyInfo,
       },
     });
   } catch (e) {
@@ -47,16 +52,27 @@ export const showConfirm = () => ({
 export const closeConfirm = () => ({
   type: CLOSE_CONFIRM,
 });
-export const checkName = (name) => async (dispatch) => {
+export const checkName = (name) => async (dispatch, getState) => {
   try {
-    const result = await brandService.checkName(name);
+    const state = getState();
+    const bodyInfo = state.brandEdit.bodyInfo;
+    if (bodyInfo.origin_name !== name) {
+      const result = await brandService.checkName(name);
 
-    dispatch({
-      type: CHECK_NAME,
-      payload: {
-        check_name: result ? "exist" : "not-exist",
-      },
-    });
+      dispatch({
+        type: CHECK_NAME,
+        payload: {
+          check_name: result ? "exist" : "not-exist",
+        },
+      });
+    } else {
+      dispatch({
+        type: CHECK_NAME,
+        payload: {
+          check_name: "not-exist",
+        },
+      });
+    }
   } catch (e) {
     console.log(e);
   }
@@ -79,8 +95,17 @@ export const setBody = (name, value) => ({
     value: value,
   },
 });
-export const save = (url, bodyInfo) => async (dispatch) => {
+export const save = (url) => async (dispatch, getState) => {
+  const state = getState();
+  const bodyInfo = state.brandEdit.bodyInfo;
+
   const validation = [];
+  if (bodyInfo.check_name !== "not-exist") {
+    validation.push({
+      title: "정보",
+      name: "브랜드명 중복체크",
+    });
+  }
   if (bodyInfo.brand_name === "") {
     validation.push({
       title: "정보",
@@ -185,6 +210,7 @@ const initialState = {
     logo: {},
     preview: "",
     check_name: "",
+    origin_name: "",
   },
 };
 
@@ -254,6 +280,10 @@ export default function edit(state = initialState, action) {
         ...state,
         bodyInfo: {
           ...state.bodyInfo,
+          check_name:
+            action.payload.name === "brand_name"
+              ? ""
+              : state.bodyInfo.check_name,
           [action.payload.name]: action.payload.value,
         },
       };

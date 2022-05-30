@@ -36,7 +36,10 @@ export const showMore = () => async (dispatch, getState) => {
   try {
     const state = getState();
     const offset = state.trimManage.offset + 10;
-    const dataSource = await trimService.getList(offset);
+    const lineupBodyInfo = state.trimManage.lineupBodyInfo;
+    const dataSource = await trimService.getList(offset, {
+      lineup_id: lineupBodyInfo.idx,
+    });
 
     dispatch({
       type: SHOW_MORE,

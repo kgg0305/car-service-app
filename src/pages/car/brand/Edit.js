@@ -62,7 +62,7 @@ function Edit() {
   const onCheckNameClick = (name) => dispatch(checkName(name));
   const onPreviewChange = (file) => dispatch(preveiew(file));
   const onComponentChange = (name, value) => dispatch(setBody(name, value));
-  const onSaveClick = (url) => dispatch(save(url, bodyInfo));
+  const onSaveClick = (url) => dispatch(save(url));
   const onDeleteClick = async () => dispatch(showConfirm());
   const deleteInfo = async () => dispatch(remove("/car/brand", id));
 

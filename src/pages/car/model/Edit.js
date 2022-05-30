@@ -13,7 +13,11 @@ import {
   DatePicker,
   Switch,
 } from "antd";
-import { CaretDownOutlined } from "@ant-design/icons";
+import {
+  CaretDownOutlined,
+  CaretUpFilled,
+  CaretDownFilled,
+} from "@ant-design/icons";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 import moment from "moment";
@@ -21,6 +25,7 @@ import AlertModal from "../../../components/AlertModal";
 import AlertDeleteModal from "../../../components/AlertDeleteModal";
 import { Constants } from "../../../constants/Constants";
 import { GetDateStringFromDate } from "../../../constants/GlobalFunctions";
+import preview_default_image from "../../../assets/images/preview-default-image.png";
 import { useDispatch, useSelector } from "react-redux";
 import {
   init,
@@ -43,6 +48,9 @@ import {
   showConfirm,
   remove,
   preveiew,
+  deletePicture,
+  moveUp,
+  moveDown,
 } from "../../../store/reducers/car/model/edit";
 
 const { Option } = Select;
@@ -64,9 +72,6 @@ function Edit() {
     colorBodyList,
     trimBodyList,
     discountBodyList,
-    lineupIdList,
-    colorIdList,
-    trimIdList,
   } = useSelector((state) => ({
     redirectTo: state.modelEdit.redirectTo,
     validation: state.modelEdit.validation,
@@ -116,20 +121,10 @@ function Edit() {
     dispatch(setTrimBody(number, name, value));
   const onChangeDiscountComponent = (kind_id, condition_id, name, value) =>
     dispatch(setDiscountBody(kind_id, condition_id, name, value));
-  const onSaveClick = (url) =>
-    dispatch(
-      save(
-        url,
-        bodyInfo,
-        lineupBodyList,
-        colorBodyList,
-        trimBodyList,
-        discountBodyList,
-        lineupIdList,
-        colorIdList,
-        trimIdList
-      )
-    );
+  const onPictureDeleteClick = (number) => dispatch(deletePicture(number));
+  const onUpMoveClick = (name, index) => dispatch(moveUp(name, index));
+  const onDownMoveClick = (name, index) => dispatch(moveDown(name, index));
+  const onSaveClick = (url) => dispatch(save(url));
   const onDeleteClick = async () => dispatch(showConfirm());
   const deleteInfo = async () => dispatch(remove("/car/model", id));
 
@@ -143,8 +138,22 @@ function Edit() {
         className="table-layout"
       >
         <Col span={2} className="table-header-col-section">
+          {lineupBodyList.length > 1 ? (
+            <Space direction="vertical" style={{ paddingLeft: "10px" }}>
+              <CaretUpFilled
+                style={{ fontSize: "30px", cursor: "pointer" }}
+                onClick={() => onUpMoveClick("lineupBodyList", index)}
+              />
+              <CaretDownFilled
+                style={{ fontSize: "30px", cursor: "pointer" }}
+                onClick={() => onDownMoveClick("lineupBodyList", index)}
+              />
+            </Space>
+          ) : (
+            ""
+          )}
           <label>
-            공통옵션 {body.number !== 10 ? "0" + body.number : body.number}
+            공통옵션 {body.number < 10 ? "0" + body.number : body.number}
           </label>
         </Col>
         <Col flex="auto" className="table-value-col-section">
@@ -172,8 +181,12 @@ function Edit() {
                   onChange={(number) => {
                     onChangeLineupComponent(body.number, "price", number);
                   }}
+                  formatter={(value) =>
+                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }
+                  parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
                   size="large"
-                  maxLength={9}
+                  maxLength={11}
                   controls={false}
                   style={{ width: 200 }}
                 />
@@ -247,8 +260,22 @@ function Edit() {
         className="table-layout"
       >
         <Col span={2} className="table-header-col-section">
+          {colorBodyList.length > 1 ? (
+            <Space direction="vertical" style={{ paddingLeft: "10px" }}>
+              <CaretUpFilled
+                style={{ fontSize: "30px", cursor: "pointer" }}
+                onClick={() => onUpMoveClick("colorBodyList", index)}
+              />
+              <CaretDownFilled
+                style={{ fontSize: "30px", cursor: "pointer" }}
+                onClick={() => onDownMoveClick("colorBodyList", index)}
+              />
+            </Space>
+          ) : (
+            ""
+          )}
           <label>
-            색상 {body.number !== 10 ? "0" + body.number : body.number}
+            색상 {body.number < 10 ? "0" + body.number : body.number}
           </label>
         </Col>
         <Col flex="auto" className="table-value-col-section">
@@ -275,8 +302,12 @@ function Edit() {
                   onChange={(number) => {
                     onChangeColorComponent(body.number, "price", number);
                   }}
+                  formatter={(value) =>
+                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }
+                  parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
                   size="large"
-                  maxLength={9}
+                  maxLength={11}
                   controls={false}
                   style={{ width: 200 }}
                 />
@@ -333,8 +364,22 @@ function Edit() {
         className="table-layout"
       >
         <Col span={2} className="table-header-col-section">
+          {trimBodyList.length > 1 ? (
+            <Space direction="vertical" style={{ paddingLeft: "10px" }}>
+              <CaretUpFilled
+                style={{ fontSize: "30px", cursor: "pointer" }}
+                onClick={() => onUpMoveClick("trimBodyList", index)}
+              />
+              <CaretDownFilled
+                style={{ fontSize: "30px", cursor: "pointer" }}
+                onClick={() => onDownMoveClick("trimBodyList", index)}
+              />
+            </Space>
+          ) : (
+            ""
+          )}
           <label>
-            옵션 {body.number !== 10 ? "0" + body.number : body.number}
+            옵션 {body.number < 10 ? "0" + body.number : body.number}
           </label>
         </Col>
         <Col flex="auto" className="table-value-col-section">
@@ -362,8 +407,12 @@ function Edit() {
                   onChange={(number) => {
                     onChangeTrimComponent(body.number, "price", number);
                   }}
+                  formatter={(value) =>
+                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }
+                  parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
                   size="large"
-                  maxLength={9}
+                  maxLength={11}
                   controls={false}
                   style={{ width: 200 }}
                 />
@@ -477,7 +526,7 @@ function Edit() {
             >
               <Col span={2} className="table-header-col-section">
                 <label>
-                  할인 {index + 1 !== 10 ? "0" + (index + 1) : index + 1}
+                  할인 {index + 1 < 10 ? "0" + (index + 1) : index + 1}
                 </label>
               </Col>
               <Col flex="auto" className="table-value-col-section">
@@ -523,6 +572,63 @@ function Edit() {
     ));
   };
 
+  const renderPictures = () => {
+    const pictures = [1, 2, 3, 4, 5, 6, 7, 8];
+    return (
+      <Row gutter={[8]}>
+        {pictures.map((item) => (
+          <Col>
+            <label className="picture-header-label">
+              사진 {"0" + item} (대표)
+            </label>
+            <Space direction="vertical" align="center" size={6}>
+              <Image
+                src={
+                  bodyInfo["preview_" + item] === preview_default_image
+                    ? preview_default_image
+                    : bodyInfo["picture_" + item].uid === ""
+                    ? window.location.origin +
+                      "/uploads/model/" +
+                      bodyInfo["preview_" + item]
+                    : bodyInfo["preview_" + item]
+                }
+                width={150}
+                height={150}
+              />
+              {bodyInfo["picture_" + item].uid.includes("__AUTO__") ? (
+                <Upload
+                  accept=".png"
+                  fileList={[bodyInfo["picture_" + item]]}
+                  name={"picture_" + item}
+                  showUploadList={false}
+                  onChange={(info) => {
+                    onPreviewChange(item, info.file);
+                  }}
+                  beforeUpload={(file) => {
+                    onComponentChange("picture_" + item, file);
+                    return true;
+                  }}
+                >
+                  <Button className="black-button" size="large">
+                    등록
+                  </Button>
+                </Upload>
+              ) : (
+                <Button
+                  className="black-button"
+                  size="large"
+                  onClick={() => onPictureDeleteClick(item)}
+                >
+                  삭제
+                </Button>
+              )}
+            </Space>
+          </Col>
+        ))}
+      </Row>
+    );
+  };
+
   return (
     <>
       <Space direction="vertical" size={18} className="main-layout">
@@ -530,7 +636,7 @@ function Edit() {
         <Space direction="vertical" size={18}>
           <Row justify="middle">
             <Col>
-              <label className="main-header-title">브랜드 수정</label>
+              <label className="main-header-title">모델 수정</label>
             </Col>
             <Col flex="auto" />
             <Col>
@@ -789,320 +895,7 @@ function Edit() {
                             이미지를 새로 등록 하기 위해선 등록된 이미지
                             [삭제]후 재 등록 하시면 됩니다.
                           </label>
-                          <Row gutter={[8]}>
-                            <Col>
-                              <label className="picture-header-label">
-                                사진 01 (대표)
-                              </label>
-                              <Space
-                                direction="vertical"
-                                align="center"
-                                size={6}
-                              >
-                                <Image
-                                  src={
-                                    bodyInfo.preview_1
-                                      ? bodyInfo.preview_1
-                                      : window.location.origin +
-                                        "/uploads/model/" +
-                                        bodyInfo.picture_1
-                                  }
-                                  width={150}
-                                  height={150}
-                                />
-                                <Upload
-                                  accept=".png"
-                                  fileList={[bodyInfo.picture_1]}
-                                  name="picture_1"
-                                  showUploadList={false}
-                                  onChange={(info) => {
-                                    onPreviewChange(1, info.file);
-                                  }}
-                                  beforeUpload={(file) => {
-                                    onComponentChange("picture_1", file);
-                                    return true;
-                                  }}
-                                >
-                                  <Button className="black-button" size="large">
-                                    등록
-                                  </Button>
-                                </Upload>
-                              </Space>
-                            </Col>
-                            <Col>
-                              <label className="picture-header-label">
-                                사진 02 (대표)
-                              </label>
-                              <Space
-                                direction="vertical"
-                                align="center"
-                                size={6}
-                              >
-                                <Image
-                                  src={
-                                    bodyInfo.preview_2
-                                      ? bodyInfo.preview_2
-                                      : window.location.origin +
-                                        "/uploads/model/" +
-                                        bodyInfo.picture_2
-                                  }
-                                  width={150}
-                                  height={150}
-                                />
-                                <Upload
-                                  accept=".png"
-                                  fileList={[bodyInfo.picture_2]}
-                                  name="picture_2"
-                                  showUploadList={false}
-                                  onChange={(info) => {
-                                    onPreviewChange(2, info.file);
-                                  }}
-                                  beforeUpload={(file) => {
-                                    onComponentChange("picture_2", file);
-                                    return true;
-                                  }}
-                                >
-                                  <Button className="black-button" size="large">
-                                    등록
-                                  </Button>
-                                </Upload>
-                              </Space>
-                            </Col>
-                            <Col>
-                              <label className="picture-header-label">
-                                사진 03 (대표)
-                              </label>
-                              <Space
-                                direction="vertical"
-                                align="center"
-                                size={6}
-                              >
-                                <Image
-                                  src={
-                                    bodyInfo.preview_3
-                                      ? bodyInfo.preview_3
-                                      : window.location.origin +
-                                        "/uploads/model/" +
-                                        bodyInfo.picture_3
-                                  }
-                                  width={150}
-                                  height={150}
-                                />
-                                <Upload
-                                  accept=".png"
-                                  fileList={[bodyInfo.picture_3]}
-                                  name="picture_3"
-                                  showUploadList={false}
-                                  onChange={(info) => {
-                                    onPreviewChange(3, info.file);
-                                  }}
-                                  beforeUpload={(file) => {
-                                    onComponentChange("picture_3", file);
-                                    return true;
-                                  }}
-                                >
-                                  <Button className="black-button" size="large">
-                                    등록
-                                  </Button>
-                                </Upload>
-                              </Space>
-                            </Col>
-                            <Col>
-                              <label className="picture-header-label">
-                                사진 04 (대표)
-                              </label>
-                              <Space
-                                direction="vertical"
-                                align="center"
-                                size={6}
-                              >
-                                <Image
-                                  src={
-                                    bodyInfo.preview_4
-                                      ? bodyInfo.preview_4
-                                      : window.location.origin +
-                                        "/uploads/model/" +
-                                        bodyInfo.picture_4
-                                  }
-                                  width={150}
-                                  height={150}
-                                />
-                                <Upload
-                                  accept=".png"
-                                  fileList={[bodyInfo.picture_4]}
-                                  name="picture_4"
-                                  showUploadList={false}
-                                  onChange={(info) => {
-                                    onPreviewChange(4, info.file);
-                                  }}
-                                  beforeUpload={(file) => {
-                                    onComponentChange("picture_4", file);
-                                    return true;
-                                  }}
-                                >
-                                  <Button className="black-button" size="large">
-                                    등록
-                                  </Button>
-                                </Upload>
-                              </Space>
-                            </Col>
-                            <Col>
-                              <label className="picture-header-label">
-                                사진 05 (대표)
-                              </label>
-                              <Space
-                                direction="vertical"
-                                align="center"
-                                size={6}
-                              >
-                                <Image
-                                  src={
-                                    bodyInfo.preview_5
-                                      ? bodyInfo.preview_5
-                                      : window.location.origin +
-                                        "/uploads/model/" +
-                                        bodyInfo.picture_5
-                                  }
-                                  width={150}
-                                  height={150}
-                                />
-                                <Upload
-                                  accept=".png"
-                                  fileList={[bodyInfo.picture_5]}
-                                  name="picture_5"
-                                  showUploadList={false}
-                                  onChange={(info) => {
-                                    onPreviewChange(5, info.file);
-                                  }}
-                                  beforeUpload={(file) => {
-                                    onComponentChange("picture_5", file);
-                                    return true;
-                                  }}
-                                >
-                                  <Button className="black-button" size="large">
-                                    등록
-                                  </Button>
-                                </Upload>
-                              </Space>
-                            </Col>
-                            <Col>
-                              <label className="picture-header-label">
-                                사진 06 (대표)
-                              </label>
-                              <Space
-                                direction="vertical"
-                                align="center"
-                                size={6}
-                              >
-                                <Image
-                                  src={
-                                    bodyInfo.preview_6
-                                      ? bodyInfo.preview_6
-                                      : window.location.origin +
-                                        "/uploads/model/" +
-                                        bodyInfo.picture_6
-                                  }
-                                  width={150}
-                                  height={150}
-                                />
-                                <Upload
-                                  accept=".png"
-                                  fileList={[bodyInfo.picture_6]}
-                                  name="picture_6"
-                                  showUploadList={false}
-                                  onChange={(info) => {
-                                    onPreviewChange(6, info.file);
-                                  }}
-                                  beforeUpload={(file) => {
-                                    onComponentChange("picture_6", file);
-                                    return true;
-                                  }}
-                                >
-                                  <Button className="black-button" size="large">
-                                    등록
-                                  </Button>
-                                </Upload>
-                              </Space>
-                            </Col>
-                            <Col>
-                              <label className="picture-header-label">
-                                사진 07 (대표)
-                              </label>
-                              <Space
-                                direction="vertical"
-                                align="center"
-                                size={6}
-                              >
-                                <Image
-                                  src={
-                                    bodyInfo.preview_7
-                                      ? bodyInfo.preview_7
-                                      : window.location.origin +
-                                        "/uploads/model/" +
-                                        bodyInfo.picture_7
-                                  }
-                                  width={150}
-                                  height={150}
-                                />
-                                <Upload
-                                  accept=".png"
-                                  fileList={[bodyInfo.picture_7]}
-                                  name="picture_7"
-                                  showUploadList={false}
-                                  onChange={(info) => {
-                                    onPreviewChange(7, info.file);
-                                  }}
-                                  beforeUpload={(file) => {
-                                    onComponentChange("picture_7", file);
-                                    return true;
-                                  }}
-                                >
-                                  <Button className="black-button" size="large">
-                                    등록
-                                  </Button>
-                                </Upload>
-                              </Space>
-                            </Col>
-                            <Col>
-                              <label className="picture-header-label">
-                                사진 08 (대표)
-                              </label>
-                              <Space
-                                direction="vertical"
-                                align="center"
-                                size={6}
-                              >
-                                <Image
-                                  src={
-                                    bodyInfo.preview_8
-                                      ? bodyInfo.preview_8
-                                      : window.location.origin +
-                                        "/uploads/model/" +
-                                        bodyInfo.picture_8
-                                  }
-                                  width={150}
-                                  height={150}
-                                />
-                                <Upload
-                                  accept=".png"
-                                  fileList={[bodyInfo.picture_8]}
-                                  name="picture_8"
-                                  showUploadList={false}
-                                  onChange={(info) => {
-                                    onPreviewChange(8, info.file);
-                                  }}
-                                  beforeUpload={(file) => {
-                                    onComponentChange("picture_8", file);
-                                    return true;
-                                  }}
-                                >
-                                  <Button className="black-button" size="large">
-                                    등록
-                                  </Button>
-                                </Upload>
-                              </Space>
-                            </Col>
-                          </Row>
+                          {renderPictures()}
                         </Space>
                       </Col>
                     </Row>
