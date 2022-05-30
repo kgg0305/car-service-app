@@ -13,6 +13,7 @@ import {
   remove,
   setUse,
   closeConfirm,
+  save,
 } from "../../../store/reducers/car/group/manage";
 
 // 목록페지
@@ -42,11 +43,10 @@ function Manage() {
 
   const onTableMoreClick = () => dispatch(showMore());
   const onDeleteClick = async (idx) => dispatch(showConfirm(idx));
-  const deleteInfo = async (idx) =>
-    dispatch(remove("/car/group/manage/" + brand_id, idx));
-  const onIsUseChange = (idx, value) =>
-    dispatch(setUse(idx, value, dataSource));
+  const deleteInfo = async (idx) => dispatch(remove(idx));
+  const onIsUseChange = (idx, value) => dispatch(setUse(idx, value));
   const onCloseConfirmClick = () => dispatch(closeConfirm());
+  const onSaveClick = (url) => dispatch(save(url));
 
   const columns = [
     {
@@ -142,7 +142,23 @@ function Manage() {
       <Space direction="vertical" size={18} className="main-layout">
         {/* Page Header */}
         <Space direction="vertical" size={18}>
-          <label className="main-header-title">모델그룹 관리</label>
+          <Space size={1170}>
+            <label className="main-header-title">모델그룹 관리</label>
+            <Space size={10}>
+              <Link to="/car/brand">
+                <Button className="white-button" size="large">
+                  취소
+                </Button>
+              </Link>
+              <Button
+                className="black-button"
+                size="large"
+                onClick={() => onSaveClick("/car/brand")}
+              >
+                저장하고 나가기
+              </Button>
+            </Space>
+          </Space>
           <Divider className="main-body-divider" />
         </Space>
 

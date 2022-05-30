@@ -70,16 +70,21 @@ const create = async (body) => {
 const update = async (body) => {
   let pictures = {};
   for (let i = 1; i <= 8; i++) {
-    const picture =
-      body["picture_" + i].uid.includes("__AUTO__") ||
-      body["picture_" + i].uid === ""
-        ? ""
-        : body["picture_" + i];
-    pictures["picture_" + i] =
-      body["picture_" + i].uid === "" ? body["preview_" + i] : picture;
-    if (picture) {
-      const file = await uploadImage(picture);
-      pictures["picture_" + i] = file.filename;
+    if (body["picture_" + i].uid) {
+      const picture =
+        body["picture_" + i].uid.includes("__AUTO__") ||
+        body["picture_" + i].uid === ""
+          ? ""
+          : body["picture_" + i];
+
+      pictures["picture_" + i] =
+        body["picture_" + i].uid === "" ? body["preview_" + i] : picture;
+      if (picture) {
+        const file = await uploadImage(picture);
+        pictures["picture_" + i] = file.filename;
+      }
+    } else {
+      pictures["picture_" + i] = body["picture_" + i];
     }
   }
 

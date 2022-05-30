@@ -10,6 +10,7 @@ const SHOW_CONFIRM = prefix + "SHOW_CONFIRM";
 const CLOSE_CONFIRM = prefix + "CLOSE_CONFIRM";
 const REMOVE = prefix + "REMOVE";
 const SET_USE = prefix + "SET_USE";
+const SAVE = prefix + "SAVE";
 
 export const init = (model_id) => async (dispatch) => {
   try {
@@ -61,28 +62,21 @@ export const showConfirm = (idx) => ({
 export const closeConfirm = () => ({
   type: CLOSE_CONFIRM,
 });
-export const remove = (url, idx) => async (dispatch) => {
+export const remove = (idx) => async (dispatch) => {
   try {
-    await lineupService.remove(idx);
+    dispatch(closeConfirm());
 
     dispatch({
       type: REMOVE,
       payload: {
-        url: url,
+        idx: idx,
       },
     });
   } catch (e) {
     console.log(e);
   }
 };
-export const setUse = (idx, value, dataSource) => async (dispatch) => {
-  const lineup_info = {
-    ...dataSource.filter((item) => item.idx === idx)[0],
-    is_use: value,
-  };
-
-  await lineupService.update(lineup_info);
-
+export const setUse = (idx, value) => async (dispatch) => {
   dispatch({
     type: SET_USE,
     payload: {
@@ -90,6 +84,39 @@ export const setUse = (idx, value, dataSource) => async (dispatch) => {
       value: value,
     },
   });
+};
+export const save = (url) => async (dispatch, getState) => {
+  try {
+    const state = getState();
+    const dataSource = state.lineupManage.dataSource;
+    const deleted_ids = state.lineupManage.deleted_ids;
+    const changed_ids = state.lineupManage.changed_ids;
+
+    for (let i = 0; i < changed_ids.length; i++) {
+      const body_info =
+        dataSource.filter((item) => item.idx === changed_ids[i]).length > 0
+          ? dataSource.filter((item) => item.idx === changed_ids[i])[0]
+          : null;
+
+      if (body_info) {
+        lineupService.update(body_info);
+      }
+    }
+
+    for (let i = 0; i < deleted_ids.length; i++) {
+      const idx = deleted_ids[i];
+      lineupService.remove(idx);
+    }
+
+    dispatch({
+      type: SAVE,
+      payload: {
+        url: url,
+      },
+    });
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 const initialState = {
@@ -103,6 +130,8 @@ const initialState = {
   modelBodyInfo: {
     brand_name: "",
   },
+  deleted_ids: [],
+  changed_ids: [],
 };
 
 export default function list(state = initialState, action) {
@@ -151,8 +180,17 @@ export default function list(state = initialState, action) {
               ? action.payload.value
               : item.is_use,
         })),
+        changed_ids: [...state.changed_ids, action.payload.idx],
       };
     case REMOVE:
+      return {
+        ...state,
+        dataSource: state.dataSource.filter(
+          (item) => item.idx !== action.payload.idx
+        ),
+        deleted_ids: [...state.deleted_ids, action.payload.idx],
+      };
+    case SAVE:
       return {
         ...state,
         redirectTo: action.payload.url,
