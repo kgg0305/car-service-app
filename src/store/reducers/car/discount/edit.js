@@ -11,7 +11,9 @@ const CLOSE_VALIDATION = prefix + "CLOSE_VALIDATION";
 const SHOW_CONFIRM = prefix + "SHOW_CONFIRM";
 const CLOSE_CONFIRM = prefix + "CLOSE_CONFIRM";
 const SET_BODY = prefix + "SET_BODY";
+const ADD_CONDITION_BODY = prefix + "ADD_CONDITION_BODY";
 const SET_CONDITION_BODY = prefix + "SET_CONDITION_BODY";
+const DELETE_CONDITION_BODY = prefix + "DELETE_CONDITION_BODY";
 const SAVE = prefix + "SAVE";
 const REMOVE = prefix + "REMOVE";
 
@@ -69,12 +71,21 @@ export const setBody = (name, value) => async (dispatch) => {
     console.log(e);
   }
 };
+export const addConditionBody = () => ({
+  type: ADD_CONDITION_BODY,
+});
 export const setConditionBody = (number, name, value) => ({
   type: SET_CONDITION_BODY,
   payload: {
     number: number,
     name: name,
     value: value,
+  },
+});
+export const deleteConditionBody = (number) => ({
+  type: DELETE_CONDITION_BODY,
+  payload: {
+    number: number,
   },
 });
 export const save = (url, bodyInfo, conditionBodyList) => async (dispatch) => {
@@ -232,6 +243,19 @@ export default function edit(state = initialState, action) {
           [action.payload.name]: action.payload.value,
         },
       };
+    case ADD_CONDITION_BODY:
+      return {
+        ...state,
+        conditionBodyList: [
+          ...state.conditionBodyList,
+          {
+            number: state.conditionBodyList.length + 1,
+            condition_name: "",
+            discount_price: 0,
+            price_unit: "0",
+          },
+        ],
+      };
     case SET_CONDITION_BODY:
       return {
         ...state,
@@ -243,6 +267,15 @@ export default function edit(state = initialState, action) {
               }
             : body
         ),
+      };
+    case DELETE_CONDITION_BODY:
+      return {
+        ...state,
+        conditionBodyList: [
+          ...state.conditionBodyList.filter(
+            (conditionBody) => conditionBody.number !== action.payload.number
+          ),
+        ],
       };
     case SAVE:
       return {

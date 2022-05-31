@@ -27,7 +27,9 @@ import {
   addKindBody,
   setKindBody,
   deleteKindBody,
+  addConditionBody,
   setConditionBody,
+  deleteConditionBody,
 } from "../../../store/reducers/car/discount/create";
 import { GetDateStringFromDate } from "../../../constants/GlobalFunctions";
 
@@ -68,6 +70,8 @@ function Create() {
     dispatch(setKindBody(number, kindNumber, name, value));
   const onDeleteKindComponentClick = (number, kindNumber) =>
     dispatch(deleteKindBody(number, kindNumber));
+  const onAddConditionComponentClick = (number, kindNumber) =>
+    dispatch(addConditionBody(number, kindNumber));
   const onChangeConditionComponent = (
     bodyNumber,
     kindNumber,
@@ -78,6 +82,11 @@ function Create() {
     dispatch(
       setConditionBody(bodyNumber, kindNumber, conditionNumber, name, value)
     );
+  const onDeleteConditionComponentClick = (
+    number,
+    kindNumber,
+    conditionNumber
+  ) => dispatch(deleteConditionBody(number, kindNumber, conditionNumber));
   const onSaveClick = () => dispatch(save("/car/discount", bodyList));
 
   const renderBodyList = (type) => {
@@ -447,12 +456,50 @@ function Create() {
               />
             </Space>
             <Space size={6}>
-              <Button className="white-button" size="large">
-                삭제
-              </Button>
-              <Button className="black-button" size="large">
-                추가
-              </Button>
+              {kindBody.conditionBodyList.length == index + 1 ? (
+                <>
+                  {kindBody.conditionBodyList.length != 1 ? (
+                    <Button
+                      className="white-button"
+                      onClick={() =>
+                        onDeleteConditionComponentClick(
+                          bodyNumber,
+                          kindBody.number,
+                          conditionBody.number
+                        )
+                      }
+                      size="large"
+                    >
+                      삭제
+                    </Button>
+                  ) : (
+                    ""
+                  )}
+                  <Button
+                    className="black-button"
+                    onClick={() =>
+                      onAddConditionComponentClick(bodyNumber, kindBody.number)
+                    }
+                    size="large"
+                  >
+                    추가
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  className="white-button"
+                  onClick={() =>
+                    onDeleteConditionComponentClick(
+                      bodyNumber,
+                      kindBody.number,
+                      conditionBody.number
+                    )
+                  }
+                  size="large"
+                >
+                  삭제
+                </Button>
+              )}
             </Space>
           </Space>
         </Col>

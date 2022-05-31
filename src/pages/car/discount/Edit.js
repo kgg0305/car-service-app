@@ -26,7 +26,9 @@ import {
   closeConfirm,
   showConfirm,
   remove,
+  addConditionBody,
   setConditionBody,
+  deleteConditionBody,
 } from "../../../store/reducers/car/discount/edit";
 import { GetDateStringFromDate } from "../../../constants/GlobalFunctions";
 
@@ -68,15 +70,18 @@ function Edit() {
   const onCloseValidationClick = () => dispatch(closeValidation());
   const onCloseConfirmClick = () => dispatch(closeConfirm());
   const onComponentChange = (name, value) => dispatch(setBody(name, value));
+  const onAddConditionComponentClick = () => dispatch(addConditionBody());
   const onChangeConditionComponent = (number, name, value) =>
     dispatch(setConditionBody(number, name, value));
+  const onDeleteConditionComponentClick = (number) =>
+    dispatch(deleteConditionBody(number));
   const onSaveClick = () =>
     dispatch(save("/car/discount", bodyInfo, conditionBodyList));
   const onDeleteClick = async () => dispatch(showConfirm());
   const deleteInfo = async () => dispatch(remove("/car/discount", id));
 
   const renderConditionBodyList = () => {
-    return conditionBodyList.map((body, index) => (
+    return conditionBodyList.map((conditionBody, index) => (
       <Row
         key={index}
         gutter={[0]}
@@ -86,60 +91,104 @@ function Edit() {
       >
         <Col span={2} className="table-header-col-section">
           <label>
-            조건 {body.number < 10 ? "0" + body.number : body.number}
+            조건{" "}
+            {conditionBody.number !== 10
+              ? "0" + conditionBody.number
+              : conditionBody.number}
           </label>
         </Col>
         <Col flex="auto" className="table-value-col-section">
-          <Space size={6}>
-            <Input
-              name="condition_name"
-              value={body.condition_name}
-              onChange={(e) => {
-                onChangeConditionComponent(
-                  body.number,
-                  e.target.name,
-                  e.target.value
-                );
-              }}
-              size="large"
-              placeholder="할인조건 입력"
-              style={{ width: 400 }}
-            />
-            <Input
-              name="discount_price"
-              value={body.discount_price}
-              onChange={(e) => {
-                onChangeConditionComponent(
-                  body.number,
-                  e.target.name,
-                  e.target.value
-                );
-              }}
-              size="large"
-              addonAfter={
-                <Select
-                  name="price_unit"
-                  value={body.price_unit}
-                  onChange={(value) => {
-                    onChangeConditionComponent(
-                      body.number,
-                      "price_unit",
-                      value
-                    );
-                  }}
-                  className="select-after"
-                >
-                  {Constants.currencyTypeOptions.map(
-                    (optionItem, optionIndex) => (
-                      <Select.Option key={optionIndex} value={optionItem.value}>
-                        {optionItem.label}
-                      </Select.Option>
-                    )
+          <Space size={620}>
+            <Space size={6}>
+              <Input
+                name="condition_name"
+                value={conditionBody.condition_name}
+                onChange={(e) => {
+                  onChangeConditionComponent(
+                    conditionBody.number,
+                    e.target.name,
+                    e.target.value
+                  );
+                }}
+                size="large"
+                placeholder="할인조건 입력"
+                style={{ width: 400 }}
+              />
+              <Input
+                name="discount_price"
+                value={conditionBody.discount_price}
+                onChange={(e) => {
+                  onChangeConditionComponent(
+                    conditionBody.number,
+                    e.target.name,
+                    e.target.value
+                  );
+                }}
+                size="large"
+                addonAfter={
+                  <Select
+                    name="price_unit"
+                    value={conditionBody.price_unit}
+                    onChange={(value) => {
+                      onChangeConditionComponent(
+                        conditionBody.number,
+                        "price_unit",
+                        value
+                      );
+                    }}
+                    className="select-after"
+                  >
+                    {Constants.currencyTypeOptions.map(
+                      (optionItem, optionIndex) => (
+                        <Select.Option
+                          key={optionIndex}
+                          value={optionItem.value}
+                        >
+                          {optionItem.label}
+                        </Select.Option>
+                      )
+                    )}
+                  </Select>
+                }
+                style={{ width: 250 }}
+              />
+            </Space>
+            <Space size={6}>
+              {conditionBodyList.length == index + 1 ? (
+                <>
+                  {conditionBodyList.length != 1 ? (
+                    <Button
+                      className="white-button"
+                      onClick={() =>
+                        onDeleteConditionComponentClick(conditionBody.number)
+                      }
+                      size="large"
+                    >
+                      삭제
+                    </Button>
+                  ) : (
+                    ""
                   )}
-                </Select>
-              }
-              style={{ width: 250 }}
-            />
+                  <Button
+                    className="black-button"
+                    onClick={() => onAddConditionComponentClick()}
+                    size="large"
+                  >
+                    추가
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  className="white-button"
+                  onClick={() =>
+                    onDeleteConditionComponentClick(conditionBody.number)
+                  }
+                  size="large"
+                >
+                  삭제
+                </Button>
+              )}
+            </Space>
           </Space>
         </Col>
       </Row>

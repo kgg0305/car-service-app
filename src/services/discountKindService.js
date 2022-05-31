@@ -1,5 +1,8 @@
 import axios from "axios";
-import { GetDateTimeStringFromDate } from "../constants/GlobalFunctions";
+import {
+  GetDateStringFromDate,
+  GetDateTimeStringFromDate,
+} from "../constants/GlobalFunctions";
 
 const base_url = process.env.REACT_APP_API_URL + "/discount-kind";
 const token = JSON.parse(sessionStorage.getItem("token"));
@@ -24,8 +27,8 @@ const create = async (bodyList) => {
         brand_id: body.brand_id,
         kind_name: kindBody.kind_name,
         kind_detail: kindBody.kind_detail,
-        s_date: kindBody.s_date,
-        e_date: kindBody.e_date,
+        s_date: GetDateStringFromDate(new Date(kindBody.s_date)),
+        e_date: GetDateStringFromDate(new Date(kindBody.e_date)),
 
         created_at: GetDateTimeStringFromDate(new Date()),
         created_by: token.idx,
@@ -50,8 +53,8 @@ const update = async (body) => {
     brand_id: body.brand_id,
     kind_name: body.kind_name,
     kind_detail: body.kind_detail,
-    s_date: body.s_date,
-    e_date: body.e_date,
+    s_date: GetDateStringFromDate(new Date(body.s_date)),
+    e_date: GetDateStringFromDate(new Date(body.e_date)),
 
     created_at: GetDateTimeStringFromDate(new Date(body.created_at)),
     created_by: body.created_by,

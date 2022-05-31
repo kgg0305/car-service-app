@@ -15,7 +15,9 @@ const SET_BODY = prefix + "SET_BODY";
 const ADD_KIND_BODY = prefix + "ADD_KIND_BODY";
 const SET_KIND_BODY = prefix + "SET_KIND_BODY";
 const DELETE_KIND_BODY = prefix + "DELETE_KIND_BODY";
+const ADD_CONDITION_BODY = prefix + "ADD_CONDITION_BODY";
 const SET_CONDITION_BODY = prefix + "SET_CONDITION_BODY";
+const DELETE_CONDITION_BODY = prefix + "DELETE_CONDITION_BODY";
 const SAVE = prefix + "SAVE";
 
 export const init = () => async (dispatch) => {
@@ -83,6 +85,13 @@ export const deleteKindBody = (number, kindNumber) => ({
     kindNumber: kindNumber,
   },
 });
+export const addConditionBody = (number, kindNumber) => ({
+  type: ADD_CONDITION_BODY,
+  payload: {
+    number: number,
+    kindNumber: kindNumber,
+  },
+});
 export const setConditionBody = (
   number,
   kindNumber,
@@ -97,6 +106,14 @@ export const setConditionBody = (
     conditionNumber: conditionNumber,
     name: name,
     value: value,
+  },
+});
+export const deleteConditionBody = (number, kindNumber, conditionNumber) => ({
+  type: DELETE_CONDITION_BODY,
+  payload: {
+    number: number,
+    kindNumber: kindNumber,
+    conditionNumber: conditionNumber,
   },
 });
 export const save = (url, bodyList) => async (dispatch) => {
@@ -158,7 +175,7 @@ export const save = (url, bodyList) => async (dispatch) => {
                 : conditionIndex + 1 + "(할인비용)"),
           });
         }
-        if (conditionBody.price_unit === "0") {
+        if (conditionBody.price_unit === null) {
           validation.push({
             title:
               "종류 " +
@@ -359,6 +376,35 @@ export default function create(state = initialState, action) {
             : body
         ),
       };
+    case ADD_CONDITION_BODY:
+      return {
+        ...state,
+        bodyList: state.bodyList.map((body) =>
+          body.number === action.payload.number
+            ? {
+                ...body,
+                kindBodyList: body.kindBodyList.map((kindBody) =>
+                  kindBody.number === action.payload.kindNumber
+                    ? {
+                        ...kindBody,
+                        conditionBodyList: [
+                          ...kindBody.conditionBodyList,
+                          {
+                            ...initialState.bodyList[0].kindBodyList[0]
+                              .conditionBodyList[0],
+                            number:
+                              kindBody.conditionBodyList[
+                                kindBody.conditionBodyList.length - 1
+                              ].number + 1,
+                          },
+                        ],
+                      }
+                    : kindBody
+                ),
+              }
+            : body
+        ),
+      };
     case SET_CONDITION_BODY:
       return {
         ...state,
@@ -380,6 +426,31 @@ export default function create(state = initialState, action) {
                                 }
                               : conditionBody
                         ),
+                      }
+                    : kindBody
+                ),
+              }
+            : body
+        ),
+      };
+    case DELETE_CONDITION_BODY:
+      return {
+        ...state,
+        bodyList: state.bodyList.map((body) =>
+          body.number === action.payload.number
+            ? {
+                ...body,
+                kindBodyList: body.kindBodyList.map((kindBody) =>
+                  kindBody.number === action.payload.kindNumber
+                    ? {
+                        ...kindBody,
+                        conditionBodyList: [
+                          ...kindBody.conditionBodyList.filter(
+                            (conditionBody) =>
+                              conditionBody.number !==
+                              action.payload.conditionNumber
+                          ),
+                        ],
                       }
                     : kindBody
                 ),
