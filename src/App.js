@@ -109,7 +109,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route exact path="/" element={<Main />}>
-          <Route index element={<CarBrandList />} />
+          {token.idx === 1 ? <Route index element={<CarBrandList />} /> : <></>}
         </Route>
         <Route exact path="car" element={<Main />}>
           <Route path="brand">
