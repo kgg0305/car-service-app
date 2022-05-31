@@ -51,15 +51,25 @@ export const setDataSource = (dataSource, idx, name, value) => (dispatch) => {
     },
   });
 };
-export const addUserName =
-  (name, userName, userOptionList, dataSource) => (dispatch) => {
-    let updatedDataSource = [];
+export const addUserName = (name) => (dispatch, getState) => {
+  const state = getState();
+  const userName = state.roleList.userName[name];
+  const userOptionList = state.roleList.userOptionList;
+  const dataSource = state.roleList.dataSource;
 
-    if (userOptionList.some((item) => item.label === userName)) {
-      const user_option_info = userOptionList.filter(
-        (item) => item.label === userName
-      )[0];
+  let updatedDataSource = [];
 
+  if (userOptionList.some((item) => item.label === userName)) {
+    const user_option_info = userOptionList.filter(
+      (item) => item.label === userName
+    )[0];
+
+    if (
+      !dataSource.some(
+        (item) =>
+          item.name === name && item.user_name === user_option_info.label
+      )
+    ) {
       updatedDataSource = [
         ...dataSource,
         {
@@ -79,10 +89,11 @@ export const addUserName =
           dataSource: updatedDataSource,
         },
       });
-    } else {
-      dispatch(setCheckName(name, true));
     }
-  };
+  } else {
+    dispatch(setCheckName(name, true));
+  }
+};
 export const deleteUserName = (number) => ({
   type: DELETE_USER_NAME,
   payload: {
@@ -148,7 +159,7 @@ const initialState = {
   roleIdList: [],
   userOptionList: [],
   userName: {},
-  checkName: false,
+  checkName: {},
 };
 
 export default function list(state = initialState, action) {
@@ -211,7 +222,9 @@ export default function list(state = initialState, action) {
     case SET_CHECK_NAME:
       return {
         ...state,
-        [action.payload.name]: action.payload.value,
+        checkName: {
+          [action.payload.name]: action.payload.value,
+        },
       };
     case SAVE:
       return {

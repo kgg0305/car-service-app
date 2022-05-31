@@ -385,7 +385,7 @@ function Create() {
           </label>
         </Col>
         <Col flex="auto" className="table-value-col-section">
-          <Space size={600}>
+          <Space size={620}>
             <Space size={6}>
               <Input
                 name="condition_name"
@@ -445,6 +445,14 @@ function Create() {
                 }
                 style={{ width: 250 }}
               />
+            </Space>
+            <Space size={6}>
+              <Button className="white-button" size="large">
+                삭제
+              </Button>
+              <Button className="black-button" size="large">
+                추가
+              </Button>
             </Space>
           </Space>
         </Col>

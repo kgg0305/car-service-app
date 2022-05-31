@@ -50,8 +50,7 @@ function List() {
   const onUserNameChange = (name, value) => dispatch(setUserName(name, value));
   const onStatusChange = (number, status) =>
     dispatch(setStatus(number, status));
-  const onAddUserNameClick = (name) =>
-    dispatch(addUserName(name, userName[name], userOptionList, dataSource));
+  const onAddUserNameClick = (name) => dispatch(addUserName(name));
   const onDeleteUserNameClick = (number) => dispatch(deleteUserName(number));
   const onSaveClick = () =>
     dispatch(save("/user/role", dataSource, roleIdList));
