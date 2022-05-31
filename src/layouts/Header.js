@@ -9,12 +9,10 @@ import { removeToken } from "../store/reducers/auth";
 import { setHeaderMenu, setSideMenu } from "../store/reducers/menu";
 
 function Header() {
-  const { token } = useSelector((state) => ({
+  const { token, headerMenu, roleList } = useSelector((state) => ({
     token: state.auth.token,
-  }));
-
-  const { headerMenu } = useSelector((state) => ({
     headerMenu: state.menu.headerMenu,
+    roleList: state.menu.roleList,
   }));
 
   const dispatch = useDispatch();
@@ -43,11 +41,21 @@ function Header() {
           selectedKeys={[headerMenu.key]}
           onClick={(key) => onMenuClick(key.key)}
         >
-          {Constants.headerMenus.map((item) => (
-            <Menu.Item key={item.key}>
-              <Link to={item.link}>{item.label}</Link>
-            </Menu.Item>
-          ))}
+          {Constants.headerMenus.map((item) =>
+            roleList.some(
+              (roleItem) =>
+                roleItem.name === item.key ||
+                ((roleItem.name === "content1" ||
+                  roleItem.name === "content2") &&
+                  item.key === "content")
+            ) || token.idx === 1 ? (
+              <Menu.Item key={item.key}>
+                <Link to={item.link}>{item.label}</Link>
+              </Menu.Item>
+            ) : (
+              <></>
+            )
+          )}
         </Menu>
       </Col>
       <Col flex="auto"></Col>
@@ -58,9 +66,13 @@ function Header() {
               {token.name}님
             </Button>
           </Link>
-          <Link to={"/user/mine/1"} onClick={onSettingClick}>
-            <img src={setting_icon} />
-          </Link>
+          {token.idx === 1 ? (
+            <Link to={"/user/mine/1"} onClick={onSettingClick}>
+              <img src={setting_icon} />
+            </Link>
+          ) : (
+            ""
+          )}
           <Divider className="top-menu-divider" type="vertical" />
           <a href="/" className="top-menu-logout" onClick={onLogoutClick}>
             로그아웃

@@ -84,9 +84,9 @@ const update = async (body) => {
 //   }
 // };
 
-const getList = async (offset, search) => {
+const getList = async (search) => {
   try {
-    const response = await axios.post(base_url + "/list/" + offset, search);
+    const response = await axios.post(base_url + "/list", search);
 
     return response.data;
   } catch (e) {

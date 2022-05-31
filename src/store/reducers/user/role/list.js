@@ -22,7 +22,10 @@ export const init = () => async (dispatch) => {
     dispatch({
       type: INIT,
       payload: {
-        dataSource: dataSource,
+        dataSource: dataSource.map((item, index) => ({
+          ...item,
+          number: index + 1,
+        })),
         roleIdList: roleIdList,
         userOptionList: userOptionList,
       },
