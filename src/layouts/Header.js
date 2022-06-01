@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../assets/styles/layouts/Header.css";
 import { Menu, Space, Divider, Row, Col, Button } from "antd";
 import { Link } from "react-router-dom";
@@ -6,16 +6,23 @@ import setting_icon from "../assets/images/setting-icon.png";
 import { Constants } from "../constants/Constants";
 import { useDispatch, useSelector } from "react-redux";
 import { removeToken } from "../store/reducers/auth";
-import { setHeaderMenu, setSideMenu } from "../store/reducers/menu";
+import { init, setHeaderMenu, setSideMenu } from "../store/reducers/menu";
 
 function Header() {
-  const { token, headerMenu, roleList } = useSelector((state) => ({
-    token: state.auth.token,
-    headerMenu: state.menu.headerMenu,
-    roleList: state.menu.roleList,
-  }));
+  const { token, headerMenu, headerMenuRole, sideMenuRole } = useSelector(
+    (state) => ({
+      token: state.auth.token,
+      headerMenu: state.menu.headerMenu,
+      headerMenuRole: state.menu.headerMenuRole,
+      sideMenuRole: state.menu.sideMenuRole,
+    })
+  );
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(init());
+  }, [dispatch]);
 
   const onLogoutClick = () => dispatch(removeToken());
   const onMenuClick = (key) => {
@@ -42,15 +49,23 @@ function Header() {
           onClick={(key) => onMenuClick(key.key)}
         >
           {Constants.headerMenus.map((item) =>
-            roleList.some(
-              (roleItem) =>
-                roleItem.name === item.key ||
-                ((roleItem.name === "content1" ||
-                  roleItem.name === "content2") &&
-                  item.key === "content")
-            ) || token.idx === 1 ? (
+            headerMenuRole[item.key] ? (
               <Menu.Item key={item.key}>
-                <Link to={item.link}>{item.label}</Link>
+                <Link
+                  to={
+                    sideMenuRole[item.key].some((sideItem) => sideItem === 1)
+                      ? Constants.siderMenus.filter(
+                          (sideItem) => sideItem.headerMenu === item.key
+                        )[
+                          sideMenuRole[item.key].findIndex(
+                            (sideItem) => sideItem === 1
+                          )
+                        ].link
+                      : "/no-access"
+                  }
+                >
+                  {item.label}
+                </Link>
               </Menu.Item>
             ) : (
               <></>

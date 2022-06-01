@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -85,6 +85,7 @@ import ContentMovieRankCreate from "./pages/content/movieRank/Create";
 import ContentMovieRankEdit from "./pages/content/movieRank/Edit";
 // Media
 import ContentMediaList from "./pages/content/media/List";
+import NoAccess from "./pages/NoAccess";
 
 function App() {
   const { token } = useSelector((state) => ({
@@ -109,7 +110,11 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route exact path="/" element={<Main />}>
-          {token.idx === 1 ? <Route index element={<CarBrandList />} /> : <></>}
+          {token.idx === 1 ? (
+            <Route index element={<CarBrandList />} />
+          ) : (
+            <Route index element={<NoAccess />} />
+          )}
         </Route>
         <Route exact path="car" element={<Main />}>
           <Route path="brand">
@@ -152,16 +157,16 @@ function App() {
         </Route>
 
         {/* User */}
-        <Route path="/user/mine/:id" element={<Main />}>
-          <Route index element={<UserMineDetail />} />
-        </Route>
-        <Route path="/user/manage/" element={<Main />}>
-          <Route index element={<UserManageList />} />
-          <Route path="create" element={<UserManageCreate />} />
-          <Route path="edit/:id" element={<UserManageEdit />} />
-        </Route>
-        <Route path="/user/role/" element={<Main />}>
-          <Route index element={<UserRoleList />} />
+        <Route exact path="user" element={<Main />}>
+          <Route index path="mine/:id" element={<UserMineDetail />} />
+          <Route path="manage">
+            <Route index element={<UserManageList />} />
+            <Route path="create" element={<UserManageCreate />} />
+            <Route path="edit/:id" element={<UserManageEdit />} />
+          </Route>
+          <Route path="role">
+            <Route index element={<UserRoleList />} />
+          </Route>
         </Route>
 
         {/* Estimation */}
@@ -223,6 +228,11 @@ function App() {
           <Route path="media">
             <Route index element={<ContentMediaList />} />
           </Route>
+        </Route>
+
+        {/* NoAccess */}
+        <Route exact path="no-access" element={<Main />}>
+          <Route index element={<NoAccess />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -1,12 +1,10 @@
 import { Constants } from "../../constants/Constants";
 import { userRoleService } from "../../services/userRoleService";
 
-const prefix = "menu/";
+const prefix = "role/";
 
 const INIT = prefix + "INIT";
 const REMOVE_REDIRECTTO = prefix + "REMOVE_REDIRECTTO";
-const SET_HEADER_MENU = prefix + "SET_HEADER_MENU";
-const SET_SIDE_MENU = prefix + "SET_SIDE_MENU";
 
 export const init = () => async (dispatch) => {
   try {
@@ -192,8 +190,6 @@ export const init = () => async (dispatch) => {
         roleList: roleList,
         headerMenuRole: headerMenuRole,
         sideMenuRole: sideMenuRole,
-        headerMenu: headerMenu,
-        sideMenu: sideMenu,
         redirectTo: redirectTo,
       },
     });
@@ -201,34 +197,13 @@ export const init = () => async (dispatch) => {
     console.log(e);
   }
 };
-export const setHeaderMenu = (key) => ({
-  type: SET_HEADER_MENU,
-  payload: {
-    key: key,
-  },
-});
-export const setSideMenu = (key) => ({
-  type: SET_SIDE_MENU,
-  payload: {
-    key: key,
-  },
-});
 export const removeRedirectTo = () => ({
   type: REMOVE_REDIRECTTO,
 });
 
 const initialState = {
   redirectTo: "",
-  headerMenu: {
-    key: sessionStorage.getItem("headerMenuKey")
-      ? JSON.parse(sessionStorage.getItem("headerMenuKey"))
-      : "car",
-  },
-  sideMenu: {
-    key: sessionStorage.getItem("sideMenuKey")
-      ? JSON.parse(sessionStorage.getItem("sideMenuKey"))
-      : "brand",
-  },
+  refreshed: false,
   roleList: [],
   headerMenuRole: {
     car: false,
@@ -254,31 +229,13 @@ export default function menu(state = initialState, action) {
         roleList: action.payload.roleList,
         headerMenuRole: action.payload.headerMenuRole,
         sideMenuRole: action.payload.sideMenuRole,
-        headerMenu: action.payload.headerMenu,
-        sideMenu: action.payload.sideMenu,
         redirectTo: action.payload.redirectTo,
       };
     case REMOVE_REDIRECTTO:
       return {
         ...state,
         redirectTo: "",
-      };
-    case SET_HEADER_MENU:
-      return {
-        ...state,
-        headerMenu: {
-          key: action.payload.key,
-        },
-        sideMenu: {
-          key: "",
-        },
-      };
-    case SET_SIDE_MENU:
-      return {
-        ...state,
-        sideMenu: {
-          key: action.payload.key,
-        },
+        refreshed: true,
       };
     default:
       return state;

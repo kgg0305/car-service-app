@@ -343,7 +343,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[0] === "2"
+                  .status.split(",")[0] === "4"
                   ? true
                   : false
               }
@@ -352,7 +352,7 @@ function List() {
                   .filter((item) => item.number === number)[0]
                   .status.split(",");
                 const updated_status = [
-                  e.target.checked ? "2" : "0",
+                  e.target.checked ? "4" : "0",
                   status_array[1],
                   status_array[2],
                 ];
@@ -372,7 +372,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[0] === "3"
+                  .status.split(",")[0] === "2"
                   ? true
                   : false
               }
@@ -381,7 +381,7 @@ function List() {
                   .filter((item) => item.number === number)[0]
                   .status.split(",");
                 const updated_status = [
-                  e.target.checked ? "3" : "0",
+                  e.target.checked ? "2" : "0",
                   status_array[1],
                   status_array[2],
                 ];
@@ -401,7 +401,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[0] === "4"
+                  .status.split(",")[0] === "3"
                   ? true
                   : false
               }
@@ -410,7 +410,7 @@ function List() {
                   .filter((item) => item.number === number)[0]
                   .status.split(",");
                 const updated_status = [
-                  e.target.checked ? "4" : "0",
+                  e.target.checked ? "3" : "0",
                   status_array[1],
                   status_array[2],
                 ];

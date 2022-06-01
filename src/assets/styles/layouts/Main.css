@@ -477,3 +477,11 @@ main {
     border: 2px solid #00A0C4;
     border-radius: 3px;
 }
+
+.no-access-page {
+    height: 100%;
+    text-align: center;
+    padding: 400px;
+    font-size: 15px;
+    font-weight: bold;
+}

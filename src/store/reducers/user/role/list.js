@@ -73,6 +73,24 @@ export const addUserName = (name) => (dispatch, getState) => {
           item.name === name && item.user_name === user_option_info.label
       )
     ) {
+      let default_status = "";
+      switch (name) {
+        case "car":
+          default_status = "0";
+          break;
+        case "finance":
+          default_status = "0";
+          break;
+        case "estimation":
+          default_status = "0,0,0";
+          break;
+        case "content1":
+          default_status = "0,0";
+          break;
+        case "content2":
+          default_status = "0,0,0,0";
+          break;
+      }
       updatedDataSource = [
         ...dataSource,
         {
@@ -82,7 +100,7 @@ export const addUserName = (name) => (dispatch, getState) => {
           name: name,
           user_id: user_option_info.value,
           user_name: user_option_info.label,
-          status: "0",
+          status: default_status,
         },
       ];
 

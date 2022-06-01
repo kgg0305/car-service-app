@@ -29,6 +29,11 @@ export const Constants = {
       key: "content",
       link: "/content/content",
     },
+    {
+      label: "관리자 관리",
+      key: "user",
+      link: "/user",
+    },
   ],
   // 보조메뉴
   siderMenus: [
