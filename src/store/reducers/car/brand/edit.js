@@ -1,5 +1,6 @@
 import { GetBase64 } from "../../../../constants/GlobalFunctions";
 import { brandService } from "../../../../services/brandService";
+import preview_default_image from "../../../../assets/images/preview-default-image.png";
 
 const prefix = "car/brand/edit/";
 
@@ -19,12 +20,18 @@ export const init = (idx) => async (dispatch) => {
   try {
     const bodyInfo = await brandService.get(idx);
 
-    const updatedBodyInfo = {
+    let updatedBodyInfo = {
       ...bodyInfo,
       origin_name: bodyInfo.brand_name,
-      check_name: "",
-      preview: "",
     };
+
+    if (bodyInfo.logo === "") {
+      updatedBodyInfo.preview = preview_default_image;
+      updatedBodyInfo.logo = initialState.bodyInfo.logo;
+    } else {
+      updatedBodyInfo.preview = bodyInfo.logo;
+      updatedBodyInfo.logo = { uid: "" };
+    }
 
     dispatch({
       type: INIT,
@@ -80,15 +87,25 @@ export const checkName = (name) => async (dispatch, getState) => {
   }
 };
 export const preview = (file) => async (dispatch) => {
-  if (!file.url && !file.preview) {
+  if (file && !file.url && !file.preview) {
     file.preview = await GetBase64(file.originFileObj);
   }
-  dispatch({
-    type: PREVIEW,
-    payload: {
-      preview: file.preview,
-    },
-  });
+
+  if (file) {
+    dispatch({
+      type: PREVIEW,
+      payload: {
+        preview: file.preview,
+      },
+    });
+  } else {
+    dispatch({
+      type: PREVIEW,
+      payload: {
+        preview: preview_default_image,
+      },
+    });
+  }
 };
 export const setBody = (name, value) => ({
   type: SET_BODY,
@@ -97,6 +114,11 @@ export const setBody = (name, value) => ({
     value: value,
   },
 });
+export const deleteLogo = () => (dispatch) => {
+  dispatch(setBody("logo", { uid: "__AUTO__" }));
+
+  dispatch(preview(null));
+};
 export const save = (url) => async (dispatch, getState) => {
   const state = getState();
   const bodyInfo = state.brandEdit.bodyInfo;
@@ -210,8 +232,8 @@ const initialState = {
     room_uri: "",
     service_uri: "",
     deposit_uri: "",
-    logo: {},
-    preview: "",
+    logo: { uid: "__AUTO__" },
+    preview: preview_default_image,
     check_name: "",
     origin_name: "",
   },

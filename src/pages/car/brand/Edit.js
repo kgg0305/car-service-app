@@ -16,6 +16,7 @@ import React, { useEffect } from "react";
 import { Constants } from "../../../constants/Constants";
 import AlertModal from "../../../components/AlertModal";
 import AlertDeleteModal from "../../../components/AlertDeleteModal";
+import preview_default_image from "../../../assets/images/preview-default-image.png";
 import { useDispatch, useSelector } from "react-redux";
 import {
   closeValidation,
@@ -25,6 +26,7 @@ import {
   init,
   preview,
   setBody,
+  deleteLogo,
   remove,
   removeRedirectTo,
   save,
@@ -62,6 +64,7 @@ function Edit() {
   const onCheckNameClick = (name) => dispatch(checkName(name));
   const onPreviewChange = (file) => dispatch(preview(file));
   const onComponentChange = (name, value) => dispatch(setBody(name, value));
+  const onLogoDeleteClick = () => dispatch(deleteLogo());
   const onSaveClick = (url) => dispatch(save(url));
   const onDeleteClick = async () => dispatch(showConfirm());
   const deleteInfo = async () => dispatch(remove("/car/brand", id));
@@ -356,11 +359,13 @@ function Edit() {
                     <Space direction="horizontal" align="end" size={20}>
                       <Image
                         src={
-                          bodyInfo.preview
-                            ? bodyInfo.preview
-                            : window.location.origin +
+                          bodyInfo.preview === preview_default_image
+                            ? preview_default_image
+                            : bodyInfo.logo.uid === ""
+                            ? window.location.origin +
                               "/uploads/brand/" +
-                              bodyInfo.logo
+                              bodyInfo.preview
+                            : bodyInfo.preview
                         }
                         width={150}
                         height={150}
@@ -372,26 +377,36 @@ function Edit() {
                           이미지를 새로 등록 하기 위해선 등록된 이미지 [삭제]후
                           재 등록 하시면 됩니다.
                         </label>
-                        <Upload
-                          accept=".png"
-                          fileList={[bodyInfo.logo]}
-                          name="logo"
-                          showUploadList={false}
-                          onChange={(info) => {
-                            onPreviewChange(info.file);
-                          }}
-                          beforeUpload={(file) => {
-                            onComponentChange("logo", file);
-                            return true;
-                          }}
-                        >
+                        {bodyInfo.logo.uid.includes("__AUTO__") ? (
+                          <Upload
+                            accept=".png"
+                            fileList={[bodyInfo.logo]}
+                            name="logo"
+                            showUploadList={false}
+                            onChange={(info) => {
+                              onPreviewChange(info.file);
+                            }}
+                            beforeUpload={(file) => {
+                              onComponentChange("logo", file);
+                              return true;
+                            }}
+                          >
+                            <Button
+                              className="black-button upload-image-detail-button"
+                              size="large"
+                            >
+                              등록
+                            </Button>
+                          </Upload>
+                        ) : (
                           <Button
                             className="black-button upload-image-detail-button"
                             size="large"
+                            onClick={() => onLogoDeleteClick()}
                           >
-                            등록
+                            삭제
                           </Button>
-                        </Upload>
+                        )}
                       </Space>
                     </Space>
                   </Col>

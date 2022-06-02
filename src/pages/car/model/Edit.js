@@ -618,7 +618,7 @@ function Edit() {
                 </Upload>
               ) : (
                 <Button
-                  className="black-button"
+                  className="black-button upload-image-detail-button"
                   size="large"
                   onClick={() => onPictureDeleteClick(item)}
                 >

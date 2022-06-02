@@ -24,6 +24,7 @@ import {
   preview,
   save,
   setBody,
+  deleteLogo,
   closeValidation,
   checkName,
   removeRedirectTo,
@@ -59,6 +60,7 @@ function Create() {
   const onDeleteComponentClick = (number) => dispatch(deleteBody(number));
   const onComponentChange = (number, name, value) =>
     dispatch(setBody(number, name, value));
+  const onLogoDeleteClick = (number) => dispatch(deleteLogo(number));
   const onSaveClick = (url) => dispatch(save(url));
 
   const renderBodyList = () => {
@@ -341,26 +343,36 @@ function Create() {
                       이미지를 새로 등록 하기 위해선 등록된 이미지 [삭제]후 재
                       등록 하시면 됩니다.
                     </label>
-                    <Upload
-                      accept=".png"
-                      fileList={[body.logo]}
-                      name="logo"
-                      showUploadList={false}
-                      onChange={(info) => {
-                        onPreviewChange(body.number, info.file);
-                      }}
-                      beforeUpload={(file) => {
-                        onComponentChange(body.number, "logo", file);
-                        return true;
-                      }}
-                    >
+                    {body.logo.uid.includes("__AUTO__") ? (
+                      <Upload
+                        accept=".png"
+                        fileList={[body.logo]}
+                        name="logo"
+                        showUploadList={false}
+                        onChange={(info) => {
+                          onPreviewChange(body.number, info.file);
+                        }}
+                        beforeUpload={(file) => {
+                          onComponentChange(body.number, "logo", file);
+                          return true;
+                        }}
+                      >
+                        <Button
+                          className="black-button upload-image-detail-button"
+                          size="large"
+                        >
+                          등록
+                        </Button>
+                      </Upload>
+                    ) : (
                       <Button
                         className="black-button upload-image-detail-button"
                         size="large"
+                        onClick={() => onLogoDeleteClick(body.number)}
                       >
-                        등록
+                        삭제
                       </Button>
-                    </Upload>
+                    )}
                   </Space>
                 </Space>
               </Col>

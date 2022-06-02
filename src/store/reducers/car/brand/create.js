@@ -68,16 +68,27 @@ export const checkName = (number, name) => async (dispatch) => {
   }
 };
 export const preview = (number, file) => async (dispatch) => {
-  if (!file.url && !file.preview) {
+  if (file && !file.url && !file.preview) {
     file.preview = await GetBase64(file.originFileObj);
   }
-  dispatch({
-    type: PREVIEW,
-    payload: {
-      number: number,
-      preview: file.preview,
-    },
-  });
+
+  if (file) {
+    dispatch({
+      type: PREVIEW,
+      payload: {
+        number: number,
+        preview: file.preview,
+      },
+    });
+  } else {
+    dispatch({
+      type: PREVIEW,
+      payload: {
+        number: number,
+        preview: preview_default_image,
+      },
+    });
+  }
 };
 export const addBody = () => (dispatch, getState) => {
   const state = getState();
@@ -103,6 +114,11 @@ export const setBody = (number, name, value) => ({
     value: value,
   },
 });
+export const deleteLogo = (number) => (dispatch) => {
+  dispatch(setBody(number, "logo", { uid: "__AUTO__" }));
+
+  dispatch(preview(number, null));
+};
 export const save = (url) => async (dispatch, getState) => {
   const state = getState();
   const bodyList = state.brandCreate.bodyList;
@@ -207,7 +223,7 @@ const initialState = {
       room_uri: "",
       service_uri: "",
       deposit_uri: "",
-      logo: {},
+      logo: { uid: "__AUTO__" },
       preview: preview_default_image,
       check_name: "",
     },

@@ -2,7 +2,7 @@ import React from "react";
 import "../assets/styles/layouts/Sider.css";
 import { Menu, Space } from "antd";
 import { Link } from "react-router-dom";
-import logo from "../assets/images/logo.png";
+import logo from "../assets/images/favicon.ico";
 import { Constants } from "../constants/Constants";
 import { useDispatch, useSelector } from "react-redux";
 import { setSideMenu } from "../store/reducers/menu";

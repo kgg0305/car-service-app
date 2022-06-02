@@ -10,6 +10,7 @@
     background: #FFFFFF;
     border: 1px solid #C1C1C1;
     border-radius: 3px;
+    box-shadow: none;
 }
 
 .trigger {
@@ -593,13 +594,16 @@ main {
     font-weight: bold;
 }
 
+.ant-select-single.ant-select-lg:not(.ant-select-customize-input) .ant-select-selector {
+    border-color: #E5E5E5!important;
+    box-shadow: none!important;
+}
+
 .ant-select-selector {
     height: 40px;
     border-color: #E5E5E5!important;
-}
-
-.ant-select-selector:hover {
-    border-color: #E5E5E5!important;
+    padding-left: 15px!important;
+    padding-right: 13px!important;
 }
 
 .ant-select-selector:focus {
@@ -612,11 +616,6 @@ main {
     box-shadow: none;
 }
 
-.ant-select-selector {
-    padding-left: 15px!important;
-    padding-right: 13px!important;
-}
-
 .ant-select-item-option {
     padding-left: 21px!important;
     padding-right: 13px!important;
@@ -625,6 +624,9 @@ main {
 .check-name-button {
     width: 60px;
     padding: 0px;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 16px;
 }
 
 .ant-modal-body {

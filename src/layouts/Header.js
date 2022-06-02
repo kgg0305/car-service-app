@@ -50,7 +50,7 @@ function Header() {
         >
           {Constants.headerMenus.map((item) =>
             headerMenuRole[item.key] ? (
-              <Menu.Item key={item.key}>
+              <Menu.Item key={item.key} disabled={item.key === "finance"}>
                 <Link
                   to={
                     sideMenuRole[item.key].some((sideItem) => sideItem === 1)

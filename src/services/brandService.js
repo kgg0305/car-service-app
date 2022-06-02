@@ -22,7 +22,18 @@ const create = async (bodyList) => {
 
   for (let i = 0; i < bodyList.length; i++) {
     const body = bodyList[i];
-    const file = await uploadLogo(body.logo);
+
+    let logo = "";
+    if (body.logo.uid) {
+      const picture = body.logo.uid.includes("__AUTO__") ? "" : body.logo;
+
+      if (picture) {
+        const file = await uploadLogo(picture);
+        logo = file.filename;
+      }
+    } else {
+      logo = body.preview;
+    }
 
     data.push({
       brand_name: body.brand_name,
@@ -34,7 +45,7 @@ const create = async (bodyList) => {
       room_uri: body.room_uri,
       service_uri: body.service_uri,
       deposit_uri: body.deposit_uri,
-      logo: file.filename,
+      logo: logo,
 
       created_at: GetDateTimeStringFromDate(new Date()),
       created_by: token.idx,
@@ -56,11 +67,15 @@ const create = async (bodyList) => {
 const update = async (body) => {
   const token = JSON.parse(sessionStorage.getItem("token"));
   let logo = "";
-  if (body.preview) {
-    const file = await uploadLogo(body.logo);
-    logo = file.filename;
+  if (body.logo.uid) {
+    const picture = body.logo.uid.includes("__AUTO__") ? "" : body.logo;
+
+    if (picture) {
+      const file = await uploadLogo(picture);
+      logo = file.filename;
+    }
   } else {
-    logo = body.logo;
+    logo = body.preview;
   }
 
   var data = {
