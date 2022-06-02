@@ -194,7 +194,7 @@ function List() {
       <Row justify="left">
         <Col>
           <Space size={20}>
-            <label>{role_info.user_name}</label>
+            <label>{role_info.user_name + "(" + role_info.user_id + ")"}</label>
             <Button
               type="link"
               className={styles.linkButton}
@@ -1194,7 +1194,7 @@ function List() {
               onUserNameChange(e.target.name, e.target.value);
             }}
             size="large"
-            placeholder="사용자 이름 입력"
+            placeholder="사용자 아이디 입력"
             style={{ width: 400 }}
           />
           {checkName[name] ? (

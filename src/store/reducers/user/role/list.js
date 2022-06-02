@@ -56,21 +56,20 @@ export const setDataSource = (dataSource, idx, name, value) => (dispatch) => {
 };
 export const addUserName = (name) => (dispatch, getState) => {
   const state = getState();
-  const userName = state.roleList.userName[name];
+  const userId = state.roleList.userName[name];
   const userOptionList = state.roleList.userOptionList;
   const dataSource = state.roleList.dataSource;
 
   let updatedDataSource = [];
 
-  if (userOptionList.some((item) => item.label === userName)) {
+  if (userOptionList.some((item) => item.user_id === userId)) {
     const user_option_info = userOptionList.filter(
-      (item) => item.label === userName
+      (item) => item.user_id === userId
     )[0];
 
     if (
       !dataSource.some(
-        (item) =>
-          item.name === name && item.user_name === user_option_info.label
+        (item) => item.name === name && item.user_idx === user_option_info.value
       )
     ) {
       let default_status = "";
@@ -98,7 +97,8 @@ export const addUserName = (name) => (dispatch, getState) => {
           number:
             dataSource.length == 0 ? 1 : dataSource[dataSource.length - 1],
           name: name,
-          user_id: user_option_info.value,
+          user_idx: user_option_info.value,
+          user_id: user_option_info.user_id,
           user_name: user_option_info.label,
           status: default_status,
         },
