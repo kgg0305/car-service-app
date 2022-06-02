@@ -2,6 +2,16 @@
     font-size: 16px;
 }
 
+.ant-input:hover {
+    border-color: #C1C1C1;
+}
+
+.ant-input:focus {
+    background: #FFFFFF;
+    border: 1px solid #C1C1C1;
+    border-radius: 3px;
+}
+
 .trigger {
     padding: 0 24px;
     font-size: 18px;
@@ -324,7 +334,7 @@ main {
 }
 
 .save-goto-detail-button {
-    width: 150px;
+    width: 160px;
     padding: 0px;
     font-weight: 600;
     font-size: 12px;
@@ -598,6 +608,9 @@ main {
 
 .ant-select-selector:active {
     border-color: #E5E5E5!important;
+    background: #FFFFFF;
+border: 1px solid #D0D0D0;
+border-radius: 3px;
 }
 
 .ant-select-selector {
@@ -620,4 +633,14 @@ main {
     padding-bottom: 12px;
     padding-left: 17px;
     padding-right: 17px;
+}
+
+.add-body-detail-button {
+    width: 153px;
+    height: 49px;
+}
+
+.delete-detail-button {
+    width: 153px;
+    height: 49px;
 }

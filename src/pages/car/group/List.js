@@ -132,7 +132,7 @@ function List() {
             <Col flex="154px" className="table-header">
               <label className="table-header-label">차량</label>
             </Col>
-            <Col flex="auto" className="table-value">
+            <Col flex="477px" className="table-value">
               <Space size={6}>
                 <Select
                   name="brand_id"
@@ -143,7 +143,7 @@ function List() {
                   suffixIcon={<CaretDownOutlined />}
                   placeholder="브랜드 선택"
                   size="large"
-                  style={{ width: 300 }}
+                  style={{ width: 400 }}
                 >
                   {brandOptionList.map((optionItem, optionIndex) => (
                     <Select.Option key={optionIndex} value={optionItem.value}>
@@ -156,7 +156,7 @@ function List() {
             <Col flex="154px" className="table-header">
               <label className="table-header-label">사용여부</label>
             </Col>
-            <Col flex="auto" className="table-value">
+            <Col flex="227px" className="table-value">
               <Space size={6}>
                 <Select
                   name="is_use"

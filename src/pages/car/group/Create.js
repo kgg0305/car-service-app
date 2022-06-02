@@ -91,7 +91,7 @@ function Create() {
                   <Col flex="154px" className="table-header-col-section">
                     <label>브랜드</label>
                   </Col>
-                  <Col span={10} className="table-value-col-section">
+                  <Col flex="636px" className="table-value-col-section">
                     <Select
                       name="brand_id"
                       value={body.brand_id}
@@ -167,7 +167,7 @@ function Create() {
                   <Col flex="154px" className="table-header-col-section">
                     <label>차종</label>
                   </Col>
-                  <Col flex="auto" className="table-value-col-section">
+                  <Col flex="636px" className="table-value-col-section">
                     <Select
                       name="car_kind_id"
                       value={body.car_kind_id}
@@ -267,7 +267,7 @@ function Create() {
         </Space>
 
         {/* Body Section */}
-        <Space direction="vertical" size={20} style={{ paddingBottom: 117 }}>
+        <Space direction="vertical" size={40} style={{ paddingBottom: 112 }}>
           <Space
             direction="vertical"
             size={59}
@@ -279,7 +279,7 @@ function Create() {
           <Row justify="center" gutter={[17, 0]}>
             <Col>
               <Button
-                className="white-button rounded-button"
+                className="white-button rounded-button add-body-detail-button"
                 icon={<PlusOutlined />}
                 onClick={onAddComponentClick}
               >

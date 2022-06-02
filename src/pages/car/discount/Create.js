@@ -540,7 +540,7 @@ function Create() {
         </Space>
 
         {/* Body Section */}
-        <Space direction="vertical" size={20} style={{ paddingBottom: 117 }}>
+        <Space direction="vertical" size={40} style={{ paddingBottom: 112 }}>
           <Tabs defaultActiveKey="1">
             <TabPane tab="할인종류" key="1">
               <Space direction="vertical" size={40}>
@@ -548,7 +548,7 @@ function Create() {
                 <Row justify="center" gutter={[17, 0]}>
                   <Col>
                     <Button
-                      className="white-button rounded-button"
+                      className="white-button rounded-button add-body-detail-button"
                       icon={<PlusOutlined />}
                       onClick={onAddComponentClick}
                     >

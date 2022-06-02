@@ -131,7 +131,7 @@ function Edit() {
         </Space>
 
         {/* Body Section */}
-        <Space direction="vertical" size={20} style={{ paddingBottom: 117 }}>
+        <Space direction="vertical" size={40} style={{ paddingBottom: 112 }}>
           <Space
             direction="vertical"
             size={59}
