@@ -22,8 +22,8 @@ function Sider() {
 
   return (
     <>
-      <Space className="logo" size={15}>
-        <img src={logo} />
+      <Space className="logo" size={19}>
+        <img src={logo} width="30px" height="30px" />
         <label className="logo-title">자동차 서비스 통합 관리자</label>
       </Space>
       <Menu
@@ -35,7 +35,7 @@ function Sider() {
         onClick={(key) => onMenuClick(key.key)}
       >
         {Constants.siderMenus
-          .filter((sideMenu) => sideMenu.headerMenu === headerMenu.key)
+          .filter((sideMenuItem) => sideMenuItem.headerMenu === headerMenu.key)
           .map((item, index) =>
             sideMenuRole[headerMenu.key] ? (
               sideMenuRole[headerMenu.key][index] === 1 ||

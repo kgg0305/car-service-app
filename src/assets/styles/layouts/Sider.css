@@ -8,12 +8,14 @@
 }
 
 .logo-title {
-    font-weight: 700;
+    font-style: normal;
+    font-weight: 600;
     font-size: 20px;
     line-height: 23px;
     display: flex;
     align-items: center;
-    color: white;
+
+    color: #FFFFFF;
 }
 
 .simple-logo {

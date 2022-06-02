@@ -75,7 +75,7 @@ function Header() {
       </Col>
       <Col flex="auto"></Col>
       <Col>
-        <Space align="center">
+        <Space align="center" size={0}>
           <Link to={"/user/mine/1"} onClick={onUserClick}>
             <Button className="top-menu-user" type="link" block>
               {token.name}님
@@ -83,13 +83,13 @@ function Header() {
           </Link>
           {token.idx === 1 ? (
             <Link to={"/user/mine/1"} onClick={onSettingClick}>
-              <img src={setting_icon} />
+              <img className="top-menu-setting" src={setting_icon} />
             </Link>
           ) : (
             ""
           )}
           <Divider className="top-menu-divider" type="vertical" />
-          <a href="/" className="top-menu-logout" onClick={onLogoutClick}>
+          <a href="#" className="top-menu-logout" onClick={onLogoutClick}>
             로그아웃
           </a>
         </Space>

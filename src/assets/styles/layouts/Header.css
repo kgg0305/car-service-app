@@ -5,10 +5,9 @@
 .top-menu-layout > li {
     margin-top: 0px!important;
     margin-bottom: 0px!important;
-    padding-left: 65px!important;
-    padding-right: 65px!important;
     padding-top: 30px!important;
     padding-bottom: 30px!important;
+    width: 200px!important;
     height: auto!important;
 }
 
@@ -24,6 +23,7 @@
     line-height: 21px!important;
     display: flex!important;
     align-items: center!important;
+    justify-content: center;
     text-align: center!important;
     color: #9F9F9F!important;
 }
@@ -33,7 +33,7 @@
 }
 
 .top-menu-layout > .ant-menu-item-selected a {
-    font-weight: 700!important;
+    font-weight: 600!important;
     font-size: 21px!important;
     line-height: 25px!important;
     color: #ffffff!important;
@@ -44,15 +44,20 @@
 }
 
 .top-menu-divider {
-    margin-left: 25px;
-    margin-right: 42px;
+    margin: 0px;
     background-color: #9F9F9F;
     height: 35px;
     width: 2px;
 }
 
+.top-menu-setting {
+    padding-left: 27px;
+    padding-right: 27px;
+}
+
 .top-menu-logout {
-    padding-right: 41px;
+    width: 150px;
+    justify-content: center;
     font-weight: 400!important;
     font-size: 18px!important;
     line-height: 21px!important;
@@ -63,7 +68,7 @@
 }
 
 .top-menu-user {
-    padding-right: 50px;
+    padding: 0px;
     font-weight: 400!important;
     font-size: 18px!important;
     line-height: 21px!important;

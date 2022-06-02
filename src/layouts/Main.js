@@ -10,7 +10,7 @@ const { Header, Content, Sider } = Layout;
 function Main() {
   return (
     <Layout className="main-layout">
-      <Sider width="auto" theme="light">
+      <Sider width="300px" theme="light">
         <SiderContent />
       </Sider>
       <Layout className="site-layout">
