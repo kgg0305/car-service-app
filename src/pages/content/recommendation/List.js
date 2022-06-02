@@ -95,7 +95,7 @@ function List() {
         type: Constants.inputTypes.button,
         link: "/content/recommendation/create",
         label: "등록",
-        style: "black-button big-button",
+        style: "black-button big-button create-button",
         width: 150,
       },
     ],

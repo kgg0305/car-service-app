@@ -210,7 +210,7 @@ function List() {
           </Col>
           <Col>
             <Button
-              className="black-button big-button"
+              className="black-button big-button search-button"
               onClick={() => onSearchClick(searchData)}
             >
               검색

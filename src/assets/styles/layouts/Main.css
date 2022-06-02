@@ -604,13 +604,12 @@ main {
 
 .ant-select-selector:focus {
     border-color: #E5E5E5!important;
+    box-shadow: none;
 }
 
 .ant-select-selector:active {
     border-color: #E5E5E5!important;
-    background: #FFFFFF;
-border: 1px solid #D0D0D0;
-border-radius: 3px;
+    box-shadow: none;
 }
 
 .ant-select-selector {
@@ -643,4 +642,12 @@ border-radius: 3px;
 .delete-detail-button {
     width: 153px;
     height: 49px;
+}
+
+.search-button {
+    font-weight: 600;
+}
+
+.create-button {
+    font-weight: 600;
 }

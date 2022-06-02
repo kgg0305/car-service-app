@@ -50,7 +50,7 @@ function List() {
         type: Constants.inputTypes.button,
         link: "/content/movieRank/create",
         label: "순위 등록",
-        style: "black-button big-button",
+        style: "black-button big-button create-button",
         width: 150,
       },
     ],

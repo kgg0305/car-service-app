@@ -191,7 +191,7 @@ function List() {
         <Row key={2} justify="center" gutter={[17, 0]}>
           <Col>
             <Button
-              className="black-button big-button"
+              className="black-button big-button search-button"
               onClick={() => onClickAdd(addData)}
             >
               저장

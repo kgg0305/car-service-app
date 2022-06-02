@@ -124,7 +124,7 @@ function List() {
         type: Constants.inputTypes.button,
         link: "/car/lineup/create",
         label: "등록",
-        style: "black-button big-button",
+        style: "black-button big-button create-button",
         width: 150,
       },
     ],
@@ -248,7 +248,7 @@ function List() {
           </Col>
           <Col>
             <Button
-              className="black-button big-button"
+              className="black-button big-button search-button"
               onClick={() => onSearchClick(searchData)}
             >
               검색

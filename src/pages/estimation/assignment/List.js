@@ -127,7 +127,7 @@ function List() {
         type: Constants.inputTypes.button,
         onClick: onDownloadClick,
         label: "엑셀로 내려받기",
-        style: "black-button big-button",
+        style: "black-button big-button create-button",
         width: 150,
       },
     ],
@@ -252,7 +252,7 @@ function List() {
           </Col>
           <Col>
             <Button
-              className="black-button big-button"
+              className="black-button big-button search-button"
               onClick={() => onSearchClick(searchData)}
             >
               검색
