@@ -38,7 +38,7 @@ import {
   deleteTrimBody,
   setTrimBody,
   setDiscountBody,
-  preveiew,
+  preview,
   deletePicture,
   moveUp,
   moveDown,
@@ -87,7 +87,7 @@ function Create() {
 
   const onCloseValidationClick = () => dispatch(closeValidation());
   const onCheckNameClick = (name) => dispatch(checkName(name));
-  const onPreviewChange = (number, file) => dispatch(preveiew(number, file));
+  const onPreviewChange = (number, file) => dispatch(preview(number, file));
   const onComponentChange = (name, value) => dispatch(setBody(name, value));
   const onAddLineupComponentClick = () => dispatch(addLineupBody());
   const onDeleteLineupComponentClick = (number) =>

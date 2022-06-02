@@ -67,7 +67,7 @@ export const checkName = (number, name) => async (dispatch) => {
     console.log(e);
   }
 };
-export const preveiew = (number, file) => async (dispatch) => {
+export const preview = (number, file) => async (dispatch) => {
   if (!file.url && !file.preview) {
     file.preview = await GetBase64(file.originFileObj);
   }

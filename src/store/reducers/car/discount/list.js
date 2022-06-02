@@ -1,6 +1,7 @@
 import { brandService } from "../../../../services/brandService";
 import { discountKindService } from "../../../../services/discountKindService";
 import { GetDateStringFromDate } from "../../../../constants/GlobalFunctions";
+import { discountConditionService } from "../../../../services/discountConditionService";
 
 const prefix = "car/discount/list/";
 
@@ -15,10 +16,27 @@ export const init = () => async (dispatch) => {
     const brandOptionList = await brandService.getOptionList();
     const discountKindOptionList = await discountKindService.getOptionList();
 
+    let updatedDataSource = [];
+    for (let i = 0; i < dataSource.length; i++) {
+      const element = dataSource[i];
+
+      const condition_list = await discountConditionService.getListAll({
+        discount_kind_id: element.idx,
+      });
+
+      updatedDataSource.push({
+        ...element,
+        condition_name:
+          condition_list.length > 0 ? condition_list[0].condition_name : "",
+        discount_price:
+          condition_list.length > 0 ? condition_list[0].discount_price : "",
+      });
+    }
+
     dispatch({
       type: INIT,
       payload: {
-        dataSource: dataSource,
+        dataSource: updatedDataSource,
         brandOptionList: brandOptionList,
         discountKindOptionList: discountKindOptionList,
       },

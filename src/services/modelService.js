@@ -1,5 +1,8 @@
 import axios from "axios";
-import { GetDateTimeStringFromDate } from "../constants/GlobalFunctions";
+import {
+  GetDateStringFromDate,
+  GetDateTimeStringFromDate,
+} from "../constants/GlobalFunctions";
 import { lineupService } from "./lineupService";
 import preview_default_image from "../assets/images/preview-default-image.png";
 
@@ -37,7 +40,7 @@ const create = async (body) => {
       brand_id: body.brand_id,
       model_name: body.model_name,
       is_new: body.is_new,
-      release_date: body.release_date,
+      release_date: GetDateStringFromDate(new Date(body.release_date)),
       sequence: body.sequence,
       is_use: body.is_use,
       discount_condition_ids: body.discount_condition_ids,
@@ -70,30 +73,29 @@ const create = async (body) => {
 const update = async (body) => {
   let pictures = {};
   for (let i = 1; i <= 8; i++) {
+    pictures["picture_" + i] = "";
     if (body["picture_" + i].uid) {
-      const picture =
-        body["picture_" + i].uid.includes("__AUTO__") ||
-        body["picture_" + i].uid === ""
-          ? ""
-          : body["picture_" + i];
+      const picture = body["picture_" + i].uid.includes("__AUTO__")
+        ? ""
+        : body["picture_" + i];
 
-      pictures["picture_" + i] =
-        body["picture_" + i].uid === "" ? body["preview_" + i] : picture;
       if (picture) {
         const file = await uploadImage(picture);
         pictures["picture_" + i] = file.filename;
       }
     } else {
-      pictures["picture_" + i] = body["picture_" + i];
+      pictures["picture_" + i] = body["preview_" + i];
     }
   }
+
+  console.log(pictures);
 
   var data = {
     group_id: body.group_id,
     brand_id: body.brand_id,
     model_name: body.model_name,
     is_new: body.is_new,
-    release_date: body.release_date,
+    release_date: GetDateStringFromDate(new Date(body.release_date)),
     sequence: body.sequence,
     is_use: body.is_use,
     discount_condition_ids: body.discount_condition_ids,

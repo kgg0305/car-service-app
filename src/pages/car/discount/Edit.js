@@ -75,8 +75,7 @@ function Edit() {
     dispatch(setConditionBody(number, name, value));
   const onDeleteConditionComponentClick = (number) =>
     dispatch(deleteConditionBody(number));
-  const onSaveClick = () =>
-    dispatch(save("/car/discount", bodyInfo, conditionBodyList));
+  const onSaveClick = () => dispatch(save("/car/discount"));
   const onDeleteClick = async () => dispatch(showConfirm());
   const deleteInfo = async () => dispatch(remove("/car/discount", id));
 

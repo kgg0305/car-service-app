@@ -87,7 +87,7 @@ function Create() {
     kindNumber,
     conditionNumber
   ) => dispatch(deleteConditionBody(number, kindNumber, conditionNumber));
-  const onSaveClick = () => dispatch(save("/car/discount", bodyList));
+  const onSaveClick = () => dispatch(save("/car/discount"));
 
   const renderBodyList = (type) => {
     if (type === "kind") {

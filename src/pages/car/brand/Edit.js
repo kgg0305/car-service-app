@@ -23,7 +23,7 @@ import {
   closeConfirm,
   showConfirm,
   init,
-  preveiew,
+  preview,
   setBody,
   remove,
   removeRedirectTo,
@@ -60,7 +60,7 @@ function Edit() {
   const onCloseValidationClick = () => dispatch(closeValidation());
   const onCloseConfirmClick = () => dispatch(closeConfirm());
   const onCheckNameClick = (name) => dispatch(checkName(name));
-  const onPreviewChange = (file) => dispatch(preveiew(file));
+  const onPreviewChange = (file) => dispatch(preview(file));
   const onComponentChange = (name, value) => dispatch(setBody(name, value));
   const onSaveClick = (url) => dispatch(save(url));
   const onDeleteClick = async () => dispatch(showConfirm());

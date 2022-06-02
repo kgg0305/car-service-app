@@ -24,6 +24,7 @@ export const init = (idx) => async (dispatch) => {
     const conditionBodyList = await discountConditionService.getList(0, {
       discount_kind_id: idx,
     });
+    const conditionIdList = conditionBodyList.map((item) => item.idx);
 
     dispatch({
       type: INIT,
@@ -34,6 +35,7 @@ export const init = (idx) => async (dispatch) => {
           ...body,
           number: index + 1,
         })),
+        conditionIdList: conditionIdList,
       },
     });
   } catch (e) {
@@ -88,7 +90,12 @@ export const deleteConditionBody = (number) => ({
     number: number,
   },
 });
-export const save = (url, bodyInfo, conditionBodyList) => async (dispatch) => {
+export const save = (url) => async (dispatch, getState) => {
+  const state = getState();
+  const bodyInfo = state.discountEdit.bodyInfo;
+  const conditionBodyList = state.discountEdit.conditionBodyList;
+  const conditionIdList = state.discountEdit.conditionIdList;
+
   const validation = [];
   if (bodyInfo.brand_id === null) {
     validation.push({
@@ -136,9 +143,24 @@ export const save = (url, bodyInfo, conditionBodyList) => async (dispatch) => {
     try {
       await discountKindService.update(bodyInfo);
 
+      //delete condition
+      for (let i = 0; i < conditionIdList.length; i++) {
+        const element = conditionIdList[i];
+        if (!conditionBodyList.some((item) => item.idx === element)) {
+          discountConditionService.remove(element);
+        }
+      }
+
       for (let index = 0; index < conditionBodyList.length; index++) {
         const element = conditionBodyList[index];
-        await discountConditionService.update(element);
+        if (element.idx) {
+          await discountConditionService.update(element);
+        } else {
+          await discountConditionService.create({
+            ...element,
+            discount_kind_id: bodyInfo.idx,
+          });
+        }
       }
 
       dispatch({
@@ -186,6 +208,7 @@ const initialState = {
     e_date: new Date(),
   },
   conditionBodyList: [],
+  conditionIdList: [],
 };
 
 export default function edit(state = initialState, action) {
@@ -196,6 +219,7 @@ export default function edit(state = initialState, action) {
         brandOptionList: action.payload.brandOptionList,
         bodyInfo: action.payload.bodyInfo,
         conditionBodyList: action.payload.conditionBodyList,
+        conditionIdList: action.payload.conditionIdList,
       };
     case REMOVE_REDIRECTTO:
       return {

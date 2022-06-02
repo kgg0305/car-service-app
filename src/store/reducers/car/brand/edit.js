@@ -22,6 +22,8 @@ export const init = (idx) => async (dispatch) => {
     const updatedBodyInfo = {
       ...bodyInfo,
       origin_name: bodyInfo.brand_name,
+      check_name: "",
+      preview: "",
     };
 
     dispatch({
@@ -77,7 +79,7 @@ export const checkName = (name) => async (dispatch, getState) => {
     console.log(e);
   }
 };
-export const preveiew = (file) => async (dispatch) => {
+export const preview = (file) => async (dispatch) => {
   if (!file.url && !file.preview) {
     file.preview = await GetBase64(file.originFileObj);
   }

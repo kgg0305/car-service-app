@@ -21,7 +21,7 @@ import {
   addBody,
   deleteBody,
   init,
-  preveiew,
+  preview,
   save,
   setBody,
   closeValidation,
@@ -54,7 +54,7 @@ function Create() {
 
   const onCloseValidationClick = () => dispatch(closeValidation());
   const onCheckNameClick = (number, name) => dispatch(checkName(number, name));
-  const onPreviewChange = (number, file) => dispatch(preveiew(number, file));
+  const onPreviewChange = (number, file) => dispatch(preview(number, file));
   const onAddComponentClick = () => dispatch(addBody());
   const onDeleteComponentClick = (number) => dispatch(deleteBody(number));
   const onComponentChange = (number, name, value) =>
@@ -344,7 +344,6 @@ function Create() {
                     </label>
                     <Upload
                       accept=".png"
-                      // action='http://127.0.0.1:4200/file/brand'
                       fileList={[body.logo]}
                       name="logo"
                       showUploadList={false}

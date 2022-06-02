@@ -88,7 +88,7 @@ export const checkName = (name) => async (dispatch) => {
     console.log(e);
   }
 };
-export const preveiew = (number, file) => async (dispatch) => {
+export const preview = (number, file) => async (dispatch) => {
   if (file && !file.url && !file.preview) {
     file.preview = await GetBase64(file.originFileObj);
   }
@@ -225,7 +225,7 @@ export const deletePicture = (number) => (dispatch) => {
   let name = "picture_" + number;
   dispatch(setBody(name, { uid: "__AUTO__" }));
 
-  dispatch(preveiew(number, null));
+  dispatch(preview(number, null));
 };
 export const moveUp = (name, index) => (dispatch, getState) => {
   const state = getState();

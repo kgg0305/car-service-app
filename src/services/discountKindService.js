@@ -19,25 +19,20 @@ const checkName = async (name) => {
   }
 };
 
-const create = async (bodyList) => {
-  var data = [];
-  bodyList.map((body) => {
-    body.kindBodyList.map((kindBody) => {
-      data.push({
-        brand_id: body.brand_id,
-        kind_name: kindBody.kind_name,
-        kind_detail: kindBody.kind_detail,
-        s_date: GetDateStringFromDate(new Date(kindBody.s_date)),
-        e_date: GetDateStringFromDate(new Date(kindBody.e_date)),
+const create = async (body) => {
+  var data = {
+    brand_id: body.brand_id,
+    kind_name: body.kind_name,
+    kind_detail: body.kind_detail,
+    s_date: GetDateStringFromDate(new Date(body.s_date)),
+    e_date: GetDateStringFromDate(new Date(body.e_date)),
 
-        created_at: GetDateTimeStringFromDate(new Date()),
-        created_by: token.idx,
-        updated_at: GetDateTimeStringFromDate(new Date()),
-        updated_by: token.idx,
-        is_deleted: false,
-      });
-    });
-  });
+    created_at: GetDateTimeStringFromDate(new Date()),
+    created_by: token.idx,
+    updated_at: GetDateTimeStringFromDate(new Date()),
+    updated_by: token.idx,
+    is_deleted: false,
+  };
 
   try {
     const response = await axios.post(base_url, data);

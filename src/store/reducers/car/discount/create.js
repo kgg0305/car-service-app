@@ -116,7 +116,11 @@ export const deleteConditionBody = (number, kindNumber, conditionNumber) => ({
     conditionNumber: conditionNumber,
   },
 });
-export const save = (url, bodyList) => async (dispatch) => {
+export const save = (url) => async (dispatch, getState) => {
+  const state = getState();
+  const bodyInfo = state.discountCreate.bodyInfo;
+  const bodyList = state.discountCreate.bodyList;
+
   const validation = [];
   bodyList.map((body, index) => {
     if (body.brand_id === null) {
@@ -201,10 +205,31 @@ export const save = (url, bodyList) => async (dispatch) => {
     dispatch(showValidation(validation));
   } else {
     try {
-      const created_info = await discountKindService.create(bodyList);
-      const startedIndex = created_info["insertId"];
+      for (let i = 0; i < bodyList.length; i++) {
+        const body = bodyList[i];
+        for (let j = 0; j < body.kindBodyList.length; j++) {
+          const kindBody = body.kindBodyList[j];
+          const updatedKindBody = {
+            ...kindBody,
+            brand_id: body.brand_id,
+          };
 
-      await discountConditionService.create(startedIndex, bodyList);
+          const created_info = await discountKindService.create(
+            updatedKindBody
+          );
+          const created_index = created_info["insertId"];
+
+          for (let k = 0; k < kindBody.conditionBodyList.length; k++) {
+            const conditionBody = kindBody.conditionBodyList[k];
+            const updatedConditionBody = {
+              ...conditionBody,
+              discount_kind_id: created_index,
+            };
+
+            await discountConditionService.create(updatedConditionBody);
+          }
+        }
+      }
 
       dispatch({
         type: SAVE,

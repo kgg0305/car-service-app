@@ -16,28 +16,19 @@ const checkName = async (name) => {
   }
 };
 
-const create = async (startedIndex, bodyList) => {
-  var data = [];
-  var countKindBody = 0;
-  bodyList.map((body) => {
-    body.kindBodyList.map((kindBody) => {
-      kindBody.conditionBodyList.map((conditionBody) => {
-        data.push({
-          discount_kind_id: startedIndex + countKindBody,
-          condition_name: conditionBody.condition_name,
-          discount_price: conditionBody.discount_price,
-          price_unit: conditionBody.price_unit,
+const create = async (body) => {
+  var data = {
+    discount_kind_id: body.discount_kind_id,
+    condition_name: body.condition_name,
+    discount_price: body.discount_price,
+    price_unit: body.price_unit,
 
-          created_at: GetDateTimeStringFromDate(new Date()),
-          created_by: token.idx,
-          updated_at: GetDateTimeStringFromDate(new Date()),
-          updated_by: token.idx,
-          is_deleted: false,
-        });
-      });
-      countKindBody++;
-    });
-  });
+    created_at: GetDateTimeStringFromDate(new Date()),
+    created_by: token.idx,
+    updated_at: GetDateTimeStringFromDate(new Date()),
+    updated_by: token.idx,
+    is_deleted: false,
+  };
 
   try {
     const response = await axios.post(base_url, data);
@@ -102,6 +93,16 @@ const getList = async (offset, search) => {
   }
 };
 
+const getListAll = async (search) => {
+  try {
+    const response = await axios.post(base_url + "/list-all", search);
+
+    return response.data;
+  } catch (e) {
+    return e;
+  }
+};
+
 const getOptionList = async () => {
   try {
     const response = await axios.get(base_url + "/option-list");
@@ -137,6 +138,7 @@ export const discountConditionService = {
   create,
   update,
   getList,
+  getListAll,
   getOptionList,
   get,
   remove,
