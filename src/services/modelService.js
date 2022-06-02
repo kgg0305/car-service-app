@@ -4,10 +4,8 @@ import {
   GetDateTimeStringFromDate,
 } from "../constants/GlobalFunctions";
 import { lineupService } from "./lineupService";
-import preview_default_image from "../assets/images/preview-default-image.png";
 
 const base_url = process.env.REACT_APP_API_URL + "/model";
-const token = JSON.parse(sessionStorage.getItem("token"));
 
 const checkName = async (name) => {
   try {
@@ -22,6 +20,7 @@ const checkName = async (name) => {
 };
 
 const create = async (body) => {
+  const token = JSON.parse(sessionStorage.getItem("token"));
   let pictures = {};
   for (let i = 1; i <= 8; i++) {
     const picture = body["picture_" + i].uid.includes("__AUTO__")
@@ -71,6 +70,7 @@ const create = async (body) => {
 };
 
 const update = async (body) => {
+  const token = JSON.parse(sessionStorage.getItem("token"));
   let pictures = {};
   for (let i = 1; i <= 8; i++) {
     pictures["picture_" + i] = "";
@@ -125,6 +125,7 @@ const update = async (body) => {
 };
 
 const remove = async (idx) => {
+  const token = JSON.parse(sessionStorage.getItem("token"));
   await lineupService.removeByModel(idx);
   const response = await axios.get(base_url + "/" + idx);
 

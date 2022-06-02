@@ -5,7 +5,6 @@ import {
 } from "../constants/GlobalFunctions";
 
 const base_url = process.env.REACT_APP_API_URL + "/discount-kind";
-const token = JSON.parse(sessionStorage.getItem("token"));
 
 const checkName = async (name) => {
   try {
@@ -20,6 +19,7 @@ const checkName = async (name) => {
 };
 
 const create = async (body) => {
+  const token = JSON.parse(sessionStorage.getItem("token"));
   var data = {
     brand_id: body.brand_id,
     kind_name: body.kind_name,
@@ -44,6 +44,7 @@ const create = async (body) => {
 };
 
 const update = async (body) => {
+  const token = JSON.parse(sessionStorage.getItem("token"));
   var data = {
     brand_id: body.brand_id,
     kind_name: body.kind_name,
@@ -68,6 +69,7 @@ const update = async (body) => {
 };
 
 const remove = async (idx) => {
+  const token = JSON.parse(sessionStorage.getItem("token"));
   const response = await axios.get(base_url + "/" + idx);
 
   var data = {

@@ -2,7 +2,6 @@ import axios from "axios";
 import { GetDateTimeStringFromDate } from "../constants/GlobalFunctions";
 
 const base_url = process.env.REACT_APP_API_URL + "/photo";
-const token = JSON.parse(sessionStorage.getItem("token"));
 
 const checkName = async (name) => {
   try {
@@ -17,6 +16,7 @@ const checkName = async (name) => {
 };
 
 const create = async (body) => {
+  const token = JSON.parse(sessionStorage.getItem("token"));
   var data = [
     {
       category: body.category,
@@ -42,6 +42,7 @@ const create = async (body) => {
 };
 
 const update = async (body) => {
+  const token = JSON.parse(sessionStorage.getItem("token"));
   var data = {
     category: body.category,
     tag: body.tag,
@@ -65,6 +66,7 @@ const update = async (body) => {
 };
 
 const remove = async (idx) => {
+  const token = JSON.parse(sessionStorage.getItem("token"));
   const response = await axios.get(base_url + "/" + idx);
 
   var data = {

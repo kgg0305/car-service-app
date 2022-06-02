@@ -2,7 +2,6 @@ import axios from "axios";
 import { GetDateTimeStringFromDate } from "../constants/GlobalFunctions";
 
 const base_url = process.env.REACT_APP_API_URL + "/user-role";
-const token = JSON.parse(sessionStorage.getItem("token"));
 
 const checkName = async (name) => {
   try {
@@ -17,6 +16,7 @@ const checkName = async (name) => {
 };
 
 const create = async (bodyList) => {
+  const token = JSON.parse(sessionStorage.getItem("token"));
   var data = [];
   bodyList.map((body) => {
     data.push({
@@ -42,6 +42,7 @@ const create = async (bodyList) => {
 };
 
 const update = async (body) => {
+  const token = JSON.parse(sessionStorage.getItem("token"));
   var data = {
     name: body.name,
     user_id: body.user_id,

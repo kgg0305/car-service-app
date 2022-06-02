@@ -3,7 +3,6 @@ import { GetDateTimeStringFromDate } from "../constants/GlobalFunctions";
 import { groupService } from "./groupService";
 
 const base_url = process.env.REACT_APP_API_URL + "/brand";
-const token = JSON.parse(sessionStorage.getItem("token"));
 
 const checkName = async (name) => {
   try {
@@ -18,6 +17,7 @@ const checkName = async (name) => {
 };
 
 const create = async (bodyList) => {
+  const token = JSON.parse(sessionStorage.getItem("token"));
   var data = [];
 
   for (let i = 0; i < bodyList.length; i++) {
@@ -54,6 +54,7 @@ const create = async (bodyList) => {
 };
 
 const update = async (body) => {
+  const token = JSON.parse(sessionStorage.getItem("token"));
   let logo = "";
   if (body.preview) {
     const file = await uploadLogo(body.logo);
@@ -91,6 +92,7 @@ const update = async (body) => {
 };
 
 const remove = async (idx) => {
+  const token = JSON.parse(sessionStorage.getItem("token"));
   await groupService.removeByBrand(idx);
   const response = await axios.get(base_url + "/" + idx);
 

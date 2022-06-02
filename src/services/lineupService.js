@@ -3,7 +3,6 @@ import { GetDateTimeStringFromDate } from "../constants/GlobalFunctions";
 import { trimService } from "./trimService";
 
 const base_url = process.env.REACT_APP_API_URL + "/lineup";
-const token = JSON.parse(sessionStorage.getItem("token"));
 
 const checkName = async (name) => {
   try {
@@ -18,6 +17,7 @@ const checkName = async (name) => {
 };
 
 const create = async (body) => {
+  const token = JSON.parse(sessionStorage.getItem("token"));
   var data = [
     {
       brand_id: body.brand_id,
@@ -48,6 +48,7 @@ const create = async (body) => {
 };
 
 const update = async (body) => {
+  const token = JSON.parse(sessionStorage.getItem("token"));
   var data = {
     brand_id: body.brand_id,
     group_id: body.group_id,
@@ -76,6 +77,7 @@ const update = async (body) => {
 };
 
 const remove = async (idx) => {
+  const token = JSON.parse(sessionStorage.getItem("token"));
   await trimService.removeByLineup(idx);
   const response = await axios.get(base_url + "/" + idx);
 
