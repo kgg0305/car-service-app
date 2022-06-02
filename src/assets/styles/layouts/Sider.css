@@ -1,10 +1,7 @@
 .logo {
-    height: 80px;
-    padding-top: 25px;
-    padding-bottom: 25px;
-    padding-left: 16px;
-    padding-right: 16px;
     background: #363636;
+    height: 80px;
+    padding: 25px 10px;
 }
 
 .logo-title {
@@ -43,7 +40,7 @@
     padding-left: 61px!important;
     padding-top: 19px!important;
     padding-bottom: 19px!important;
-    height: auto!important;
+    height: 60px!important;
 }
 
 .sider-menu-layout {
@@ -65,7 +62,7 @@
 }
 
 .sider-menu-layout > .ant-menu-item-selected a {
-    font-weight: 700!important;
+    font-weight: 600!important;
     color: #363636!important;
 }
 

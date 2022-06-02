@@ -22,7 +22,7 @@ function Sider() {
 
   return (
     <>
-      <Space className="logo" size={19}>
+      <Space className="logo" size={9}>
         <img src={logo} width="30px" height="30px" />
         <label className="logo-title">자동차 서비스 통합 관리자</label>
       </Space>
