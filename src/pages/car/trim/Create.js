@@ -155,7 +155,7 @@ function Create() {
                   <>
                     {specificationBodyList.length != 1 ? (
                       <Button
-                        className="white-button"
+                        className="white-button detail-delete-body-button"
                         onClick={() =>
                           onDeleteSpecificationComponentClick(body.number)
                         }
@@ -167,7 +167,7 @@ function Create() {
                       ""
                     )}
                     <Button
-                      className="black-button"
+                      className="black-button detail-add-body-button"
                       onClick={() =>
                         onAddSpecificationComponentClick(body.number)
                       }
@@ -178,7 +178,7 @@ function Create() {
                   </>
                 ) : (
                   <Button
-                    className="white-button"
+                    className="white-button detail-delete-body-button"
                     onClick={() =>
                       onDeleteSpecificationComponentClick(body.number)
                     }

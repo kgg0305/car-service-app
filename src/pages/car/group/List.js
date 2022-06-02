@@ -42,30 +42,35 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: 153,
     },
     {
       title: "브랜드",
       dataIndex: "brand_name",
       key: "brand_name",
       align: "center",
+      width: 413,
     },
     {
       title: "모델그룹",
       dataIndex: "group_name",
       key: "group_name",
       align: "center",
+      width: 413,
     },
     {
       title: "차종",
       dataIndex: "kind_name",
       key: "kind_name",
       align: "center",
+      width: 188,
     },
     {
       title: "사용여부",
       dataIndex: "is_use",
       key: "is_use",
       align: "center",
+      width: 191,
       render: (is_use) =>
         Constants.availableOptions.filter((item) => item.value == is_use)[0]
           .label,
@@ -75,6 +80,7 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: 220,
       render: (idx) => (
         <Row justify="center">
           <Col>

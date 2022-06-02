@@ -43,36 +43,42 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: 98,
     },
     {
       title: "브랜드",
       dataIndex: "brand_name",
       key: "brand_name",
       align: "center",
+      width: 245,
     },
     {
       title: "모델그룹",
       dataIndex: "group_name",
       key: "group_name",
       align: "center",
+      width: 245,
     },
     {
       title: "모델",
       dataIndex: "model_name",
       key: "model_name",
       align: "center",
+      width: 245,
     },
     {
       title: "순서",
       dataIndex: "sequence",
       key: "sequence",
       align: "center",
+      width: 98,
     },
     {
       title: "신차여부",
       dataIndex: "is_new",
       key: "is_new",
       align: "center",
+      width: 122,
       render: (is_new) => (is_new == 0 ? "예" : "아니오"),
     },
     {
@@ -80,6 +86,7 @@ function List() {
       dataIndex: "is_use",
       key: "is_use",
       align: "center",
+      width: 122,
       render: (is_use) =>
         Constants.availableOptions.filter((item) => item.value == is_use)[0]
           .label,
@@ -89,6 +96,7 @@ function List() {
       dataIndex: "created_at",
       key: "created_at",
       align: "center",
+      width: 184,
       render: (created_at) =>
         GetDateFullTimeStringUsingKorFromDate(new Date(created_at)),
     },
@@ -97,6 +105,7 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: 220,
       render: (idx) => (
         <Row justify="center">
           <Col>
@@ -205,7 +214,7 @@ function List() {
             <Col flex="154px" className="table-header">
               <label className="table-header-label">신차여부</label>
             </Col>
-            <Col flex="635px" className="table-value">
+            <Col flex="241px" className="table-value">
               <Space size={6}>
                 <Select
                   name="is_new"

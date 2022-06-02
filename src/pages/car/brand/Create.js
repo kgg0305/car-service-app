@@ -154,7 +154,7 @@ function Create() {
                     style={{ width: 150 }}
                     controls={false}
                   />
-                  <label className={styles.orderDescriptionLabel}>
+                  <label className="order-description-label">
                     숫자가 낮을수록 먼저 노출이 됩니다.
                   </label>
                 </Space>

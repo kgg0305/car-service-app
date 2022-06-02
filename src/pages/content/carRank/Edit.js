@@ -165,7 +165,7 @@ function Edit() {
               <>
                 {modelBodyList.length != 1 ? (
                   <Button
-                    className="white-button"
+                    className="white-button detail-delete-body-button"
                     onClick={() => onDeleteModelComponentClick(body.number)}
                     size="large"
                   >
@@ -175,7 +175,7 @@ function Edit() {
                   ""
                 )}
                 <Button
-                  className="black-button"
+                  className="black-button detail-add-body-button"
                   onClick={() => onAddModelComponentClick(body.number)}
                   size="large"
                 >
@@ -184,7 +184,7 @@ function Edit() {
               </>
             ) : (
               <Button
-                className="white-button"
+                className="white-button detail-delete-body-button"
                 onClick={() => onDeleteModelComponentClick(body.number)}
                 size="large"
               >

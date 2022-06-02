@@ -117,7 +117,7 @@ function Edit() {
                   <Col flex="154px" className="table-header-col-section">
                     <label>브랜드</label>
                   </Col>
-                  <Col span={10} className="table-value-col-section">
+                  <Col flex="636px" className="table-value-col-section">
                     <Select
                       name="brand_id"
                       value={bodyInfo.brand_id}
@@ -187,7 +187,7 @@ function Edit() {
                   <Col flex="154px" className="table-header-col-section">
                     <label>차종</label>
                   </Col>
-                  <Col flex="auto" className="table-value-col-section">
+                  <Col flex="636px" className="table-value-col-section">
                     <Select
                       name="car_kind_id"
                       value={bodyInfo.car_kind_id}

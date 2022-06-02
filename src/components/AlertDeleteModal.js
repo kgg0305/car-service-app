@@ -7,11 +7,11 @@ function AlertDeleteModal({ name, visible, onConfirmClick, onCancelClick }) {
   return (
     <Modal
       centered
-      width={325}
+      width={350}
       closable={false}
       visible={visible}
       footer={[
-        <Space size={150}>
+        <Space size={200}>
           <Button
             className="alert-button delete-button"
             onClick={onConfirmClick}

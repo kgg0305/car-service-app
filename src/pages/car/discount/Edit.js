@@ -169,7 +169,7 @@ function Edit() {
                     ""
                   )}
                   <Button
-                    className="black-button"
+                    className="black-button detail-add-body-button"
                     onClick={() => onAddConditionComponentClick()}
                     size="large"
                   >

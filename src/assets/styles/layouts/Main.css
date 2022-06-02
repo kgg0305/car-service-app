@@ -1,5 +1,8 @@
 .ant-input {
-    font-size: 16px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    height: 40px;
 }
 
 .ant-input:hover {
@@ -83,13 +86,24 @@ main {
 }
 
 .detail-sub-title {
-    height: 49px;
     font-weight: 500;
     font-size: 21px;
     line-height: 25px;
     display: flex;
     align-items: center;
     color: #363636;
+}
+
+.detail-add-body-button {
+    width: 60px;
+    height: 40px;
+    padding: 0px;
+}
+
+.detail-delete-body-button {
+    width: 60px;
+    height: 40px;
+    padding: 0px;
 }
 
 .sub-description {
@@ -419,29 +433,31 @@ main {
 }
 
 .ant-tabs-tab {
-    padding: 19px 50px;
-    font-weight: 300;
-    font-size: 18px;
-    line-height: 21px;
-    /* identical to box height */
+    justify-content: center;
+    margin: 0px!important;
+    width: 200px!important;
+    height: 60px!important;
+    font-weight: 300!important;
+    font-size: 18px!important;
+    line-height: 21px!important;
 
-    display: flex;
-    align-items: center;
-    text-align: center;
+    display: flex!important;
+    align-items: center!important;
+    text-align: center!important;
 
-    color: #363636;
+    color: #363636!important;
 
-    opacity: 0.5;
+    opacity: 0.5!important;
 }
 
 .ant-tabs-tab-active {
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 23px;
+    font-weight: 600!important;
+    font-size: 20px!important;
+    line-height: 23px!important;
 
-    color: #363636;
+    color: #363636!important;
 
-    opacity: 1;
+    opacity: 1!important;
 }
 
 .ant-tabs-tab-btn {
@@ -487,6 +503,20 @@ main {
 
 .ant-switch-checked .ant-switch-handle::before {
     background-color: #C7C7C7;
+}
+
+.manage-switch {
+    width: 75px;
+    height: 30px;
+}
+
+.manage-switch > .ant-switch-handle {
+    width: 25px;
+    height: 25px;
+}
+
+.manage-switch.ant-switch-checked .ant-switch-handle {
+    left: calc(100% - 18px - 10px);
 }
 
 .switch-label {
@@ -601,6 +631,10 @@ main {
 
 .ant-select-selector {
     height: 40px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    color: #CBCBCB;
     border-color: #E5E5E5!important;
     padding-left: 15px!important;
     padding-right: 13px!important;
@@ -652,4 +686,19 @@ main {
 
 .create-button {
     font-weight: 600;
+}
+
+.order-description-label {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    color: #999999;
+}
+
+.logo-description-label {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 30px;
+
+    color: #999999;
 }

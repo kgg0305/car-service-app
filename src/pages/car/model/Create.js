@@ -186,7 +186,7 @@ function Create() {
                   size="large"
                   placeholder="세부 내용 입력"
                   maxLength={50}
-                  style={{ width: 750 }}
+                  style={{ width: 740 }}
                 />
               </Space>
             </Col>
@@ -197,7 +197,7 @@ function Create() {
                   <>
                     {lineupBodyList.length != 1 ? (
                       <Button
-                        className="white-button"
+                        className="white-button detail-delete-body-button"
                         onClick={() =>
                           onDeleteLineupComponentClick(body.number)
                         }
@@ -209,7 +209,7 @@ function Create() {
                       ""
                     )}
                     <Button
-                      className="black-button"
+                      className="black-button detail-add-body-button"
                       onClick={() => onAddLineupComponentClick(body.number)}
                       size="large"
                     >
@@ -218,7 +218,7 @@ function Create() {
                   </>
                 ) : (
                   <Button
-                    className="white-button"
+                    className="white-button detail-delete-body-button"
                     onClick={() => onDeleteLineupComponentClick(body.number)}
                     size="large"
                   >
@@ -303,7 +303,7 @@ function Create() {
                   <>
                     {colorBodyList.length != 1 ? (
                       <Button
-                        className="white-button"
+                        className="white-button detail-delete-body-button"
                         onClick={() => onDeleteColorComponentClick(body.number)}
                         size="large"
                       >
@@ -313,7 +313,7 @@ function Create() {
                       ""
                     )}
                     <Button
-                      className="black-button"
+                      className="black-button detail-add-body-button"
                       onClick={() => onAddColorComponentClick(body.number)}
                       size="large"
                     >
@@ -322,7 +322,7 @@ function Create() {
                   </>
                 ) : (
                   <Button
-                    className="white-button"
+                    className="white-button detail-delete-body-button"
                     onClick={() => onDeleteColorComponentClick(body.number)}
                     size="large"
                   >
@@ -412,7 +412,7 @@ function Create() {
                   size="large"
                   placeholder="세부 내용 입력"
                   maxLength={50}
-                  style={{ width: 750 }}
+                  style={{ width: 740 }}
                 />
               </Space>
             </Col>
@@ -423,7 +423,7 @@ function Create() {
                   <>
                     {trimBodyList.length != 1 ? (
                       <Button
-                        className="white-button"
+                        className="white-button detail-delete-body-button"
                         onClick={() => onDeleteTrimComponentClick(body.number)}
                         size="large"
                       >
@@ -433,7 +433,7 @@ function Create() {
                       ""
                     )}
                     <Button
-                      className="black-button"
+                      className="black-button detail-add-body-button"
                       onClick={() => onAddTrimComponentClick(body.number)}
                       size="large"
                     >
@@ -442,7 +442,7 @@ function Create() {
                   </>
                 ) : (
                   <Button
-                    className="white-button"
+                    className="white-button detail-delete-body-button"
                     onClick={() => onDeleteTrimComponentClick(body.number)}
                     size="large"
                   >
@@ -593,7 +593,7 @@ function Create() {
                 </Upload>
               ) : (
                 <Button
-                  className="black-button"
+                  className="black-button upload-image-detail-button"
                   size="large"
                   onClick={() => onPictureDeleteClick(item)}
                 >
@@ -651,7 +651,7 @@ function Create() {
         {/* Body Section */}
         <Space direction="vertical" size={40} style={{ paddingBottom: 112 }}>
           <Tabs defaultActiveKey="1">
-            <TabPane tab="모델정보" key="1">
+            <TabPane tab="모델 정보" key="1">
               <Space direction="vertical" size={40}>
                 <Space direction="vertical" size={20}>
                   <Row align="middle">
@@ -670,45 +670,20 @@ function Create() {
                       <Col flex="154px" className="table-header-col-section">
                         <label>차량</label>
                       </Col>
-                      <Col span={5} className="table-value-col-section">
-                        <Select
-                          name="brand_id"
-                          value={bodyInfo.brand_id}
-                          onChange={(value) => {
-                            onComponentChange("brand_id", value);
-                          }}
-                          size="large"
-                          suffixIcon={<CaretDownOutlined />}
-                          placeholder="브랜드 선택"
-                          style={{ width: "100%" }}
-                        >
-                          {brandOptionList.map((optionItem, optionIndex) => (
-                            <Select.Option
-                              key={optionIndex}
-                              value={optionItem.value}
-                            >
-                              {optionItem.label}
-                            </Select.Option>
-                          ))}
-                        </Select>
-                      </Col>
-                      <Col span={5} className="table-value-col-section">
-                        <Select
-                          name="group_id"
-                          value={bodyInfo.group_id}
-                          onChange={(value) => {
-                            onComponentChange("group_id", value);
-                          }}
-                          size="large"
-                          suffixIcon={<CaretDownOutlined />}
-                          placeholder="모델그룹 선택"
-                          style={{ width: "100%" }}
-                        >
-                          {groupOptionList
-                            .filter(
-                              (item) => item.brand_id == bodyInfo.brand_id
-                            )
-                            .map((optionItem, optionIndex) => (
+                      <Col flex="636px" className="table-value-col-section">
+                        <Space size={6}>
+                          <Select
+                            name="brand_id"
+                            value={bodyInfo.brand_id}
+                            onChange={(value) => {
+                              onComponentChange("brand_id", value);
+                            }}
+                            size="large"
+                            suffixIcon={<CaretDownOutlined />}
+                            placeholder="브랜드 선택"
+                            style={{ width: 300 }}
+                          >
+                            {brandOptionList.map((optionItem, optionIndex) => (
                               <Select.Option
                                 key={optionIndex}
                                 value={optionItem.value}
@@ -716,7 +691,32 @@ function Create() {
                                 {optionItem.label}
                               </Select.Option>
                             ))}
-                        </Select>
+                          </Select>
+                          <Select
+                            name="group_id"
+                            value={bodyInfo.group_id}
+                            onChange={(value) => {
+                              onComponentChange("group_id", value);
+                            }}
+                            size="large"
+                            suffixIcon={<CaretDownOutlined />}
+                            placeholder="모델그룹 선택"
+                            style={{ width: 300 }}
+                          >
+                            {groupOptionList
+                              .filter(
+                                (item) => item.brand_id == bodyInfo.brand_id
+                              )
+                              .map((optionItem, optionIndex) => (
+                                <Select.Option
+                                  key={optionIndex}
+                                  value={optionItem.value}
+                                >
+                                  {optionItem.label}
+                                </Select.Option>
+                              ))}
+                          </Select>
+                        </Space>
                       </Col>
                       <Col flex="154px" className="table-header-col-section">
                         <label>모델</label>
@@ -771,7 +771,7 @@ function Create() {
                       <Col flex="154px" className="table-header-col-section">
                         <label>신차여부</label>
                       </Col>
-                      <Col span={10} className="table-value-col-section">
+                      <Col flex="636px" className="table-value-col-section">
                         <Select
                           name="is_new"
                           value={bodyInfo.is_new}
@@ -808,6 +808,7 @@ function Create() {
                               GetDateStringFromDate(new Date(value.toString()))
                             );
                           }}
+                          style={{ width: 150 }}
                           size="large"
                         />
                       </Col>
@@ -821,7 +822,7 @@ function Create() {
                       <Col flex="154px" className="table-header-col-section">
                         <label>순서</label>
                       </Col>
-                      <Col span={10} className="table-value-col-section">
+                      <Col flex="636px" className="table-value-col-section">
                         <Space>
                           <InputNumber
                             name="sequence"
@@ -929,7 +930,7 @@ function Create() {
                 </Space>
               </Space>
             </TabPane>
-            <TabPane tab="모델할인" key="2">
+            <TabPane tab="모델 할인" key="2">
               <Space direction="vertical" size={40}>
                 <Space direction="vertical" size={20}>
                   <Row align="middle">
