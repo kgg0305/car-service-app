@@ -288,13 +288,18 @@ function Detail() {
                       </Select>
                       <DatePicker
                         name="contract_date"
-                        value={moment(bodyInfo.contract_date)}
+                        value={
+                          bodyInfo.contract_date
+                            ? moment(bodyInfo.contract_date)
+                            : null
+                        }
                         onChange={(value) => {
                           onComponentChange(
                             "contract_date",
                             GetDateStringFromDate(new Date(value.toString()))
                           );
                         }}
+                        placeholder="0000-00-00"
                         size="large"
                       />
                     </Space>
@@ -335,13 +340,18 @@ function Detail() {
                       </Select>
                       <DatePicker
                         name="release_date"
-                        value={moment(bodyInfo.release_date)}
+                        value={
+                          bodyInfo.release_date
+                            ? moment(bodyInfo.release_date)
+                            : null
+                        }
                         onChange={(value) => {
                           onComponentChange(
                             "release_date",
                             GetDateStringFromDate(new Date(value.toString()))
                           );
                         }}
+                        placeholder="0000-00-00"
                         size="large"
                       />
                     </Space>

@@ -201,12 +201,29 @@ export const init = () => async (dispatch) => {
     console.log(e);
   }
 };
-export const setHeaderMenu = (key) => ({
-  type: SET_HEADER_MENU,
-  payload: {
-    key: key,
-  },
-});
+export const setHeaderMenu = (key) => (dispatch, getState) => {
+  const state = getState();
+  const headerMenuRole = state.menu.headerMenuRole;
+  const sideMenuRole = state.menu.sideMenuRole;
+
+  let sideMenu = { key: "" };
+
+  if (headerMenuRole[key]) {
+    if (sideMenuRole[key].some((item) => item === 1)) {
+      sideMenu.key = sideMenuRole[key]
+        .findIndex((item) => item === 1)
+        .toString();
+    }
+  }
+
+  dispatch({
+    type: SET_HEADER_MENU,
+    payload: {
+      key: key,
+      sideMenu: sideMenu,
+    },
+  });
+};
 export const setSideMenu = (key) => ({
   type: SET_SIDE_MENU,
   payload: {
@@ -269,9 +286,7 @@ export default function menu(state = initialState, action) {
         headerMenu: {
           key: action.payload.key,
         },
-        sideMenu: {
-          key: "",
-        },
+        sideMenu: action.payload.sideMenu,
       };
     case SET_SIDE_MENU:
       return {
