@@ -23,6 +23,7 @@ import {
   showMore,
   download,
   assign,
+  setGroup,
 } from "../../../store/reducers/estimation/quotation/list";
 import { GetDateStringFromDate } from "../../../constants/GlobalFunctions";
 
@@ -48,8 +49,8 @@ function List() {
   const onResetClick = () => dispatch(reset());
   const onSearchComponentChange = (name, value) =>
     dispatch(setSearch(name, value));
-  const onAssignToChange = (idx, value) =>
-    dispatch(assign(dataSource, idx, value));
+  const onGroupChange = (idx, value) => dispatch(setGroup(idx, value));
+  const onAssignToChange = (idx, value) => dispatch(assign(idx, value));
   const onDownloadClick = () => dispatch(download());
 
   const columns = [
@@ -105,10 +106,10 @@ function List() {
     },
     {
       title: "지점",
-      dataIndex: "area",
-      key: "area",
+      dataIndex: "idx",
+      key: "idx",
       align: "center",
-      render: (path) => renderAreaGroupSelect(),
+      render: (idx) => renderAreaGroupSelect(idx),
     },
     {
       title: "인원",
@@ -195,12 +196,18 @@ function List() {
     tableColumns: columns,
   };
 
-  const renderAreaGroupSelect = () => {
+  const renderAreaGroupSelect = (idx) => {
+    const quotation_info = dataSource.filter((item) => item.idx === idx)[0];
     return (
       <Row justify="center">
         <Col>
           <Select
             size="large"
+            name="group_id"
+            value={quotation_info.group_id}
+            onChange={(value) => {
+              onGroupChange(idx, value);
+            }}
             suffixIcon={<CaretDownOutlined />}
             placeholder={"선택"}
             style={{ width: 130 }}
@@ -232,11 +239,17 @@ function List() {
             placeholder={"선택"}
             style={{ width: 130 }}
           >
-            {userOptionList.map((optionItem, optionIndex) => (
-              <Select.Option key={optionIndex} value={optionItem.value}>
-                {optionItem.label}
-              </Select.Option>
-            ))}
+            {userOptionList
+              .filter(
+                (item) =>
+                  item.type_id === "1" &&
+                  item.group_id === quotation_info.group_id
+              )
+              .map((optionItem, optionIndex) => (
+                <Select.Option key={optionIndex} value={optionItem.value}>
+                  {optionItem.label}
+                </Select.Option>
+              ))}
           </Select>
         </Col>
       </Row>

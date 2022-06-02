@@ -8,6 +8,7 @@ const INIT = prefix + "INIT";
 const SHOW_MORE = prefix + "SHOW_MORE";
 const SEARCH = prefix + "SEARCH";
 const SET_SEARCH = prefix + "SET_SEARCH";
+const SET_GROUP = prefix + "SET_GROUP";
 const ASSIGN = prefix + "ASSIGN";
 
 export const init = () => async (dispatch) => {
@@ -145,8 +146,18 @@ export const setSearch = (name, value) => (dispatch) => {
     },
   });
 };
+export const setGroup = (idx, value) => ({
+  type: SET_GROUP,
+  payload: {
+    offset: 0,
+    idx: idx,
+    value: value,
+  },
+});
+export const assign = (idx, value) => async (dispatch, getState) => {
+  const state = getState();
+  const dataSource = state.quotationList.dataSource;
 
-export const assign = (dataSource, idx, value) => async (dispatch) => {
   let quotation_info = dataSource.filter((item) => item.idx === idx)[0];
   quotation_info.assign_to = value;
   await quotationService.update(quotation_info);
@@ -160,7 +171,6 @@ export const assign = (dataSource, idx, value) => async (dispatch) => {
     },
   });
 };
-
 export const download = () => {
   quotationService.download();
 };
@@ -227,6 +237,18 @@ export default function list(state = initialState, action) {
               : state.searchData.e_date,
           [action.payload.name]: action.payload.value,
         },
+      };
+    case SET_GROUP:
+      return {
+        ...state,
+        dataSource: state.dataSource.map((item) => ({
+          ...item,
+          group_id:
+            item.idx === action.payload.idx
+              ? action.payload.value
+              : item.group_id,
+          assign_to: item.idx === action.payload.idx ? "" : item.assign_to,
+        })),
       };
     case ASSIGN:
       return {
