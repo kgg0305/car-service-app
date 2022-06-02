@@ -64,10 +64,10 @@ function Create() {
   const renderBodyList = () => {
     return bodyList.map((body, index) => {
       return (
-        <Space direction="vertical" size={20} key={index}>
+        <Space direction="vertical" size={8} key={index}>
           <Row align="middle">
             <Col>
-              <label className="main-sub-title">
+              <label className="detail-sub-title">
                 정보 {body.number < 10 ? "0" + body.number : body.number}
               </label>
             </Col>
@@ -75,8 +75,7 @@ function Create() {
             <Col>
               {bodyList.length > 1 ? (
                 <Button
-                  className="white-button big-button"
-                  style={{ width: 129, fontWeight: 500 }}
+                  className="white-button big-button delete-body-detail-button"
                   onClick={() => onDeleteComponentClick(body.number)}
                 >
                   정보삭제
@@ -91,12 +90,12 @@ function Create() {
               gutter={[0]}
               align="middle"
               style={{ height: 80 }}
-              className="table-layout"
+              className="detail-table-layout"
             >
-              <Col span={2} className="table-header-col-section">
+              <Col flex="154px" className="table-header-col-section">
                 <label>브랜드</label>
               </Col>
-              <Col span={10} className="table-value-col-section">
+              <Col flex="636px" className="table-value-col-section">
                 <Space>
                   <div style={{ position: "relative" }}>
                     <Input
@@ -127,7 +126,7 @@ function Create() {
                     )}
                   </div>
                   <Button
-                    className="black-button"
+                    className="black-button check-name-button"
                     onClick={() =>
                       onCheckNameClick(body.number, body.brand_name)
                     }
@@ -137,7 +136,7 @@ function Create() {
                   </Button>
                 </Space>
               </Col>
-              <Col span={2} className="table-header-col-section">
+              <Col flex="154px" className="table-header-col-section">
                 <label>순서</label>
               </Col>
               <Col flex="auto" className="table-value-col-section">
@@ -163,12 +162,12 @@ function Create() {
               gutter={[0]}
               align="middle"
               style={{ height: 80 }}
-              className="table-layout"
+              className="detail-table-layout"
             >
-              <Col span={2} className="table-header-col-section">
+              <Col flex="154px" className="table-header-col-section">
                 <label>국가</label>
               </Col>
-              <Col span={4} className="table-value-col-section">
+              <Col flex="241px" className="table-value-col-section">
                 <Select
                   name="nation"
                   value={body.nation}
@@ -187,10 +186,10 @@ function Create() {
                   ))}
                 </Select>
               </Col>
-              <Col span={2} className="table-header-col-section">
+              <Col flex="154px" className="table-header-col-section">
                 <label>수입여부</label>
               </Col>
-              <Col span={4} className="table-value-col-section">
+              <Col flex="241px" className="table-value-col-section">
                 <Select
                   name="is_income"
                   value={body.is_income}
@@ -209,7 +208,7 @@ function Create() {
                   ))}
                 </Select>
               </Col>
-              <Col span={2} className="table-header-col-section">
+              <Col flex="154px" className="table-header-col-section">
                 <label>사용여부</label>
               </Col>
               <Col flex="auto" className="table-value-col-section">
@@ -237,12 +236,12 @@ function Create() {
               gutter={[0]}
               align="middle"
               style={{ height: 80 }}
-              className="table-layout"
+              className="detail-table-layout"
             >
-              <Col span={2} className="table-header-col-section">
+              <Col flex="154px" className="table-header-col-section">
                 <label>공식사이트</label>
               </Col>
-              <Col span={10} className="table-value-col-section">
+              <Col flex="636px" className="table-value-col-section">
                 <Input
                   name="public_uri"
                   value={body.public_uri}
@@ -258,7 +257,7 @@ function Create() {
                   style={{ width: 400 }}
                 />
               </Col>
-              <Col span={2} className="table-header-col-section">
+              <Col flex="154px" className="table-header-col-section">
                 <label>전시장 안내</label>
               </Col>
               <Col flex="auto" className="table-value-col-section">
@@ -282,12 +281,12 @@ function Create() {
               gutter={[0]}
               align="middle"
               style={{ height: 80 }}
-              className="table-layout"
+              className="detail-table-layout"
             >
-              <Col span={2} className="table-header-col-section">
+              <Col flex="154px" className="table-header-col-section">
                 <label>서비스 센터</label>
               </Col>
-              <Col span={10} className="table-value-col-section">
+              <Col flex="636px" className="table-value-col-section">
                 <Input
                   name="service_uri"
                   value={body.service_uri}
@@ -303,7 +302,7 @@ function Create() {
                   style={{ width: 400 }}
                 />
               </Col>
-              <Col span={2} className="table-header-col-section">
+              <Col flex="154px" className="table-header-col-section">
                 <label>보증금 안내</label>
               </Col>
               <Col flex="auto" className="table-value-col-section">
@@ -327,9 +326,9 @@ function Create() {
               gutter={[0]}
               align="middle"
               style={{ height: 174 }}
-              className="table-layout"
+              className="detail-table-layout"
             >
-              <Col span={2} className="table-header-col-section">
+              <Col flex="154px" className="table-header-col-section">
                 <label>로고</label>
               </Col>
               <Col flex="auto" className="table-value-col-section">
@@ -355,7 +354,10 @@ function Create() {
                         return true;
                       }}
                     >
-                      <Button className="black-button" size="large">
+                      <Button
+                        className="black-button upload-image-detail-button"
+                        size="large"
+                      >
                         등록
                       </Button>
                     </Upload>
@@ -373,8 +375,8 @@ function Create() {
     <>
       <Space direction="vertical" size={18} className="main-layout">
         {/* Page Header */}
-        <Space direction="vertical" size={18}>
-          <Row justify="middle">
+        <Space direction="vertical" size={11}>
+          <Row justify="top">
             <Col>
               <label className="main-header-title">브랜드 등록</label>
             </Col>
@@ -382,12 +384,15 @@ function Create() {
             <Col>
               <Space size={10}>
                 <Link to="/car/brand">
-                  <Button className="white-button" size="large">
+                  <Button
+                    className="white-button cancel-detail-button"
+                    size="large"
+                  >
                     취소
                   </Button>
                 </Link>
                 <Button
-                  className="white-button"
+                  className="white-button save-detail-button"
                   size="large"
                   onClick={() => onSaveClick("/car/brand")}
                 >
@@ -395,7 +400,7 @@ function Create() {
                 </Button>
 
                 <Button
-                  className="black-button"
+                  className="black-button save-goto-detail-button"
                   size="large"
                   onClick={() => onSaveClick("/car/group/create")}
                 >
@@ -408,8 +413,12 @@ function Create() {
         </Space>
 
         {/* Body Section */}
-        <Space direction="vertical" size={20} style={{ paddingBottom: 117 }}>
-          <Space direction="vertical" size={72} split={<Divider />}>
+        <Space direction="vertical" size={40} style={{ paddingBottom: 112 }}>
+          <Space
+            direction="vertical"
+            size={59}
+            split={<Divider className="detail-body-divider" dashed />}
+          >
             {renderBodyList()}
           </Space>
 

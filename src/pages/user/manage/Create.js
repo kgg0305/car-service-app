@@ -57,7 +57,7 @@ function Create() {
             <Space direction="vertical" size={20} key={index}>
               <Row align="middle">
                 <Col>
-                  <label className="main-sub-title">
+                  <label className="detail-sub-title">
                     정보 {body.number < 10 ? "0" + body.number : body.number}
                   </label>
                 </Col>
@@ -65,8 +65,7 @@ function Create() {
                 <Col>
                   {bodyList.length > 1 ? (
                     <Button
-                      className="white-button big-button"
-                      style={{ width: 129, fontWeight: 500 }}
+                      className="white-button big-button delete-body-detail-button"
                       onClick={() => onDeleteComponentClick(body.number)}
                     >
                       정보삭제
@@ -81,9 +80,9 @@ function Create() {
                   gutter={[0]}
                   align="middle"
                   style={{ height: 80 }}
-                  className="table-layout"
+                  className="detail-table-layout"
                 >
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>이름</label>
                   </Col>
                   <Col span={10} className="table-value-col-section">
@@ -103,7 +102,7 @@ function Create() {
                       style={{ width: 150 }}
                     />
                   </Col>
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>아이디</label>
                   </Col>
                   <Col flex="auto" className="table-value-col-section">
@@ -128,9 +127,9 @@ function Create() {
                   gutter={[0]}
                   align="middle"
                   style={{ height: 80 }}
-                  className="table-layout"
+                  className="detail-table-layout"
                 >
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>그룹</label>
                   </Col>
                   <Col span={10} className="table-value-col-section">
@@ -194,7 +193,7 @@ function Create() {
                       </Select>
                     </Space>
                   </Col>
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>임시 비밀번호</label>
                   </Col>
                   <Col flex="auto" className="table-value-col-section">
@@ -248,7 +247,7 @@ function Create() {
     <>
       <Space direction="vertical" size={18} className="main-layout">
         {/* Page Header */}
-        <Space direction="vertical" size={18}>
+        <Space direction="vertical" size={11}>
           <Row justify="middle">
             <Col>
               <label className="main-header-title">사용자 등록</label>
@@ -257,7 +256,10 @@ function Create() {
             <Col>
               <Space size={10}>
                 <Link to="/user/manage">
-                  <Button className="white-button" size="large">
+                  <Button
+                    className="white-button cancel-detail-button"
+                    size="large"
+                  >
                     취소
                   </Button>
                 </Link>
@@ -276,7 +278,11 @@ function Create() {
 
         {/* Body Section */}
         <Space direction="vertical" size={20} style={{ paddingBottom: 117 }}>
-          <Space direction="vertical" size={72} split={<Divider />}>
+          <Space
+            direction="vertical"
+            size={59}
+            split={<Divider className="detail-body-divider" dashed />}
+          >
             {renderBodyList()}
           </Space>
 

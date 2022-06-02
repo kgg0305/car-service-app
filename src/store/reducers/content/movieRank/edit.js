@@ -187,6 +187,7 @@ const initialState = {
   },
   confirm: {
     show: false,
+    name: "",
   },
   bodyInfo: {
     type: null,

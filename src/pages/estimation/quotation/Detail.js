@@ -66,7 +66,7 @@ function Detail() {
     <>
       <Space direction="vertical" size={18} className="main-layout">
         {/* Page Header */}
-        <Space direction="vertical" size={18}>
+        <Space direction="vertical" size={11}>
           <Row justify="middle">
             <Col>
               <label className="main-header-title">견적신청 상세보기</label>
@@ -75,7 +75,10 @@ function Detail() {
             <Col>
               <Space size={10}>
                 <Link to="/estimation/quotation">
-                  <Button className="white-button" size="large">
+                  <Button
+                    className="white-button cancel-detail-button"
+                    size="large"
+                  >
                     취소
                   </Button>
                 </Link>
@@ -94,153 +97,175 @@ function Detail() {
 
         {/* Body Section */}
         <Space direction="vertical" size={20} style={{ paddingBottom: 117 }}>
-          <Space direction="vertical" size={72} split={<Divider />}>
-            <Space direction="vertical" size={20}>
-              <Row align="middle">
-                <Col>
-                  <label className="main-sub-title">정보</label>
+          <Space direction="vertical" size={20}>
+            <Row align="middle">
+              <Col>
+                <label className="detail-sub-title">정보</label>
+              </Col>
+              <Col flex="auto" />
+            </Row>
+            <Space direction="vertical" size={0}>
+              <Row
+                gutter={[0]}
+                align="middle"
+                style={{ height: 80 }}
+                className="detail-table-layout"
+              >
+                <Col flex="154px" className="table-header-col-section">
+                  <label>구입방법</label>
                 </Col>
-                <Col flex="auto" />
+                <Col span={10} className="table-value-col-section">
+                  <Input
+                    name="purchase_method"
+                    value={
+                      Constants.purchaseMethodOptions.filter(
+                        (item) => item.value === bodyInfo.purchase_method
+                      ).length
+                        ? Constants.purchaseMethodOptions.filter(
+                            (item) => item.value === bodyInfo.purchase_method
+                          )[0].label
+                        : ""
+                    }
+                    size="large"
+                    style={{ width: 150 }}
+                    disabled
+                  />
+                </Col>
+                <Col flex="154px" className="table-header-col-section">
+                  <label>등록일</label>
+                </Col>
+                <Col flex="auto" className="table-value-col-section">
+                  <Space size={6}>
+                    <Input
+                      name="reg_date_text1"
+                      value={bodyInfo.reg_date_text1}
+                      size="large"
+                      style={{ width: 150 }}
+                      disabled
+                    />
+                    <Input
+                      size="large"
+                      name="reg_date_text2"
+                      value={bodyInfo.reg_date_text2}
+                      style={{ width: 150 }}
+                      disabled
+                    />
+                  </Space>
+                </Col>
               </Row>
-              <Space direction="vertical" size={0}>
-                <Row
-                  gutter={[0]}
-                  align="middle"
-                  style={{ height: 80 }}
-                  className="table-layout"
-                >
-                  <Col span={2} className="table-header-col-section">
-                    <label>구입방법</label>
-                  </Col>
-                  <Col span={10} className="table-value-col-section">
+              <Row
+                gutter={[0]}
+                align="middle"
+                style={{ height: 80 }}
+                className="detail-table-layout"
+              >
+                <Col flex="154px" className="table-header-col-section">
+                  <label>이름</label>
+                </Col>
+                <Col span={10} className="table-value-col-section">
+                  <Input
+                    name="client_name"
+                    value={bodyInfo.client_name}
+                    size="large"
+                    style={{ width: 150 }}
+                    disabled
+                  />
+                </Col>
+                <Col flex="154px" className="table-header-col-section">
+                  <label>연락처</label>
+                </Col>
+                <Col flex="auto" className="table-value-col-section">
+                  <Space size={6}>
                     <Input
-                      name="purchase_method"
-                      value={
-                        Constants.purchaseMethodOptions.filter(
-                          (item) => item.value === bodyInfo.purchase_method
-                        ).length
-                          ? Constants.purchaseMethodOptions.filter(
-                              (item) => item.value === bodyInfo.purchase_method
-                            )[0].label
-                          : ""
-                      }
+                      name="client_phone"
+                      value={bodyInfo.client_phone}
                       size="large"
                       style={{ width: 150 }}
                       disabled
                     />
-                  </Col>
-                  <Col span={2} className="table-header-col-section">
-                    <label>등록일</label>
-                  </Col>
-                  <Col flex="auto" className="table-value-col-section">
-                    <Space size={6}>
-                      <Input
-                        name="reg_date_text1"
-                        value={bodyInfo.reg_date_text1}
-                        size="large"
-                        style={{ width: 150 }}
-                        disabled
-                      />
-                      <Input
-                        size="large"
-                        name="reg_date_text2"
-                        value={bodyInfo.reg_date_text2}
-                        style={{ width: 150 }}
-                        disabled
-                      />
-                    </Space>
-                  </Col>
-                </Row>
-                <Row
-                  gutter={[0]}
-                  align="middle"
-                  style={{ height: 80 }}
-                  className="table-layout"
-                >
-                  <Col span={2} className="table-header-col-section">
-                    <label>이름</label>
-                  </Col>
-                  <Col span={10} className="table-value-col-section">
+                  </Space>
+                </Col>
+              </Row>
+              <Row
+                gutter={[0]}
+                align="middle"
+                style={{ height: 80 }}
+                className="detail-table-layout"
+              >
+                <Col flex="154px" className="table-header-col-section">
+                  <label>차량정보</label>
+                </Col>
+                <Col flex="auto" className="table-value-col-section">
+                  <Space size={6}>
                     <Input
-                      name="client_name"
-                      value={bodyInfo.client_name}
+                      name="brand_name"
+                      value={bodyInfo.brand_name}
                       size="large"
                       style={{ width: 150 }}
                       disabled
                     />
-                  </Col>
-                  <Col span={2} className="table-header-col-section">
-                    <label>연락처</label>
-                  </Col>
-                  <Col flex="auto" className="table-value-col-section">
-                    <Space size={6}>
-                      <Input
-                        name="client_phone"
-                        value={bodyInfo.client_phone}
-                        size="large"
-                        style={{ width: 150 }}
-                        disabled
-                      />
-                    </Space>
-                  </Col>
-                </Row>
-                <Row
-                  gutter={[0]}
-                  align="middle"
-                  style={{ height: 80 }}
-                  className="table-layout"
-                >
-                  <Col span={2} className="table-header-col-section">
-                    <label>차량정보</label>
-                  </Col>
-                  <Col flex="auto" className="table-value-col-section">
-                    <Space size={6}>
-                      <Input
-                        name="brand_name"
-                        value={bodyInfo.brand_name}
-                        size="large"
-                        style={{ width: 150 }}
-                        disabled
-                      />
-                      <Input
-                        name="model_name"
-                        value={bodyInfo.model_name}
-                        size="large"
-                        style={{ width: 180 }}
-                        disabled
-                      />
-                      <Input
-                        name="lineup_name"
-                        value={bodyInfo.lineup_name}
-                        size="large"
-                        style={{ width: 124 }}
-                        disabled
-                      />
-                      <Input
-                        name="trim_name"
-                        value={bodyInfo.trim_name}
-                        size="large"
-                        style={{ width: 250 }}
-                        disabled
-                      />
-                    </Space>
-                  </Col>
-                </Row>
-                <Row
-                  gutter={[0]}
-                  align="middle"
-                  style={{ height: 80 }}
-                  className="table-layout"
-                >
-                  <Col span={2} className="table-header-col-section">
-                    <label>상담여부</label>
-                  </Col>
-                  <Col span={10} className="table-value-col-section">
+                    <Input
+                      name="model_name"
+                      value={bodyInfo.model_name}
+                      size="large"
+                      style={{ width: 180 }}
+                      disabled
+                    />
+                    <Input
+                      name="lineup_name"
+                      value={bodyInfo.lineup_name}
+                      size="large"
+                      style={{ width: 124 }}
+                      disabled
+                    />
+                    <Input
+                      name="trim_name"
+                      value={bodyInfo.trim_name}
+                      size="large"
+                      style={{ width: 250 }}
+                      disabled
+                    />
+                  </Space>
+                </Col>
+              </Row>
+              <Row
+                gutter={[0]}
+                align="middle"
+                style={{ height: 80 }}
+                className="detail-table-layout"
+              >
+                <Col flex="154px" className="table-header-col-section">
+                  <label>상담여부</label>
+                </Col>
+                <Col span={10} className="table-value-col-section">
+                  <Select
+                    name="is_business"
+                    value={bodyInfo.is_business}
+                    onChange={(value) => {
+                      onComponentChange("is_business", value);
+                    }}
+                    size="large"
+                    suffixIcon={<CaretDownOutlined />}
+                    placeholder="선택"
+                    style={{ width: 150 }}
+                  >
+                    {Constants.statusOptions.map((optionItem, optionIndex) => (
+                      <Select.Option key={optionIndex} value={optionItem.value}>
+                        {optionItem.label}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Col>
+                <Col flex="154px" className="table-header-col-section">
+                  <label>계약여부</label>
+                </Col>
+                <Col flex="auto" className="table-value-col-section">
+                  <Space size={6}>
                     <Select
-                      name="is_business"
-                      value={bodyInfo.is_business}
+                      name="is_contract"
+                      value={bodyInfo.is_contract}
                       onChange={(value) => {
-                        onComponentChange("is_business", value);
+                        onComponentChange("is_contract", value);
                       }}
                       size="large"
                       suffixIcon={<CaretDownOutlined />}
@@ -258,159 +283,130 @@ function Detail() {
                         )
                       )}
                     </Select>
-                  </Col>
-                  <Col span={2} className="table-header-col-section">
-                    <label>계약여부</label>
-                  </Col>
-                  <Col flex="auto" className="table-value-col-section">
-                    <Space size={6}>
-                      <Select
-                        name="is_contract"
-                        value={bodyInfo.is_contract}
-                        onChange={(value) => {
-                          onComponentChange("is_contract", value);
-                        }}
-                        size="large"
-                        suffixIcon={<CaretDownOutlined />}
-                        placeholder="선택"
-                        style={{ width: 150 }}
-                      >
-                        {Constants.statusOptions.map(
-                          (optionItem, optionIndex) => (
-                            <Select.Option
-                              key={optionIndex}
-                              value={optionItem.value}
-                            >
-                              {optionItem.label}
-                            </Select.Option>
-                          )
-                        )}
-                      </Select>
-                      <DatePicker
-                        name="contract_date"
-                        value={
-                          bodyInfo.contract_date
-                            ? moment(bodyInfo.contract_date)
-                            : null
-                        }
-                        onChange={(value) => {
-                          onComponentChange(
-                            "contract_date",
-                            GetDateStringFromDate(new Date(value.toString()))
-                          );
-                        }}
-                        placeholder="0000-00-00"
-                        size="large"
-                      />
-                    </Space>
-                  </Col>
-                </Row>
-                <Row
-                  gutter={[0]}
-                  align="middle"
-                  style={{ height: 80 }}
-                  className="table-layout"
-                >
-                  <Col span={2} className="table-header-col-section">
-                    <label>출고여부</label>
-                  </Col>
-                  <Col span={10} className="table-value-col-section">
-                    <Space size={6}>
-                      <Select
-                        name="is_release"
-                        value={bodyInfo.is_release}
-                        onChange={(value) => {
-                          onComponentChange("is_release", value);
-                        }}
-                        size="large"
-                        suffixIcon={<CaretDownOutlined />}
-                        placeholder="선택"
-                        style={{ width: 150 }}
-                      >
-                        {Constants.statusOptions.map(
-                          (optionItem, optionIndex) => (
-                            <Select.Option
-                              key={optionIndex}
-                              value={optionItem.value}
-                            >
-                              {optionItem.label}
-                            </Select.Option>
-                          )
-                        )}
-                      </Select>
-                      <DatePicker
-                        name="release_date"
-                        value={
-                          bodyInfo.release_date
-                            ? moment(bodyInfo.release_date)
-                            : null
-                        }
-                        onChange={(value) => {
-                          onComponentChange(
-                            "release_date",
-                            GetDateStringFromDate(new Date(value.toString()))
-                          );
-                        }}
-                        placeholder="0000-00-00"
-                        size="large"
-                      />
-                    </Space>
-                  </Col>
-                  <Col span={2} className="table-header-col-section">
-                    <label>종료여부</label>
-                  </Col>
-                  <Col flex="auto" className="table-value-col-section">
-                    <Space size={6}>
-                      <Select
-                        name="is_close"
-                        value={bodyInfo.is_close}
-                        onChange={(value) => {
-                          onComponentChange("is_close", value);
-                        }}
-                        size="large"
-                        suffixIcon={<CaretDownOutlined />}
-                        placeholder="선택"
-                        style={{ width: 150 }}
-                      >
-                        {Constants.statusOptions.map(
-                          (optionItem, optionIndex) => (
-                            <Select.Option
-                              key={optionIndex}
-                              value={optionItem.value}
-                            >
-                              {optionItem.label}
-                            </Select.Option>
-                          )
-                        )}
-                      </Select>
-                    </Space>
-                  </Col>
-                </Row>
-                <Row
-                  gutter={[0]}
-                  align="middle"
-                  style={{ height: 80 }}
-                  className="table-layout"
-                >
-                  <Col span={2} className="table-header-col-section">
-                    <label>비고</label>
-                  </Col>
-                  <Col flex="auto" className="table-value-col-section">
-                    <Space size={6}>
-                      <Input
-                        name="note"
-                        value={bodyInfo.note}
-                        onChange={(e) => {
-                          onComponentChange(e.target.name, e.target.value);
-                        }}
-                        size="large"
-                        style={{ width: 600 }}
-                        placeholder={"내용을 입력해 주세요"}
-                      />
-                    </Space>
-                  </Col>
-                </Row>
-              </Space>
+                    <DatePicker
+                      name="contract_date"
+                      value={
+                        bodyInfo.contract_date
+                          ? moment(bodyInfo.contract_date)
+                          : null
+                      }
+                      onChange={(value) => {
+                        onComponentChange(
+                          "contract_date",
+                          GetDateStringFromDate(new Date(value.toString()))
+                        );
+                      }}
+                      placeholder="0000-00-00"
+                      size="large"
+                    />
+                  </Space>
+                </Col>
+              </Row>
+              <Row
+                gutter={[0]}
+                align="middle"
+                style={{ height: 80 }}
+                className="detail-table-layout"
+              >
+                <Col flex="154px" className="table-header-col-section">
+                  <label>출고여부</label>
+                </Col>
+                <Col span={10} className="table-value-col-section">
+                  <Space size={6}>
+                    <Select
+                      name="is_release"
+                      value={bodyInfo.is_release}
+                      onChange={(value) => {
+                        onComponentChange("is_release", value);
+                      }}
+                      size="large"
+                      suffixIcon={<CaretDownOutlined />}
+                      placeholder="선택"
+                      style={{ width: 150 }}
+                    >
+                      {Constants.statusOptions.map(
+                        (optionItem, optionIndex) => (
+                          <Select.Option
+                            key={optionIndex}
+                            value={optionItem.value}
+                          >
+                            {optionItem.label}
+                          </Select.Option>
+                        )
+                      )}
+                    </Select>
+                    <DatePicker
+                      name="release_date"
+                      value={
+                        bodyInfo.release_date
+                          ? moment(bodyInfo.release_date)
+                          : null
+                      }
+                      onChange={(value) => {
+                        onComponentChange(
+                          "release_date",
+                          GetDateStringFromDate(new Date(value.toString()))
+                        );
+                      }}
+                      placeholder="0000-00-00"
+                      size="large"
+                    />
+                  </Space>
+                </Col>
+                <Col flex="154px" className="table-header-col-section">
+                  <label>종료여부</label>
+                </Col>
+                <Col flex="auto" className="table-value-col-section">
+                  <Space size={6}>
+                    <Select
+                      name="is_close"
+                      value={bodyInfo.is_close}
+                      onChange={(value) => {
+                        onComponentChange("is_close", value);
+                      }}
+                      size="large"
+                      suffixIcon={<CaretDownOutlined />}
+                      placeholder="선택"
+                      style={{ width: 150 }}
+                    >
+                      {Constants.statusOptions.map(
+                        (optionItem, optionIndex) => (
+                          <Select.Option
+                            key={optionIndex}
+                            value={optionItem.value}
+                          >
+                            {optionItem.label}
+                          </Select.Option>
+                        )
+                      )}
+                    </Select>
+                  </Space>
+                </Col>
+              </Row>
+              <Row
+                gutter={[0]}
+                align="middle"
+                style={{ height: 80 }}
+                className="detail-table-layout"
+              >
+                <Col flex="154px" className="table-header-col-section">
+                  <label>비고</label>
+                </Col>
+                <Col flex="auto" className="table-value-col-section">
+                  <Space size={6}>
+                    <Input
+                      name="note"
+                      value={bodyInfo.note}
+                      onChange={(e) => {
+                        onComponentChange(e.target.name, e.target.value);
+                      }}
+                      size="large"
+                      style={{ width: 600 }}
+                      placeholder={"내용을 입력해 주세요"}
+                    />
+                  </Space>
+                </Col>
+              </Row>
             </Space>
           </Space>
 
@@ -433,6 +429,7 @@ function Detail() {
         validationList={validation.list}
       />
       <AlertDeleteModal
+        name={confirm.name}
         visible={confirm.show}
         onConfirmClick={() => deleteInfo()}
         onCancelClick={onCloseConfirmClick}

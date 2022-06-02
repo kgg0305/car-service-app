@@ -212,7 +212,7 @@ function Manage() {
     <>
       <Space direction="vertical" size={18} className="main-layout">
         {/* Page Header */}
-        <Space direction="vertical" size={18}>
+        <Space direction="vertical" size={11}>
           <Row justify="middle">
             <Col>
               <label className="main-header-title">할당 관리</label>
@@ -221,7 +221,10 @@ function Manage() {
             <Col>
               <Space size={10}>
                 <Link to="/car/group">
-                  <Button className="white-button" size="large">
+                  <Button
+                    className="white-button cancel-detail-button"
+                    size="large"
+                  >
                     취소
                   </Button>
                 </Link>

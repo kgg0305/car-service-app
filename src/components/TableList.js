@@ -7,13 +7,13 @@ import styles from "../assets/styles/components/TableList.module.css";
 // 목록테이블
 function TableList({ dataSource }) {
   return (
-    <Space className={styles.tableList} direction="vertical" size={20}>
+    <Space className={styles.tableList} direction="vertical" size={10}>
       <Space
         size={10}
         direction="vertical"
         split={<Divider className={styles.headerDivider} />}
       >
-        <Row justify="bottom">
+        <Row justify="middle">
           <Col>
             <label className={styles.headerLabel}>
               {dataSource.title ? dataSource.title : "목록"}

@@ -3,7 +3,7 @@ import { Space, Button, Modal } from "antd";
 import delete_icon from "../assets/images/delete-icon.png";
 
 // 삭제확인창
-function AlertDeleteModal({ visible, onConfirmClick, onCancelClick }) {
+function AlertDeleteModal({ name, visible, onConfirmClick, onCancelClick }) {
   return (
     <Modal
       centered
@@ -13,13 +13,16 @@ function AlertDeleteModal({ visible, onConfirmClick, onCancelClick }) {
       footer={[
         <Space size={150}>
           <Button
-            className="alert-button"
+            className="alert-button delete-button"
             onClick={onConfirmClick}
             size="large"
           >
-            확인
+            삭제
           </Button>
-          <Button className="alert-button" onClick={onCancelClick}>
+          <Button
+            className="alert-button cancel-button"
+            onClick={onCancelClick}
+          >
             취소
           </Button>
         </Space>,
@@ -32,7 +35,10 @@ function AlertDeleteModal({ visible, onConfirmClick, onCancelClick }) {
         style={{ width: "100%" }}
       >
         <img src={delete_icon} />
-        <label className="alert-content-label">삭제 하시겠습니까?</label>
+        <label className="alert-content-label">[{name}]</label>
+        <label className="alert-content-label">
+          등록된 차량정보 전체를 삭제 하시겠습니까?
+        </label>
       </Space>
     </Modal>
   );

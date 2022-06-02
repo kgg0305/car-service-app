@@ -99,6 +99,7 @@ const initialState = {
   },
   confirm: {
     show: false,
+    name: "",
   },
   bodyInfo: {
     idx: null,
@@ -132,6 +133,10 @@ export default function detail(state = initialState, action) {
       return {
         ...initialState,
         bodyInfo: action.payload.bodyInfo,
+        confirm: {
+          ...initialState.confirm,
+          name: action.payload.bodyInfo.client_name,
+        },
       };
     case REMOVE_REDIRECTTO:
       return {

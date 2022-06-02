@@ -94,9 +94,9 @@ function Edit() {
             gutter={[0]}
             align="middle"
             style={{ height: 80 }}
-            className="table-layout"
+            className="detail-table-layout"
           >
-            <Col span={2} className="table-header-col-section">
+            <Col flex="154px" className="table-header-col-section">
               <label>
                 공통옵션 {index + 1 < 10 ? "0" + (index + 1) : index + 1}
               </label>
@@ -169,9 +169,9 @@ function Edit() {
             gutter={[0]}
             align="middle"
             style={{ height: 80 }}
-            className="table-layout"
+            className="detail-table-layout"
           >
-            <Col span={2} className="table-header-col-section">
+            <Col flex="154px" className="table-header-col-section">
               <label>
                 색상 {index + 1 < 10 ? "0" + (index + 1) : index + 1}
               </label>
@@ -234,7 +234,7 @@ function Edit() {
     <>
       <Space direction="vertical" size={18} className="main-layout">
         {/* Page Header */}
-        <Space direction="vertical" size={18}>
+        <Space direction="vertical" size={11}>
           <Row justify="middle">
             <Col>
               <label className="main-header-title">라인업 수정</label>
@@ -243,12 +243,15 @@ function Edit() {
             <Col>
               <Space size={10}>
                 <Link to="/car/lineup">
-                  <Button className="white-button" size="large">
+                  <Button
+                    className="white-button cancel-detail-button"
+                    size="large"
+                  >
                     취소
                   </Button>
                 </Link>
                 <Button
-                  className="black-button"
+                  className="black-button save-detail-button"
                   size="large"
                   onClick={() => onSaveClick("/car/lineup")}
                 >
@@ -266,7 +269,7 @@ function Edit() {
             <Space direction="vertical" size={20}>
               <Row align="middle">
                 <Col>
-                  <label className="main-sub-title">정보</label>
+                  <label className="detail-sub-title">정보</label>
                 </Col>
                 <Col flex="auto" />
               </Row>
@@ -275,9 +278,9 @@ function Edit() {
                   gutter={[0]}
                   align="middle"
                   style={{ height: 80 }}
-                  className="table-layout"
+                  className="detail-table-layout"
                 >
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>차량</label>
                   </Col>
                   <Col span={5} className="table-value-col-section">
@@ -355,9 +358,9 @@ function Edit() {
                   gutter={[0]}
                   align="middle"
                   style={{ height: 80 }}
-                  className="table-layout"
+                  className="detail-table-layout"
                 >
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>라인업</label>
                   </Col>
                   <Col span={10} className="table-value-col-section">
@@ -387,7 +390,7 @@ function Edit() {
                         )}
                       </div>
                       <Button
-                        className="black-button"
+                        className="black-button check-name-button"
                         onClick={() => onCheckNameClick(bodyInfo.lineup_name)}
                         size="large"
                       >
@@ -395,7 +398,7 @@ function Edit() {
                       </Button>
                     </Space>
                   </Col>
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>연료</label>
                   </Col>
                   <Col flex="auto" className="table-value-col-section">
@@ -427,9 +430,9 @@ function Edit() {
                   gutter={[0]}
                   align="middle"
                   style={{ height: 80 }}
-                  className="table-layout"
+                  className="detail-table-layout"
                 >
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>연식</label>
                   </Col>
                   <Col span={10} className="table-value-col-section">
@@ -444,7 +447,7 @@ function Edit() {
                       style={{ width: 150 }}
                     />
                   </Col>
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>사용여부</label>
                   </Col>
                   <Col flex="auto" className="table-value-col-section">
@@ -478,7 +481,7 @@ function Edit() {
             <Space direction="vertical" size={20}>
               <Row align="middle">
                 <Col>
-                  <label className="main-sub-title">
+                  <label className="detail-sub-title">
                     모델/라인업 공통 옵션 (튜닝/액세서리)
                   </label>
                 </Col>
@@ -489,7 +492,7 @@ function Edit() {
             <Space direction="vertical" size={20}>
               <Row align="middle">
                 <Col>
-                  <label className="main-sub-title">
+                  <label className="detail-sub-title">
                     모델/라인업 색상 (견적 메뉴에서만 노출)
                   </label>
                 </Col>
@@ -518,6 +521,7 @@ function Edit() {
         validationList={validation.list}
       />
       <AlertDeleteModal
+        name={confirm.name}
         visible={confirm.show}
         onConfirmClick={() => deleteInfo()}
         onCancelClick={onCloseConfirmClick}

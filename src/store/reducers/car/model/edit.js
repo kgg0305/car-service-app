@@ -583,6 +583,7 @@ const initialState = {
   },
   confirm: {
     show: false,
+    name: "",
   },
   brandOptionList: [],
   groupOptionList: [],
@@ -648,6 +649,10 @@ export default function create(state = initialState, action) {
         lineupIdList: action.payload.lineupIdList,
         colorIdList: action.payload.colorIdList,
         trimIdList: action.payload.trimIdList,
+        confirm: {
+          ...initialState.confirm,
+          name: action.payload.bodyInfo.model_name,
+        },
       };
     case REMOVE_REDIRECTTO:
       return {

@@ -77,9 +77,9 @@ function Edit() {
         gutter={[0]}
         align="middle"
         style={{ height: 80 }}
-        className="table-layout"
+        className="detail-table-layout"
       >
-        <Col span={2} className="table-header-col-section">
+        <Col flex="154px" className="table-header-col-section">
           <Space direction="vertical" style={{ paddingLeft: "10px" }}>
             <CaretUpFilled
               style={{ fontSize: "30px", cursor: "pointer" }}
@@ -160,7 +160,7 @@ function Edit() {
     <>
       <Space direction="vertical" size={18} className="main-layout">
         {/* Page Header */}
-        <Space direction="vertical" size={18}>
+        <Space direction="vertical" size={11}>
           <Row justify="middle">
             <Col>
               <label className="main-header-title">콘텐츠 인기순위 수정</label>
@@ -169,7 +169,10 @@ function Edit() {
             <Col>
               <Space size={10}>
                 <Link to="/content/contentRank">
-                  <Button className="white-button" size="large">
+                  <Button
+                    className="white-button cancel-detail-button"
+                    size="large"
+                  >
                     취소
                   </Button>
                 </Link>
@@ -191,7 +194,7 @@ function Edit() {
           <Space direction="vertical" size={0} split={<Divider />}>
             <Row align="middle">
               <Col>
-                <label className="main-sub-title">콘텐츠 선택</label>
+                <label className="detail-sub-title">콘텐츠 선택</label>
               </Col>
               <Col flex="auto" />
             </Row>

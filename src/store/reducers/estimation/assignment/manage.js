@@ -99,6 +99,7 @@ const initialState = {
   },
   confirm: {
     show: false,
+    name: "",
   },
   bodyInfo: {
     idx: null,

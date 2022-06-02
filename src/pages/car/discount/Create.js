@@ -96,7 +96,7 @@ function Create() {
           <Space direction="vertical" size={20}>
             <Row align="middle">
               <Col>
-                <label className="main-sub-title">
+                <label className="detail-sub-title">
                   정보 {body.number < 10 ? "0" + body.number : body.number}
                 </label>
               </Col>
@@ -104,8 +104,7 @@ function Create() {
               <Col>
                 {bodyList.length > 1 ? (
                   <Button
-                    className="white-button big-button"
-                    style={{ width: 129, fontWeight: 500 }}
+                    className="white-button big-button delete-body-detail-button"
                     onClick={() => onDeleteComponentClick(body.number)}
                   >
                     정보삭제
@@ -120,9 +119,9 @@ function Create() {
                 gutter={[0]}
                 align="middle"
                 style={{ height: 80 }}
-                className="table-layout"
+                className="detail-table-layout"
               >
-                <Col span={2} className="table-header-col-section">
+                <Col flex="154px" className="table-header-col-section">
                   <label>브랜드</label>
                 </Col>
                 <Col span={5} className="table-value-col-section">
@@ -150,7 +149,7 @@ function Create() {
           <Space direction="vertical" size={20}>
             <Row align="middle">
               <Col>
-                <label className="main-sub-title">
+                <label className="detail-sub-title">
                   종류 {body.number < 10 ? "0" + body.number : body.number}
                 </label>
               </Col>
@@ -171,7 +170,7 @@ function Create() {
             <Space direction="vertical" size={20}>
               <Row align="middle">
                 <Col>
-                  <label className="main-sub-title">
+                  <label className="detail-sub-title">
                     정보 {body.number < 10 ? "0" + body.number : body.number}
                   </label>
                 </Col>
@@ -182,9 +181,9 @@ function Create() {
                   gutter={[0]}
                   align="middle"
                   style={{ height: 80 }}
-                  className="table-layout"
+                  className="detail-table-layout"
                 >
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>브랜드</label>
                   </Col>
                   <Col span={5} className="table-value-col-section">
@@ -222,7 +221,7 @@ function Create() {
             <Space direction="vertical" size={20}>
               <Row align="middle">
                 <Col>
-                  <label className="main-sub-title">
+                  <label className="detail-sub-title">
                     조건 {body.number < 10 ? "0" + body.number : body.number}
                   </label>
                 </Col>
@@ -245,9 +244,9 @@ function Create() {
           gutter={[0]}
           align="middle"
           style={{ height: 80 }}
-          className="table-layout"
+          className="detail-table-layout"
         >
-          <Col span={2} className="table-header-col-section">
+          <Col flex="154px" className="table-header-col-section">
             <label>
               상품{" "}
               {kindBody.number < 10 ? "0" + kindBody.number : kindBody.number}
@@ -330,9 +329,9 @@ function Create() {
           gutter={[0]}
           align="middle"
           style={{ height: 80 }}
-          className="table-layout"
+          className="detail-table-layout"
         >
-          <Col span={2} className="table-header-col-section">
+          <Col flex="154px" className="table-header-col-section">
             <label>
               기간{" "}
               {kindBody.number < 10 ? "0" + kindBody.number : kindBody.number}
@@ -383,9 +382,9 @@ function Create() {
         gutter={[0]}
         align="middle"
         style={{ height: 80 }}
-        className="table-layout"
+        className="detail-table-layout"
       >
-        <Col span={2} className="table-header-col-section">
+        <Col flex="154px" className="table-header-col-section">
           <label>
             조건{" "}
             {conditionBody.number !== 10
@@ -511,7 +510,7 @@ function Create() {
     <>
       <Space direction="vertical" size={18} className="main-layout">
         {/* Page Header */}
-        <Space direction="vertical" size={18}>
+        <Space direction="vertical" size={11}>
           <Row justify="middle">
             <Col>
               <label className="main-header-title">할인/비용 등록</label>
@@ -520,7 +519,10 @@ function Create() {
             <Col>
               <Space size={10}>
                 <Link to="/car/discount">
-                  <Button className="white-button" size="large">
+                  <Button
+                    className="white-button cancel-detail-button"
+                    size="large"
+                  >
                     취소
                   </Button>
                 </Link>

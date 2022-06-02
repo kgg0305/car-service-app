@@ -19,18 +19,24 @@ export const init = () => async (dispatch) => {
     const initDataSource = await rankService.get(1);
 
     var initModelBodyList = [];
-    for (let index = 0; index < initDataSource.ids.split(",").length; index++) {
-      const id = initDataSource.ids.split(",")[index];
-      initModelBodyList.push({
-        ...(await modelService.get(id)),
-        number: index + 1,
-      });
+    if (initDataSource.length) {
+      for (
+        let index = 0;
+        index < initDataSource.ids.split(",").length;
+        index++
+      ) {
+        const id = initDataSource.ids.split(",")[index];
+        initModelBodyList.push({
+          ...(await modelService.get(id)),
+          number: index + 1,
+        });
+      }
     }
 
     const bodyInfo = {
       ...initDataSource,
       created_at: GetDateTimeUntilMinuteStringUsingKorFromDate(
-        new Date(initDataSource.created_at)
+        initDataSource.length ? new Date(initDataSource.created_at) : new Date()
       ),
     };
 

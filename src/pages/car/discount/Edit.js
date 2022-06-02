@@ -86,9 +86,9 @@ function Edit() {
         gutter={[0]}
         align="middle"
         style={{ height: 80 }}
-        className="table-layout"
+        className="detail-table-layout"
       >
-        <Col span={2} className="table-header-col-section">
+        <Col flex="154px" className="table-header-col-section">
           <label>
             조건{" "}
             {conditionBody.number !== 10
@@ -198,7 +198,7 @@ function Edit() {
     <>
       <Space direction="vertical" size={18} className="main-layout">
         {/* Page Header */}
-        <Space direction="vertical" size={18}>
+        <Space direction="vertical" size={11}>
           <Row justify="middle">
             <Col>
               <label className="main-header-title">할인/비용 수정</label>
@@ -229,7 +229,7 @@ function Edit() {
                 <Space direction="vertical" size={20}>
                   <Row align="middle">
                     <Col>
-                      <label className="main-sub-title">정보 01</label>
+                      <label className="detail-sub-title">정보 01</label>
                     </Col>
                     <Col flex="auto" />
                   </Row>
@@ -238,9 +238,9 @@ function Edit() {
                       gutter={[0]}
                       align="middle"
                       style={{ height: 80 }}
-                      className="table-layout"
+                      className="detail-table-layout"
                     >
-                      <Col span={2} className="table-header-col-section">
+                      <Col flex="154px" className="table-header-col-section">
                         <label>브랜드</label>
                       </Col>
                       <Col span={5} className="table-value-col-section">
@@ -271,7 +271,7 @@ function Edit() {
                 <Space direction="vertical" size={20}>
                   <Row align="middle">
                     <Col>
-                      <label className="main-sub-title">종류 01</label>
+                      <label className="detail-sub-title">종류 01</label>
                     </Col>
                     <Col flex="auto" />
                   </Row>
@@ -280,9 +280,9 @@ function Edit() {
                       gutter={[0]}
                       align="middle"
                       style={{ height: 80 }}
-                      className="table-layout"
+                      className="detail-table-layout"
                     >
-                      <Col span={2} className="table-header-col-section">
+                      <Col flex="154px" className="table-header-col-section">
                         <label>상품 01</label>
                       </Col>
                       <Col flex="auto" className="table-value-col-section">
@@ -324,9 +324,9 @@ function Edit() {
                       gutter={[0]}
                       align="middle"
                       style={{ height: 80 }}
-                      className="table-layout"
+                      className="detail-table-layout"
                     >
-                      <Col span={2} className="table-header-col-section">
+                      <Col flex="154px" className="table-header-col-section">
                         <label>기간 01</label>
                       </Col>
                       <Col flex="auto" className="table-value-col-section">
@@ -384,7 +384,7 @@ function Edit() {
                 <Space direction="vertical" size={20}>
                   <Row align="middle">
                     <Col>
-                      <label className="main-sub-title">정보 01</label>
+                      <label className="detail-sub-title">정보 01</label>
                     </Col>
                     <Col flex="auto" />
                   </Row>
@@ -393,9 +393,9 @@ function Edit() {
                       gutter={[0]}
                       align="middle"
                       style={{ height: 80 }}
-                      className="table-layout"
+                      className="detail-table-layout"
                     >
-                      <Col span={2} className="table-header-col-section">
+                      <Col flex="154px" className="table-header-col-section">
                         <label>브랜드</label>
                       </Col>
                       <Col span={5} className="table-value-col-section">
@@ -433,7 +433,7 @@ function Edit() {
                 <Space direction="vertical" size={20}>
                   <Row align="middle">
                     <Col>
-                      <label className="main-sub-title">조건 01</label>
+                      <label className="detail-sub-title">조건 01</label>
                     </Col>
                     <Col flex="auto" />
                   </Row>
@@ -452,6 +452,7 @@ function Edit() {
         validationList={validation.list}
       />
       <AlertDeleteModal
+        name={confirm.name}
         visible={confirm.show}
         onConfirmClick={() => deleteInfo()}
         onCancelClick={onCloseConfirmClick}

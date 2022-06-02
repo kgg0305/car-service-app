@@ -212,7 +212,7 @@ function List() {
     return (
       <Space direction="vertical" size={5}>
         <Row gutter={[13]} justify="left">
-          <Col span={2} style={{ textAlign: "right" }}>
+          <Col flex="154px" style={{ textAlign: "right" }}>
             <label>전체관리</label>
           </Col>
           <Col>
@@ -232,7 +232,7 @@ function List() {
           </Col>
         </Row>
         <Row gutter={[13]} justify="left">
-          <Col span={2} style={{ textAlign: "right" }}>
+          <Col flex="154px" style={{ textAlign: "right" }}>
             <label>보기만</label>
           </Col>
           <Col>
@@ -259,7 +259,7 @@ function List() {
     return (
       <Space direction="vertical" size={5}>
         <Row gutter={[13]} justify="left">
-          <Col span={2} style={{ textAlign: "right" }}>
+          <Col flex="154px" style={{ textAlign: "right" }}>
             <label>전체관리</label>
           </Col>
           <Col>
@@ -279,7 +279,7 @@ function List() {
           </Col>
         </Row>
         <Row gutter={[13]} justify="left">
-          <Col span={2} style={{ textAlign: "right" }}>
+          <Col flex="154px" style={{ textAlign: "right" }}>
             <label>보기만</label>
           </Col>
           <Col>
@@ -1218,7 +1218,7 @@ function List() {
     <>
       <Space direction="vertical" size={18} className="main-layout">
         {/* Page Header */}
-        <Space direction="vertical" size={18}>
+        <Space direction="vertical" size={11}>
           <Row justify="middle">
             <Col>
               <label className="main-header-title">사용자 권한</label>

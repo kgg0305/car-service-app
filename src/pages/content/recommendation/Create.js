@@ -72,9 +72,9 @@ function Create() {
         gutter={[0]}
         align="middle"
         style={{ height: 80 }}
-        className="table-layout"
+        className="detail-table-layout"
       >
-        <Col span={2} className="table-header-col-section">
+        <Col flex="154px" className="table-header-col-section">
           <Space direction="vertical" style={{ paddingLeft: "10px" }}>
             <CaretUpFilled
               style={{ fontSize: "30px", cursor: "pointer" }}
@@ -155,7 +155,7 @@ function Create() {
     <>
       <Space direction="vertical" size={18} className="main-layout">
         {/* Page Header */}
-        <Space direction="vertical" size={18}>
+        <Space direction="vertical" size={11}>
           <Row justify="middle">
             <Col>
               <label className="main-header-title">추천뉴스 등록</label>
@@ -164,7 +164,10 @@ function Create() {
             <Col>
               <Space size={10}>
                 <Link to="/content/recommendation">
-                  <Button className="white-button" size="large">
+                  <Button
+                    className="white-button cancel-detail-button"
+                    size="large"
+                  >
                     취소
                   </Button>
                 </Link>
@@ -183,11 +186,15 @@ function Create() {
 
         {/* Body Section */}
         <Space direction="vertical" size={20} style={{ paddingBottom: 117 }}>
-          <Space direction="vertical" size={72} split={<Divider />}>
+          <Space
+            direction="vertical"
+            size={59}
+            split={<Divider className="detail-body-divider" dashed />}
+          >
             <Space direction="vertical" size={20}>
               <Row align="middle">
                 <Col>
-                  <label className="main-sub-title">발행일 선택</label>
+                  <label className="detail-sub-title">발행일 선택</label>
                 </Col>
                 <Col flex="auto" />
               </Row>
@@ -196,9 +203,9 @@ function Create() {
                   gutter={[0]}
                   align="middle"
                   style={{ height: 80 }}
-                  className="table-layout"
+                  className="detail-table-layout"
                 >
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>발행일</label>
                   </Col>
                   <Col flex="auto" className="table-value-col-section">
@@ -222,7 +229,7 @@ function Create() {
             <Space direction="vertical" size={20}>
               <Row align="middle">
                 <Col>
-                  <label className="main-sub-title">뉴스 선택</label>
+                  <label className="detail-sub-title">뉴스 선택</label>
                 </Col>
                 <Col flex="auto" />
               </Row>

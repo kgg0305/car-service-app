@@ -153,12 +153,15 @@ function Manage() {
     <>
       <Space direction="vertical" size={18} className="main-layout">
         {/* Page Header */}
-        <Space direction="vertical" size={18}>
+        <Space direction="vertical" size={11}>
           <Space size={1210}>
             <label className="main-header-title">트림 관리</label>
             <Space size={10}>
               <Link to="/car/lineup">
-                <Button className="white-button" size="large">
+                <Button
+                  className="white-button cancel-detail-button"
+                  size="large"
+                >
                   취소
                 </Button>
               </Link>
@@ -184,6 +187,7 @@ function Manage() {
         </Row>
       </Space>
       <AlertDeleteModal
+        name={confirm.name}
         visible={confirm.show}
         onConfirmClick={() => deleteInfo(confirm.idx)}
         onCancelClick={onCloseConfirmClick}

@@ -44,15 +44,18 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: 154,
     },
     {
       title: "로고",
       dataIndex: "logo",
       key: "logo",
       align: "center",
+      width: 192.5,
       render: (path) => (
         <Image
-          width={60}
+          width={50}
+          height={50}
           src={window.location.origin + "/uploads/brand/" + path}
         />
       ),
@@ -62,18 +65,21 @@ function List() {
       dataIndex: "brand_name",
       key: "brand_name",
       align: "center",
+      width: 422,
     },
     {
       title: "순서",
       dataIndex: "sequence",
       key: "sequence",
       align: "center",
+      width: 169,
     },
     {
       title: "사용여부",
       dataIndex: "is_use",
       key: "is_use",
       align: "center",
+      width: 211,
       render: (is_use) =>
         Constants.availableOptions.filter((item) => item.value == is_use)[0]
           .label,
@@ -83,12 +89,14 @@ function List() {
       dataIndex: "model_count",
       key: "model_count",
       align: "center",
+      width: 211,
     },
     {
       title: "관리",
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: 220,
       render: (idx) => (
         <Row justify="center">
           <Col>
@@ -127,13 +135,13 @@ function List() {
   return (
     <Space direction="vertical" size={18} className="main-layout">
       {/* Page Header */}
-      <Space direction="vertical" size={18}>
+      <Space direction="vertical" size={11}>
         <label className="main-header-title">브랜드 목록</label>
         <Divider className="main-body-divider" />
       </Space>
 
       {/* Search Section */}
-      <Space direction="vertical" size={20}>
+      <Space className="search-layout" direction="vertical" size={20}>
         <label className="title-label">검색</label>
         <Space direction="vertical" size={0}>
           <Row
@@ -141,7 +149,7 @@ function List() {
             gutter={[0]}
             align="middle"
             style={{ height: 80 }}
-            className="table"
+            className="search-table-layout"
           >
             <Col flex="154px" className="table-header">
               <label className="table-header-label">차량선택</label>
@@ -157,7 +165,7 @@ function List() {
                   suffixIcon={<CaretDownOutlined />}
                   placeholder="브랜드 선택"
                   size="large"
-                  style={{ width: 300 }}
+                  style={{ width: 400 }}
                 >
                   {brandOptionList.map((optionItem, optionIndex) => (
                     <Select.Option key={optionIndex} value={optionItem.value}>

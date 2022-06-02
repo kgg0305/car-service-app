@@ -357,6 +357,7 @@ const initialState = {
   },
   confirm: {
     show: false,
+    name: "",
   },
   brandOptionList: [],
   groupOptionList: [],
@@ -409,6 +410,10 @@ export default function edit(state = initialState, action) {
         detailBodyInfo: action.payload.detailBodyInfo,
         brandBodyInfo: action.payload.brandBodyInfo,
         lineupBodyInfo: action.payload.lineupBodyInfo,
+        confirm: {
+          ...initialState.confirm,
+          name: action.payload.bodyInfo.trim_name,
+        },
       };
     case REMOVE_REDIRECTTO:
       return {

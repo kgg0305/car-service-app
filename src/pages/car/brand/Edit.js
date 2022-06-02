@@ -70,7 +70,7 @@ function Edit() {
     <>
       <Space direction="vertical" size={18} className="main-layout">
         {/* Page Header */}
-        <Space direction="vertical" size={18}>
+        <Space direction="vertical" size={11}>
           <Row justify="middle">
             <Col>
               <label className="main-header-title">브랜드 수정</label>
@@ -79,12 +79,15 @@ function Edit() {
             <Col>
               <Space size={10}>
                 <Link to="/car/brand">
-                  <Button className="white-button" size="large">
+                  <Button
+                    className="white-button cancel-detail-button"
+                    size="large"
+                  >
                     취소
                   </Button>
                 </Link>
                 <Button
-                  className="black-button"
+                  className="black-button save-detail-button"
                   size="large"
                   onClick={() => onSaveClick("/car/brand")}
                 >
@@ -98,11 +101,15 @@ function Edit() {
 
         {/* Body Section */}
         <Space direction="vertical" size={20} style={{ paddingBottom: 117 }}>
-          <Space direction="vertical" size={72} split={<Divider />}>
+          <Space
+            direction="vertical"
+            size={59}
+            split={<Divider className="detail-body-divider" dashed />}
+          >
             <Space direction="vertical" size={20}>
               <Row align="middle">
                 <Col>
-                  <label className="main-sub-title">정보</label>
+                  <label className="detail-sub-title">정보</label>
                 </Col>
                 <Col flex="auto" />
               </Row>
@@ -111,12 +118,12 @@ function Edit() {
                   gutter={[0]}
                   align="middle"
                   style={{ height: 80 }}
-                  className="table-layout"
+                  className="detail-table-layout"
                 >
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>브랜드</label>
                   </Col>
-                  <Col span={10} className="table-value-col-section">
+                  <Col flex="636px" className="table-value-col-section">
                     <Space>
                       <div style={{ position: "relative" }}>
                         <Input
@@ -143,7 +150,7 @@ function Edit() {
                         )}
                       </div>
                       <Button
-                        className="black-button"
+                        className="black-button check-name-button"
                         onClick={() => onCheckNameClick(bodyInfo.brand_name)}
                         size="large"
                       >
@@ -151,7 +158,7 @@ function Edit() {
                       </Button>
                     </Space>
                   </Col>
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>순서</label>
                   </Col>
                   <Col flex="auto" className="table-value-col-section">
@@ -177,12 +184,12 @@ function Edit() {
                   gutter={[0]}
                   align="middle"
                   style={{ height: 80 }}
-                  className="table-layout"
+                  className="detail-table-layout"
                 >
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>국가</label>
                   </Col>
-                  <Col span={4} className="table-value-col-section">
+                  <Col flex="241px" className="table-value-col-section">
                     <Select
                       name="nation"
                       value={bodyInfo.nation}
@@ -206,10 +213,10 @@ function Edit() {
                       )}
                     </Select>
                   </Col>
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>수입여부</label>
                   </Col>
-                  <Col span={4} className="table-value-col-section">
+                  <Col flex="241px" className="table-value-col-section">
                     <Select
                       name="is_income"
                       value={bodyInfo.is_income}
@@ -233,7 +240,7 @@ function Edit() {
                       )}
                     </Select>
                   </Col>
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>사용여부</label>
                   </Col>
                   <Col flex="auto" className="table-value-col-section">
@@ -266,12 +273,12 @@ function Edit() {
                   gutter={[0]}
                   align="middle"
                   style={{ height: 80 }}
-                  className="table-layout"
+                  className="detail-table-layout"
                 >
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>공식사이트</label>
                   </Col>
-                  <Col span={10} className="table-value-col-section">
+                  <Col flex="636px" className="table-value-col-section">
                     <Input
                       name="public_uri"
                       value={bodyInfo.public_uri}
@@ -283,7 +290,7 @@ function Edit() {
                       style={{ width: 400 }}
                     />
                   </Col>
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>전시장 안내</label>
                   </Col>
                   <Col flex="auto" className="table-value-col-section">
@@ -303,12 +310,12 @@ function Edit() {
                   gutter={[0]}
                   align="middle"
                   style={{ height: 80 }}
-                  className="table-layout"
+                  className="detail-table-layout"
                 >
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>서비스 센터</label>
                   </Col>
-                  <Col span={10} className="table-value-col-section">
+                  <Col flex="636px" className="table-value-col-section">
                     <Input
                       name="service_uri"
                       value={bodyInfo.service_uri}
@@ -320,7 +327,7 @@ function Edit() {
                       style={{ width: 400 }}
                     />
                   </Col>
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>보증금 안내</label>
                   </Col>
                   <Col flex="auto" className="table-value-col-section">
@@ -340,9 +347,9 @@ function Edit() {
                   gutter={[0]}
                   align="middle"
                   style={{ height: 174 }}
-                  className="table-layout"
+                  className="detail-table-layout"
                 >
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>로고</label>
                   </Col>
                   <Col flex="auto" className="table-value-col-section">
@@ -378,7 +385,10 @@ function Edit() {
                             return true;
                           }}
                         >
-                          <Button className="black-button" size="large">
+                          <Button
+                            className="black-button upload-image-detail-button"
+                            size="large"
+                          >
                             등록
                           </Button>
                         </Upload>
@@ -409,6 +419,7 @@ function Edit() {
         validationList={validation.list}
       />
       <AlertDeleteModal
+        name={confirm.name}
         visible={confirm.show}
         onConfirmClick={() => deleteInfo()}
         onCancelClick={onCloseConfirmClick}

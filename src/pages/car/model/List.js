@@ -135,13 +135,13 @@ function List() {
   return (
     <Space direction="vertical" size={18} className="main-layout">
       {/* Page Header */}
-      <Space direction="vertical" size={18}>
+      <Space direction="vertical" size={11}>
         <label className="main-header-title">모델 목록</label>
         <Divider className="main-body-divider" />
       </Space>
 
       {/* Search Section */}
-      <Space direction="vertical" size={20}>
+      <Space className="search-layout" direction="vertical" size={20}>
         <label className="title-label">검색</label>
         <Space direction="vertical" size={0}>
           <Row
@@ -149,7 +149,7 @@ function List() {
             gutter={[0]}
             align="middle"
             style={{ height: 80 }}
-            className="table"
+            className="search-table-layout"
           >
             <Col flex="154px" className="table-header">
               <label className="table-header-label">차량</label>
@@ -200,12 +200,12 @@ function List() {
             gutter={[0]}
             align="middle"
             style={{ height: 80 }}
-            className="table"
+            className="search-table-layout"
           >
             <Col flex="154px" className="table-header">
               <label className="table-header-label">신차여부</label>
             </Col>
-            <Col flex="auto" className="table-value">
+            <Col flex="635px" className="table-value">
               <Space size={6}>
                 <Select
                   name="is_new"

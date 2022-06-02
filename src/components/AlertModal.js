@@ -11,7 +11,11 @@ function AlertModal({ visible, onConfirmClick, validationList }) {
       closable={false}
       visible={visible}
       footer={[
-        <Button className="alert-button" onClick={onConfirmClick} size="large">
+        <Button
+          className="alert-button confirm-button"
+          onClick={onConfirmClick}
+          size="large"
+        >
           확인
         </Button>,
       ]}

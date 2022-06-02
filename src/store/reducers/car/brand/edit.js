@@ -197,6 +197,7 @@ const initialState = {
   },
   confirm: {
     show: false,
+    name: "",
   },
   bodyInfo: {
     idx: 1,
@@ -222,6 +223,10 @@ export default function edit(state = initialState, action) {
       return {
         ...initialState,
         bodyInfo: action.payload.bodyInfo,
+        confirm: {
+          ...initialState.confirm,
+          name: action.payload.bodyInfo.brand_name,
+        },
       };
     case REMOVE_REDIRECTTO:
       return {

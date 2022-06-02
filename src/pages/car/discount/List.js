@@ -124,13 +124,13 @@ function List() {
   return (
     <Space direction="vertical" size={18} className="main-layout">
       {/* Page Header */}
-      <Space direction="vertical" size={18}>
+      <Space direction="vertical" size={11}>
         <label className="main-header-title">할인/비용 목록</label>
         <Divider className="main-body-divider" />
       </Space>
 
       {/* Search Section */}
-      <Space direction="vertical" size={20}>
+      <Space className="search-layout" direction="vertical" size={20}>
         <label className="title-label">검색</label>
         <Space direction="vertical" size={0}>
           <Row
@@ -138,7 +138,7 @@ function List() {
             gutter={[0]}
             align="middle"
             style={{ height: 80 }}
-            className="table"
+            className="search-table-layout"
           >
             <Col flex="154px" className="table-header">
               <label className="table-header-label">브랜드</label>
@@ -189,7 +189,7 @@ function List() {
             gutter={[0]}
             align="middle"
             style={{ height: 80 }}
-            className="table"
+            className="search-table-layout"
           >
             <Col flex="154px" className="table-header">
               <label className="table-header-label">날짜</label>

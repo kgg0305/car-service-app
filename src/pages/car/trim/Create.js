@@ -97,9 +97,9 @@ function Create() {
         gutter={[0]}
         align="middle"
         style={{ height: 80 }}
-        className="table-layout"
+        className="detail-table-layout"
       >
-        <Col span={2} className="table-header-col-section">
+        <Col flex="154px" className="table-header-col-section">
           <label>
             사양 {body.number < 10 ? "0" + body.number : body.number}
           </label>
@@ -201,9 +201,9 @@ function Create() {
         gutter={[0]}
         align="middle"
         style={{ height: 80 }}
-        className="table-layout"
+        className="detail-table-layout"
       >
-        <Col span={2} className="table-header-col-section">
+        <Col flex="154px" className="table-header-col-section">
           <label>옵션 {index + 1 < 10 ? "0" + (index + 1) : index + 1}</label>
         </Col>
         <Col flex="auto" className="table-value-col-section">
@@ -319,7 +319,7 @@ function Create() {
               <Space direction="vertical" size={20}>
                 <Row gutter={[12]} align="middle">
                   <Col>
-                    <label className="main-sub-title">제원</label>
+                    <label className="detail-sub-title">제원</label>
                   </Col>
                   <Col flex="auto" />
                 </Row>
@@ -328,9 +328,9 @@ function Create() {
                     gutter={[0]}
                     align="middle"
                     style={{ height: 80 }}
-                    className="table-layout"
+                    className="detail-table-layout"
                   >
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>연료</label>
                     </Col>
                     <Col span={10} className="table-value-col-section">
@@ -345,7 +345,7 @@ function Create() {
                         disabled
                       />
                     </Col>
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>연비 [km/l]</label>
                     </Col>
                     <Col flex="auto" className="table-value-col-section">
@@ -365,9 +365,9 @@ function Create() {
                     gutter={[0]}
                     align="middle"
                     style={{ height: 80 }}
-                    className="table-layout"
+                    className="detail-table-layout"
                   >
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>베기량 [CC]</label>
                     </Col>
                     <Col span={10} className="table-value-col-section">
@@ -382,7 +382,7 @@ function Create() {
                         style={{ width: 150 }}
                       />
                     </Col>
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>엔진형식</label>
                     </Col>
                     <Col flex="auto" className="table-value-col-section">
@@ -404,9 +404,9 @@ function Create() {
                     gutter={[0]}
                     align="middle"
                     style={{ height: 80 }}
-                    className="table-layout"
+                    className="detail-table-layout"
                   >
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>최대토크 [kg.m/rpm]</label>
                     </Col>
                     <Col span={10} className="table-value-col-section">
@@ -434,7 +434,7 @@ function Create() {
                         />
                       </Space>
                     </Col>
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>최고출력 [ps/rpm]</label>
                     </Col>
                     <Col flex="auto" className="table-value-col-section">
@@ -467,9 +467,9 @@ function Create() {
                     gutter={[0]}
                     align="middle"
                     style={{ height: 80 }}
-                    className="table-layout"
+                    className="detail-table-layout"
                   >
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>CO2배출량 [g/km]</label>
                     </Col>
                     <Col span={10} className="table-value-col-section">
@@ -484,7 +484,7 @@ function Create() {
                         style={{ width: 150 }}
                       />
                     </Col>
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>타이어</label>
                     </Col>
                     <Col flex="auto" className="table-value-col-section">
@@ -528,9 +528,9 @@ function Create() {
                     gutter={[0]}
                     align="middle"
                     style={{ height: 80 }}
-                    className="table-layout"
+                    className="detail-table-layout"
                   >
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>구동방식</label>
                     </Col>
                     <Col span={10} className="table-value-col-section">
@@ -548,7 +548,7 @@ function Create() {
                         style={{ width: 200 }}
                       />
                     </Col>
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>변속기</label>
                     </Col>
                     <Col flex="auto" className="table-value-col-section">
@@ -571,9 +571,9 @@ function Create() {
                     gutter={[0]}
                     align="middle"
                     style={{ height: 80 }}
-                    className="table-layout"
+                    className="detail-table-layout"
                   >
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>연료탱크 [ l ]</label>
                     </Col>
                     <Col span={10} className="table-value-col-section">
@@ -588,7 +588,7 @@ function Create() {
                         style={{ width: 150 }}
                       />
                     </Col>
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>공차중량 [kg]</label>
                     </Col>
                     <Col flex="auto" className="table-value-col-section">
@@ -608,9 +608,9 @@ function Create() {
                     gutter={[0]}
                     align="middle"
                     style={{ height: 80 }}
-                    className="table-layout"
+                    className="detail-table-layout"
                   >
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>승차정원 [명]</label>
                     </Col>
                     <Col flex="auto" className="table-value-col-section">
@@ -631,7 +631,7 @@ function Create() {
               <Space direction="vertical" size={20}>
                 <Row gutter={[12]} align="middle">
                   <Col>
-                    <label className="main-sub-title">크기</label>
+                    <label className="detail-sub-title">크기</label>
                   </Col>
                   <Col flex="auto" />
                 </Row>
@@ -640,9 +640,9 @@ function Create() {
                     gutter={[0]}
                     align="middle"
                     style={{ height: 80 }}
-                    className="table-layout"
+                    className="detail-table-layout"
                   >
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>전고 [mm]</label>
                     </Col>
                     <Col span={10} className="table-value-col-section">
@@ -657,7 +657,7 @@ function Create() {
                         style={{ width: 150 }}
                       />
                     </Col>
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>전폭 [mm]</label>
                     </Col>
                     <Col flex="auto" className="table-value-col-section">
@@ -677,9 +677,9 @@ function Create() {
                     gutter={[0]}
                     align="middle"
                     style={{ height: 80 }}
-                    className="table-layout"
+                    className="detail-table-layout"
                   >
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>휠베이스 [mm]</label>
                     </Col>
                     <Col span={10} className="table-value-col-section">
@@ -694,7 +694,7 @@ function Create() {
                         style={{ width: 150 }}
                       />
                     </Col>
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>전장 [mm]</label>
                     </Col>
                     <Col flex="auto" className="table-value-col-section">
@@ -720,7 +720,7 @@ function Create() {
               <Space direction="vertical" size={20}>
                 <Row gutter={[12]} align="middle">
                   <Col>
-                    <label className="main-sub-title">제원</label>
+                    <label className="detail-sub-title">제원</label>
                   </Col>
                   <Col flex="auto" />
                 </Row>
@@ -729,9 +729,9 @@ function Create() {
                     gutter={[0]}
                     align="middle"
                     style={{ height: 80 }}
-                    className="table-layout"
+                    className="detail-table-layout"
                   >
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>연료</label>
                     </Col>
                     <Col span={10} className="table-value-col-section">
@@ -746,7 +746,7 @@ function Create() {
                         disabled
                       />
                     </Col>
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>연비 [km/l]</label>
                     </Col>
                     <Col flex="auto" className="table-value-col-section">
@@ -766,9 +766,9 @@ function Create() {
                     gutter={[0]}
                     align="middle"
                     style={{ height: 80 }}
-                    className="table-layout"
+                    className="detail-table-layout"
                   >
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>베기량 [CC]</label>
                     </Col>
                     <Col span={10} className="table-value-col-section">
@@ -783,7 +783,7 @@ function Create() {
                         style={{ width: 150 }}
                       />
                     </Col>
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>엔진형식</label>
                     </Col>
                     <Col flex="auto" className="table-value-col-section">
@@ -805,9 +805,9 @@ function Create() {
                     gutter={[0]}
                     align="middle"
                     style={{ height: 80 }}
-                    className="table-layout"
+                    className="detail-table-layout"
                   >
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>최대토크 [kg.m/rpm]</label>
                     </Col>
                     <Col span={10} className="table-value-col-section">
@@ -835,7 +835,7 @@ function Create() {
                         />
                       </Space>
                     </Col>
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>최고출력 [ps/rpm]</label>
                     </Col>
                     <Col flex="auto" className="table-value-col-section">
@@ -868,9 +868,9 @@ function Create() {
                     gutter={[0]}
                     align="middle"
                     style={{ height: 80 }}
-                    className="table-layout"
+                    className="detail-table-layout"
                   >
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>제로백 [초]</label>
                     </Col>
                     <Col span={10} className="table-value-col-section">
@@ -885,7 +885,7 @@ function Create() {
                         style={{ width: 150 }}
                       />
                     </Col>
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>CO2배출량 [g/km]</label>
                     </Col>
                     <Col span={10} className="table-value-col-section">
@@ -905,9 +905,9 @@ function Create() {
                     gutter={[0]}
                     align="middle"
                     style={{ height: 80 }}
-                    className="table-layout"
+                    className="detail-table-layout"
                   >
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>타이어</label>
                     </Col>
                     <Col flex="auto" className="table-value-col-section">
@@ -946,7 +946,7 @@ function Create() {
                         />
                       </Space>
                     </Col>
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>구동방식</label>
                     </Col>
                     <Col span={10} className="table-value-col-section">
@@ -969,9 +969,9 @@ function Create() {
                     gutter={[0]}
                     align="middle"
                     style={{ height: 80 }}
-                    className="table-layout"
+                    className="detail-table-layout"
                   >
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>변속기</label>
                     </Col>
                     <Col flex="auto" className="table-value-col-section">
@@ -989,7 +989,7 @@ function Create() {
                         style={{ width: 200 }}
                       />
                     </Col>
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>연료탱크 [ l ]</label>
                     </Col>
                     <Col span={10} className="table-value-col-section">
@@ -1009,9 +1009,9 @@ function Create() {
                     gutter={[0]}
                     align="middle"
                     style={{ height: 80 }}
-                    className="table-layout"
+                    className="detail-table-layout"
                   >
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>공차중량 [kg]</label>
                     </Col>
                     <Col flex="auto" className="table-value-col-section">
@@ -1026,7 +1026,7 @@ function Create() {
                         style={{ width: 150 }}
                       />
                     </Col>
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>승차정원 [명]</label>
                     </Col>
                     <Col flex="auto" className="table-value-col-section">
@@ -1047,7 +1047,7 @@ function Create() {
               <Space direction="vertical" size={20}>
                 <Row gutter={[12]} align="middle">
                   <Col>
-                    <label className="main-sub-title">크기</label>
+                    <label className="detail-sub-title">크기</label>
                   </Col>
                   <Col flex="auto" />
                 </Row>
@@ -1056,9 +1056,9 @@ function Create() {
                     gutter={[0]}
                     align="middle"
                     style={{ height: 80 }}
-                    className="table-layout"
+                    className="detail-table-layout"
                   >
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>전고 [mm]</label>
                     </Col>
                     <Col span={10} className="table-value-col-section">
@@ -1073,7 +1073,7 @@ function Create() {
                         style={{ width: 150 }}
                       />
                     </Col>
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>전폭 [mm]</label>
                     </Col>
                     <Col flex="auto" className="table-value-col-section">
@@ -1093,9 +1093,9 @@ function Create() {
                     gutter={[0]}
                     align="middle"
                     style={{ height: 80 }}
-                    className="table-layout"
+                    className="detail-table-layout"
                   >
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>휠베이스 [mm]</label>
                     </Col>
                     <Col span={10} className="table-value-col-section">
@@ -1110,7 +1110,7 @@ function Create() {
                         style={{ width: 150 }}
                       />
                     </Col>
-                    <Col span={2} className="table-header-col-section">
+                    <Col flex="154px" className="table-header-col-section">
                       <label>전장 [mm]</label>
                     </Col>
                     <Col flex="auto" className="table-value-col-section">
@@ -1137,7 +1137,7 @@ function Create() {
             <Space direction="vertical" size={20}>
               <Row gutter={[12]} align="middle">
                 <Col>
-                  <label className="main-sub-title">주행가능거리</label>
+                  <label className="detail-sub-title">주행가능거리</label>
                 </Col>
                 <Col flex="auto" />
               </Row>
@@ -1146,9 +1146,9 @@ function Create() {
                   gutter={[0]}
                   align="middle"
                   style={{ height: 80 }}
-                  className="table-layout"
+                  className="detail-table-layout"
                 >
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>도심 [km]</label>
                   </Col>
                   <Col span={10} className="table-value-col-section">
@@ -1163,7 +1163,7 @@ function Create() {
                       style={{ width: 150 }}
                     />
                   </Col>
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>고속도로 [km]</label>
                   </Col>
                   <Col flex="auto" className="table-value-col-section">
@@ -1183,9 +1183,9 @@ function Create() {
                   gutter={[0]}
                   align="middle"
                   style={{ height: 80 }}
-                  className="table-layout"
+                  className="detail-table-layout"
                 >
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>복합 [km]</label>
                   </Col>
                   <Col span={10} className="table-value-col-section">
@@ -1200,7 +1200,7 @@ function Create() {
                       style={{ width: 150 }}
                     />
                   </Col>
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>상온 [km]</label>
                   </Col>
                   <Col flex="auto" className="table-value-col-section">
@@ -1220,9 +1220,9 @@ function Create() {
                   gutter={[0]}
                   align="middle"
                   style={{ height: 80 }}
-                  className="table-layout"
+                  className="detail-table-layout"
                 >
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>저온 [km]</label>
                   </Col>
                   <Col span={10} className="table-value-col-section">
@@ -1245,7 +1245,7 @@ function Create() {
             <Space direction="vertical" size={20}>
               <Row gutter={[12]} align="middle">
                 <Col>
-                  <label className="main-sub-title">충전정보</label>
+                  <label className="detail-sub-title">충전정보</label>
                 </Col>
                 <Col flex="auto" />
               </Row>
@@ -1254,9 +1254,9 @@ function Create() {
                   gutter={[0]}
                   align="middle"
                   style={{ height: 80 }}
-                  className="table-layout"
+                  className="detail-table-layout"
                 >
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>배터리 용량 [kWh]</label>
                   </Col>
                   <Col span={10} className="table-value-col-section">
@@ -1271,7 +1271,7 @@ function Create() {
                       style={{ width: 150 }}
                     />
                   </Col>
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>충전방식</label>
                   </Col>
                   <Col flex="auto" className="table-value-col-section">
@@ -1291,9 +1291,9 @@ function Create() {
                   gutter={[0]}
                   align="middle"
                   style={{ height: 80 }}
-                  className="table-layout"
+                  className="detail-table-layout"
                 >
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>급속충전</label>
                   </Col>
                   <Col span={10} className="table-value-col-section">
@@ -1308,7 +1308,7 @@ function Create() {
                       style={{ width: 400 }}
                     />
                   </Col>
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>완속충전</label>
                   </Col>
                   <Col flex="auto" className="table-value-col-section">
@@ -1329,7 +1329,7 @@ function Create() {
             <Space direction="vertical" size={20}>
               <Row gutter={[12]} align="middle">
                 <Col>
-                  <label className="main-sub-title">제원</label>
+                  <label className="detail-sub-title">제원</label>
                 </Col>
                 <Col flex="auto" />
               </Row>
@@ -1338,9 +1338,9 @@ function Create() {
                   gutter={[0]}
                   align="middle"
                   style={{ height: 80 }}
-                  className="table-layout"
+                  className="detail-table-layout"
                 >
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>구동방식</label>
                   </Col>
                   <Col span={10} className="table-value-col-section">
@@ -1355,7 +1355,7 @@ function Create() {
                       style={{ width: 200 }}
                     />
                   </Col>
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>최대속도 [km/h]</label>
                   </Col>
                   <Col flex="auto" className="table-value-col-section">
@@ -1375,9 +1375,9 @@ function Create() {
                   gutter={[0]}
                   align="middle"
                   style={{ height: 80 }}
-                  className="table-layout"
+                  className="detail-table-layout"
                 >
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>최고출력 [ps/rpm]</label>
                   </Col>
                   <Col span={10} className="table-value-col-section">
@@ -1405,7 +1405,7 @@ function Create() {
                       />
                     </Space>
                   </Col>
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>최대토크 [kg.m/rpm]</label>
                   </Col>
                   <Col flex="auto" className="table-value-col-section">
@@ -1438,9 +1438,9 @@ function Create() {
                   gutter={[0]}
                   align="middle"
                   style={{ height: 80 }}
-                  className="table-layout"
+                  className="detail-table-layout"
                 >
-                  <Col span={2} className="table-header-col-section">
+                  <Col flex="154px" className="table-header-col-section">
                     <label>제로백 [초]</label>
                   </Col>
                   <Col span={10} className="table-value-col-section">
@@ -1468,7 +1468,7 @@ function Create() {
     <>
       <Space direction="vertical" size={18} className="main-layout">
         {/* Page Header */}
-        <Space direction="vertical" size={18}>
+        <Space direction="vertical" size={11}>
           <Row justify="middle">
             <Col>
               <label className="main-header-title">트림 등록</label>
@@ -1477,12 +1477,15 @@ function Create() {
             <Col>
               <Space size={10}>
                 <Link to="/car/trim">
-                  <Button className="white-button" size="large">
+                  <Button
+                    className="white-button cancel-detail-button"
+                    size="large"
+                  >
                     취소
                   </Button>
                 </Link>
                 <Button
-                  className="black-button"
+                  className="black-button save-detail-button"
                   size="large"
                   onClick={() => onSaveClick("/car/trim/create")}
                 >
@@ -1502,7 +1505,7 @@ function Create() {
                 <Space direction="vertical" size={20}>
                   <Row align="middle">
                     <Col>
-                      <label className="main-sub-title">정보</label>
+                      <label className="detail-sub-title">정보</label>
                     </Col>
                     <Col flex="auto" />
                   </Row>
@@ -1511,9 +1514,9 @@ function Create() {
                       gutter={[0]}
                       align="middle"
                       style={{ height: 80 }}
-                      className="table-layout"
+                      className="detail-table-layout"
                     >
-                      <Col span={2} className="table-header-col-section">
+                      <Col flex="154px" className="table-header-col-section">
                         <label>차량</label>
                       </Col>
                       <Col span={5} className="table-value-col-section">
@@ -1617,9 +1620,9 @@ function Create() {
                       gutter={[0]}
                       align="middle"
                       style={{ height: 80 }}
-                      className="table-layout"
+                      className="detail-table-layout"
                     >
-                      <Col span={2} className="table-header-col-section">
+                      <Col flex="154px" className="table-header-col-section">
                         <label>트림</label>
                       </Col>
                       <Col span={10} className="table-value-col-section">
@@ -1652,7 +1655,7 @@ function Create() {
                             )}
                           </div>
                           <Button
-                            className="black-button"
+                            className="black-button check-name-button"
                             onClick={() => onCheckNameClick(bodyInfo.trim_name)}
                             size="large"
                           >
@@ -1660,7 +1663,7 @@ function Create() {
                           </Button>
                         </Space>
                       </Col>
-                      <Col span={2} className="table-header-col-section">
+                      <Col flex="154px" className="table-header-col-section">
                         <label>변속기</label>
                       </Col>
                       <Col flex="auto" className="table-value-col-section">
@@ -1692,9 +1695,9 @@ function Create() {
                       gutter={[0]}
                       align="middle"
                       style={{ height: 80 }}
-                      className="table-layout"
+                      className="detail-table-layout"
                     >
-                      <Col span={2} className="table-header-col-section">
+                      <Col flex="154px" className="table-header-col-section">
                         <label>가격</label>
                       </Col>
                       <Col span={10} className="table-value-col-section">
@@ -1710,7 +1713,7 @@ function Create() {
                           style={{ width: 150 }}
                         />
                       </Col>
-                      <Col span={2} className="table-header-col-section">
+                      <Col flex="154px" className="table-header-col-section">
                         <label>사용여부</label>
                       </Col>
                       <Col flex="auto" className="table-value-col-section">
@@ -1744,7 +1747,7 @@ function Create() {
                 <Space direction="vertical" size={20}>
                   <Row align="middle">
                     <Col>
-                      <label className="main-sub-title">사양</label>
+                      <label className="detail-sub-title">사양</label>
                     </Col>
                     <Col flex="auto" />
                   </Row>
@@ -1755,7 +1758,7 @@ function Create() {
                 <Space direction="vertical" size={20}>
                   <Row align="middle">
                     <Col>
-                      <label className="main-sub-title">트림 옵션</label>
+                      <label className="detail-sub-title">트림 옵션</label>
                     </Col>
                     <Col flex="auto" />
                   </Row>
@@ -1770,7 +1773,7 @@ function Create() {
                 <Space direction="vertical" size={20}>
                   <Row align="middle">
                     <Col>
-                      <label className="main-sub-title">차량</label>
+                      <label className="detail-sub-title">차량</label>
                     </Col>
                     <Col flex="auto" />
                   </Row>
@@ -1779,9 +1782,9 @@ function Create() {
                       gutter={[0]}
                       align="middle"
                       style={{ height: 80 }}
-                      className="table-layout"
+                      className="detail-table-layout"
                     >
-                      <Col span={2} className="table-header-col-section">
+                      <Col flex="154px" className="table-header-col-section">
                         <label>모델정보</label>
                       </Col>
                       <Col flex="auto" className="table-value-col-section">

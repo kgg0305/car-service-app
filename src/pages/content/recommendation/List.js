@@ -182,7 +182,7 @@ function List() {
     <>
       <Space direction="vertical" size={18} className="main-layout">
         {/* Page Header */}
-        <Space direction="vertical" size={18}>
+        <Space direction="vertical" size={11}>
           <label className="main-header-title">추천뉴스 관리</label>
           <Divider className="main-body-divider" />
         </Space>
@@ -217,9 +217,9 @@ function List() {
                 gutter={[0]}
                 align="middle"
                 style={{ height: 80 }}
-                className="table-layout"
+                className="detail-table-layout"
               >
-                <Col span={2} className="table-header-col-section">
+                <Col flex="154px" className="table-header-col-section">
                   <label>순서{index + 1}</label>
                 </Col>
                 <Col flex="auto" className="table-value-col-section">
