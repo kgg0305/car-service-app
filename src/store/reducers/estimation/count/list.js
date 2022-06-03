@@ -7,10 +7,15 @@ const INIT = prefix + "INIT";
 const SHOW_MORE = prefix + "SHOW_MORE";
 const ADD = prefix + "ADD";
 const SET_ADD = prefix + "SET_ADD";
+const SET_YEAR = prefix + "SET_YEAR";
+const SET_MONTH = prefix + "SET_MONTH";
 
 export const init = () => async (dispatch) => {
   try {
-    const dataSource = await countService.getList(0);
+    const dataSource = await countService.getList(0, {
+      year: initialState.year,
+      month: initialState.month,
+    });
 
     dispatch({
       type: INIT,
@@ -22,12 +27,17 @@ export const init = () => async (dispatch) => {
     console.log(e);
   }
 };
-
 export const showMore = () => async (dispatch, getState) => {
   try {
     const state = getState();
     const offset = state.countList.offset + 10;
-    const dataSource = await countService.getList(offset);
+    const year = state.countList.year;
+    const month = state.countList.month;
+
+    const dataSource = await countService.getList(offset, {
+      year: year,
+      month: month,
+    });
 
     dispatch({
       type: SHOW_MORE,
@@ -40,9 +50,14 @@ export const showMore = () => async (dispatch, getState) => {
     console.log(e);
   }
 };
-
-export const add = (addData, offset) => async (dispatch) => {
+export const add = () => async (dispatch, getState) => {
   try {
+    const state = getState();
+    const addData = state.countList.addData;
+    const offset = state.countList.offset + 10;
+    const year = state.countList.year;
+    const month = state.countList.month;
+
     const count_info = await countService.getByDate(
       GetDateStringFromDate(new Date())
     );
@@ -59,7 +74,10 @@ export const add = (addData, offset) => async (dispatch) => {
       });
     }
 
-    const dataSource = await countService.getList(offset);
+    const dataSource = await countService.getList(offset, {
+      year: year,
+      month: month,
+    });
 
     dispatch({
       type: ADD,
@@ -71,7 +89,6 @@ export const add = (addData, offset) => async (dispatch) => {
     console.log(e);
   }
 };
-
 export const setAdd = (name, value) => (dispatch) => {
   dispatch({
     type: SET_ADD,
@@ -81,6 +98,48 @@ export const setAdd = (name, value) => (dispatch) => {
     },
   });
 };
+export const setYear = (year) => async (dispatch, getState) => {
+  try {
+    const state = getState();
+    const month = state.countList.month;
+
+    const dataSource = await countService.getList(0, {
+      year: year,
+      month: month,
+    });
+
+    dispatch({
+      type: SET_YEAR,
+      payload: {
+        dataSource: dataSource,
+        year: year,
+      },
+    });
+  } catch (e) {
+    console.log(e);
+  }
+};
+export const setMonth = (month) => async (dispatch, getState) => {
+  try {
+    const state = getState();
+    const year = state.countList.year;
+
+    const dataSource = await countService.getList(0, {
+      year: year,
+      month: month,
+    });
+
+    dispatch({
+      type: SET_MONTH,
+      payload: {
+        dataSource: dataSource,
+        month: month,
+      },
+    });
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 const initialState = {
   offset: 0,
@@ -89,6 +148,8 @@ const initialState = {
     rent_admin: "",
     new_admin: "",
   },
+  year: new Date().getFullYear(),
+  month: new Date().getMonth() + 1,
 };
 
 export default function list(state = initialState, action) {
@@ -117,6 +178,18 @@ export default function list(state = initialState, action) {
           ...state.addData,
           [action.payload.name]: action.payload.value,
         },
+      };
+    case SET_YEAR:
+      return {
+        ...state,
+        dataSource: action.payload.dataSource,
+        year: action.payload.year,
+      };
+    case SET_MONTH:
+      return {
+        ...state,
+        dataSource: action.payload.dataSource,
+        month: action.payload.month,
       };
     default:
       return state;

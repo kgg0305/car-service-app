@@ -54,42 +54,49 @@ function Manage() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: 98,
     },
     {
       title: "브랜드",
       dataIndex: "brand_name",
       key: "brand_name",
       align: "center",
+      width: 150,
     },
     {
       title: "모델그룹",
       dataIndex: "group_name",
       key: "group_name",
       align: "center",
+      width: 150,
     },
     {
       title: "모델",
       dataIndex: "model_name",
       key: "model_name",
       align: "center",
+      width: 214,
     },
     {
       title: "라인업",
       dataIndex: "lineup_name",
       key: "lineup_name",
       align: "center",
+      width: 440,
     },
     {
       title: "트림",
       dataIndex: "trim_name",
       key: "trim_name",
       align: "center",
+      width: 186,
     },
     {
       title: "사용여부",
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: 122,
       render: (idx) => renderIsUseField(idx),
     },
     {
@@ -97,6 +104,7 @@ function Manage() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: 220,
       render: (idx) => (
         <Row justify="center">
           <Col>
@@ -128,24 +136,30 @@ function Manage() {
 
   const renderIsUseField = (idx) => {
     return (
-      <Switch
-        checked={
-          dataSource.filter((item) => item.idx === idx)[0].is_use === "0"
-            ? false
-            : true
-        }
-        onClick={(checked) => onIsUseChange(idx, checked ? "1" : "0")}
-      >
-        <label className="switch-label">
-          {
-            Constants.availableOptions.filter(
-              (item) =>
-                item.value ===
-                dataSource.filter((item) => item.idx === idx)[0].is_use
-            )[0].label
-          }
-        </label>
-      </Switch>
+      <Row justify="center">
+        <Col>
+          <Space size={11}>
+            <Switch
+              className="manage-switch"
+              checked={
+                dataSource.filter((item) => item.idx === idx)[0].is_use === "0"
+                  ? false
+                  : true
+              }
+              onClick={(checked) => onIsUseChange(idx, checked ? "1" : "0")}
+            />
+            <label className="switch-label">
+              {
+                Constants.availableOptions.filter(
+                  (item) =>
+                    item.value ===
+                    dataSource.filter((item) => item.idx === idx)[0].is_use
+                )[0].label
+              }
+            </label>
+          </Space>
+        </Col>
+      </Row>
     );
   };
 
@@ -154,7 +168,7 @@ function Manage() {
       <Space direction="vertical" size={18} className="main-layout">
         {/* Page Header */}
         <Space direction="vertical" size={11}>
-          <Space size={1210}>
+          <Space size={1180}>
             <label className="main-header-title">트림 관리</label>
             <Space size={10}>
               <Link to="/car/lineup">

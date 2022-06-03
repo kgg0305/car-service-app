@@ -1250,6 +1250,7 @@ function List() {
             </Space>
 
             <Table
+              className="rol-table"
               dataSource={dataSource.filter((item) => item.name === "car")}
               columns={columns1}
               pagination={false}
@@ -1270,6 +1271,7 @@ function List() {
             </Space>
 
             <Table
+              className="rol-table"
               dataSource={dataSource.filter((item) => item.name === "finance")}
               columns={columns2}
               pagination={false}
@@ -1290,6 +1292,7 @@ function List() {
             </Space>
 
             <Table
+              className="rol-table"
               dataSource={dataSource.filter(
                 (item) => item.name === "estimation"
               )}
@@ -1312,6 +1315,7 @@ function List() {
             </Space>
 
             <Table
+              className="rol-table"
               dataSource={dataSource.filter((item) => item.name === "content1")}
               columns={columns4}
               pagination={false}
@@ -1334,6 +1338,7 @@ function List() {
             </Space>
 
             <Table
+              className="rol-table"
               dataSource={dataSource.filter((item) => item.name === "content2")}
               columns={columns5}
               pagination={false}

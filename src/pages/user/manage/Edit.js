@@ -111,7 +111,7 @@ function Edit() {
                   <Col flex="154px" className="table-header-col-section">
                     <label>이름</label>
                   </Col>
-                  <Col span={10} className="table-value-col-section">
+                  <Col flex="636px" className="table-value-col-section">
                     <Input
                       name="name"
                       value={bodyInfo.name}
@@ -148,7 +148,7 @@ function Edit() {
                   <Col flex="154px" className="table-header-col-section">
                     <label>그룹</label>
                   </Col>
-                  <Col span={10} className="table-value-col-section">
+                  <Col flex="636px" className="table-value-col-section">
                     <Space size={6}>
                       <Select
                         name="type_id"

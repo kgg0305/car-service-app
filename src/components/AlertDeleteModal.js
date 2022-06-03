@@ -37,7 +37,7 @@ function AlertDeleteModal({ name, visible, onConfirmClick, onCancelClick }) {
         <img src={delete_icon} />
         <label className="alert-content-label">[{name}]</label>
         <label className="alert-content-label">
-          등록된 차량정보 전체를 삭제 하시겠습니까?
+          등록된 정보 전체를 삭제 하시겠습니까?
         </label>
       </Space>
     </Modal>

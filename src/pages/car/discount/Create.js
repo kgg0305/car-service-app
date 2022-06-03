@@ -285,7 +285,7 @@ function Create() {
                   size="large"
                   placeholder="세부 내용 입력"
                   maxLength={50}
-                  style={{ width: 900 }}
+                  style={{ width: 940 }}
                 />
               </Space>
               {body.kindBodyList.length == index + 1 ? (
@@ -393,7 +393,7 @@ function Create() {
           </label>
         </Col>
         <Col flex="auto" className="table-value-col-section">
-          <Space size={620}>
+          <Space size={600}>
             <Space size={6}>
               <Input
                 name="condition_name"
@@ -437,6 +437,7 @@ function Create() {
                         value
                       );
                     }}
+                    size="large"
                     className="select-after"
                   >
                     {Constants.currencyTypeOptions.map(

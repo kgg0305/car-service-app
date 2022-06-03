@@ -64,7 +64,9 @@ function Detail() {
         <Space direction="vertical" size={11}>
           <Row justify="middle">
             <Col>
-              <label className="main-header-title">내 정보</label>
+              <label className="main-header-title" style={{ paddingLeft: 68 }}>
+                내 정보
+              </label>
             </Col>
             <Col flex="auto" />
             <Col>
@@ -72,6 +74,7 @@ function Detail() {
                 className="black-button"
                 size="large"
                 onClick={onSaveClick}
+                style={{ width: 150 }}
               >
                 저장하기
               </Button>
@@ -99,7 +102,7 @@ function Detail() {
                 <Col flex="154px" className="table-header-col-section">
                   <label>이름</label>
                 </Col>
-                <Col span={4} className="table-value-col-section">
+                <Col flex="241px" className="table-value-col-section">
                   <Input
                     name="name"
                     value={bodyInfo.name}
@@ -115,7 +118,7 @@ function Detail() {
                 <Col flex="154px" className="table-header-col-section">
                   <label>아이디</label>
                 </Col>
-                <Col span={4} className="table-value-col-section">
+                <Col flex="243px" className="table-value-col-section">
                   <Input
                     name="user_id"
                     value={bodyInfo.user_id}
@@ -131,7 +134,7 @@ function Detail() {
                 <Col flex="154px" className="table-header-col-section">
                   <label>그룹</label>
                 </Col>
-                <Col flex="auto" className="table-value-col-section">
+                <Col flex="239px" className="table-value-col-section">
                   <Input
                     name="group_name"
                     value={bodyInfo.group_name}
@@ -171,7 +174,7 @@ function Detail() {
                 <Col flex="154px" className="table-header-col-section">
                   <label>비밀번호 변경</label>
                 </Col>
-                <Col span={10} className="table-value-col-section">
+                <Col flex="638px" className="table-value-col-section">
                   <Input
                     name="password"
                     value={bodyInfo.password}

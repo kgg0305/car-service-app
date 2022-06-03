@@ -5,6 +5,7 @@ const prefix = "estimation/setting/list/";
 
 const INIT = prefix + "INIT";
 const SET_DATA_SOURCE = prefix + "SET_DATA_SOURCE";
+const SAVE = prefix + "SAVE";
 
 export const init = () => async (dispatch) => {
   try {
@@ -20,22 +21,25 @@ export const init = () => async (dispatch) => {
     console.log(e);
   }
 };
+export const setDataSource = (idx, name, value) => ({
+  type: SET_DATA_SOURCE,
+  payload: {
+    idx: idx,
+    name: name,
+    value: value,
+  },
+});
+export const save = () => async (dispatch, getState) => {
+  const state = getState();
+  const dataSource = state.settingList.dataSource;
 
-export const setDataSource = (dataSource, idx, name, value) => (dispatch) => {
-  const body = {
-    ...dataSource.filter((body) => body.idx === idx)[0],
-    [name]: value,
-  };
-
-  countSettingService.update(body);
+  for (let i = 0; i < dataSource.length; i++) {
+    const body = dataSource[i];
+    await countSettingService.update(body);
+  }
 
   dispatch({
-    type: SET_DATA_SOURCE,
-    payload: {
-      idx: idx,
-      name: name,
-      value: value,
-    },
+    type: SAVE,
   });
 };
 

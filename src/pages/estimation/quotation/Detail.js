@@ -114,7 +114,7 @@ function Detail() {
                 <Col flex="154px" className="table-header-col-section">
                   <label>구입방법</label>
                 </Col>
-                <Col span={10} className="table-value-col-section">
+                <Col flex="636px" className="table-value-col-section">
                   <Input
                     name="purchase_method"
                     value={
@@ -162,7 +162,7 @@ function Detail() {
                 <Col flex="154px" className="table-header-col-section">
                   <label>이름</label>
                 </Col>
-                <Col span={10} className="table-value-col-section">
+                <Col flex="636px" className="table-value-col-section">
                   <Input
                     name="client_name"
                     value={bodyInfo.client_name}
@@ -237,7 +237,7 @@ function Detail() {
                 <Col flex="154px" className="table-header-col-section">
                   <label>상담여부</label>
                 </Col>
-                <Col span={10} className="table-value-col-section">
+                <Col flex="636px" className="table-value-col-section">
                   <Select
                     name="is_business"
                     value={bodyInfo.is_business}
@@ -311,7 +311,7 @@ function Detail() {
                 <Col flex="154px" className="table-header-col-section">
                   <label>출고여부</label>
                 </Col>
-                <Col span={10} className="table-value-col-section">
+                <Col flex="636px" className="table-value-col-section">
                   <Space size={6}>
                     <Select
                       name="is_release"
@@ -413,7 +413,7 @@ function Detail() {
           <Row justify="center" gutter={[17, 0]}>
             <Col>
               <Button
-                className="white-button rounded-button"
+                className="white-button rounded-button delete-detail-button"
                 onClick={() => onDeleteClick(bodyInfo.idx)}
                 size="large"
               >

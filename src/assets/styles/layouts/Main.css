@@ -428,6 +428,13 @@ main {
     border-right: none!important;
 }
 
+.ant-table-tbody.role-table > tr > td {
+    padding: auto;
+    line-height: auto;
+    border-bottom: 1px solid #CBCBCB!important;
+    border-right: 1px solid #CBCBCB!important;
+}
+
 .ant-tabs-nav::before {
     display: none;
 }
@@ -476,7 +483,7 @@ main {
 }
 
 .ant-switch {
-    height: 35px;
+    height: 40px;
     width: 100px;
     background-color: white;
     border: 1px solid #E5E5E5;
@@ -487,8 +494,8 @@ main {
 }
 
 .ant-switch-handle {
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
 }
 
 .ant-switch-handle::before {
@@ -634,7 +641,7 @@ main {
     font-weight: 400;
     font-size: 14px;
     line-height: 16px;
-    color: #CBCBCB;
+    color: #363636;
     border-color: #E5E5E5!important;
     padding-left: 15px!important;
     padding-right: 13px!important;
@@ -673,11 +680,13 @@ main {
 .add-body-detail-button {
     width: 153px;
     height: 49px;
+    font-weight: 600;
 }
 
 .delete-detail-button {
     width: 153px;
     height: 49px;
+    font-weight: 400;
 }
 
 .search-button {
@@ -701,4 +710,87 @@ main {
     line-height: 30px;
 
     color: #999999;
+}
+
+.date-button {
+    width: 50px;
+    height: 40px;
+    padding: 0px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+
+    color: #363636;
+}
+
+.date-button.black-button {
+    font-weight: 600;
+    color: #FFFFFF;
+}
+
+.date-button.white-button {
+    border: 1px solid #E5E5E5;
+}
+
+.date-button.white-button:hover {
+    border: 1px solid black;
+}
+
+.table-data-button {
+    width: 153px;
+    height: 49px;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.table-data-button.black-button {
+    font-weight: 600;
+}
+
+.table-data-button.black-button:hover {
+    background-color: black;
+    border-color: black;
+
+    color: white;
+}
+
+.search-status-button {
+    width: 130px;
+    height: 40px;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.black-button.search-status-button {
+    font-weight: 600;
+    color: white;
+}
+
+.white-button.search-status-button {
+    font-weight: 400;
+    color: #CBCBCB;
+    border: 1px solid #E5E5E5;
+}
+
+.white-button.search-status-button:hover {
+    border: 1px solid black;
+}
+
+.ant-input[disabled] {
+    background: #F2F2F2;
+    border: 1px solid #E5E5E5;
+    border-radius: 3px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+
+    color: #363636;
+}
+
+.count-search-label {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    color: #363636;
 }

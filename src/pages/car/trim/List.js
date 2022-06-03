@@ -51,42 +51,49 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: 98,
     },
     {
       title: "브랜드",
       dataIndex: "brand_name",
       key: "brand_name",
       align: "center",
+      width: 150,
     },
     {
       title: "모델그룹",
       dataIndex: "group_name",
       key: "group_name",
       align: "center",
+      width: 150,
     },
     {
       title: "모델",
       dataIndex: "model_name",
       key: "model_name",
       align: "center",
+      width: 214,
     },
     {
       title: "라인업",
       dataIndex: "lineup_name",
       key: "lineup_name",
       align: "center",
+      width: 440,
     },
     {
       title: "트림",
       dataIndex: "trim_name",
       key: "trim_name",
       align: "center",
+      width: 186,
     },
     {
       title: "사용여부",
       dataIndex: "is_use",
       key: "is_use",
       align: "center",
+      width: 124,
       render: (is_use) =>
         Constants.availableOptions.filter((item) => item.value == is_use)[0]
           .label,
@@ -96,6 +103,7 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: 220,
       render: (idx) => (
         <Row justify="center">
           <Col>
@@ -146,7 +154,7 @@ function List() {
             <Col flex="154px" className="table-header">
               <label className="table-header-label">차량</label>
             </Col>
-            <Col flex="auto" className="table-value">
+            <Col flex="1077px" className="table-value">
               <Space size={6}>
                 <Select
                   name="brand_id"

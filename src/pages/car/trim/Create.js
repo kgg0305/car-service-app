@@ -1625,7 +1625,7 @@ function Create() {
                       <Col flex="154px" className="table-header-col-section">
                         <label>트림</label>
                       </Col>
-                      <Col span={10} className="table-value-col-section">
+                      <Col flex="636px" className="table-value-col-section">
                         <Space>
                           <div style={{ position: "relative" }}>
                             <Input
@@ -1700,7 +1700,7 @@ function Create() {
                       <Col flex="154px" className="table-header-col-section">
                         <label>가격</label>
                       </Col>
-                      <Col span={10} className="table-value-col-section">
+                      <Col flex="636px" className="table-value-col-section">
                         <InputNumber
                           name="price"
                           value={bodyInfo.price}
@@ -1710,7 +1710,7 @@ function Create() {
                           size="large"
                           controls={false}
                           maxLength={9}
-                          style={{ width: 150 }}
+                          style={{ width: 209 }}
                         />
                       </Col>
                       <Col flex="154px" className="table-header-col-section">

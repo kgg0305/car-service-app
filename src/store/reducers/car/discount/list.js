@@ -52,10 +52,27 @@ export const showMore = () => async (dispatch, getState) => {
     const offset = state.discountList.offset + 10;
     const dataSource = await discountKindService.getList(offset);
 
+    let updatedDataSource = [];
+    for (let i = 0; i < dataSource.length; i++) {
+      const element = dataSource[i];
+
+      const condition_list = await discountConditionService.getListAll({
+        discount_kind_id: element.idx,
+      });
+
+      updatedDataSource.push({
+        ...element,
+        condition_name:
+          condition_list.length > 0 ? condition_list[0].condition_name : "",
+        discount_price:
+          condition_list.length > 0 ? condition_list[0].discount_price : "",
+      });
+    }
+
     dispatch({
       type: SHOW_MORE,
       payload: {
-        dataSource: dataSource,
+        dataSource: updatedDataSource,
         offset: offset,
       },
     });
@@ -78,10 +95,27 @@ export const search = () => async (dispatch, getState) => {
         : "",
     });
 
+    let updatedDataSource = [];
+    for (let i = 0; i < dataSource.length; i++) {
+      const element = dataSource[i];
+
+      const condition_list = await discountConditionService.getListAll({
+        discount_kind_id: element.idx,
+      });
+
+      updatedDataSource.push({
+        ...element,
+        condition_name:
+          condition_list.length > 0 ? condition_list[0].condition_name : "",
+        discount_price:
+          condition_list.length > 0 ? condition_list[0].discount_price : "",
+      });
+    }
+
     dispatch({
       type: SEARCH,
       payload: {
-        dataSource: dataSource,
+        dataSource: updatedDataSource,
       },
     });
   } catch (e) {

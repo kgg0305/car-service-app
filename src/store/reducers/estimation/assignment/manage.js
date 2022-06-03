@@ -1,195 +1,265 @@
-import {
-  GetBase64,
-  GetDateStringFromDate,
-  GetTimeStringFromDate,
-} from "../../../../constants/GlobalFunctions";
+import { GetDateStringFromDate } from "../../../../constants/GlobalFunctions";
 import { quotationService } from "../../../../services/quotationService";
+import { userService } from "../../../../services/userService";
 
-const prefix = "estimation/assignment/manage/";
+const prefix = "assignment/manage/list/";
 
 const INIT = prefix + "INIT";
-const REMOVE_REDIRECTTO = prefix + "REMOVE_REDIRECTTO";
-const SHOW_VALIDATION = prefix + "SHOW_VALIDATION";
-const CLOSE_VALIDATION = prefix + "CLOSE_VALIDATION";
-const SHOW_CONFIRM = prefix + "SHOW_CONFIRM";
-const CLOSE_CONFIRM = prefix + "CLOSE_CONFIRM";
-const SET_BODY = prefix + "SET_BODY";
-const SAVE = prefix + "SAVE";
-const REMOVE = prefix + "REMOVE";
+const SHOW_MORE = prefix + "SHOW_MORE";
+const SEARCH = prefix + "SEARCH";
+const SET_SEARCH = prefix + "SET_SEARCH";
+const SET_GROUP = prefix + "SET_GROUP";
+const ASSIGN = prefix + "ASSIGN";
 
-export const init = (idx) => async (dispatch) => {
+export const init = () => async (dispatch) => {
   try {
-    const bodyInfo = await quotationService.get(idx);
-
-    const reg_date_text1 = GetDateStringFromDate(new Date(bodyInfo.reg_date));
-    const reg_date_text2 = GetTimeStringFromDate(new Date(bodyInfo.reg_date));
-
-    bodyInfo.reg_date_text1 = reg_date_text1;
-    bodyInfo.reg_date_text2 = reg_date_text2;
+    const dataSource = await quotationService.getList(0);
+    const userOptionList = await userService.getOptionList();
+    const summaryData = {
+      quotation: dataSource.length,
+      wait: dataSource.filter((body) => body.is_business == null).length,
+      business: dataSource.filter((body) => body.is_business == 0).length,
+      contract: dataSource.filter((body) => body.is_contract == 0).length,
+      release: dataSource.filter((body) => body.is_release == 0).length,
+      close: dataSource.filter((body) => body.is_close == 0).length,
+    };
 
     dispatch({
       type: INIT,
       payload: {
-        bodyInfo: bodyInfo,
+        userOptionList: userOptionList,
+        summaryData: summaryData,
+        dataSource: dataSource,
       },
     });
   } catch (e) {
     console.log(e);
   }
 };
-export const removeRedirectTo = () => ({
-  type: REMOVE_REDIRECTTO,
-});
-export const showValidation = (list) => ({
-  type: SHOW_VALIDATION,
+
+export const showMore = () => async (dispatch, getState) => {
+  try {
+    const state = getState();
+    const offset = state.assignmentManage.offset + 10;
+    const dataSource = await quotationService.getList(offset);
+    const summaryData = {
+      quotation: dataSource.length,
+      wait: dataSource.filter((body) => body.is_business == null).length,
+      business: dataSource.filter((body) => body.is_business == 0).length,
+      contract: dataSource.filter((body) => body.is_contract == 0).length,
+      release: dataSource.filter((body) => body.is_release == 0).length,
+      close: dataSource.filter((body) => body.is_close == 0).length,
+    };
+
+    dispatch({
+      type: SHOW_MORE,
+      payload: {
+        summaryData: summaryData,
+        dataSource: dataSource,
+        offset: offset,
+      },
+    });
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const search = () => async (dispatch, getState) => {
+  try {
+    const state = getState();
+    const searchData = state.assignmentManage.searchData;
+    const dataSource = await quotationService.getList(0, searchData);
+    const summaryData = {
+      quotation: dataSource.length,
+      wait: dataSource.filter((body) => body.is_business == null).length,
+      business: dataSource.filter((body) => body.is_business == 0).length,
+      contract: dataSource.filter((body) => body.is_contract == 0).length,
+      release: dataSource.filter((body) => body.is_release == 0).length,
+      close: dataSource.filter((body) => body.is_close == 0).length,
+    };
+
+    dispatch({
+      type: SEARCH,
+      payload: {
+        summaryData: summaryData,
+        dataSource: dataSource,
+      },
+    });
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const reset = () => async (dispatch) => {
+  try {
+    dispatch(init());
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const setSearch = (name, value) => (dispatch) => {
+  let s_date = null;
+  let e_date = null;
+  if (name === "date_period") {
+    s_date = new Date();
+    e_date = new Date();
+    switch (value) {
+      case 0:
+        s_date = null;
+        e_date = null;
+        break;
+      case 1:
+        break;
+      case 2:
+        s_date.setDate(s_date.getDate() - 1);
+        break;
+      case 3:
+        s_date.setDate(s_date.getDate() - 3);
+        break;
+      case 4:
+        s_date.setDate(s_date.getDate() - 7);
+        break;
+      case 5:
+        s_date.setMonth(s_date.getMonth() - 1);
+        break;
+      case 6:
+        s_date.setMonth(s_date.getMonth() - 3);
+        break;
+      default:
+        break;
+    }
+
+    if (value !== 0) {
+      s_date = GetDateStringFromDate(s_date);
+      e_date = GetDateStringFromDate(e_date);
+    }
+  }
+
+  dispatch({
+    type: SET_SEARCH,
+    payload: {
+      name: name,
+      value: value,
+      s_date: s_date,
+      e_date: e_date,
+    },
+  });
+};
+export const setGroup = (idx, value) => ({
+  type: SET_GROUP,
   payload: {
-    list: list,
-  },
-});
-export const closeValidation = () => ({
-  type: CLOSE_VALIDATION,
-});
-export const showConfirm = () => ({
-  type: SHOW_CONFIRM,
-});
-export const closeConfirm = () => ({
-  type: CLOSE_CONFIRM,
-});
-export const setBody = (name, value) => ({
-  type: SET_BODY,
-  payload: {
-    name: name,
+    offset: 0,
+    idx: idx,
     value: value,
   },
 });
-export const save = (url, bodyInfo) => async (dispatch) => {
-  try {
-    await quotationService.update(bodyInfo);
+export const assign = (idx, value) => async (dispatch, getState) => {
+  const state = getState();
+  const dataSource = state.assignmentManage.dataSource;
 
-    dispatch({
-      type: SAVE,
-      payload: {
-        url: url,
-      },
-    });
-  } catch (e) {
-    console.log(e);
-  }
+  let quotation_info = dataSource.filter((item) => item.idx === idx)[0];
+  quotation_info.assign_to = value;
+  await quotationService.update(quotation_info);
+
+  dispatch({
+    type: ASSIGN,
+    payload: {
+      offset: 0,
+      idx: idx,
+      value: value,
+    },
+  });
 };
-export const remove = (url, idx) => async (dispatch) => {
-  try {
-    await quotationService.remove(idx);
-
-    dispatch({
-      type: REMOVE,
-      payload: {
-        url: url,
-      },
-    });
-  } catch (e) {
-    console.log(e);
-  }
+export const download = () => {
+  quotationService.download();
 };
 
 const initialState = {
-  redirectTo: "",
-  validation: {
-    show: false,
-    list: [],
+  offset: 0,
+  userOptionList: [],
+  summaryData: {
+    quotation: 0,
+    wait: 0,
+    business: 0,
+    contract: 0,
+    release: 0,
+    close: 0,
   },
-  confirm: {
-    show: false,
-    name: "",
-  },
-  bodyInfo: {
-    idx: null,
-    purchase_path: "",
+  dataSource: [],
+  searchData: {
+    date_type: "0",
+    date_period: 0,
+    s_date: null,
+    e_date: null,
     purchase_method: null,
-    purchase_method_text: "",
-    reg_date: null,
-    reg_date_text1: "",
-    reg_date_text2: "",
-    client_name: "",
-    client_phone: "",
-    brand_id: null,
-    brand_name: "",
-    model_name: "",
-    lineup_name: "",
-    car_kind_id: null,
-    trim_id: "",
-    trim_name: "",
-    is_business: null,
-    is_contract: null,
-    contract_date: null,
-    is_release: null,
-    release_date: null,
-    is_close: null,
-    note: "",
+    search_type: null,
+    search_text: "",
+    purchase_path: "",
+    status: 0,
   },
 };
 
-export default function detail(state = initialState, action) {
+export default function list(state = initialState, action) {
   switch (action.type) {
     case INIT:
       return {
         ...initialState,
-        bodyInfo: action.payload.bodyInfo,
+        userOptionList: action.payload.userOptionList,
+        summaryData: action.payload.summaryData,
+        dataSource: action.payload.dataSource,
       };
-    case REMOVE_REDIRECTTO:
+    case SHOW_MORE:
       return {
         ...state,
-        redirectTo: "",
+        summaryData: action.payload.summaryData,
+        dataSource: [...state.dataSource, ...action.payload.dataSource],
+        offset: action.payload.offset,
       };
-    case SHOW_VALIDATION:
+    case SEARCH:
       return {
         ...state,
-        validation: {
-          ...state.validation,
-          show: true,
-          list: action.payload.list,
-        },
+        summaryData: action.payload.summaryData,
+        dataSource: action.payload.dataSource,
       };
-    case CLOSE_VALIDATION:
+    case SET_SEARCH:
       return {
         ...state,
-        validation: {
-          ...state.validation,
-          show: false,
-        },
-      };
-    case SHOW_CONFIRM:
-      return {
-        ...state,
-        confirm: {
-          ...state.confirm,
-          show: true,
-        },
-      };
-    case CLOSE_CONFIRM:
-      return {
-        ...state,
-        confirm: {
-          ...state.confirm,
-          show: false,
-        },
-      };
-    case SET_BODY:
-      return {
-        ...state,
-        bodyInfo: {
-          ...state.bodyInfo,
+        searchData: {
+          ...state.searchData,
+          s_date:
+            action.payload.name === "date_period"
+              ? action.payload.s_date
+              : state.searchData.s_date,
+          e_date:
+            action.payload.name === "date_period"
+              ? action.payload.e_date
+              : state.searchData.e_date,
           [action.payload.name]: action.payload.value,
         },
       };
-    case SAVE:
+    case SET_GROUP:
       return {
         ...state,
-        redirectTo: action.payload.url,
+        dataSource: state.dataSource.map((item) => ({
+          ...item,
+          group_id:
+            item.idx === action.payload.idx
+              ? action.payload.value
+              : item.group_id,
+          assign_to: item.idx === action.payload.idx ? "" : item.assign_to,
+        })),
       };
-    case REMOVE:
+    case ASSIGN:
       return {
         ...state,
-        redirectTo: action.payload.url,
+        dataSource: state.dataSource.map((item) => ({
+          ...item,
+          assign_to:
+            item.idx === action.payload.idx
+              ? action.payload.value
+              : item.assign_to,
+        })),
       };
     default:
       return state;

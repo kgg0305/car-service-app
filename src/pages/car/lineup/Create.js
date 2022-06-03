@@ -115,7 +115,7 @@ function Create() {
                     />
                   </Space>
                 </Col>
-                <Col flex="auto" />
+                <Col flex="28px" />
                 <Col>
                   <Space size={11}>
                     <Switch
@@ -184,7 +184,7 @@ function Create() {
                     />
                   </Space>
                 </Col>
-                <Col flex="auto" />
+                <Col flex="28px" />
                 <Col>
                   <Space size={11}>
                     <Switch
@@ -196,6 +196,7 @@ function Create() {
                           checked ? "1" : "0"
                         )
                       }
+                      size="default"
                     />
                     <label className="switch-label">
                       {
@@ -277,67 +278,20 @@ function Create() {
                   <Col flex="154px" className="table-header-col-section">
                     <label>차량</label>
                   </Col>
-                  <Col span={5} className="table-value-col-section">
-                    <Select
-                      name="brand_id"
-                      value={bodyInfo.brand_id}
-                      onChange={(value) => {
-                        onComponentChange("brand_id", value);
-                      }}
-                      size="large"
-                      suffixIcon={<CaretDownOutlined />}
-                      placeholder="브랜드 선택"
-                      style={{ width: 300 }}
-                    >
-                      {brandOptionList.map((optionItem, optionIndex) => (
-                        <Select.Option
-                          key={optionIndex}
-                          value={optionItem.value}
-                        >
-                          {optionItem.label}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  </Col>
-                  <Col span={5} className="table-value-col-section">
-                    <Select
-                      name="group_id"
-                      value={bodyInfo.group_id}
-                      onChange={(value) => {
-                        onComponentChange("group_id", value);
-                      }}
-                      size="large"
-                      suffixIcon={<CaretDownOutlined />}
-                      placeholder="모델그룹 선택"
-                      style={{ width: 300 }}
-                    >
-                      {groupOptionList
-                        .filter((item) => item.brand_id === bodyInfo.brand_id)
-                        .map((optionItem, optionIndex) => (
-                          <Select.Option
-                            key={optionIndex}
-                            value={optionItem.value}
-                          >
-                            {optionItem.label}
-                          </Select.Option>
-                        ))}
-                    </Select>
-                  </Col>
                   <Col flex="auto" className="table-value-col-section">
-                    <Select
-                      name="model_id"
-                      value={bodyInfo.model_id}
-                      onChange={(value) => {
-                        onComponentChange("model_id", value);
-                      }}
-                      size="large"
-                      suffixIcon={<CaretDownOutlined />}
-                      placeholder="모델 선택"
-                      style={{ width: 300 }}
-                    >
-                      {modelOptionList
-                        .filter((item) => item.group_id === bodyInfo.group_id)
-                        .map((optionItem, optionIndex) => (
+                    <Space size={6}>
+                      <Select
+                        name="brand_id"
+                        value={bodyInfo.brand_id}
+                        onChange={(value) => {
+                          onComponentChange("brand_id", value);
+                        }}
+                        size="large"
+                        suffixIcon={<CaretDownOutlined />}
+                        placeholder="브랜드 선택"
+                        style={{ width: 300 }}
+                      >
+                        {brandOptionList.map((optionItem, optionIndex) => (
                           <Select.Option
                             key={optionIndex}
                             value={optionItem.value}
@@ -345,7 +299,52 @@ function Create() {
                             {optionItem.label}
                           </Select.Option>
                         ))}
-                    </Select>
+                      </Select>
+                      <Select
+                        name="group_id"
+                        value={bodyInfo.group_id}
+                        onChange={(value) => {
+                          onComponentChange("group_id", value);
+                        }}
+                        size="large"
+                        suffixIcon={<CaretDownOutlined />}
+                        placeholder="모델그룹 선택"
+                        style={{ width: 300 }}
+                      >
+                        {groupOptionList
+                          .filter((item) => item.brand_id === bodyInfo.brand_id)
+                          .map((optionItem, optionIndex) => (
+                            <Select.Option
+                              key={optionIndex}
+                              value={optionItem.value}
+                            >
+                              {optionItem.label}
+                            </Select.Option>
+                          ))}
+                      </Select>
+                      <Select
+                        name="model_id"
+                        value={bodyInfo.model_id}
+                        onChange={(value) => {
+                          onComponentChange("model_id", value);
+                        }}
+                        size="large"
+                        suffixIcon={<CaretDownOutlined />}
+                        placeholder="모델 선택"
+                        style={{ width: 300 }}
+                      >
+                        {modelOptionList
+                          .filter((item) => item.group_id === bodyInfo.group_id)
+                          .map((optionItem, optionIndex) => (
+                            <Select.Option
+                              key={optionIndex}
+                              value={optionItem.value}
+                            >
+                              {optionItem.label}
+                            </Select.Option>
+                          ))}
+                      </Select>
+                    </Space>
                   </Col>
                 </Row>
                 <Row
@@ -357,7 +356,7 @@ function Create() {
                   <Col flex="154px" className="table-header-col-section">
                     <label>라인업</label>
                   </Col>
-                  <Col span={10} className="table-value-col-section">
+                  <Col flex="636px" className="table-value-col-section">
                     <Space>
                       <div style={{ position: "relative" }}>
                         <Input
@@ -429,7 +428,7 @@ function Create() {
                   <Col flex="154px" className="table-header-col-section">
                     <label>연식</label>
                   </Col>
-                  <Col span={10} className="table-value-col-section">
+                  <Col flex="636px" className="table-value-col-section">
                     <Space>
                       <Input
                         name="year_type"

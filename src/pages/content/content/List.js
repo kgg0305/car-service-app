@@ -206,9 +206,10 @@ function List() {
                     onClick={() => onSearchComponentChange("date_period", 0)}
                     size="large"
                     className={
-                      searchData.date_period === 0
+                      "date-button " +
+                      (searchData.date_period === 0
                         ? "black-button"
-                        : "white-button"
+                        : "white-button")
                     }
                   >
                     전체
@@ -218,9 +219,10 @@ function List() {
                     onClick={() => onSearchComponentChange("date_period", 1)}
                     size="large"
                     className={
-                      searchData.date_period === 1
+                      "date-button " +
+                      (searchData.date_period === 1
                         ? "black-button"
-                        : "white-button"
+                        : "white-button")
                     }
                   >
                     오늘
@@ -230,9 +232,10 @@ function List() {
                     onClick={() => onSearchComponentChange("date_period", 2)}
                     size="large"
                     className={
-                      searchData.date_period === 2
+                      "date-button " +
+                      (searchData.date_period === 2
                         ? "black-button"
-                        : "white-button"
+                        : "white-button")
                     }
                   >
                     어제
@@ -242,9 +245,10 @@ function List() {
                     onClick={() => onSearchComponentChange("date_period", 3)}
                     size="large"
                     className={
-                      searchData.date_period === 3
+                      "date-button " +
+                      (searchData.date_period === 3
                         ? "black-button"
-                        : "white-button"
+                        : "white-button")
                     }
                   >
                     3일
@@ -254,9 +258,10 @@ function List() {
                     onClick={() => onSearchComponentChange("date_period", 4)}
                     size="large"
                     className={
-                      searchData.date_period === 4
+                      "date-button " +
+                      (searchData.date_period === 4
                         ? "black-button"
-                        : "white-button"
+                        : "white-button")
                     }
                   >
                     7일
@@ -266,9 +271,10 @@ function List() {
                     onClick={() => onSearchComponentChange("date_period", 5)}
                     size="large"
                     className={
-                      searchData.date_period === 5
+                      "date-button " +
+                      (searchData.date_period === 5
                         ? "black-button"
-                        : "white-button"
+                        : "white-button")
                     }
                   >
                     1개월
@@ -278,9 +284,10 @@ function List() {
                     onClick={() => onSearchComponentChange("date_period", 6)}
                     size="large"
                     className={
-                      searchData.date_period === 6
+                      "date-button " +
+                      (searchData.date_period === 6
                         ? "black-button"
-                        : "white-button"
+                        : "white-button")
                     }
                   >
                     3개월

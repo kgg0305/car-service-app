@@ -97,7 +97,7 @@ function Edit() {
           </label>
         </Col>
         <Col flex="auto" className="table-value-col-section">
-          <Space size={620}>
+          <Space size={600}>
             <Space size={6}>
               <Input
                 name="condition_name"
@@ -135,6 +135,7 @@ function Edit() {
                         value
                       );
                     }}
+                    size="large"
                     className="select-after"
                   >
                     {Constants.currencyTypeOptions.map(
@@ -314,7 +315,7 @@ function Edit() {
                               size="large"
                               placeholder="세부 내용 입력"
                               maxLength={50}
-                              style={{ width: 900 }}
+                              style={{ width: 940 }}
                             />
                           </Space>
                         </Space>

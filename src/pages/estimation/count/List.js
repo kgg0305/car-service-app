@@ -9,14 +9,18 @@ import {
   add,
   setAdd,
   showMore,
+  setYear,
+  setMonth,
 } from "../../../store/reducers/estimation/count/list";
 
 // 목록페지
 function List() {
-  const { offset, dataSource, addData } = useSelector((state) => ({
+  const { offset, dataSource, addData, year, month } = useSelector((state) => ({
     offset: state.countList.offset,
     dataSource: state.countList.dataSource,
     addData: state.countList.addData,
+    year: state.countList.year,
+    month: state.countList.month,
   }));
 
   const dispatch = useDispatch();
@@ -26,8 +30,10 @@ function List() {
   }, [dispatch]);
 
   const onTableMoreClick = () => dispatch(showMore());
-  const onClickAdd = () => dispatch(add(addData, offset));
+  const onClickAdd = () => dispatch(add());
   const onChangeAddComponent = (name, value) => dispatch(setAdd(name, value));
+  const onYearChange = (year) => dispatch(setYear(year));
+  const onMonthChange = (month) => dispatch(setMonth(month));
 
   const columns = [
     {
@@ -35,6 +41,7 @@ function List() {
       dataIndex: "created_at",
       key: "created_at",
       align: "center",
+      width: 150,
       render: (created_at) => GetDateStringFromDate(new Date(created_at)),
     },
     {
@@ -42,24 +49,28 @@ function List() {
       dataIndex: "rent",
       key: "rent",
       align: "center",
+      width: 714,
       children: [
         {
           title: "의뢰수",
           dataIndex: "rent_request",
           key: "rent_request",
           align: "center",
+          width: 238,
         },
         {
           title: "관리자 입력수",
           dataIndex: "rent_admin",
           key: "rent_admin",
           align: "center",
+          width: 238,
         },
         {
           title: "누계",
           dataIndex: "idx",
           key: "idx",
           align: "center",
+          width: 238,
           render: (idx) => renderRentTotal(idx),
         },
       ],
@@ -69,24 +80,28 @@ function List() {
       dataIndex: "new",
       key: "new",
       align: "center",
+      width: 714,
       children: [
         {
           title: "의뢰수",
           dataIndex: "new_request",
           key: "new_request",
           align: "center",
+          width: 238,
         },
         {
           title: "관리자 입력수",
           dataIndex: "new_admin",
           key: "new_admin",
           align: "center",
+          width: 238,
         },
         {
           title: "누계",
           dataIndex: "idx",
           key: "idx",
           align: "center",
+          width: 238,
           render: (idx) => renderNewTotal(idx),
         },
       ],
@@ -99,13 +114,17 @@ function List() {
         type: Constants.inputTypes.select,
         name: "year",
         width: 130,
+        value: year,
         data: Constants.yearOptions,
+        onChange: (name, value) => onYearChange(value),
       },
       {
         type: Constants.inputTypes.select,
         name: "month",
         width: 130,
+        value: month,
         data: Constants.monthOptions,
+        onChange: (name, value) => onMonthChange(value),
       },
       {
         type: Constants.inputTypes.button,
@@ -142,7 +161,7 @@ function List() {
 
       {/* Search Section */}
       <Space className="search-layout" direction="vertical" size={20}>
-        <label className="title-label">검색</label>
+        <label className="title-label">견적/상담 카운트</label>
         <Space direction="vertical" size={0}>
           <Row
             key={1}
@@ -156,7 +175,9 @@ function List() {
             </Col>
             <Col flex="auto" className="table-value">
               <Space size={6}>
-                <label>랜스/리스 문의 카운트</label>
+                <label className="count-search-label">
+                  랜스/리스 문의 카운트
+                </label>
                 <InputNumber
                   name="rent_admin"
                   value={addData.rent_admin}
@@ -165,10 +186,11 @@ function List() {
                   }}
                   size="large"
                   maxLength={6}
-                  style={{ width: 150 }}
+                  placeholder="숫자입력"
+                  style={{ width: 130 }}
                   controls={false}
                 />
-                <label>신차 문의 카운트</label>
+                <label className="count-search-label">신차 문의 카운트</label>
                 <InputNumber
                   name="new_admin"
                   value={addData.new_admin}
@@ -177,11 +199,12 @@ function List() {
                   }}
                   size="large"
                   maxLength={6}
-                  style={{ width: 150 }}
+                  placeholder="숫자입력"
+                  style={{ width: 130 }}
                   controls={false}
                 />
-                <label>
-                  {GetDateStringFromDate(new Date())} 날짜에 입력 됩니다
+                <label className="count-search-label">
+                  {GetDateStringFromDate(new Date())} 날짜에 입력 됩니다.
                 </label>
               </Space>
             </Col>

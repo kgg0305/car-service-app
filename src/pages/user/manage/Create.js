@@ -85,7 +85,7 @@ function Create() {
                   <Col flex="154px" className="table-header-col-section">
                     <label>이름</label>
                   </Col>
-                  <Col span={10} className="table-value-col-section">
+                  <Col flex="636px" className="table-value-col-section">
                     <Input
                       name="name"
                       value={body.name}
@@ -132,7 +132,7 @@ function Create() {
                   <Col flex="154px" className="table-header-col-section">
                     <label>그룹</label>
                   </Col>
-                  <Col span={10} className="table-value-col-section">
+                  <Col flex="636px" className="table-value-col-section">
                     <Space size={6}>
                       <Select
                         name="type_id"
@@ -289,7 +289,7 @@ function Create() {
           <Row justify="center" gutter={[17, 0]}>
             <Col>
               <Button
-                className="white-button rounded-button add-body-detail-button"
+                className="white-button rounded-button"
                 icon={<PlusOutlined />}
                 onClick={onAddComponentClick}
                 size="large"

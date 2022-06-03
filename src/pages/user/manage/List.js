@@ -41,12 +41,14 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: 100,
     },
     {
       title: "구분",
       dataIndex: "type_id",
       key: "type_id",
       align: "center",
+      width: 210,
       render: (type_id) =>
         Constants.userTypeOptions.filter((item) => item.value === type_id)
           .length
@@ -60,6 +62,7 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: 210,
       render: (idx) => renderGroupField(idx),
     },
     {
@@ -67,24 +70,28 @@ function List() {
       dataIndex: "name",
       key: "name",
       align: "center",
+      width: 210,
     },
     {
       title: "연락처",
       dataIndex: "phone",
       key: "phone",
       align: "center",
+      width: 315,
     },
     {
       title: "이메일",
       dataIndex: "email",
       key: "email",
       align: "center",
+      width: 315,
     },
     {
       title: "관리",
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: 220,
       render: (idx) => (
         <Row justify="center">
           <Col>
@@ -104,7 +111,7 @@ function List() {
       {
         type: Constants.inputTypes.button,
         link: "/user/manage/create",
-        label: "등록",
+        label: "사용자 등록",
         style: "black-button big-button create-button",
         width: 150,
       },
@@ -146,7 +153,7 @@ function List() {
             <Col flex="154px" className="table-header">
               <label className="table-header-label">그룹</label>
             </Col>
-            <Col flex="auto" className="table-value">
+            <Col flex="636px" className="table-value">
               <Space size={6}>
                 <Select
                   name="type_id"

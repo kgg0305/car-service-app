@@ -1,144 +1,134 @@
 import { Col, Divider, Row, Space, Button, Select } from "antd";
 import { CaretDownOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import TableList from "../../../components/TableList";
 import { Constants } from "../../../constants/Constants";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  init,
+  reset,
+  search,
+  setSearch,
+  showMore,
+  download,
+  assign,
+  setGroup,
+} from "../../../store/reducers/estimation/assignment/manage";
 
 const { Option } = Select;
 
 // 관리페지
 function Manage() {
-  const [dataSource, setDataSource] = useState([
-    {
-      key: 1,
-      number: "1",
-      path: "naverblog",
-      method: "렌트",
-      name: "김철수",
-      contact: "010-0000-0000",
-      brand: "제네시스",
-      type: "G80",
-      area: "",
-      member: "",
-      manage: "",
-    },
-    {
-      key: 1,
-      number: "1",
-      path: "naverblog",
-      method: "렌트",
-      name: "김철수",
-      contact: "010-0000-0000",
-      brand: "제네시스",
-      type: "G80",
-      area: "",
-      member: "",
-      manage: "",
-    },
-  ]);
+  const { offset, dataSource, searchData, userOptionList, summaryData } =
+    useSelector((state) => ({
+      offset: state.assignmentManage.offset,
+      dataSource: state.assignmentManage.dataSource,
+      searchData: state.assignmentManage.searchData,
+      userOptionList: state.assignmentManage.userOptionList,
+      summaryData: state.assignmentManage.summaryData,
+    }));
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(init());
+  }, [dispatch]);
+
+  const onTableMoreClick = () => dispatch(showMore());
+  const onSearchClick = () => dispatch(search());
+  const onResetClick = () => dispatch(reset());
+  const onSearchComponentChange = (name, value) =>
+    dispatch(setSearch(name, value));
+  const onGroupChange = (idx, value) => dispatch(setGroup(idx, value));
+  const onAssignToChange = (idx, value) => dispatch(assign(idx, value));
+  const onDownloadClick = () => dispatch(download());
 
   const columns = [
     {
       title: "번호",
-      dataIndex: "number",
-      key: "number",
+      dataIndex: "idx",
+      key: "idx",
       align: "center",
+      width: 100,
     },
     {
       title: "유입경로",
-      dataIndex: "path",
-      key: "path",
+      dataIndex: "purchase_path",
+      key: "purchase_path",
       align: "center",
+      width: 125,
     },
     {
       title: "구입방법",
-      dataIndex: "method",
-      key: "method",
+      dataIndex: "purchase_method",
+      key: "purchase_method",
       align: "center",
+      width: 104,
+      render: (purchase_method) =>
+        Constants.purchaseMethodOptions.filter(
+          (item) => item.value == purchase_method
+        ).length
+          ? Constants.purchaseMethodOptions.filter(
+              (item) => item.value == purchase_method
+            )[0].label
+          : "",
     },
     {
       title: "이름",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "client_name",
+      key: "client_name",
       align: "center",
+      width: 125,
     },
     {
       title: "연락처",
-      dataIndex: "contact",
-      key: "contact",
+      dataIndex: "client_phone",
+      key: "client_phone",
       align: "center",
+      width: 187,
     },
     {
       title: "브랜드",
-      dataIndex: "brand",
-      key: "brand",
+      dataIndex: "brand_name",
+      key: "brand_name",
       align: "center",
+      width: 208,
     },
     {
       title: "차종",
-      dataIndex: "type",
-      key: "type",
+      dataIndex: "kind_name",
+      key: "kind_name",
       align: "center",
+      width: 208,
     },
     {
       title: "지점",
-      dataIndex: "area",
-      key: "area",
+      dataIndex: "idx",
+      key: "idx",
       align: "center",
-      render: (path) => (
-        <Row justify="center">
-          <Col>
-            <Select
-              size="large"
-              suffixIcon={<CaretDownOutlined />}
-              placeholder={"선택"}
-              style={{ width: 130 }}
-            >
-              {
-                <Select.Option key={1} value={1}>
-                  1
-                </Select.Option>
-              }
-            </Select>
-          </Col>
-        </Row>
-      ),
+      width: 180,
+      render: (idx) => renderAreaGroupSelect(idx),
     },
     {
       title: "인원",
-      dataIndex: "member",
-      key: "member",
+      dataIndex: "idx",
+      key: "idx",
       align: "center",
-      render: (path) => (
-        <Row justify="center">
-          <Col>
-            <Select
-              size="large"
-              suffixIcon={<CaretDownOutlined />}
-              placeholder={"선택"}
-              style={{ width: 130 }}
-            >
-              {
-                <Select.Option key={1} value={1}>
-                  1
-                </Select.Option>
-              }
-            </Select>
-          </Col>
-        </Row>
-      ),
+      width: 179,
+      render: (idx) => renderUserSelect(idx),
     },
     {
       title: "관리",
-      dataIndex: "manage",
-      key: "manage",
+      dataIndex: "idx",
+      key: "idx",
       align: "center",
-      render: (path) => (
+      width: 160,
+      render: (idx) => (
         <Row justify="center">
           <Col>
             <Space size={15} split={<Divider type="vertical" />}>
-              <Link to="/estimation/request/detail">
+              <Link to={"/estimation/quotation/detail/" + idx}>
                 <Button className="black-button small-button rounded-button">
                   상세보기
                 </Button>
@@ -154,10 +144,9 @@ function Manage() {
     topItems: [
       {
         type: Constants.inputTypes.button,
-        link: "/car/model/create",
-        label: "등록",
-        style: "black-button big-button",
-        width: 150,
+        onClick: onDownloadClick,
+        label: "엑셀로 내려받기",
+        style: "black-button table-data-button",
       },
     ],
     subItems: [
@@ -165,47 +154,107 @@ function Manage() {
         type: Constants.inputTypes.input,
         disabled: true,
         label: "견적서",
-        value: "999,999,999",
+        value: summaryData.quotation,
         width: 130,
       },
       {
         type: Constants.inputTypes.input,
         disabled: true,
         label: "대기",
-        value: "999,999,999",
+        value: summaryData.wait,
         width: 130,
       },
       {
         type: Constants.inputTypes.input,
         disabled: true,
         label: "상담",
-        value: "999,999,999",
+        value: summaryData.business,
         width: 130,
       },
       {
         type: Constants.inputTypes.input,
         disabled: true,
         label: "계약",
-        value: "999,999,999",
+        value: summaryData.contract,
         width: 130,
       },
       {
         type: Constants.inputTypes.input,
         disabled: true,
         label: "출고",
-        value: "999,999,999",
+        value: summaryData.release,
         width: 130,
       },
       {
         type: Constants.inputTypes.input,
         disabled: true,
         label: "종료",
-        value: "999,999,999",
+        value: summaryData.close,
         width: 130,
       },
     ],
     tableData: dataSource,
     tableColumns: columns,
+  };
+
+  const renderAreaGroupSelect = (idx) => {
+    const quotation_info = dataSource.filter((item) => item.idx === idx)[0];
+    return (
+      <Row justify="center">
+        <Col>
+          <Select
+            size="large"
+            name="group_id"
+            value={quotation_info.group_id}
+            onChange={(value) => {
+              onGroupChange(idx, value);
+            }}
+            suffixIcon={<CaretDownOutlined />}
+            placeholder={"선택"}
+            style={{ width: 130 }}
+          >
+            {Constants.userAreaGroupOptions.map((optionItem, optionIndex) => (
+              <Select.Option key={optionIndex} value={optionItem.value}>
+                {optionItem.label}
+              </Select.Option>
+            ))}
+          </Select>
+        </Col>
+      </Row>
+    );
+  };
+
+  const renderUserSelect = (idx) => {
+    const quotation_info = dataSource.filter((item) => item.idx === idx)[0];
+    return (
+      <Row justify="center">
+        <Col>
+          <Select
+            size="large"
+            name="assign_to"
+            value={quotation_info.assign_to}
+            onChange={(value) => {
+              onAssignToChange(idx, value);
+            }}
+            suffixIcon={<CaretDownOutlined />}
+            placeholder={"선택"}
+            style={{ width: 130 }}
+          >
+            {userOptionList
+              .filter(
+                (item) =>
+                  item.type_id === "1" &&
+                  item.group_id === quotation_info.group_id
+              )
+              .map((optionItem, optionIndex) => (
+                <Select.Option key={optionIndex} value={optionItem.value}>
+                  {optionItem.label}
+                </Select.Option>
+              ))}
+          </Select>
+        </Col>
+      </Row>
+    );
   };
 
   return (

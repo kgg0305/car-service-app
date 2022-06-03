@@ -29,7 +29,12 @@ function TableList({ dataSource }) {
                       <ContentItem item={item} key={index} />
                     </Link>
                   ) : (
-                    <ContentItem item={item} key={index} />
+                    <ContentItem
+                      item={item}
+                      key={index}
+                      value={item.value}
+                      onChange={item.onChange}
+                    />
                   )
                 )}
               </Space>
@@ -39,7 +44,7 @@ function TableList({ dataSource }) {
           </Col>
         </Row>
         {dataSource.subItems ? (
-          <Space size={40}>
+          <Space size={40} style={{ paddingBottom: 27 }}>
             {dataSource.subItems.map((item, index) => (
               <Row key={index} align="middle" gutter={[6]}>
                 <Col>

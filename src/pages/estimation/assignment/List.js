@@ -44,12 +44,14 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: 100,
     },
     {
       title: "지점",
       dataIndex: "group_id",
       key: "group_id",
       align: "center",
+      width: 164,
       render: (group_id) =>
         Constants.userAreaGroupOptions.filter((item) => item.value === group_id)
           .length
@@ -63,48 +65,56 @@ function List() {
       dataIndex: "name",
       key: "name",
       align: "center",
+      width: 164,
     },
     {
       title: "견적서",
       dataIndex: "quotation",
       key: "quotation",
       align: "center",
+      width: 164,
     },
     {
       title: "대기",
       dataIndex: "wait",
       key: "wait",
       align: "center",
+      width: 164,
     },
     {
       title: "상담",
       dataIndex: "business",
       key: "business",
       align: "center",
+      width: 164,
     },
     {
       title: "계약",
       dataIndex: "contract",
       key: "contract",
       align: "center",
+      width: 164,
     },
     {
       title: "출고",
       dataIndex: "release",
       key: "release",
       align: "center",
+      width: 164,
     },
     {
       title: "종료",
       dataIndex: "close",
       key: "close",
       align: "center",
+      width: 164,
     },
     {
       title: "관리",
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: 164,
       render: (idx) => (
         <Row justify="center">
           <Col>
@@ -201,7 +211,7 @@ function List() {
             <Col flex="154px" className="table-header">
               <label className="table-header-label">지점</label>
             </Col>
-            <Col flex="auto" className="table-value">
+            <Col flex="636px" className="table-value">
               <Space size={6}>
                 <Select
                   name="group_id"
@@ -212,7 +222,7 @@ function List() {
                   suffixIcon={<CaretDownOutlined />}
                   placeholder="지점 선택"
                   size="large"
-                  style={{ width: 300 }}
+                  style={{ width: 200 }}
                 >
                   {Constants.userAreaGroupOptions.map(
                     (optionItem, optionIndex) => (
