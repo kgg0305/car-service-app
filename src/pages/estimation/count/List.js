@@ -179,6 +179,11 @@ function List() {
                   랜스/리스 문의 카운트
                 </label>
                 <InputNumber
+                  onKeyPress={(event) => {
+                    if (!/[0-9]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
                   name="rent_admin"
                   value={addData.rent_admin}
                   onChange={(number) => {
@@ -192,6 +197,11 @@ function List() {
                 />
                 <label className="count-search-label">신차 문의 카운트</label>
                 <InputNumber
+                  onKeyPress={(event) => {
+                    if (!/[0-9]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
                   name="new_admin"
                   value={addData.new_admin}
                   onChange={(number) => {

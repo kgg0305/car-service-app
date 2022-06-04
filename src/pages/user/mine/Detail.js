@@ -152,6 +152,11 @@ function Detail() {
                 </Col>
                 <Col flex="auto" className="table-value-col-section">
                   <InputNumber
+                    onKeyPress={(event) => {
+                      if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
                     name="phone"
                     value={bodyInfo.phone}
                     onChange={(number) => {

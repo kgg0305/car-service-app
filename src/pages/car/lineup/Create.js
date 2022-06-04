@@ -98,6 +98,11 @@ function Create() {
                       style={{ width: 300 }}
                     />
                     <InputNumber
+                      onKeyPress={(event) => {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
                       value={body.price}
                       formatter={(value) =>
                         `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -173,6 +178,11 @@ function Create() {
                       style={{ width: 300 }}
                     />
                     <InputNumber
+                      onKeyPress={(event) => {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
                       value={body.price}
                       formatter={(value) =>
                         `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")

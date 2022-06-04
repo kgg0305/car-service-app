@@ -362,6 +362,11 @@ function Edit() {
                     </Col>
                     <Col flex="auto" className="table-value-col-section">
                       <InputNumber
+                        onKeyPress={(event) => {
+                          if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
                         name="fuel_efficiency"
                         value={detailBodyInfo.fuel_efficiency}
                         onChange={(number) => {
@@ -384,6 +389,11 @@ function Edit() {
                     </Col>
                     <Col span={10} className="table-value-col-section">
                       <InputNumber
+                        onKeyPress={(event) => {
+                          if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
                         name="amount_mowing"
                         value={detailBodyInfo.amount_mowing}
                         onChange={(number) => {
@@ -424,6 +434,11 @@ function Edit() {
                     <Col span={10} className="table-value-col-section">
                       <Space size={6}>
                         <InputNumber
+                          onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
                           name="max_torque1"
                           value={detailBodyInfo.max_torque1}
                           onChange={(number) => {
@@ -435,6 +450,11 @@ function Edit() {
                         />
                         <label>/</label>
                         <InputNumber
+                          onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
                           name="max_torque2"
                           value={detailBodyInfo.max_torque2}
                           onChange={(number) => {
@@ -452,6 +472,11 @@ function Edit() {
                     <Col flex="auto" className="table-value-col-section">
                       <Space size={6}>
                         <InputNumber
+                          onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
                           name="highest_output1"
                           value={detailBodyInfo.highest_output1}
                           onChange={(number) => {
@@ -463,6 +488,11 @@ function Edit() {
                         />
                         <label>/</label>
                         <InputNumber
+                          onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
                           name="highest_output2"
                           value={detailBodyInfo.highest_output2}
                           onChange={(number) => {
@@ -486,6 +516,11 @@ function Edit() {
                     </Col>
                     <Col span={10} className="table-value-col-section">
                       <InputNumber
+                        onKeyPress={(event) => {
+                          if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
                         name="emissions_CO2"
                         value={detailBodyInfo.emissions_CO2}
                         onChange={(number) => {
@@ -502,6 +537,11 @@ function Edit() {
                     <Col flex="auto" className="table-value-col-section">
                       <Space size={6}>
                         <InputNumber
+                          onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
                           name="tire1"
                           value={detailBodyInfo.tire1}
                           onChange={(number) => {
@@ -513,6 +553,11 @@ function Edit() {
                         />
                         <label>/</label>
                         <InputNumber
+                          onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
                           name="tire2"
                           value={detailBodyInfo.tire2}
                           onChange={(number) => {
@@ -524,6 +569,11 @@ function Edit() {
                         />
                         <label>R</label>
                         <InputNumber
+                          onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
                           name="tire3"
                           value={detailBodyInfo.tire3}
                           onChange={(number) => {
@@ -590,6 +640,11 @@ function Edit() {
                     </Col>
                     <Col span={10} className="table-value-col-section">
                       <InputNumber
+                        onKeyPress={(event) => {
+                          if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
                         name="fuel_tank"
                         value={detailBodyInfo.fuel_tank}
                         onChange={(number) => {
@@ -605,6 +660,11 @@ function Edit() {
                     </Col>
                     <Col flex="auto" className="table-value-col-section">
                       <InputNumber
+                        onKeyPress={(event) => {
+                          if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
                         name="tolerance_weight"
                         value={detailBodyInfo.tolerance_weight}
                         onChange={(number) => {
@@ -627,6 +687,11 @@ function Edit() {
                     </Col>
                     <Col flex="auto" className="table-value-col-section">
                       <InputNumber
+                        onKeyPress={(event) => {
+                          if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
                         name="boarding_capacity"
                         value={detailBodyInfo.boarding_capacity}
                         onChange={(number) => {
@@ -659,6 +724,11 @@ function Edit() {
                     </Col>
                     <Col span={10} className="table-value-col-section">
                       <InputNumber
+                        onKeyPress={(event) => {
+                          if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
                         name="whole_height"
                         value={detailBodyInfo.whole_height}
                         onChange={(number) => {
@@ -674,6 +744,11 @@ function Edit() {
                     </Col>
                     <Col flex="auto" className="table-value-col-section">
                       <InputNumber
+                        onKeyPress={(event) => {
+                          if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
                         name="full_width"
                         value={detailBodyInfo.full_width}
                         onChange={(number) => {
@@ -696,6 +771,11 @@ function Edit() {
                     </Col>
                     <Col span={10} className="table-value-col-section">
                       <InputNumber
+                        onKeyPress={(event) => {
+                          if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
                         name="wheelbase"
                         value={detailBodyInfo.wheelbase}
                         onChange={(number) => {
@@ -711,6 +791,11 @@ function Edit() {
                     </Col>
                     <Col flex="auto" className="table-value-col-section">
                       <InputNumber
+                        onKeyPress={(event) => {
+                          if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
                         name="whole_length"
                         value={detailBodyInfo.whole_length}
                         onChange={(number) => {
@@ -763,6 +848,11 @@ function Edit() {
                     </Col>
                     <Col flex="auto" className="table-value-col-section">
                       <InputNumber
+                        onKeyPress={(event) => {
+                          if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
                         name="fuel_efficiency"
                         value={detailBodyInfo.fuel_efficiency}
                         onChange={(number) => {
@@ -785,6 +875,11 @@ function Edit() {
                     </Col>
                     <Col span={10} className="table-value-col-section">
                       <InputNumber
+                        onKeyPress={(event) => {
+                          if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
                         name="amount_mowing"
                         value={detailBodyInfo.amount_mowing}
                         onChange={(number) => {
@@ -825,6 +920,11 @@ function Edit() {
                     <Col span={10} className="table-value-col-section">
                       <Space size={6}>
                         <InputNumber
+                          onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
                           name="max_torque1"
                           value={detailBodyInfo.max_torque1}
                           onChange={(number) => {
@@ -836,6 +936,11 @@ function Edit() {
                         />
                         <label>/</label>
                         <InputNumber
+                          onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
                           name="max_torque2"
                           value={detailBodyInfo.max_torque2}
                           onChange={(number) => {
@@ -853,6 +958,11 @@ function Edit() {
                     <Col flex="auto" className="table-value-col-section">
                       <Space size={6}>
                         <InputNumber
+                          onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
                           name="highest_output1"
                           value={detailBodyInfo.highest_output1}
                           onChange={(number) => {
@@ -864,6 +974,11 @@ function Edit() {
                         />
                         <label>/</label>
                         <InputNumber
+                          onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
                           name="highest_output2"
                           value={detailBodyInfo.highest_output2}
                           onChange={(number) => {
@@ -887,6 +1002,11 @@ function Edit() {
                     </Col>
                     <Col span={10} className="table-value-col-section">
                       <InputNumber
+                        onKeyPress={(event) => {
+                          if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
                         name="zero_back"
                         value={detailBodyInfo.zero_back}
                         onChange={(number) => {
@@ -902,6 +1022,11 @@ function Edit() {
                     </Col>
                     <Col span={10} className="table-value-col-section">
                       <InputNumber
+                        onKeyPress={(event) => {
+                          if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
                         name="emissions_CO2"
                         value={detailBodyInfo.emissions_CO2}
                         onChange={(number) => {
@@ -925,6 +1050,11 @@ function Edit() {
                     <Col flex="auto" className="table-value-col-section">
                       <Space size={6}>
                         <InputNumber
+                          onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
                           name="tire1"
                           value={detailBodyInfo.tire1}
                           onChange={(number) => {
@@ -936,6 +1066,11 @@ function Edit() {
                         />
                         <label>/</label>
                         <InputNumber
+                          onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
                           name="tire2"
                           value={detailBodyInfo.tire2}
                           onChange={(number) => {
@@ -947,6 +1082,11 @@ function Edit() {
                         />
                         <label>R</label>
                         <InputNumber
+                          onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
                           name="tire3"
                           value={detailBodyInfo.tire3}
                           onChange={(number) => {
@@ -1006,6 +1146,11 @@ function Edit() {
                     </Col>
                     <Col span={10} className="table-value-col-section">
                       <InputNumber
+                        onKeyPress={(event) => {
+                          if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
                         name="fuel_tank"
                         value={detailBodyInfo.fuel_tank}
                         onChange={(number) => {
@@ -1028,6 +1173,11 @@ function Edit() {
                     </Col>
                     <Col flex="auto" className="table-value-col-section">
                       <InputNumber
+                        onKeyPress={(event) => {
+                          if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
                         name="tolerance_weight"
                         value={detailBodyInfo.tolerance_weight}
                         onChange={(number) => {
@@ -1043,6 +1193,11 @@ function Edit() {
                     </Col>
                     <Col flex="auto" className="table-value-col-section">
                       <InputNumber
+                        onKeyPress={(event) => {
+                          if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
                         name="boarding_capacity"
                         value={detailBodyInfo.boarding_capacity}
                         onChange={(number) => {
@@ -1075,6 +1230,11 @@ function Edit() {
                     </Col>
                     <Col span={10} className="table-value-col-section">
                       <InputNumber
+                        onKeyPress={(event) => {
+                          if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
                         name="whole_height"
                         value={detailBodyInfo.whole_height}
                         onChange={(number) => {
@@ -1090,6 +1250,11 @@ function Edit() {
                     </Col>
                     <Col flex="auto" className="table-value-col-section">
                       <InputNumber
+                        onKeyPress={(event) => {
+                          if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
                         name="full_width"
                         value={detailBodyInfo.full_width}
                         onChange={(number) => {
@@ -1112,6 +1277,11 @@ function Edit() {
                     </Col>
                     <Col span={10} className="table-value-col-section">
                       <InputNumber
+                        onKeyPress={(event) => {
+                          if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
                         name="wheelbase"
                         value={detailBodyInfo.wheelbase}
                         onChange={(number) => {
@@ -1127,6 +1297,11 @@ function Edit() {
                     </Col>
                     <Col flex="auto" className="table-value-col-section">
                       <InputNumber
+                        onKeyPress={(event) => {
+                          if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
                         name="whole_length"
                         value={detailBodyInfo.whole_length}
                         onChange={(number) => {
@@ -1165,6 +1340,11 @@ function Edit() {
                   </Col>
                   <Col span={10} className="table-value-col-section">
                     <InputNumber
+                      onKeyPress={(event) => {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
                       name="center_town"
                       value={detailBodyInfo.center_town}
                       onChange={(number) => {
@@ -1180,6 +1360,11 @@ function Edit() {
                   </Col>
                   <Col flex="auto" className="table-value-col-section">
                     <InputNumber
+                      onKeyPress={(event) => {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
                       name="expressway"
                       value={detailBodyInfo.expressway}
                       onChange={(number) => {
@@ -1202,6 +1387,11 @@ function Edit() {
                   </Col>
                   <Col span={10} className="table-value-col-section">
                     <InputNumber
+                      onKeyPress={(event) => {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
                       name="combined"
                       value={detailBodyInfo.combined}
                       onChange={(number) => {
@@ -1217,6 +1407,11 @@ function Edit() {
                   </Col>
                   <Col flex="auto" className="table-value-col-section">
                     <InputNumber
+                      onKeyPress={(event) => {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
                       name="room_temperature"
                       value={detailBodyInfo.room_temperature}
                       onChange={(number) => {
@@ -1240,6 +1435,11 @@ function Edit() {
                   <Col span={10} className="table-value-col-section">
                     <Space size={6}>
                       <InputNumber
+                        onKeyPress={(event) => {
+                          if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
                         name="low_temperature"
                         value={detailBodyInfo.low_temperature}
                         onChange={(number) => {
@@ -1273,6 +1473,11 @@ function Edit() {
                   </Col>
                   <Col span={10} className="table-value-col-section">
                     <InputNumber
+                      onKeyPress={(event) => {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
                       name="battery_capacity"
                       value={detailBodyInfo.battery_capacity}
                       onChange={(number) => {
@@ -1372,6 +1577,11 @@ function Edit() {
                   </Col>
                   <Col flex="auto" className="table-value-col-section">
                     <InputNumber
+                      onKeyPress={(event) => {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
                       name="max_speed"
                       value={detailBodyInfo.max_speed}
                       onChange={(number) => {
@@ -1395,6 +1605,11 @@ function Edit() {
                   <Col span={10} className="table-value-col-section">
                     <Space size={6}>
                       <InputNumber
+                        onKeyPress={(event) => {
+                          if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
                         name="highest_output1"
                         value={detailBodyInfo.highest_output1}
                         onChange={(number) => {
@@ -1406,6 +1621,11 @@ function Edit() {
                       />
                       <label>/</label>
                       <InputNumber
+                        onKeyPress={(event) => {
+                          if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
                         name="highest_output2"
                         value={detailBodyInfo.highest_output2}
                         onChange={(number) => {
@@ -1423,6 +1643,11 @@ function Edit() {
                   <Col flex="auto" className="table-value-col-section">
                     <Space size={6}>
                       <InputNumber
+                        onKeyPress={(event) => {
+                          if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
                         name="max_torque1"
                         value={detailBodyInfo.max_torque1}
                         onChange={(number) => {
@@ -1434,6 +1659,11 @@ function Edit() {
                       />
                       <label>/</label>
                       <InputNumber
+                        onKeyPress={(event) => {
+                          if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
                         name="max_torque2"
                         value={detailBodyInfo.max_torque2}
                         onChange={(number) => {
@@ -1457,6 +1687,11 @@ function Edit() {
                   </Col>
                   <Col span={10} className="table-value-col-section">
                     <InputNumber
+                      onKeyPress={(event) => {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
                       name="zero_back"
                       value={detailBodyInfo.zero_back}
                       onChange={(number) => {
@@ -1714,6 +1949,11 @@ function Edit() {
                       </Col>
                       <Col flex="636px" className="table-value-col-section">
                         <InputNumber
+                          onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
                           name="price"
                           value={bodyInfo.price}
                           onChange={(number) => {

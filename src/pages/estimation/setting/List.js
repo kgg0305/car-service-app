@@ -43,11 +43,17 @@ function List() {
           <Col>
             <Space key={"rent_space_" + idx} size={20}>
               <InputNumber
+                onKeyPress={(event) => {
+                  if (!/[0-9]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
                 name="rent_min"
                 value={dataSource[idx - 1].rent_min}
                 onChange={(number) => {
                   onComponentChange(idx, "rent_min", number);
                 }}
+                maxLength={3}
                 key={0}
                 size="large"
                 style={{ width: 130 }}
@@ -56,11 +62,17 @@ function List() {
               />
               <label>~</label>
               <InputNumber
+                onKeyPress={(event) => {
+                  if (!/[0-9]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
                 name="rent_max"
                 value={dataSource[idx - 1].rent_max}
                 onChange={(number) => {
                   onComponentChange(idx, "rent_max", number);
                 }}
+                maxLength={3}
                 key={1}
                 size="large"
                 style={{ width: 130 }}
@@ -82,11 +94,17 @@ function List() {
           <Col>
             <Space key={"new_space_" + idx} size={20}>
               <InputNumber
+                onKeyPress={(event) => {
+                  if (!/[0-9]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
                 name="new_min"
                 value={dataSource[idx - 1].new_min}
                 onChange={(number) => {
                   onComponentChange(idx, "new_min", number);
                 }}
+                maxLength={3}
                 key={0}
                 size="large"
                 style={{ width: 130 }}
@@ -95,11 +113,17 @@ function List() {
               />
               <label>~</label>
               <InputNumber
+                onKeyPress={(event) => {
+                  if (!/[0-9]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
                 name="new_max"
                 value={dataSource[idx - 1].new_max}
                 onChange={(number) => {
                   onComponentChange(idx, "new_max", number);
                 }}
+                maxLength={3}
                 key={1}
                 size="large"
                 style={{ width: 130 }}

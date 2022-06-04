@@ -102,6 +102,11 @@ function Edit() {
         <Col flex="auto" className="table-value-col-section">
           <Space size={10}>
             <InputNumber
+              onKeyPress={(event) => {
+                if (!/[0-9]/.test(event.key)) {
+                  event.preventDefault();
+                }
+              }}
               name="idx"
               value={body.idx}
               onChange={(number) => {

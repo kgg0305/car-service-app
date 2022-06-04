@@ -176,6 +176,11 @@ function Edit() {
                   style={{ width: 300 }}
                 />
                 <InputNumber
+                  onKeyPress={(event) => {
+                    if (!/[0-9]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
                   name="price"
                   value={body.price}
                   onChange={(number) => {
@@ -297,6 +302,11 @@ function Edit() {
                   style={{ width: 300 }}
                 />
                 <InputNumber
+                  onKeyPress={(event) => {
+                    if (!/[0-9]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
                   name="price"
                   value={body.price}
                   onChange={(number) => {
@@ -402,6 +412,11 @@ function Edit() {
                   style={{ width: 300 }}
                 />
                 <InputNumber
+                  onKeyPress={(event) => {
+                    if (!/[0-9]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
                   name="price"
                   value={body.price}
                   onChange={(number) => {
@@ -854,6 +869,11 @@ function Edit() {
                       <Col flex="636px" className="table-value-col-section">
                         <Space>
                           <InputNumber
+                            onKeyPress={(event) => {
+                              if (!/[0-9]/.test(event.key)) {
+                                event.preventDefault();
+                              }
+                            }}
                             name="sequence"
                             value={bodyInfo.sequence}
                             onChange={(number) => {

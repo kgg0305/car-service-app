@@ -144,6 +144,11 @@ function Create() {
               <Col flex="auto" className="table-value-col-section">
                 <Space>
                   <InputNumber
+                    onKeyPress={(event) => {
+                      if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
                     name="sequence"
                     value={body.sequence}
                     onChange={(number) => {
