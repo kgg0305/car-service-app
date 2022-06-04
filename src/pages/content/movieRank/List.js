@@ -27,12 +27,14 @@ function List() {
       dataIndex: "number",
       key: "number",
       align: "center",
+      width: 98,
     },
     {
       title: "콘텐츠",
       dataIndex: "title",
       key: "title",
       align: "center",
+      width: 1481,
     },
   ];
 

@@ -108,7 +108,7 @@ function Create() {
               size="large"
               readOnly={true}
               placeholder="콘텐츠 번호 또는 줌 자동차 뉴스의 URL 입력"
-              style={{ width: 500 }}
+              style={{ width: 750 }}
             />
           </Space>
         </Col>
@@ -172,7 +172,7 @@ function Create() {
                   </Button>
                 </Link>
                 <Button
-                  className="black-button"
+                  className="black-button save-detail-button"
                   size="large"
                   onClick={onSaveClick}
                 >
@@ -186,11 +186,7 @@ function Create() {
 
         {/* Body Section */}
         <Space direction="vertical" size={40} style={{ paddingBottom: 112 }}>
-          <Space
-            direction="vertical"
-            size={59}
-            split={<Divider className="detail-body-divider" dashed />}
-          >
+          <Space direction="vertical" size={40}>
             <Space direction="vertical" size={20}>
               <Row align="middle">
                 <Col>
@@ -216,9 +212,10 @@ function Create() {
                         onChange={(value) => {
                           onComponentChange("publish_date", value.toString());
                         }}
+                        style={{ width: 150 }}
                         size="large"
                       />
-                      <label>
+                      <label className="description-label">
                         선택한 날짜를 기준으로 자동발행 됩니다. (예약발행)
                       </label>
                     </Space>

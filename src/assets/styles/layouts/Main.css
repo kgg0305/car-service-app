@@ -16,6 +16,41 @@
     box-shadow: none;
 }
 
+.ant-checkbox-checked .ant-checkbox-inner {
+    background-color: #C4C4C4;
+    border-color: #CBCBCB;
+}
+
+.ant-input[disabled] {
+    background: #F2F2F2;
+    border: 1px solid #E5E5E5;
+    border-radius: 3px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+
+    color: #363636;
+}
+
+.ant-input-number {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    height: 40px;
+}
+
+.ant-input-number:hover {
+    border-color: #C1C1C1;
+}
+
+.ant-input-number-focused {
+    background: #FFFFFF;
+    border: 1px solid #C1C1C1;
+    border-radius: 3px;
+    box-shadow: none;
+}
+
 .trigger {
     padding: 0 24px;
     font-size: 18px;
@@ -65,7 +100,7 @@ main {
 
 .main-header-title {
     height: 40px;
-    padding-left: 50px;
+    padding-left: 39px;
     font-weight: 600;
     font-size: 21px;
     line-height: 25px;
@@ -419,20 +454,12 @@ main {
 
 .ant-table-tbody > tr > td {
     padding: 0px;
-    line-height: 0px;
     border-bottom: 1px solid #CBCBCB!important;
     border-right: 1px solid #CBCBCB!important;
 }
 
 .ant-table-tbody > tr > td:last-child {
     border-right: none!important;
-}
-
-.ant-table-tbody.role-table > tr > td {
-    padding: auto;
-    line-height: auto;
-    border-bottom: 1px solid #CBCBCB!important;
-    border-right: 1px solid #CBCBCB!important;
 }
 
 .ant-tabs-nav::before {
@@ -556,11 +583,6 @@ main {
 
 }
 
-.ant-checkbox-checked .ant-checkbox-inner {
-    background-color: #C4C4C4;
-    border-color: #CBCBCB;
-}
-
 .show-more-label {
     padding-bottom: 50px;
     font-weight: 600;
@@ -581,6 +603,15 @@ main {
     font-weight: 300;
     font-size: 21px;
     line-height: 25px;
+    display: flex;
+    align-items: center;
+    color: #363636;
+}
+
+.sub-title-label {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 21px;
     display: flex;
     align-items: center;
     color: #363636;
@@ -776,21 +807,33 @@ main {
     border: 1px solid black;
 }
 
-.ant-input[disabled] {
-    background: #F2F2F2;
-    border: 1px solid #E5E5E5;
-    border-radius: 3px;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 16px;
-    text-align: center;
-
-    color: #363636;
-}
-
 .count-search-label {
     font-weight: 400;
     font-size: 14px;
     line-height: 16px;
     color: #363636;
+}
+
+.gallery-table .ant-table-tbody > tr {
+    height: 250px;
+}
+
+.popular-table .ant-table-tbody > tr {
+    height: 250px;
+}
+
+.role-table .ant-table-tbody > tr > td {
+    height: auto;
+    text-align: left;
+    padding-top: 27px;
+    padding-bottom: 27px;
+    padding-left: 34px;
+}
+
+.role-table .ant-table-tbody > tr > td:first-child {
+    padding-left: 19px;
+}
+
+.ant-tabs-ink-bar {
+    display: none;
 }

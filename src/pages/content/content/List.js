@@ -76,42 +76,49 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: 120,
     },
     {
       title: "매체명",
       dataIndex: "media_type",
       key: "media_type",
       align: "center",
+      width: 150,
     },
     {
       title: "카테고리",
       dataIndex: "category_id",
       key: "category_id",
       align: "center",
+      width: 100,
     },
     {
       title: "콘텐츠 제목",
       dataIndex: "title",
       key: "title",
       align: "center",
+      width: 600,
     },
     {
       title: "추천뉴스",
       dataIndex: "recommendation",
       key: "recommendation",
       align: "center",
+      width: 100,
     },
     {
       title: "조회수",
       dataIndex: "views",
       key: "views",
       align: "center",
+      width: 120,
     },
     {
       title: "등록일",
       dataIndex: "created_at",
       key: "created_at",
       align: "center",
+      width: 120,
       render: (created_at) =>
         GetDateFullTimeStringUsingKorFromDate(new Date(created_at)),
     },
@@ -120,6 +127,7 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: 150,
       render: (idx) => renderSwitchComponent(idx),
     },
     {
@@ -127,6 +135,7 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: 120,
       render: (idx) => (
         <Row justify="center">
           <Col>
@@ -199,125 +208,132 @@ function List() {
               <Col flex="154px" className="table-header">
                 <label className="table-header-label">날짜</label>
               </Col>
-              <Col flex="auto" className="table-value">
-                <Space size={6}>
-                  <Button
-                    key={1}
-                    onClick={() => onSearchComponentChange("date_period", 0)}
-                    size="large"
-                    className={
-                      "date-button " +
-                      (searchData.date_period === 0
-                        ? "black-button"
-                        : "white-button")
-                    }
-                  >
-                    전체
-                  </Button>
-                  <Button
-                    key={2}
-                    onClick={() => onSearchComponentChange("date_period", 1)}
-                    size="large"
-                    className={
-                      "date-button " +
-                      (searchData.date_period === 1
-                        ? "black-button"
-                        : "white-button")
-                    }
-                  >
-                    오늘
-                  </Button>
-                  <Button
-                    key={3}
-                    onClick={() => onSearchComponentChange("date_period", 2)}
-                    size="large"
-                    className={
-                      "date-button " +
-                      (searchData.date_period === 2
-                        ? "black-button"
-                        : "white-button")
-                    }
-                  >
-                    어제
-                  </Button>
-                  <Button
-                    key={4}
-                    onClick={() => onSearchComponentChange("date_period", 3)}
-                    size="large"
-                    className={
-                      "date-button " +
-                      (searchData.date_period === 3
-                        ? "black-button"
-                        : "white-button")
-                    }
-                  >
-                    3일
-                  </Button>
-                  <Button
-                    key={5}
-                    onClick={() => onSearchComponentChange("date_period", 4)}
-                    size="large"
-                    className={
-                      "date-button " +
-                      (searchData.date_period === 4
-                        ? "black-button"
-                        : "white-button")
-                    }
-                  >
-                    7일
-                  </Button>
-                  <Button
-                    key={6}
-                    onClick={() => onSearchComponentChange("date_period", 5)}
-                    size="large"
-                    className={
-                      "date-button " +
-                      (searchData.date_period === 5
-                        ? "black-button"
-                        : "white-button")
-                    }
-                  >
-                    1개월
-                  </Button>
-                  <Button
-                    key={7}
-                    onClick={() => onSearchComponentChange("date_period", 6)}
-                    size="large"
-                    className={
-                      "date-button " +
-                      (searchData.date_period === 6
-                        ? "black-button"
-                        : "white-button")
-                    }
-                  >
-                    3개월
-                  </Button>
-                  <DatePicker
-                    key={8}
-                    name="s_date"
-                    value={searchData.s_date ? moment(searchData.s_date) : ""}
-                    onChange={(value) => {
-                      onSearchComponentChange(
-                        "s_date",
-                        GetDateStringFromDate(new Date(value.toString()))
-                      );
-                    }}
-                    placeholder="시작일"
-                    size="large"
-                  />
-                  <DatePicker
-                    key={9}
-                    name="e_date"
-                    value={searchData.e_date ? moment(searchData.e_date) : ""}
-                    onChange={(value) => {
-                      onSearchComponentChange(
-                        "e_date",
-                        GetDateStringFromDate(new Date(value.toString()))
-                      );
-                    }}
-                    placeholder="종료일"
-                    size="large"
-                  />
+              <Col flex="1034px" className="table-value">
+                <Space size={30}>
+                  <Space size={2}>
+                    <Button
+                      key={1}
+                      onClick={() => onSearchComponentChange("date_period", 0)}
+                      size="large"
+                      className={
+                        "date-button " +
+                        (searchData.date_period === 0
+                          ? "black-button"
+                          : "white-button")
+                      }
+                    >
+                      전체
+                    </Button>
+                    <Button
+                      key={2}
+                      onClick={() => onSearchComponentChange("date_period", 1)}
+                      size="large"
+                      className={
+                        "date-button " +
+                        (searchData.date_period === 1
+                          ? "black-button"
+                          : "white-button")
+                      }
+                    >
+                      오늘
+                    </Button>
+                    <Button
+                      key={3}
+                      onClick={() => onSearchComponentChange("date_period", 2)}
+                      size="large"
+                      className={
+                        "date-button " +
+                        (searchData.date_period === 2
+                          ? "black-button"
+                          : "white-button")
+                      }
+                    >
+                      어제
+                    </Button>
+                    <Button
+                      key={4}
+                      onClick={() => onSearchComponentChange("date_period", 3)}
+                      size="large"
+                      className={
+                        "date-button " +
+                        (searchData.date_period === 3
+                          ? "black-button"
+                          : "white-button")
+                      }
+                    >
+                      3일
+                    </Button>
+                    <Button
+                      key={5}
+                      onClick={() => onSearchComponentChange("date_period", 4)}
+                      size="large"
+                      className={
+                        "date-button " +
+                        (searchData.date_period === 4
+                          ? "black-button"
+                          : "white-button")
+                      }
+                    >
+                      7일
+                    </Button>
+                    <Button
+                      key={6}
+                      onClick={() => onSearchComponentChange("date_period", 5)}
+                      size="large"
+                      className={
+                        "date-button " +
+                        (searchData.date_period === 5
+                          ? "black-button"
+                          : "white-button")
+                      }
+                    >
+                      1개월
+                    </Button>
+                    <Button
+                      key={7}
+                      onClick={() => onSearchComponentChange("date_period", 6)}
+                      size="large"
+                      className={
+                        "date-button " +
+                        (searchData.date_period === 6
+                          ? "black-button"
+                          : "white-button")
+                      }
+                    >
+                      3개월
+                    </Button>
+                  </Space>
+                  <Space size={6}>
+                    <DatePicker
+                      key={8}
+                      name="s_date"
+                      value={searchData.s_date ? moment(searchData.s_date) : ""}
+                      onChange={(value) => {
+                        onSearchComponentChange(
+                          "s_date",
+                          GetDateStringFromDate(new Date(value.toString()))
+                        );
+                      }}
+                      placeholder="시작일"
+                      style={{ width: 150 }}
+                      size="large"
+                    />
+                    <label>~</label>
+                    <DatePicker
+                      key={9}
+                      name="e_date"
+                      value={searchData.e_date ? moment(searchData.e_date) : ""}
+                      onChange={(value) => {
+                        onSearchComponentChange(
+                          "e_date",
+                          GetDateStringFromDate(new Date(value.toString()))
+                        );
+                      }}
+                      placeholder="종료일"
+                      style={{ width: 150 }}
+                      size="large"
+                    />
+                  </Space>
                 </Space>
               </Col>
               <Col flex="154px" className="table-header">
@@ -355,7 +371,7 @@ function List() {
               <Col flex="154px" className="table-header">
                 <label className="table-header-label">검색어</label>
               </Col>
-              <Col flex="auto" className="table-value">
+              <Col flex="240px" className="table-value">
                 <Space size={6}>
                   <Input
                     name="title"
@@ -372,7 +388,7 @@ function List() {
               <Col flex="154px" className="table-header">
                 <label className="table-header-label">카테고리</label>
               </Col>
-              <Col flex="auto" className="table-value">
+              <Col flex="245px" className="table-value">
                 <Select
                   name="category_id"
                   value={searchData.category_id}

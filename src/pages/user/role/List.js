@@ -212,7 +212,7 @@ function List() {
     return (
       <Space direction="vertical" size={5}>
         <Row gutter={[13]} justify="left">
-          <Col flex="154px" style={{ textAlign: "right" }}>
+          <Col flex="100px" style={{ textAlign: "right" }}>
             <label>전체관리</label>
           </Col>
           <Col>
@@ -232,7 +232,7 @@ function List() {
           </Col>
         </Row>
         <Row gutter={[13]} justify="left">
-          <Col flex="154px" style={{ textAlign: "right" }}>
+          <Col flex="100px" style={{ textAlign: "right" }}>
             <label>보기만</label>
           </Col>
           <Col>
@@ -259,7 +259,7 @@ function List() {
     return (
       <Space direction="vertical" size={5}>
         <Row gutter={[13]} justify="left">
-          <Col flex="154px" style={{ textAlign: "right" }}>
+          <Col flex="100px" style={{ textAlign: "right" }}>
             <label>전체관리</label>
           </Col>
           <Col>
@@ -279,7 +279,7 @@ function List() {
           </Col>
         </Row>
         <Row gutter={[13]} justify="left">
-          <Col flex="154px" style={{ textAlign: "right" }}>
+          <Col flex="100px" style={{ textAlign: "right" }}>
             <label>보기만</label>
           </Col>
           <Col>
@@ -1205,7 +1205,7 @@ function List() {
         </div>
         <Button
           size="large"
-          className="black-button"
+          className={styles.addUserButton}
           onClick={() => onAddUserNameClick(name)}
         >
           추가하기
@@ -1250,7 +1250,7 @@ function List() {
             </Space>
 
             <Table
-              className="rol-table"
+              className="role-table"
               dataSource={dataSource.filter((item) => item.name === "car")}
               columns={columns1}
               pagination={false}
@@ -1271,7 +1271,7 @@ function List() {
             </Space>
 
             <Table
-              className="rol-table"
+              className="role-table"
               dataSource={dataSource.filter((item) => item.name === "finance")}
               columns={columns2}
               pagination={false}
@@ -1292,7 +1292,7 @@ function List() {
             </Space>
 
             <Table
-              className="rol-table"
+              className="role-table"
               dataSource={dataSource.filter(
                 (item) => item.name === "estimation"
               )}
@@ -1315,7 +1315,7 @@ function List() {
             </Space>
 
             <Table
-              className="rol-table"
+              className="role-table"
               dataSource={dataSource.filter((item) => item.name === "content1")}
               columns={columns4}
               pagination={false}
@@ -1338,7 +1338,7 @@ function List() {
             </Space>
 
             <Table
-              className="rol-table"
+              className="role-table"
               dataSource={dataSource.filter((item) => item.name === "content2")}
               columns={columns5}
               pagination={false}

@@ -31,12 +31,14 @@ function List() {
       dataIndex: "number",
       key: "number",
       align: "center",
+      width: 100,
     },
     {
       title: "수입여부",
       dataIndex: "is_income",
       key: "is_income",
       align: "center",
+      width: 150,
       render: (is_income) =>
         Constants.incomeOptions.filter((item) => item.value == is_income).length
           ? Constants.incomeOptions.filter((item) => item.value == is_income)[0]
@@ -48,18 +50,21 @@ function List() {
       dataIndex: "brand_name",
       key: "brand_name",
       align: "center",
+      width: 443,
     },
     {
       title: "모델그룹",
       dataIndex: "group_name",
       key: "group_name",
       align: "center",
+      width: 443,
     },
     {
       title: "모델",
       dataIndex: "model_name",
       key: "model_name",
       align: "center",
+      width: 443,
     },
   ];
 

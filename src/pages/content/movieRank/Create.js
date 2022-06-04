@@ -113,7 +113,7 @@ function Create() {
               size="large"
               readOnly={true}
               placeholder="콘텐츠 번호 또는 줌 자동차 뉴스의 URL 입력"
-              style={{ width: 500 }}
+              style={{ width: 750 }}
             />
           </Space>
         </Col>

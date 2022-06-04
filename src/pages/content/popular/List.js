@@ -28,12 +28,14 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: 98,
     },
     {
       title: "이미지",
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: 413,
       render: (idx) => renderPicture(idx),
     },
     {
@@ -41,6 +43,7 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: 290,
       render: (idx) => renderBrandField(idx),
     },
     {
@@ -48,6 +51,7 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: 290,
       render: (idx) => renderModelField(idx),
     },
     {
@@ -55,6 +59,7 @@ function List() {
       dataIndex: "created_at",
       key: "created_at",
       align: "center",
+      width: 290,
       render: (created_at) =>
         GetDateFullTimeStringUsingKorFromDate(new Date(created_at)),
     },
@@ -63,6 +68,7 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: 200,
       render: (idx) => (
         <Row justify="center">
           <Col>
@@ -130,7 +136,7 @@ function List() {
         </Space>
 
         {/* Body Section */}
-        <TableList dataSource={tableList} />
+        <TableList dataSource={tableList} className="popular-table" />
 
         <Row justify="center">
           <label className="show-more-label" onClick={onTableMoreClick}>

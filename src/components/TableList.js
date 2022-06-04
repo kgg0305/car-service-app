@@ -5,7 +5,7 @@ import ContentItem from "./ContentItem";
 import styles from "../assets/styles/components/TableList.module.css";
 
 // 목록테이블
-function TableList({ dataSource }) {
+function TableList({ dataSource, className }) {
   return (
     <Space className={styles.tableList} direction="vertical" size={10}>
       <Space
@@ -62,6 +62,7 @@ function TableList({ dataSource }) {
       </Space>
 
       <Table
+        className={className}
         dataSource={dataSource.tableData}
         columns={dataSource.tableColumns}
         pagination={false}

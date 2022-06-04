@@ -8,3 +8,15 @@
 
     color: #B3B3B3;
 }
+.addUserButton {
+    background-color: #363636;
+    border-color: #363636;
+    border-radius: 2px;
+
+    align-items: center;
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 16px;
+    color: #FFFFFF;
+}

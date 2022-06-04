@@ -43,6 +43,7 @@ function List() {
       dataIndex: "publish_date",
       key: "publish_date",
       align: "center",
+      width: 180,
       render: (publish_date) => GetDateStringFromDate(new Date(publish_date)),
     },
     {
@@ -50,6 +51,7 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: 840,
       render: (idx) => renderContentListField(idx),
     },
     {
@@ -57,12 +59,14 @@ function List() {
       dataIndex: "content_count",
       key: "content_count",
       align: "center",
+      width: 180,
     },
     {
       title: "발행여부/상태",
       dataIndex: "publish_date",
       key: "publish_date",
       align: "center",
+      width: 180,
       render: (publish_date) => renderStatusField(publish_date),
     },
     {
@@ -70,6 +74,7 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: 200,
       render: (idx) => renderManageField(idx),
     },
   ];
@@ -80,21 +85,24 @@ function List() {
         type: Constants.inputTypes.label,
         label: "발행완료",
         icon: <Image src={checkIcon} />,
+        customCss: { paddingRight: 7 },
       },
       {
         type: Constants.inputTypes.label,
         label: "오늘발행",
         icon: <Image src={clockIcon} />,
+        customCss: { paddingRight: 7 },
       },
       {
         type: Constants.inputTypes.label,
         label: "발행예약",
         icon: <Image src={historyIcon} />,
+        customCss: { paddingRight: 39 },
       },
       {
         type: Constants.inputTypes.button,
         link: "/content/recommendation/create",
-        label: "등록",
+        label: "추천뉴스 등록",
         style: "black-button big-button create-button",
         width: 150,
       },

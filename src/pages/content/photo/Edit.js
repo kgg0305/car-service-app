@@ -118,11 +118,10 @@ function Edit() {
               size="large"
               readOnly={true}
               placeholder="콘텐츠 번호 또는 줌 자동차 뉴스의 URL 입력"
-              style={{ width: 500 }}
+              style={{ width: 740 }}
             />
           </Space>
         </Col>
-        <Col flex="auto" />
         <Col className="table-value-col-section">
           <Space size={13}>
             {contentBodyList.length == index + 1 ? (
@@ -182,7 +181,7 @@ function Edit() {
                   </Button>
                 </Link>
                 <Button
-                  className="black-button"
+                  className="black-button save-detail-button"
                   size="large"
                   onClick={onSaveClick}
                 >
@@ -218,7 +217,7 @@ function Edit() {
                   <Col flex="154px" className="table-header-col-section">
                     <label>카테고리</label>
                   </Col>
-                  <Col flex="auto" className="table-value-col-section">
+                  <Col flex="635px" className="table-value-col-section">
                     <Input
                       name="category"
                       value={bodyInfo.category}

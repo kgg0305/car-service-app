@@ -38,12 +38,14 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: 100,
     },
     {
       title: "콘텐츠 목록",
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: 1078,
       render: (idx) => renderContentListField(idx),
     },
     {
@@ -51,12 +53,14 @@ function List() {
       dataIndex: "content_count",
       key: "content_count",
       align: "center",
+      width: 160,
     },
     {
       title: "사용여부",
       dataIndex: "is_use",
       key: "is_use",
       align: "center",
+      width: 120,
       render: (is_use) =>
         Constants.availableOptions.filter((item) => item.value === is_use)[0]
           .label,
@@ -66,6 +70,7 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: 120,
       render: (idx) => (
         <Row justify="center">
           <Col>
@@ -87,7 +92,7 @@ function List() {
       {
         type: Constants.inputTypes.button,
         link: "/content/photo/create",
-        label: "등록",
+        label: "포토뉴스 등록",
         style: "black-button big-button create-button",
         width: 150,
       },

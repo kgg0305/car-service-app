@@ -82,7 +82,9 @@ function ContentItem({ item, key, value, onChange }) {
       return item.icon ? (
         <Space>
           {item.icon}
-          <label key={key}>{item.label}</label>
+          <label key={key} style={item.customCss}>
+            {item.label}
+          </label>
         </Space>
       ) : (
         <label key={key}>{item.label}</label>

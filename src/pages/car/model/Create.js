@@ -651,7 +651,7 @@ function Create() {
         {/* Body Section */}
         <Space direction="vertical" size={40} style={{ paddingBottom: 112 }}>
           <Tabs defaultActiveKey="1">
-            <TabPane tab="모델 정보" key="1">
+            <TabPane tab="모델 정보" key="1" style={{ outline: "none" }}>
               <Space direction="vertical" size={40}>
                 <Space direction="vertical" size={20}>
                   <Row align="middle">

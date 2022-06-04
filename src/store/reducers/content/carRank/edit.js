@@ -29,12 +29,14 @@ export const init = (idx) => async (dispatch) => {
     const bodyInfo = await rankService.get(1);
     const modelBodyList = [];
 
-    for (let index = 0; index < bodyInfo.ids.split(",").length; index++) {
-      const id = bodyInfo.ids.split(",")[index];
-      modelBodyList.push({
-        ...(await modelService.get(id)),
-        number: index + 1,
-      });
+    if (bodyInfo.ids !== null) {
+      for (let index = 0; index < bodyInfo.ids.split(",").length; index++) {
+        const id = bodyInfo.ids.split(",")[index];
+        modelBodyList.push({
+          ...(await modelService.get(id)),
+          number: index + 1,
+        });
+      }
     }
 
     dispatch({

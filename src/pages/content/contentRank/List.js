@@ -30,24 +30,28 @@ function List() {
       dataIndex: "number",
       key: "number",
       align: "center",
+      width: 98,
     },
     {
       title: "매체",
       dataIndex: "media_type",
       key: "media_type",
       align: "center",
+      width: 200,
     },
     {
       title: "카테고리",
       dataIndex: "category_id",
       key: "category_id",
       align: "center",
+      width: 200,
     },
     {
       title: "콘텐츠",
       dataIndex: "title",
       key: "title",
       align: "center",
+      width: 1081,
     },
   ];
 

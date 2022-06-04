@@ -549,9 +549,10 @@ function Create() {
                 <Row justify="center" gutter={[17, 0]}>
                   <Col>
                     <Button
-                      className="white-button rounded-button"
+                      className="white-button rounded-button add-body-detail-button"
                       icon={<PlusOutlined />}
                       onClick={onAddComponentClick}
+                      size="large"
                     >
                       할인종류 추가하기
                     </Button>
