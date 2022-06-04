@@ -16,9 +16,24 @@
     box-shadow: none;
 }
 
+.ant-picker:hover {
+    border-color: #C1C1C1;
+}
+
+.ant-picker-focused {
+    background: #FFFFFF;
+    border: 1px solid #C1C1C1;
+    border-radius: 3px;
+    box-shadow: none;
+}
+
 .ant-checkbox-checked .ant-checkbox-inner {
     background-color: #C4C4C4;
     border-color: #CBCBCB;
+}
+
+.ant-checkbox-input:focus {
+    border: 1px solid #CBCBCB;
 }
 
 .ant-input[disabled] {
@@ -31,6 +46,16 @@
     text-align: center;
 
     color: #363636;
+}
+
+.detail-input-disabled[disabled] {
+    background: #F0F0F0;
+    border: 1px solid #E5E5E5;
+    border-radius: 3px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    color: #999999;
 }
 
 .ant-input-number {
@@ -521,12 +546,14 @@ main {
 }
 
 .ant-switch-handle {
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
+    top: 4px;
+    left: 4px;
 }
 
 .ant-switch-handle::before {
-    border-radius: 15px;
+    border-radius: 20px;
     background-color: #363636;
     box-shadow:none;
 }
@@ -547,6 +574,8 @@ main {
 .manage-switch > .ant-switch-handle {
     width: 25px;
     height: 25px;
+    top: 2px;
+    left: 2px;
 }
 
 .manage-switch.ant-switch-checked .ant-switch-handle {
@@ -709,7 +738,6 @@ main {
 }
 
 .add-body-detail-button {
-    width: 153px;
     height: 49px;
     font-weight: 600;
 }

@@ -20,3 +20,16 @@
     line-height: 16px;
     color: #FFFFFF;
 }
+
+.addUserButton:hover {
+    background-color: black;
+    border-color: black;
+
+    color: white;
+}
+
+.addUserButton:focus {
+    background-color: #363636;
+    border-color: #363636;
+    color: white;
+}

@@ -461,15 +461,18 @@ function Create() {
     return bodyInfo.brand_id != null && bodyInfo.group_id != null ? (
       <Space size={10}>
         <Input
+          className="detail-input-disabled"
           value={
             brandOptionList.filter(
               (item) => item.value === bodyInfo.brand_id
             )[0].label
           }
           size="large"
+          style={{ width: 200 }}
           disabled={true}
         />
         <Input
+          className="detail-input-disabled"
           value={
             bodyInfo.group_id != null
               ? groupOptionList.filter(
@@ -478,9 +481,16 @@ function Create() {
               : ""
           }
           size="large"
+          style={{ width: 200 }}
           disabled={true}
         />
-        <Input value={bodyInfo.model_name} size="large" disabled={true} />
+        <Input
+          className="detail-input-disabled"
+          value={bodyInfo.model_name}
+          size="large"
+          style={{ width: 200 }}
+          disabled={true}
+        />
       </Space>
     ) : (
       "선택된 차량 정보가 없습니다."
