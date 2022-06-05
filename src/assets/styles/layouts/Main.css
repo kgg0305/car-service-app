@@ -16,6 +16,23 @@
     box-shadow: none;
 }
 
+.ant-input-affix-wrapper {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.ant-input[disabled] {
+    background: #F2F2F2;
+    border: 1px solid #E5E5E5;
+    border-radius: 3px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+
+    color: #363636;
+}
+
 .ant-picker:hover {
     border-color: #C1C1C1;
 }
@@ -34,18 +51,6 @@
 
 .ant-checkbox-input:focus {
     border: 1px solid #CBCBCB;
-}
-
-.ant-input[disabled] {
-    background: #F2F2F2;
-    border: 1px solid #E5E5E5;
-    border-radius: 3px;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 16px;
-    text-align: center;
-
-    color: #363636;
 }
 
 .detail-input-disabled[disabled] {
