@@ -9,12 +9,12 @@ import { removeToken } from "../store/reducers/auth";
 import { init, setHeaderMenu, setSideMenu } from "../store/reducers/menu";
 
 function Header() {
-  const { token, headerMenu, headerMenuRole, sideMenuRole } = useSelector(
+  const { token, headerMenu, headerMenuRole, siderMenuRole } = useSelector(
     (state) => ({
       token: state.auth.token,
       headerMenu: state.menu.headerMenu,
       headerMenuRole: state.menu.headerMenuRole,
-      sideMenuRole: state.menu.sideMenuRole,
+      siderMenuRole: state.menu.siderMenuRole,
     })
   );
 
@@ -53,11 +53,11 @@ function Header() {
               <Menu.Item key={item.key} disabled={item.key === "finance"}>
                 <Link
                   to={
-                    sideMenuRole[item.key].some((sideItem) => sideItem === 1)
+                    siderMenuRole[item.key].some((sideItem) => sideItem === 1)
                       ? Constants.siderMenus.filter(
                           (sideItem) => sideItem.headerMenu === item.key
                         )[
-                          sideMenuRole[item.key].findIndex(
+                          siderMenuRole[item.key].findIndex(
                             (sideItem) => sideItem === 1
                           )
                         ].link

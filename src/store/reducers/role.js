@@ -16,13 +16,13 @@ export const init = () => async (dispatch) => {
     });
 
     let headerMenuRole = {};
-    let sideMenuRole = {};
+    let siderMenuRole = {};
 
     if (user_info.idx === 1) {
       for (let i = 0; i < Constants.headerMenus.length; i++) {
         const header_menu = Constants.headerMenus[i];
         headerMenuRole[header_menu.key] = true;
-        sideMenuRole[header_menu.key] = [];
+        siderMenuRole[header_menu.key] = [];
         for (
           let j = 0;
           j <
@@ -31,7 +31,7 @@ export const init = () => async (dispatch) => {
           ).length;
           j++
         ) {
-          sideMenuRole[header_menu.key].push(1);
+          siderMenuRole[header_menu.key].push(1);
         }
       }
     } else {
@@ -47,7 +47,7 @@ export const init = () => async (dispatch) => {
         ) {
           headerMenuRole[header_menu.key] = true;
 
-          let temp_sideMenu = [];
+          let temp_siderMenu = [];
           let role_info;
           let role_status;
           switch (header_menu.key) {
@@ -64,7 +64,7 @@ export const init = () => async (dispatch) => {
                 ).length;
                 j++
               ) {
-                temp_sideMenu.push(parseInt(role_info.status));
+                temp_siderMenu.push(parseInt(role_info.status));
               }
               break;
             case "finance":
@@ -80,7 +80,7 @@ export const init = () => async (dispatch) => {
                 ).length;
                 j++
               ) {
-                temp_sideMenu.push(parseInt(role_info.status));
+                temp_siderMenu.push(parseInt(role_info.status));
               }
               break;
             case "estimation":
@@ -91,9 +91,9 @@ export const init = () => async (dispatch) => {
               for (let j = 0; j < 3; j++) {
                 role_status = role_info.status.split(",")[j];
                 if (j === 0) {
-                  temp_sideMenu.push(parseInt(role_status));
+                  temp_siderMenu.push(parseInt(role_status));
                 }
-                temp_sideMenu.push(parseInt(role_status));
+                temp_siderMenu.push(parseInt(role_status));
               }
               break;
             case "content":
@@ -107,32 +107,32 @@ export const init = () => async (dispatch) => {
 
                   switch (j) {
                     case 2:
-                      temp_sideMenu.push(parseInt(role_status));
-                      temp_sideMenu.push(parseInt(role_status));
+                      temp_siderMenu.push(parseInt(role_status));
+                      temp_siderMenu.push(parseInt(role_status));
                       break;
                     case 3:
-                      temp_sideMenu.push(parseInt(role_status));
-                      temp_sideMenu.push(parseInt(role_status));
-                      temp_sideMenu.push(parseInt(role_status));
+                      temp_siderMenu.push(parseInt(role_status));
+                      temp_siderMenu.push(parseInt(role_status));
+                      temp_siderMenu.push(parseInt(role_status));
                       break;
                     default:
-                      temp_sideMenu.push(parseInt(role_status));
+                      temp_siderMenu.push(parseInt(role_status));
                   }
                 }
               } else {
                 for (let j = 0; j < 4; j++) {
                   switch (j) {
                     case 2:
-                      temp_sideMenu.push(0);
-                      temp_sideMenu.push(0);
+                      temp_siderMenu.push(0);
+                      temp_siderMenu.push(0);
                       break;
                     case 3:
-                      temp_sideMenu.push(0);
-                      temp_sideMenu.push(0);
-                      temp_sideMenu.push(0);
+                      temp_siderMenu.push(0);
+                      temp_siderMenu.push(0);
+                      temp_siderMenu.push(0);
                       break;
                     default:
-                      temp_sideMenu.push(0);
+                      temp_siderMenu.push(0);
                   }
                 }
               }
@@ -145,37 +145,38 @@ export const init = () => async (dispatch) => {
                 for (let j = 0; j < 2; j++) {
                   role_status = role_info.status.split(",")[j];
                   if (j === 1) {
-                    temp_sideMenu.push(parseInt(role_status));
+                    temp_siderMenu.push(parseInt(role_status));
                   }
                 }
               } else {
-                temp_sideMenu.push(0);
+                temp_siderMenu.push(0);
               }
               break;
           }
-          sideMenuRole[header_menu.key] = temp_sideMenu;
+          siderMenuRole[header_menu.key] = temp_siderMenu;
         } else {
           headerMenuRole[header_menu.key] = false;
-          sideMenuRole[header_menu.key] = [];
+          siderMenuRole[header_menu.key] = [];
         }
       }
-      sideMenuRole["user"] = [0, 0, 0];
+      siderMenuRole["user"] = [0, 0, 0];
     }
 
     let headerMenu = { key: "" };
-    let sideMenu = { key: "" };
+    let siderMenu = { key: "" };
     let redirectTo = "";
     for (let i = 0; i < Constants.headerMenus.length; i++) {
       const header_menu = Constants.headerMenus[i];
       if (headerMenuRole[header_menu.key]) {
-        if (sideMenuRole[header_menu.key].some((item) => item === 1)) {
+        if (siderMenuRole[header_menu.key].some((item) => item === 1)) {
           headerMenu.key = header_menu.key;
-          sideMenu.key = sideMenuRole[header_menu.key]
+          siderMenu.key = siderMenuRole[header_menu.key]
             .findIndex((item) => item === 1)
             .toString();
           redirectTo = Constants.siderMenus.filter(
             (item) => item.headerMenu === headerMenu.key
-          )[sideMenuRole[header_menu.key].findIndex((item) => item === 1)].link;
+          )[siderMenuRole[header_menu.key].findIndex((item) => item === 1)]
+            .link;
           break;
         }
         if (headerMenu.key !== "") {
@@ -189,7 +190,7 @@ export const init = () => async (dispatch) => {
       payload: {
         roleList: roleList,
         headerMenuRole: headerMenuRole,
-        sideMenuRole: sideMenuRole,
+        siderMenuRole: siderMenuRole,
         redirectTo: redirectTo,
       },
     });
@@ -212,7 +213,7 @@ const initialState = {
     content: false,
     user: false,
   },
-  sideMenuRole: {
+  siderMenuRole: {
     car: [],
     finance: [],
     estimation: [],
@@ -228,7 +229,7 @@ export default function menu(state = initialState, action) {
         ...state,
         roleList: action.payload.roleList,
         headerMenuRole: action.payload.headerMenuRole,
-        sideMenuRole: action.payload.sideMenuRole,
+        siderMenuRole: action.payload.siderMenuRole,
         redirectTo: action.payload.redirectTo,
       };
     case REMOVE_REDIRECTTO:

@@ -8,10 +8,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSideMenu } from "../store/reducers/menu";
 
 function Sider() {
-  const { headerMenu, sideMenu, sideMenuRole } = useSelector((state) => ({
+  const { headerMenu, siderMenu, siderMenuRole } = useSelector((state) => ({
     headerMenu: state.menu.headerMenu,
-    sideMenu: state.menu.sideMenu,
-    sideMenuRole: state.menu.sideMenuRole,
+    siderMenu: state.menu.siderMenu,
+    siderMenuRole: state.menu.siderMenuRole,
   }));
 
   const dispatch = useDispatch();
@@ -30,21 +30,23 @@ function Sider() {
         className="sider-menu-layout"
         theme="light"
         mode="inline"
-        defaultSelectedKeys={[sideMenu.key]}
-        selectedKeys={[sideMenu.key]}
+        defaultSelectedKeys={[siderMenu.key]}
+        selectedKeys={[siderMenu.key]}
         onClick={(key) => onMenuClick(key.key)}
       >
         {Constants.siderMenus
-          .filter((sideMenuItem) => sideMenuItem.headerMenu === headerMenu.key)
+          .filter(
+            (siderMenuItem) => siderMenuItem.headerMenu === headerMenu.key
+          )
           .map((item, index) =>
-            sideMenuRole[headerMenu.key] ? (
-              sideMenuRole[headerMenu.key][index] === 1 ||
-              sideMenuRole[headerMenu.key][index] === 2 ? (
+            siderMenuRole[headerMenu.key] ? (
+              siderMenuRole[headerMenu.key][index] === 1 ||
+              siderMenuRole[headerMenu.key][index] === 2 ? (
                 <Menu.Item
                   key={index}
                   disabled={
-                    sideMenuRole[headerMenu.key]
-                      ? sideMenuRole[headerMenu.key][index] === 2
+                    siderMenuRole[headerMenu.key]
+                      ? siderMenuRole[headerMenu.key][index] === 2
                       : false
                   }
                 >

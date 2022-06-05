@@ -13,8 +13,8 @@ store.subscribe(() => {
     JSON.stringify(store.getState().menu.headerMenu.key)
   );
   sessionStorage.setItem(
-    "sideMenuKey",
-    JSON.stringify(store.getState().menu.sideMenu.key)
+    "siderMenuKey",
+    JSON.stringify(store.getState().menu.siderMenu.key)
   );
 });
 
