@@ -109,7 +109,7 @@ function List() {
       render: (idx) => (
         <Row justify="center">
           <Col>
-            <Link to={"/car/trim/edit/" + idx}>
+            <Link to={"/car/trim/edit/" + idx + "/0"}>
               <Button className="black-button small-button rounded-button">
                 수정
               </Button>

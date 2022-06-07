@@ -58,7 +58,7 @@ const { TabPane } = Tabs;
 
 // 수정페지
 function Edit() {
-  let { id } = useParams();
+  let { id, group_id } = useParams();
   let navigate = useNavigate();
 
   const {
@@ -729,7 +729,13 @@ function Edit() {
             <Col flex="auto" />
             <Col>
               <Space size={10}>
-                <Link to="/car/model">
+                <Link
+                  to={
+                    parseInt(group_id) === 0
+                      ? "/car/model"
+                      : "/car/model/manage/" + group_id
+                  }
+                >
                   <Button
                     className="white-button cancel-detail-button"
                     size="large"
@@ -740,7 +746,13 @@ function Edit() {
                 <Button
                   className="black-button save-detail-button"
                   size="large"
-                  onClick={() => onSaveClick("/car/model")}
+                  onClick={() =>
+                    onSaveClick(
+                      parseInt(group_id) === 0
+                        ? "/car/model"
+                        : "/car/model/manage/" + group_id
+                    )
+                  }
                 >
                   저장하고 나가기
                 </Button>

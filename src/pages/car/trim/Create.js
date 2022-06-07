@@ -1758,7 +1758,7 @@ function Create() {
                 <Button
                   className="black-button save-detail-button"
                   size="large"
-                  onClick={() => onSaveClick("/car/trim/create")}
+                  onClick={() => onSaveClick("/car/trim")}
                 >
                   저장하고 나가기
                 </Button>

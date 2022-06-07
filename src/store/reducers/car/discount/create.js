@@ -148,37 +148,29 @@ export const save = (url) => async (dispatch, getState) => {
         if (conditionBody.condition_name === "") {
           validation.push({
             title:
+              "정보 " +
+              (index + 1 < 10 ? "0" + (index + 1) : index + 1) +
               "종류 " +
               (kindIndex + 1 < 10 ? "0" + (kindIndex + 1) : kindIndex + 1) +
-              "상품 " +
+              "조건 " +
               (conditionIndex + 1 < 10
                 ? "0" + (conditionIndex + 1)
                 : conditionIndex + 1),
-            name:
-              "종류 " +
-              (kindIndex + 1 < 10 ? "0" + (kindIndex + 1) : kindIndex + 1) +
-              "상품 " +
-              (conditionIndex + 1 < 10
-                ? "0" + (conditionIndex + 1)
-                : conditionIndex + 1 + "(할인조건)"),
+            name: "조건명",
           });
         }
         if (conditionBody.discount_price === 0) {
           validation.push({
             title:
+              "정보 " +
+              (index + 1 < 10 ? "0" + (index + 1) : index + 1) +
               "종류 " +
               (kindIndex + 1 < 10 ? "0" + (kindIndex + 1) : kindIndex + 1) +
-              "상품 " +
+              "조건 " +
               (conditionIndex + 1 < 10
                 ? "0" + (conditionIndex + 1)
                 : conditionIndex + 1),
-            name:
-              "종류 " +
-              (kindIndex + 1 < 10 ? "0" + (kindIndex + 1) : kindIndex + 1) +
-              "상품 " +
-              (conditionIndex + 1 < 10
-                ? "0" + (conditionIndex + 1)
-                : conditionIndex + 1 + "(할인비용)"),
+            name: "조건비용",
           });
         }
         if (conditionBody.price_unit === null) {

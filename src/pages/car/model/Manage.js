@@ -121,7 +121,7 @@ function Manage() {
         <Row justify="center">
           <Col>
             <Space size={15} split={<Divider type="vertical" />}>
-              <Link to={"/car/model/edit/" + idx}>
+              <Link to={"/car/model/edit/" + idx + "/" + group_id}>
                 <Button className="black-button small-button rounded-button">
                   수정
                 </Button>

@@ -125,25 +125,25 @@ function App() {
           <Route path="group">
             <Route index element={<CarGroupList />} />
             <Route path="create" element={<CarGroupCreate />} />
-            <Route path="edit/:id" element={<CarGroupEdit />} />
+            <Route path="edit/:id/:brand_id" element={<CarGroupEdit />} />
             <Route path="manage/:brand_id" element={<CarGroupManage />} />
           </Route>
           <Route path="model">
             <Route index element={<CarModelList />} />
             <Route path="create" element={<CarModelCreate />} />
-            <Route path="edit/:id" element={<CarModelEdit />} />
+            <Route path="edit/:id/:group_id" element={<CarModelEdit />} />
             <Route path="manage/:group_id" element={<CarModelManage />} />
           </Route>
           <Route path="lineup">
             <Route index element={<CarLineupList />} />
             <Route path="create" element={<CarLineupCreate />} />
-            <Route path="edit/:id" element={<CarLineupEdit />} />
+            <Route path="edit/:id/:model_id" element={<CarLineupEdit />} />
             <Route path="manage/:model_id" element={<CarLineupManage />} />
           </Route>
           <Route path="trim">
             <Route index element={<CarTrimList />} />
             <Route path="create" element={<CarTrimCreate />} />
-            <Route path="edit/:id" element={<CarTrimEdit />} />
+            <Route path="edit/:id/:lineup_id" element={<CarTrimEdit />} />
             <Route path="manage/:lineup_id" element={<CarTrimManage />} />
           </Route>
           <Route path="discount">

@@ -45,7 +45,7 @@ const { TabPane } = Tabs;
 
 // 수정페지
 function Edit() {
-  let { id } = useParams();
+  let { id, lineup_id } = useParams();
   let navigate = useNavigate();
 
   const {
@@ -379,7 +379,7 @@ function Edit() {
                     <Col flex="154px" className="table-header-col-section">
                       <label>연료</label>
                     </Col>
-                    <Col span={10} className="table-value-col-section">
+                    <Col flex="636px" className="table-value-col-section">
                       <Input
                         value={
                           Constants.fuelTypeOptions.filter(
@@ -421,7 +421,7 @@ function Edit() {
                     <Col flex="154px" className="table-header-col-section">
                       <label>베기량 [CC]</label>
                     </Col>
-                    <Col span={10} className="table-value-col-section">
+                    <Col flex="636px" className="table-value-col-section">
                       <InputNumber
                         onKeyPress={(event) => {
                           if (!/[0-9]/.test(event.key)) {
@@ -465,7 +465,7 @@ function Edit() {
                     <Col flex="154px" className="table-header-col-section">
                       <label>최대토크 [kg.m/rpm]</label>
                     </Col>
-                    <Col span={10} className="table-value-col-section">
+                    <Col flex="636px" className="table-value-col-section">
                       <Space size={6}>
                         <InputNumber
                           onKeyPress={(event) => {
@@ -548,7 +548,7 @@ function Edit() {
                     <Col flex="154px" className="table-header-col-section">
                       <label>CO2배출량 [g/km]</label>
                     </Col>
-                    <Col span={10} className="table-value-col-section">
+                    <Col flex="636px" className="table-value-col-section">
                       <InputNumber
                         onKeyPress={(event) => {
                           if (!/[0-9]/.test(event.key)) {
@@ -629,7 +629,7 @@ function Edit() {
                     <Col flex="154px" className="table-header-col-section">
                       <label>구동방식</label>
                     </Col>
-                    <Col span={10} className="table-value-col-section">
+                    <Col flex="636px" className="table-value-col-section">
                       <Input
                         name="driving_method"
                         value={detailBodyInfo.driving_method}
@@ -672,7 +672,7 @@ function Edit() {
                     <Col flex="154px" className="table-header-col-section">
                       <label>연료탱크 [ l ]</label>
                     </Col>
-                    <Col span={10} className="table-value-col-section">
+                    <Col flex="636px" className="table-value-col-section">
                       <InputNumber
                         onKeyPress={(event) => {
                           if (!/[0-9]/.test(event.key)) {
@@ -756,7 +756,7 @@ function Edit() {
                     <Col flex="154px" className="table-header-col-section">
                       <label>전고 [mm]</label>
                     </Col>
-                    <Col span={10} className="table-value-col-section">
+                    <Col flex="636px" className="table-value-col-section">
                       <InputNumber
                         onKeyPress={(event) => {
                           if (!/[0-9]/.test(event.key)) {
@@ -803,7 +803,7 @@ function Edit() {
                     <Col flex="154px" className="table-header-col-section">
                       <label>휠베이스 [mm]</label>
                     </Col>
-                    <Col span={10} className="table-value-col-section">
+                    <Col flex="636px" className="table-value-col-section">
                       <InputNumber
                         onKeyPress={(event) => {
                           if (!/[0-9]/.test(event.key)) {
@@ -865,7 +865,7 @@ function Edit() {
                     <Col flex="154px" className="table-header-col-section">
                       <label>연료</label>
                     </Col>
-                    <Col span={10} className="table-value-col-section">
+                    <Col flex="636px" className="table-value-col-section">
                       <Input
                         value={
                           Constants.fuelTypeOptions.filter(
@@ -907,7 +907,7 @@ function Edit() {
                     <Col flex="154px" className="table-header-col-section">
                       <label>베기량 [CC]</label>
                     </Col>
-                    <Col span={10} className="table-value-col-section">
+                    <Col flex="636px" className="table-value-col-section">
                       <InputNumber
                         onKeyPress={(event) => {
                           if (!/[0-9]/.test(event.key)) {
@@ -951,7 +951,7 @@ function Edit() {
                     <Col flex="154px" className="table-header-col-section">
                       <label>최대토크 [kg.m/rpm]</label>
                     </Col>
-                    <Col span={10} className="table-value-col-section">
+                    <Col flex="636px" className="table-value-col-section">
                       <Space size={6}>
                         <InputNumber
                           onKeyPress={(event) => {
@@ -1034,7 +1034,7 @@ function Edit() {
                     <Col flex="154px" className="table-header-col-section">
                       <label>제로백 [초]</label>
                     </Col>
-                    <Col span={10} className="table-value-col-section">
+                    <Col flex="636px" className="table-value-col-section">
                       <InputNumber
                         onKeyPress={(event) => {
                           if (!/[0-9]/.test(event.key)) {
@@ -1054,7 +1054,7 @@ function Edit() {
                     <Col flex="154px" className="table-header-col-section">
                       <label>CO2배출량 [g/km]</label>
                     </Col>
-                    <Col span={10} className="table-value-col-section">
+                    <Col flex="auto" className="table-value-col-section">
                       <InputNumber
                         onKeyPress={(event) => {
                           if (!/[0-9]/.test(event.key)) {
@@ -1081,7 +1081,7 @@ function Edit() {
                     <Col flex="154px" className="table-header-col-section">
                       <label>타이어</label>
                     </Col>
-                    <Col flex="auto" className="table-value-col-section">
+                    <Col flex="636px" className="table-value-col-section">
                       <Space size={6}>
                         <InputNumber
                           onKeyPress={(event) => {
@@ -1135,7 +1135,7 @@ function Edit() {
                     <Col flex="154px" className="table-header-col-section">
                       <label>구동방식</label>
                     </Col>
-                    <Col span={10} className="table-value-col-section">
+                    <Col flex="auto" className="table-value-col-section">
                       <Input
                         name="driving_method"
                         value={detailBodyInfo.driving_method}
@@ -1160,7 +1160,7 @@ function Edit() {
                     <Col flex="154px" className="table-header-col-section">
                       <label>변속기</label>
                     </Col>
-                    <Col flex="auto" className="table-value-col-section">
+                    <Col flex="636px" className="table-value-col-section">
                       <Input
                         name="gearbox"
                         value={detailBodyInfo.gearbox}
@@ -1178,7 +1178,7 @@ function Edit() {
                     <Col flex="154px" className="table-header-col-section">
                       <label>연료탱크 [ l ]</label>
                     </Col>
-                    <Col span={10} className="table-value-col-section">
+                    <Col flex="auto" className="table-value-col-section">
                       <InputNumber
                         onKeyPress={(event) => {
                           if (!/[0-9]/.test(event.key)) {
@@ -1205,7 +1205,7 @@ function Edit() {
                     <Col flex="154px" className="table-header-col-section">
                       <label>공차중량 [kg]</label>
                     </Col>
-                    <Col flex="auto" className="table-value-col-section">
+                    <Col flex="636px" className="table-value-col-section">
                       <InputNumber
                         onKeyPress={(event) => {
                           if (!/[0-9]/.test(event.key)) {
@@ -1262,7 +1262,7 @@ function Edit() {
                     <Col flex="154px" className="table-header-col-section">
                       <label>전고 [mm]</label>
                     </Col>
-                    <Col span={10} className="table-value-col-section">
+                    <Col flex="636px" className="table-value-col-section">
                       <InputNumber
                         onKeyPress={(event) => {
                           if (!/[0-9]/.test(event.key)) {
@@ -1309,7 +1309,7 @@ function Edit() {
                     <Col flex="154px" className="table-header-col-section">
                       <label>휠베이스 [mm]</label>
                     </Col>
-                    <Col span={10} className="table-value-col-section">
+                    <Col flex="636px" className="table-value-col-section">
                       <InputNumber
                         onKeyPress={(event) => {
                           if (!/[0-9]/.test(event.key)) {
@@ -1372,7 +1372,7 @@ function Edit() {
                   <Col flex="154px" className="table-header-col-section">
                     <label>도심 [km]</label>
                   </Col>
-                  <Col span={10} className="table-value-col-section">
+                  <Col flex="636px" className="table-value-col-section">
                     <InputNumber
                       onKeyPress={(event) => {
                         if (!/[0-9]/.test(event.key)) {
@@ -1419,7 +1419,7 @@ function Edit() {
                   <Col flex="154px" className="table-header-col-section">
                     <label>복합 [km]</label>
                   </Col>
-                  <Col span={10} className="table-value-col-section">
+                  <Col flex="636px" className="table-value-col-section">
                     <InputNumber
                       onKeyPress={(event) => {
                         if (!/[0-9]/.test(event.key)) {
@@ -1466,7 +1466,7 @@ function Edit() {
                   <Col flex="154px" className="table-header-col-section">
                     <label>저온 [km]</label>
                   </Col>
-                  <Col span={10} className="table-value-col-section">
+                  <Col flex="auto" className="table-value-col-section">
                     <Space size={6}>
                       <InputNumber
                         onKeyPress={(event) => {
@@ -1505,7 +1505,7 @@ function Edit() {
                   <Col flex="154px" className="table-header-col-section">
                     <label>배터리 용량 [kWh]</label>
                   </Col>
-                  <Col span={10} className="table-value-col-section">
+                  <Col flex="636px" className="table-value-col-section">
                     <InputNumber
                       onKeyPress={(event) => {
                         if (!/[0-9]/.test(event.key)) {
@@ -1547,7 +1547,7 @@ function Edit() {
                   <Col flex="154px" className="table-header-col-section">
                     <label>급속충전</label>
                   </Col>
-                  <Col span={10} className="table-value-col-section">
+                  <Col flex="636px" className="table-value-col-section">
                     <Input
                       name="fast_charging"
                       value={detailBodyInfo.fast_charging}
@@ -1594,7 +1594,7 @@ function Edit() {
                   <Col flex="154px" className="table-header-col-section">
                     <label>구동방식</label>
                   </Col>
-                  <Col span={10} className="table-value-col-section">
+                  <Col flex="636px" className="table-value-col-section">
                     <Input
                       name="driving_method"
                       value={detailBodyInfo.driving_method}
@@ -1636,7 +1636,7 @@ function Edit() {
                   <Col flex="154px" className="table-header-col-section">
                     <label>최고출력 [ps/rpm]</label>
                   </Col>
-                  <Col span={10} className="table-value-col-section">
+                  <Col flex="636px" className="table-value-col-section">
                     <Space size={6}>
                       <InputNumber
                         onKeyPress={(event) => {
@@ -1719,7 +1719,7 @@ function Edit() {
                   <Col flex="154px" className="table-header-col-section">
                     <label>제로백 [초]</label>
                   </Col>
-                  <Col span={10} className="table-value-col-section">
+                  <Col flex="auto" className="table-value-col-section">
                     <InputNumber
                       onKeyPress={(event) => {
                         if (!/[0-9]/.test(event.key)) {
@@ -1757,7 +1757,13 @@ function Edit() {
             <Col flex="auto" />
             <Col>
               <Space size={10}>
-                <Link to="/car/trim">
+                <Link
+                  to={
+                    parseInt(lineup_id) === 0
+                      ? "/car/trim"
+                      : "/car/trim/manage/" + lineup_id
+                  }
+                >
                   <Button
                     className="white-button cancel-detail-button"
                     size="large"
@@ -1768,7 +1774,13 @@ function Edit() {
                 <Button
                   className="black-button save-detail-button"
                   size="large"
-                  onClick={() => onSaveClick("/car/trim")}
+                  onClick={() =>
+                    onSaveClick(
+                      parseInt(lineup_id) === 0
+                        ? "/car/trim"
+                        : "/car/trim/manage/" + lineup_id
+                    )
+                  }
                 >
                   저장하고 나가기
                 </Button>

@@ -122,7 +122,7 @@ function List() {
                   라인업관리
                 </Button>
               </Link>
-              <Link to={"/car/model/edit/" + idx}>
+              <Link to={"/car/model/edit/" + idx + "/0"}>
                 <Button className="black-button small-button rounded-button">
                   수정
                 </Button>

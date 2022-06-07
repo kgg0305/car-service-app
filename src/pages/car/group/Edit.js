@@ -22,7 +22,7 @@ const { Option } = Select;
 
 // 수정페지
 function Edit() {
-  let { id } = useParams();
+  let { id, brand_id } = useParams();
   let navigate = useNavigate();
 
   const {
@@ -72,7 +72,13 @@ function Edit() {
             <Col flex="auto" />
             <Col>
               <Space size={10}>
-                <Link to="/car/group">
+                <Link
+                  to={
+                    parseInt(brand_id) === 0
+                      ? "/car/group"
+                      : "/car/group/manage/" + brand_id
+                  }
+                >
                   <Button
                     className="white-button cancel-detail-button"
                     size="large"
@@ -83,7 +89,13 @@ function Edit() {
                 <Button
                   className="black-button save-detail-button"
                   size="large"
-                  onClick={() => onSaveClick("/car/group")}
+                  onClick={() =>
+                    onSaveClick(
+                      parseInt(brand_id) === 0
+                        ? "/car/group"
+                        : "/car/group/manage/" + brand_id
+                    )
+                  }
                 >
                   저장하고 나가기
                 </Button>
