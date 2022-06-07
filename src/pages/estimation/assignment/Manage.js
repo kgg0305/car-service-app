@@ -277,7 +277,10 @@ function Manage() {
                     취소
                   </Button>
                 </Link>
-                <Button className="black-button" size="large">
+                <Button
+                  className="black-button save-detail-button"
+                  size="large"
+                >
                   저장하고 나가기
                 </Button>
               </Space>

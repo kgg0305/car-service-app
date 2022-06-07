@@ -528,7 +528,7 @@ function Create() {
                   </Button>
                 </Link>
                 <Button
-                  className="black-button"
+                  className="black-button save-detail-button"
                   size="large"
                   onClick={onSaveClick}
                 >

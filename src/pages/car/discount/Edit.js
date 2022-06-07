@@ -208,10 +208,16 @@ function Edit() {
             <Col>
               <Space size={10}>
                 <Link to="/car/discount">
-                  <Button className="white-button medium-button">취소</Button>
+                  <Button
+                    className="white-button cancel-detail-button"
+                    size="large"
+                  >
+                    취소
+                  </Button>
                 </Link>
                 <Button
-                  className="black-button medium-button"
+                  className="black-button save-detail-button"
+                  size="large"
                   onClick={onSaveClick}
                 >
                   저장하고 나가기
