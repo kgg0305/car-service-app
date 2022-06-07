@@ -389,6 +389,22 @@ export const save = (url) => async (dispatch, getState) => {
     });
   }
 
+  let is_exist_picture = false;
+  for (let i = 1; i <= 8; i++) {
+    const element = bodyInfo["preview_" + i];
+    if (element !== preview_default_image) {
+      is_exist_picture = true;
+      break;
+    }
+  }
+
+  if (!is_exist_picture) {
+    validation.push({
+      title: "정보",
+      name: "사진",
+    });
+  }
+
   lineupBodyList.map((body, index) => {
     if (body.name === "") {
       validation.push({

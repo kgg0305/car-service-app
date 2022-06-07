@@ -188,7 +188,7 @@ function Manage() {
             </label>
           </Row>
         ) : (
-          <></>
+          <div style={{ height: 69 }}></div>
         )}
       </Space>
       <AlertDeleteModal

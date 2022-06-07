@@ -222,7 +222,9 @@ function Edit() {
         <Space direction="vertical" size={11}>
           <Row justify="middle">
             <Col>
-              <label className="main-header-title">자동차 인기순위 수정</label>
+              <label className="detail-header-title">
+                자동차 인기순위 수정
+              </label>
             </Col>
             <Col flex="auto" />
             <Col>

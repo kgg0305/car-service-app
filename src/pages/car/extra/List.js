@@ -239,7 +239,7 @@ function List() {
           </label>
         </Row>
       ) : (
-        <></>
+        <div style={{ height: 69 }}></div>
       )}
     </Space>
   );

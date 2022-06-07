@@ -57,7 +57,10 @@ function List() {
   ];
 
   const tableList = {
-    title: "등록일 " + bodyInfo.created_at,
+    title: "등록일",
+    subTitle1: bodyInfo.created_at.split(" ")[0],
+    subTitle2:
+      bodyInfo.created_at.split(" ")[1] + bodyInfo.created_at.split(" ")[2],
     topItems: [
       {
         type: Constants.inputTypes.button,
@@ -97,7 +100,7 @@ function List() {
             </label>
           </Row>
         ) : (
-          <></>
+          <div style={{ height: 69 }}></div>
         )}
       </Space>
     </>

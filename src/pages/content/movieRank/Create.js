@@ -186,7 +186,9 @@ function Create() {
         <Space direction="vertical" size={11}>
           <Row justify="middle">
             <Col>
-              <label className="main-header-title">동영상 인기순위 등록</label>
+              <label className="detail-header-title">
+                동영상 인기순위 등록
+              </label>
             </Col>
             <Col flex="auto" />
             <Col>
@@ -217,7 +219,7 @@ function Create() {
           <Space direction="vertical" size={0} split={<Divider />}>
             <Row align="middle">
               <Col>
-                <label className="detail-sub-title">콘텐츠 선택</label>
+                <label className="detail-sub-title">순위</label>
               </Col>
               <Col flex="auto" />
             </Row>

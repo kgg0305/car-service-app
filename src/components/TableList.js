@@ -15,9 +15,17 @@ function TableList({ dataSource, className }) {
       >
         <Row justify="middle">
           <Col>
-            <label className={styles.headerLabel}>
-              {dataSource.title ? dataSource.title : "목록"}
-            </label>
+            <Space>
+              <label className={styles.headerLabel}>
+                {dataSource.title ? dataSource.title : "목록"}
+              </label>
+              <label className={styles.subTitleLabel1}>
+                {dataSource.subTitle1 ? dataSource.subTitle1 : <></>}
+              </label>
+              <label className={styles.subTitleLabel2}>
+                {dataSource.subTitle2 ? dataSource.subTitle2 : <></>}
+              </label>
+            </Space>
           </Col>
           <Col flex="auto" />
           <Col>

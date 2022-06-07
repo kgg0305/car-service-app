@@ -1,7 +1,6 @@
 import preview_default_image from "../../../../assets/images/preview-default-image.png";
 import { GetBase64 } from "../../../../constants/GlobalFunctions";
 import { brandService } from "../../../../services/brandService";
-import { setSideMenu } from "../../menu";
 
 const prefix = "car/brand/create/";
 
@@ -18,7 +17,6 @@ const SAVE = prefix + "SAVE";
 
 export const init = () => async (dispatch) => {
   try {
-    setSideMenu("1");
     const sequence = (await brandService.sequence()) + 1;
 
     dispatch({

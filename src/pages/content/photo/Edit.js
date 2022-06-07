@@ -119,19 +119,17 @@ function Edit() {
         </Col>
         <Col flex="auto" className="table-value-col-section">
           <Space size={10}>
-            <InputNumber
-              onKeyPress={(event) => {
-                if (!/[0-9]/.test(event.key)) {
-                  event.preventDefault();
-                }
-              }}
+            <Input
               name="idx"
               value={body.idx}
-              onChange={(number) => {
-                onContentComponentChange(body.number, "idx", number);
+              onChange={(e) => {
+                onContentComponentChange(
+                  body.number,
+                  e.target.name,
+                  e.target.value
+                );
               }}
               size="large"
-              controls={false}
               placeholder="콘텐츠 번호 또는 줌 자동차 뉴스의 URL 입력"
               style={{ width: 500 }}
             />
@@ -140,7 +138,6 @@ function Edit() {
               value={body.title}
               size="large"
               readOnly={true}
-              placeholder="콘텐츠 번호 또는 줌 자동차 뉴스의 URL 입력"
               style={{ width: 740 }}
             />
           </Space>
@@ -218,11 +215,7 @@ function Edit() {
 
         {/* Body Section */}
         <Space direction="vertical" size={40} style={{ paddingBottom: 112 }}>
-          <Space
-            direction="vertical"
-            size={59}
-            split={<Divider className="detail-body-divider" dashed />}
-          >
+          <Space direction="vertical" size={59}>
             <Space direction="vertical" size={20}>
               <Row align="middle">
                 <Col>

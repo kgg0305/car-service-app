@@ -2,6 +2,7 @@ import { GetDateStringFromDate } from "../../../../constants/GlobalFunctions";
 import { brandService } from "../../../../services/brandService";
 import { discountConditionService } from "../../../../services/discountConditionService";
 import { discountKindService } from "../../../../services/discountKindService";
+import { setSideMenu } from "../../menu";
 
 const prefix = "car/discount/create/";
 
@@ -22,6 +23,7 @@ const SAVE = prefix + "SAVE";
 
 export const init = () => async (dispatch) => {
   try {
+    setSideMenu("1");
     const brandOptionList = await brandService.getOptionList();
 
     dispatch({

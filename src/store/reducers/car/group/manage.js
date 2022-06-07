@@ -123,6 +123,7 @@ const initialState = {
   redirectTo: "",
   offset: 0,
   confirm: {
+    name: "",
     show: false,
     idx: null,
   },
@@ -154,6 +155,9 @@ export default function list(state = initialState, action) {
         ...state,
         confirm: {
           ...state.confirm,
+          name: state.dataSource.filter(
+            (item) => item.idx === action.payload.idx
+          )[0].group_name,
           show: true,
           idx: action.payload.idx,
         },
