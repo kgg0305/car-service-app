@@ -84,6 +84,7 @@ const initialState = {
   brandOptionList: [],
   carKindOptionList: [],
   dataSource: [],
+  dataLength: 0,
   searchData: {
     type_id: null,
     group_id: null,
@@ -99,6 +100,7 @@ export default function list(state = initialState, action) {
         brandOptionList: action.payload.brandOptionList,
         carKindOptionList: action.payload.carKindOptionList,
         dataSource: action.payload.dataSource,
+        dataLength: action.payload.dataLength,
       };
     case SHOW_MORE:
       return {
@@ -110,6 +112,7 @@ export default function list(state = initialState, action) {
       return {
         ...state,
         dataSource: action.payload.dataSource,
+        dataLength: action.payload.dataLength,
       };
     case SET_SEARCH:
       return {

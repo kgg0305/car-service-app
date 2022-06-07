@@ -22,12 +22,14 @@ function List() {
     brandOptionList,
     discountKindOptionList,
     dataSource,
+    dataLength,
     searchData,
   } = useSelector((state) => ({
     offset: state.discountList.offset,
     brandOptionList: state.discountList.brandOptionList,
     discountKindOptionList: state.discountList.discountKindOptionList,
     dataSource: state.discountList.dataSource,
+    dataLength: state.discountList.dataLength,
     searchData: state.discountList.searchData,
   }));
 
@@ -332,11 +334,15 @@ function List() {
       {/* Body Section */}
       <TableList dataSource={tableDataSource} />
 
-      <Row justify="center">
-        <label className="show-more-label" onClick={onTableMoreClick}>
-          더보기
-        </label>
-      </Row>
+      {dataLength > 10 ? (
+        <Row justify="center">
+          <label className="show-more-label" onClick={onTableMoreClick}>
+            더보기
+          </label>
+        </Row>
+      ) : (
+        <></>
+      )}
     </Space>
   );
 }

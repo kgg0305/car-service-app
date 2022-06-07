@@ -38,15 +38,15 @@ import {
 function List() {
   let navigate = useNavigate();
 
-  const { redirectTo, offset, dataSource, searchData, confirm } = useSelector(
-    (state) => ({
+  const { redirectTo, offset, dataSource, dataLength, searchData, confirm } =
+    useSelector((state) => ({
       redirectTo: state.contentList.redirectTo,
       offset: state.contentList.offset,
       dataSource: state.contentList.dataSource,
+      dataSourcdataLengthe: state.contentList.dataLength,
       searchData: state.contentList.searchData,
       confirm: state.contentList.confirm,
-    })
-  );
+    }));
 
   const dispatch = useDispatch();
 
@@ -478,11 +478,15 @@ function List() {
         {/* Body Section */}
         <TableList dataSource={tableDataSource} />
 
-        <Row justify="center">
-          <label className="show-more-label" onClick={onTableMoreClick}>
-            더보기
-          </label>
-        </Row>
+        {dataLength > 10 ? (
+          <Row justify="center">
+            <label className="show-more-label" onClick={onTableMoreClick}>
+              더보기
+            </label>
+          </Row>
+        ) : (
+          <></>
+        )}
       </Space>
       <AlertDeleteModal
         name={confirm.name}

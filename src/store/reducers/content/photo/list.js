@@ -118,6 +118,7 @@ export const publish = (idx, dataSource) => async (dispatch) => {
 const initialState = {
   offset: 0,
   dataSource: [],
+  dataLength: 0,
   detailModal: {
     show: false,
     contentList: [],
@@ -130,6 +131,7 @@ export default function list(state = initialState, action) {
       return {
         ...initialState,
         dataSource: action.payload.dataSource,
+        dataLength: action.payload.dataLength,
       };
     case SHOW_MORE:
       return {
@@ -157,6 +159,7 @@ export default function list(state = initialState, action) {
       return {
         ...state,
         dataSource: action.payload.dataSource,
+        dataLength: action.payload.dataLength,
       };
     default:
       return state;

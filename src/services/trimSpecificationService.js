@@ -96,6 +96,16 @@ const getList = async (offset, search) => {
   }
 };
 
+const getCount = async (search) => {
+  try {
+    const response = await axios.post(base_url + "/count", search);
+
+    return response.data.count;
+  } catch (e) {
+    return e;
+  }
+};
+
 const getOptionList = async () => {
   try {
     const response = await axios.get(base_url + "/option-list");
@@ -131,6 +141,7 @@ export const trimSpecificationService = {
   create,
   update,
   getList,
+  getCount,
   getOptionList,
   get,
   remove,

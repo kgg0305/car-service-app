@@ -175,6 +175,7 @@ const initialState = {
     idx: null,
   },
   dataSource: [],
+  dataLength: 0,
   searchData: {
     date_period: 0,
     s_date: null,
@@ -193,6 +194,7 @@ export default function list(state = initialState, action) {
       return {
         ...initialState,
         dataSource: action.payload.dataSource,
+        dataLength: action.payload.dataLength,
       };
     case REMOVE_REDIRECTTO:
       return {
@@ -209,6 +211,7 @@ export default function list(state = initialState, action) {
       return {
         ...state,
         dataSource: action.payload.dataSource,
+        dataLength: action.payload.dataLength,
       };
     case SET_SEARCH:
       return {

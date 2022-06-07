@@ -22,6 +22,8 @@ const DELETE_SPECIFICATION_BODY = prefix + "DELETE_SPECIFICATION_BODY";
 const SET_TRIM_BODY = prefix + "SET_TRIM_BODY";
 const PUT_TRIM_BODY = prefix + "PUT_TRIM_BODY";
 const SET_DETAIL_BODY = prefix + "SET_DETAIL_BODY";
+const MOVE_UP = prefix + "MOVE_UP";
+const MOVE_DOWN = prefix + "MOVE_DOWN";
 const SAVE = prefix + "SAVE";
 
 export const init = () => async (dispatch) => {
@@ -172,6 +174,40 @@ export const setDetailBody = (name, value) => ({
     value: value,
   },
 });
+export const moveUp = (index) => (dispatch, getState) => {
+  const state = getState();
+  const specificationBodyList = state.trimCreate.specificationBodyList;
+  if (index > 0) {
+    const current_item = specificationBodyList[index];
+    const top_item = specificationBodyList[index - 1];
+
+    dispatch({
+      type: MOVE_UP,
+      payload: {
+        index: index,
+        current_item: current_item,
+        top_item: top_item,
+      },
+    });
+  }
+};
+export const moveDown = (index) => (dispatch, getState) => {
+  const state = getState();
+  const specificationBodyList = state.trimCreate.specificationBodyList;
+  if (index < specificationBodyList.length - 1) {
+    const current_item = specificationBodyList[index];
+    const bottom_item = specificationBodyList[index + 1];
+
+    dispatch({
+      type: MOVE_DOWN,
+      payload: {
+        index: index,
+        current_item: current_item,
+        bottom_item: bottom_item,
+      },
+    });
+  }
+};
 export const save = (url) => async (dispatch, getState) => {
   const state = getState();
   const bodyInfo = state.trimCreate.bodyInfo;
@@ -452,6 +488,30 @@ export default function create(state = initialState, action) {
           ...state.detailBodyInfo,
           [action.payload.name]: action.payload.value,
         },
+      };
+    case MOVE_UP:
+      return {
+        ...state,
+        specificationBodyList: state.specificationBodyList.map(
+          (item, itemIndex) =>
+            itemIndex === action.payload.index
+              ? action.payload.top_item
+              : itemIndex === action.payload.index - 1
+              ? action.payload.current_item
+              : item
+        ),
+      };
+    case MOVE_DOWN:
+      return {
+        ...state,
+        specificationBodyList: state.specificationBodyList.map(
+          (item, itemIndex) =>
+            itemIndex === action.payload.index
+              ? action.payload.bottom_item
+              : itemIndex === action.payload.index + 1
+              ? action.payload.current_item
+              : item
+        ),
       };
     case SAVE:
       return {

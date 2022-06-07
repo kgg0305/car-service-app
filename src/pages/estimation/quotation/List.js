@@ -29,14 +29,21 @@ import { GetDateStringFromDate } from "../../../constants/GlobalFunctions";
 
 // 목록페지
 function List() {
-  const { offset, dataSource, searchData, userOptionList, summaryData } =
-    useSelector((state) => ({
-      offset: state.quotationList.offset,
-      dataSource: state.quotationList.dataSource,
-      searchData: state.quotationList.searchData,
-      userOptionList: state.quotationList.userOptionList,
-      summaryData: state.quotationList.summaryData,
-    }));
+  const {
+    offset,
+    dataSource,
+    dataLength,
+    searchData,
+    userOptionList,
+    summaryData,
+  } = useSelector((state) => ({
+    offset: state.quotationList.offset,
+    dataSource: state.quotationList.dataSource,
+    dataLength: state.quotationList.dataLength,
+    searchData: state.quotationList.searchData,
+    userOptionList: state.quotationList.userOptionList,
+    summaryData: state.quotationList.summaryData,
+  }));
 
   const dispatch = useDispatch();
 
@@ -616,11 +623,15 @@ function List() {
       {/* Body Section */}
       <TableList dataSource={tableDataSource} />
 
-      <Row justify="center">
-        <label className="show-more-label" onClick={onTableMoreClick}>
-          더보기
-        </label>
-      </Row>
+      {dataLength > 10 ? (
+        <Row justify="center">
+          <label className="show-more-label" onClick={onTableMoreClick}>
+            더보기
+          </label>
+        </Row>
+      ) : (
+        <></>
+      )}
     </Space>
   );
 }

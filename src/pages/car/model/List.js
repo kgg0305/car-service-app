@@ -16,14 +16,21 @@ import {
 
 // 목록페지
 function List() {
-  const { offset, brandOptionList, groupOptionList, dataSource, searchData } =
-    useSelector((state) => ({
-      offset: state.modelList.offset,
-      brandOptionList: state.modelList.brandOptionList,
-      groupOptionList: state.modelList.groupOptionList,
-      dataSource: state.modelList.dataSource,
-      searchData: state.modelList.searchData,
-    }));
+  const {
+    offset,
+    brandOptionList,
+    groupOptionList,
+    dataSource,
+    dataLength,
+    searchData,
+  } = useSelector((state) => ({
+    offset: state.modelList.offset,
+    brandOptionList: state.modelList.brandOptionList,
+    groupOptionList: state.modelList.groupOptionList,
+    dataSource: state.modelList.dataSource,
+    dataLength: state.modelList.dataLength,
+    searchData: state.modelList.searchData,
+  }));
 
   const dispatch = useDispatch();
 
@@ -282,11 +289,15 @@ function List() {
       {/* Body Section */}
       <TableList dataSource={tableDataSource} />
 
-      <Row justify="center">
-        <label className="show-more-label" onClick={onTableMoreClick}>
-          더보기
-        </label>
-      </Row>
+      {dataLength > 10 ? (
+        <Row justify="center">
+          <label className="show-more-label" onClick={onTableMoreClick}>
+            더보기
+          </label>
+        </Row>
+      ) : (
+        <></>
+      )}
     </Space>
   );
 }

@@ -139,6 +139,17 @@ main {
     color: #363636;
 }
 
+.detail-header-title {
+    height: 40px;
+    padding-left: 8px;
+    font-weight: 600;
+    font-size: 21px;
+    line-height: 25px;
+    display: flex;
+    align-items: center;
+    color: #363636;
+}
+
 .main-body-divider {
     margin: 0px;
     border-color: #484848;
@@ -563,6 +574,10 @@ main {
     box-shadow:none;
 }
 
+.ant-switch-checked:focus {
+    box-shadow: none;
+}
+
 .ant-switch-checked .ant-switch-handle {
     left: calc(100% - 18px - 16px);
 }
@@ -869,4 +884,32 @@ main {
 
 .ant-tabs-ink-bar {
     display: none;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
+.ant-input-affix-wrapper > input.ant-input:focus {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
+.gallery-no-result {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    color: #999999;
+}
+
+.gallery-select-button {
+    width: 60px;
+    height: 30px;
+    padding: 0px;
+}
+
+.right-text-input input {
+    text-align: right;
 }

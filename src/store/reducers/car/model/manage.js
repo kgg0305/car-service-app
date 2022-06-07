@@ -128,6 +128,7 @@ const initialState = {
     idx: null,
   },
   dataSource: [],
+  dataLength: 0,
   groupBodyInfo: {
     group_name: "",
   },
@@ -142,6 +143,7 @@ export default function list(state = initialState, action) {
         ...initialState,
         groupBodyInfo: action.payload.groupBodyInfo,
         dataSource: action.payload.dataSource,
+        dataLength: action.payload.dataLength,
       };
     case REMOVE_REDIRECTTO:
       return {

@@ -12,6 +12,7 @@ const SET_SEARCH = prefix + "SET_SEARCH";
 export const init = () => async (dispatch) => {
   try {
     const dataSource = await groupService.getList(0);
+    const dataLength = await groupService.getCount();
     const brandOptionList = await brandService.getOptionList();
     const carKindOptionList = await carKindService.getOptionList();
 
@@ -19,6 +20,7 @@ export const init = () => async (dispatch) => {
       type: INIT,
       payload: {
         dataSource: dataSource,
+        dataLength: dataLength,
         brandOptionList: brandOptionList,
         carKindOptionList: carKindOptionList,
       },
@@ -84,6 +86,7 @@ const initialState = {
   brandOptionList: [],
   carKindOptionList: [],
   dataSource: [],
+  dataLength: 0,
   searchData: {
     brand_id: null,
     is_use: null,
@@ -99,6 +102,7 @@ export default function list(state = initialState, action) {
         brandOptionList: action.payload.brandOptionList,
         carKindOptionList: action.payload.carKindOptionList,
         dataSource: action.payload.dataSource,
+        dataLength: action.payload.dataLength,
       };
     case SHOW_MORE:
       return {
@@ -110,6 +114,7 @@ export default function list(state = initialState, action) {
       return {
         ...state,
         dataSource: action.payload.dataSource,
+        dataLength: action.payload.dataLength,
       };
     case SET_SEARCH:
       return {

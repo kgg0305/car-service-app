@@ -84,6 +84,7 @@ const initialState = {
   brandOptionList: [],
   groupOptionList: [],
   dataSource: [],
+  dataLength: 0,
   searchData: {
     brand_id: null,
     group_id: null,
@@ -100,6 +101,7 @@ export default function list(state = initialState, action) {
         brandOptionList: action.payload.brandOptionList,
         groupOptionList: action.payload.groupOptionList,
         dataSource: action.payload.dataSource,
+        dataLength: action.payload.dataLength,
       };
     case SHOW_MORE:
       return {
@@ -111,6 +113,7 @@ export default function list(state = initialState, action) {
       return {
         ...state,
         dataSource: action.payload.dataSource,
+        dataLength: action.payload.dataLength,
       };
     case SET_SEARCH:
       return {

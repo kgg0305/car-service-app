@@ -127,6 +127,7 @@ const initialState = {
     idx: null,
   },
   dataSource: [],
+  dataLength: 0,
   brandBodyInfo: {
     brand_name: "",
   },
@@ -141,6 +142,7 @@ export default function list(state = initialState, action) {
         ...initialState,
         brandBodyInfo: action.payload.brandBodyInfo,
         dataSource: action.payload.dataSource,
+        dataLength: action.payload.dataLength,
       };
     case REMOVE_REDIRECTTO:
       return {

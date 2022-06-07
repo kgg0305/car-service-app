@@ -22,6 +22,7 @@ function List() {
     groupOptionList,
     modelOptionList,
     dataSource,
+    dataLength,
     searchData,
   } = useSelector((state) => ({
     offset: state.extraList.offset,
@@ -29,6 +30,7 @@ function List() {
     groupOptionList: state.extraList.groupOptionList,
     modelOptionList: state.extraList.modelOptionList,
     dataSource: state.extraList.dataSource,
+    dataLength: state.extraList.dataLength,
     searchData: state.extraList.searchData,
   }));
 
@@ -230,11 +232,15 @@ function List() {
       {/* Body Section */}
       <TableList dataSource={tableDataSource} />
 
-      <Row justify="center">
-        <label className="show-more-label" onClick={onTableMoreClick}>
-          더보기
-        </label>
-      </Row>
+      {dataLength > 10 ? (
+        <Row justify="center">
+          <label className="show-more-label" onClick={onTableMoreClick}>
+            더보기
+          </label>
+        </Row>
+      ) : (
+        <></>
+      )}
     </Space>
   );
 }

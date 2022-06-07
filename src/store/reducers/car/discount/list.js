@@ -13,6 +13,7 @@ const SET_SEARCH = prefix + "SET_SEARCH";
 export const init = () => async (dispatch) => {
   try {
     const dataSource = await discountKindService.getList(0);
+    const dataLength = await discountKindService.getCount();
     const brandOptionList = await brandService.getOptionList();
     const discountKindOptionList = await discountKindService.getOptionList();
 
@@ -37,6 +38,7 @@ export const init = () => async (dispatch) => {
       type: INIT,
       payload: {
         dataSource: updatedDataSource,
+        dataLength: dataLength,
         brandOptionList: brandOptionList,
         discountKindOptionList: discountKindOptionList,
       },
@@ -94,6 +96,15 @@ export const search = () => async (dispatch, getState) => {
         ? GetDateStringFromDate(new Date(searchData.e_date))
         : "",
     });
+    const dataLength = await discountKindService.getCount({
+      ...searchData,
+      s_date: searchData.s_date
+        ? GetDateStringFromDate(new Date(searchData.s_date))
+        : "",
+      e_date: searchData.e_date
+        ? GetDateStringFromDate(new Date(searchData.e_date))
+        : "",
+    });
 
     let updatedDataSource = [];
     for (let i = 0; i < dataSource.length; i++) {
@@ -116,6 +127,7 @@ export const search = () => async (dispatch, getState) => {
       type: SEARCH,
       payload: {
         dataSource: updatedDataSource,
+        dataLength: dataLength,
       },
     });
   } catch (e) {
@@ -189,6 +201,7 @@ const initialState = {
   brandOptionList: [],
   discountKindOptionList: [],
   dataSource: [],
+  dataLength: 0,
   searchData: {
     brand_id: null,
     idx: null,
@@ -206,6 +219,7 @@ export default function list(state = initialState, action) {
         brandOptionList: action.payload.brandOptionList,
         discountKindOptionList: action.payload.discountKindOptionList,
         dataSource: action.payload.dataSource,
+        dataLength: action.payload.dataLength,
       };
     case SHOW_MORE:
       return {
@@ -217,6 +231,7 @@ export default function list(state = initialState, action) {
       return {
         ...state,
         dataSource: action.payload.dataSource,
+        dataLength: action.payload.dataLength,
       };
     case SET_SEARCH:
       return {

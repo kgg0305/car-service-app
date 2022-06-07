@@ -7,9 +7,10 @@ import { init, showMore } from "../../../store/reducers/content/movieRank/list";
 
 // 목록페지
 function List() {
-  const { offset, dataSource, bodyInfo } = useSelector((state) => ({
+  const { offset, dataSource, dataLength, bodyInfo } = useSelector((state) => ({
     offset: state.movieRankList.offset,
     dataSource: state.movieRankList.dataSource,
+    dataLength: state.movieRankList.dataLength,
     bodyInfo: state.movieRankList.bodyInfo,
   }));
 
@@ -72,11 +73,15 @@ function List() {
         {/* Body Section */}
         <TableList dataSource={tableList} />
 
-        <Row justify="center">
-          <label className="show-more-label" onClick={onTableMoreClick}>
-            더보기
-          </label>
-        </Row>
+        {dataLength > 10 ? (
+          <Row justify="center">
+            <label className="show-more-label" onClick={onTableMoreClick}>
+              더보기
+            </label>
+          </Row>
+        ) : (
+          <></>
+        )}
       </Space>
     </>
   );

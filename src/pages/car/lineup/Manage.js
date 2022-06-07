@@ -22,13 +22,14 @@ function Manage() {
   let { model_id } = useParams();
   let navigate = useNavigate();
 
-  const { redirectTo, offset, confirm, modelBodyInfo, dataSource } =
+  const { redirectTo, offset, confirm, modelBodyInfo, dataSource, dataLength } =
     useSelector((state) => ({
       redirectTo: state.lineupManage.redirectTo,
       offset: state.lineupManage.offset,
       confirm: state.lineupManage.confirm,
       modelBodyInfo: state.lineupManage.modelBodyInfo,
       dataSource: state.lineupManage.dataSource,
+      dataLength: state.lineupManage.dataLength,
     }));
 
   const dispatch = useDispatch();
@@ -197,11 +198,15 @@ function Manage() {
         {/* Body Section */}
         <TableList dataSource={tableDataSource} />
 
-        <Row justify="center">
-          <label className="show-more-label" onClick={onTableMoreClick}>
-            더보기
-          </label>
-        </Row>
+        {dataLength > 10 ? (
+          <Row justify="center">
+            <label className="show-more-label" onClick={onTableMoreClick}>
+              더보기
+            </label>
+          </Row>
+        ) : (
+          <></>
+        )}
       </Space>
       <AlertDeleteModal
         name={confirm.name}

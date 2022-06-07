@@ -43,6 +43,7 @@ export const showMore = () => async (dispatch, getState) => {
 const initialState = {
   offset: 0,
   dataSource: [],
+  dataLength: 0,
   brandOptionList: [],
 };
 
@@ -52,6 +53,7 @@ export default function list(state = initialState, action) {
       return {
         ...initialState,
         dataSource: action.payload.dataSource,
+        dataLength: action.payload.dataLength,
         brandOptionList: action.payload.brandOptionList,
       };
     case SHOW_MORE:

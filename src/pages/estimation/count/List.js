@@ -15,13 +15,16 @@ import {
 
 // 목록페지
 function List() {
-  const { offset, dataSource, addData, year, month } = useSelector((state) => ({
-    offset: state.countList.offset,
-    dataSource: state.countList.dataSource,
-    addData: state.countList.addData,
-    year: state.countList.year,
-    month: state.countList.month,
-  }));
+  const { offset, dataSource, dataLength, addData, year, month } = useSelector(
+    (state) => ({
+      offset: state.countList.offset,
+      dataSource: state.countList.dataSource,
+      dataLength: state.countList.dataLength,
+      addData: state.countList.addData,
+      year: state.countList.year,
+      month: state.countList.month,
+    })
+  );
 
   const dispatch = useDispatch();
 
@@ -236,11 +239,15 @@ function List() {
       {/* Body Section */}
       <TableList dataSource={tableDataSource} />
 
-      <Row justify="center">
-        <label className="show-more-label" onClick={onTableMoreClick}>
-          더보기
-        </label>
-      </Row>
+      {dataLength > 10 ? (
+        <Row justify="center">
+          <label className="show-more-label" onClick={onTableMoreClick}>
+            더보기
+          </label>
+        </Row>
+      ) : (
+        <></>
+      )}
     </Space>
   );
 }

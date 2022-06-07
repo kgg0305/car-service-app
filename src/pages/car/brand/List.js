@@ -17,14 +17,14 @@ const { Option } = Select;
 
 // 목록페지
 function List() {
-  const { offset, brandOptionList, dataSource, searchData } = useSelector(
-    (state) => ({
+  const { offset, brandOptionList, dataSource, dataLength, searchData } =
+    useSelector((state) => ({
       offset: state.brandList.offset,
       brandOptionList: state.brandList.brandOptionList,
       dataSource: state.brandList.dataSource,
+      dataLength: state.brandList.dataLength,
       searchData: state.brandList.searchData,
-    })
-  );
+    }));
 
   const dispatch = useDispatch();
 
@@ -222,11 +222,15 @@ function List() {
       {/* Body Section */}
       <TableList dataSource={tableDataSource} />
 
-      <Row justify="center">
-        <label className="show-more-label" onClick={onTableMoreClick}>
-          더보기
-        </label>
-      </Row>
+      {dataLength > 10 ? (
+        <Row justify="center">
+          <label className="show-more-label" onClick={onTableMoreClick}>
+            더보기
+          </label>
+        </Row>
+      ) : (
+        <></>
+      )}
     </Space>
   );
 }

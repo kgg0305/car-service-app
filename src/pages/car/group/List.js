@@ -15,14 +15,21 @@ import { CaretDownOutlined } from "@ant-design/icons";
 
 // 목록페지
 function List() {
-  const { offset, brandOptionList, carKindOptionList, dataSource, searchData } =
-    useSelector((state) => ({
-      offset: state.groupList.offset,
-      brandOptionList: state.groupList.brandOptionList,
-      carKindOptionList: state.groupList.carKindOptionList,
-      dataSource: state.groupList.dataSource,
-      searchData: state.groupList.searchData,
-    }));
+  const {
+    offset,
+    brandOptionList,
+    carKindOptionList,
+    dataSource,
+    dataLength,
+    searchData,
+  } = useSelector((state) => ({
+    offset: state.groupList.offset,
+    brandOptionList: state.groupList.brandOptionList,
+    carKindOptionList: state.groupList.carKindOptionList,
+    dataSource: state.groupList.dataSource,
+    dataLength: state.groupList.dataLength,
+    searchData: state.groupList.searchData,
+  }));
 
   const dispatch = useDispatch();
 
@@ -230,11 +237,15 @@ function List() {
       {/* Body Section */}
       <TableList dataSource={tableDataSource} />
 
-      <Row justify="center">
-        <label className="show-more-label" onClick={onTableMoreClick}>
-          더보기
-        </label>
-      </Row>
+      {dataLength > 10 ? (
+        <Row justify="center">
+          <label className="show-more-label" onClick={onTableMoreClick}>
+            더보기
+          </label>
+        </Row>
+      ) : (
+        <></>
+      )}
     </Space>
   );
 }

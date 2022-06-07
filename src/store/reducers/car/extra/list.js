@@ -16,6 +16,7 @@ export const init = () => async (dispatch) => {
     const groupOptionList = await groupService.getOptionList();
     const modelOptionList = await modelService.getOptionList();
     const dataSource = await extraService.getList(0);
+    const dataLength = await extraService.getCount();
 
     dispatch({
       type: INIT,
@@ -24,6 +25,7 @@ export const init = () => async (dispatch) => {
         groupOptionList: groupOptionList,
         modelOptionList: modelOptionList,
         dataSource: dataSource,
+        dataLength: dataLength,
       },
     });
   } catch (e) {
@@ -54,11 +56,13 @@ export const search = () => async (dispatch, getState) => {
     const state = getState();
     const searchData = state.extraList.searchData;
     const dataSource = await extraService.getList(0, searchData);
+    const dataLength = await extraService.getCount(searchData);
 
     dispatch({
       type: SEARCH,
       payload: {
         dataSource: dataSource,
+        dataLength: dataLength,
       },
     });
   } catch (e) {
@@ -97,6 +101,7 @@ const initialState = {
   groupOptionList: [],
   modelOptionList: [],
   dataSource: [],
+  dataLength: 0,
   searchData: {
     brand_id: null,
     group_id: null,
@@ -113,6 +118,7 @@ export default function list(state = initialState, action) {
         groupOptionList: action.payload.groupOptionList,
         modelOptionList: action.payload.modelOptionList,
         dataSource: action.payload.dataSource,
+        dataLength: action.payload.dataLength,
       };
     case SHOW_MORE:
       return {
@@ -124,6 +130,7 @@ export default function list(state = initialState, action) {
       return {
         ...state,
         dataSource: action.payload.dataSource,
+        dataLength: action.payload.dataLength,
       };
     case SET_SEARCH:
       return {

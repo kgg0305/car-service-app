@@ -177,6 +177,7 @@ export const save = (url, dataSource, roleIdList) => async (dispatch) => {
 const initialState = {
   redirectTo: "",
   dataSource: [],
+  dataLength: 0,
   roleIdList: [],
   userOptionList: [],
   userName: {},
@@ -189,6 +190,7 @@ export default function list(state = initialState, action) {
       return {
         ...initialState,
         dataSource: action.payload.dataSource,
+        dataLength: action.payload.dataLength,
         roleIdList: action.payload.roleIdList,
         userOptionList: action.payload.userOptionList,
       };
@@ -213,6 +215,7 @@ export default function list(state = initialState, action) {
       return {
         ...state,
         dataSource: action.payload.dataSource,
+        dataLength: action.payload.dataLength,
         checkName: false,
       };
     case DELETE_USER_NAME:

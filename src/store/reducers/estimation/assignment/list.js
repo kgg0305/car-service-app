@@ -278,6 +278,7 @@ const initialState = {
     close: 0,
   },
   dataSource: [],
+  dataLength: 0,
   searchData: {
     group_id: null,
     name: "",
@@ -291,6 +292,7 @@ export default function list(state = initialState, action) {
         ...initialState,
         summaryData: action.payload.summaryData,
         dataSource: action.payload.dataSource,
+        dataLength: action.payload.dataLength,
       };
     case SHOW_MORE:
       return {
@@ -304,6 +306,7 @@ export default function list(state = initialState, action) {
         ...state,
         summaryData: action.payload.summaryData,
         dataSource: action.payload.dataSource,
+        dataLength: action.payload.dataLength,
       };
     case SET_SEARCH:
       return {

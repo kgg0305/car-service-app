@@ -95,6 +95,16 @@ const getList = async (offset, search) => {
   }
 };
 
+const getCount = async (search) => {
+  try {
+    const response = await axios.post(base_url + "/count", search);
+
+    return response.data.count;
+  } catch (e) {
+    return e;
+  }
+};
+
 const getListAll = async (search) => {
   try {
     const response = await axios.post(base_url + "/list-all", search);
@@ -140,6 +150,7 @@ export const discountConditionService = {
   create,
   update,
   getList,
+  getCount,
   getListAll,
   getOptionList,
   get,

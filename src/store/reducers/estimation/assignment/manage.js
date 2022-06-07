@@ -187,6 +187,7 @@ const initialState = {
     close: 0,
   },
   dataSource: [],
+  dataLength: 0,
   searchData: {
     date_type: "0",
     date_period: 0,
@@ -208,6 +209,7 @@ export default function list(state = initialState, action) {
         userOptionList: action.payload.userOptionList,
         summaryData: action.payload.summaryData,
         dataSource: action.payload.dataSource,
+        dataLength: action.payload.dataLength,
       };
     case SHOW_MORE:
       return {
@@ -221,6 +223,7 @@ export default function list(state = initialState, action) {
         ...state,
         summaryData: action.payload.summaryData,
         dataSource: action.payload.dataSource,
+        dataLength: action.payload.dataLength,
       };
     case SET_SEARCH:
       return {

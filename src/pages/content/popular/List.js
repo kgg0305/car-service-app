@@ -8,11 +8,14 @@ import { GetDateFullTimeStringUsingKorFromDate } from "../../../constants/Global
 
 // 목록페지
 function List() {
-  const { offset, dataSource, brandOptionList } = useSelector((state) => ({
-    offset: state.popularList.offset,
-    dataSource: state.popularList.dataSource,
-    brandOptionList: state.popularList.brandOptionList,
-  }));
+  const { offset, dataSource, dataLength, brandOptionList } = useSelector(
+    (state) => ({
+      offset: state.popularList.offset,
+      dataSource: state.popularList.dataSource,
+      dataLength: state.popularList.dataLength,
+      brandOptionList: state.popularList.brandOptionList,
+    })
+  );
 
   const dispatch = useDispatch();
 
@@ -138,11 +141,15 @@ function List() {
         {/* Body Section */}
         <TableList dataSource={tableList} className="popular-table" />
 
-        <Row justify="center">
-          <label className="show-more-label" onClick={onTableMoreClick}>
-            더보기
-          </label>
-        </Row>
+        {dataLength > 10 ? (
+          <Row justify="center">
+            <label className="show-more-label" onClick={onTableMoreClick}>
+              더보기
+            </label>
+          </Row>
+        ) : (
+          <></>
+        )}
       </Space>
     </>
   );

@@ -138,23 +138,41 @@ function Edit() {
         className="detail-table-layout"
       >
         <Col flex="154px" className="table-header-col-section">
-          {lineupBodyList.length > 1 ? (
-            <Space direction="vertical" style={{ paddingLeft: "10px" }}>
-              <CaretUpFilled
-                style={{ fontSize: "30px", cursor: "pointer" }}
-                onClick={() => onUpMoveClick("lineupBodyList", index)}
-              />
-              <CaretDownFilled
-                style={{ fontSize: "30px", cursor: "pointer" }}
-                onClick={() => onDownMoveClick("lineupBodyList", index)}
-              />
-            </Space>
-          ) : (
-            ""
-          )}
-          <label>
-            공통옵션 {body.number < 10 ? "0" + body.number : body.number}
-          </label>
+          <Row
+            justify="start"
+            align="middle"
+            style={{ paddingLeft: 10, width: "100%" }}
+          >
+            <Col flex="auto">
+              {lineupBodyList.length > 1 ? (
+                <Space direction="vertical">
+                  <CaretUpFilled
+                    style={{
+                      fontSize: "30px",
+                      cursor: "pointer",
+                      color: "#C1C1C1",
+                    }}
+                    onClick={() => onUpMoveClick("lineupBodyList", index)}
+                  />
+                  <CaretDownFilled
+                    style={{
+                      fontSize: "30px",
+                      cursor: "pointer",
+                      color: "#C1C1C1",
+                    }}
+                    onClick={() => onDownMoveClick("lineupBodyList", index)}
+                  />
+                </Space>
+              ) : (
+                <></>
+              )}
+            </Col>
+            <Col flex="none">
+              <label>
+                공통옵션 {body.number < 10 ? "0" + body.number : body.number}
+              </label>
+            </Col>
+          </Row>
         </Col>
         <Col flex="auto" className="table-value-col-section">
           <Row>
@@ -176,6 +194,7 @@ function Edit() {
                   style={{ width: 300 }}
                 />
                 <InputNumber
+                  className="right-text-input"
                   onKeyPress={(event) => {
                     if (!/[0-9]/.test(event.key)) {
                       event.preventDefault();
@@ -265,23 +284,41 @@ function Edit() {
         className="detail-table-layout"
       >
         <Col flex="154px" className="table-header-col-section">
-          {colorBodyList.length > 1 ? (
-            <Space direction="vertical" style={{ paddingLeft: "10px" }}>
-              <CaretUpFilled
-                style={{ fontSize: "30px", cursor: "pointer" }}
-                onClick={() => onUpMoveClick("colorBodyList", index)}
-              />
-              <CaretDownFilled
-                style={{ fontSize: "30px", cursor: "pointer" }}
-                onClick={() => onDownMoveClick("colorBodyList", index)}
-              />
-            </Space>
-          ) : (
-            ""
-          )}
-          <label>
-            색상 {body.number < 10 ? "0" + body.number : body.number}
-          </label>
+          <Row
+            justify="start"
+            align="middle"
+            style={{ paddingLeft: 10, width: "100%" }}
+          >
+            <Col flex="auto">
+              {colorBodyList.length > 1 ? (
+                <Space direction="vertical">
+                  <CaretUpFilled
+                    style={{
+                      fontSize: "30px",
+                      cursor: "pointer",
+                      color: "#C1C1C1",
+                    }}
+                    onClick={() => onUpMoveClick("colorBodyList", index)}
+                  />
+                  <CaretDownFilled
+                    style={{
+                      fontSize: "30px",
+                      cursor: "pointer",
+                      color: "#C1C1C1",
+                    }}
+                    onClick={() => onDownMoveClick("colorBodyList", index)}
+                  />
+                </Space>
+              ) : (
+                <></>
+              )}
+            </Col>
+            <Col flex="none">
+              <label>
+                색상 {body.number < 10 ? "0" + body.number : body.number}
+              </label>
+            </Col>
+          </Row>
         </Col>
         <Col flex="auto" className="table-value-col-section">
           <Row>
@@ -302,6 +339,7 @@ function Edit() {
                   style={{ width: 300 }}
                 />
                 <InputNumber
+                  className="right-text-input"
                   onKeyPress={(event) => {
                     if (!/[0-9]/.test(event.key)) {
                       event.preventDefault();
@@ -374,23 +412,41 @@ function Edit() {
         className="detail-table-layout"
       >
         <Col flex="154px" className="table-header-col-section">
-          {trimBodyList.length > 1 ? (
-            <Space direction="vertical" style={{ paddingLeft: "10px" }}>
-              <CaretUpFilled
-                style={{ fontSize: "30px", cursor: "pointer" }}
-                onClick={() => onUpMoveClick("trimBodyList", index)}
-              />
-              <CaretDownFilled
-                style={{ fontSize: "30px", cursor: "pointer" }}
-                onClick={() => onDownMoveClick("trimBodyList", index)}
-              />
-            </Space>
-          ) : (
-            ""
-          )}
-          <label>
-            옵션 {body.number < 10 ? "0" + body.number : body.number}
-          </label>
+          <Row
+            justify="start"
+            align="middle"
+            style={{ paddingLeft: 10, width: "100%" }}
+          >
+            <Col flex="auto">
+              {trimBodyList.length > 1 ? (
+                <Space direction="vertical">
+                  <CaretUpFilled
+                    style={{
+                      fontSize: "30px",
+                      cursor: "pointer",
+                      color: "#C1C1C1",
+                    }}
+                    onClick={() => onUpMoveClick("trimBodyList", index)}
+                  />
+                  <CaretDownFilled
+                    style={{
+                      fontSize: "30px",
+                      cursor: "pointer",
+                      color: "#C1C1C1",
+                    }}
+                    onClick={() => onDownMoveClick("trimBodyList", index)}
+                  />
+                </Space>
+              ) : (
+                <></>
+              )}
+            </Col>
+            <Col flex="none">
+              <label>
+                옵션 {body.number < 10 ? "0" + body.number : body.number}
+              </label>
+            </Col>
+          </Row>
         </Col>
         <Col flex="auto" className="table-value-col-section">
           <Row>
@@ -412,6 +468,7 @@ function Edit() {
                   style={{ width: 300 }}
                 />
                 <InputNumber
+                  className="right-text-input"
                   onKeyPress={(event) => {
                     if (!/[0-9]/.test(event.key)) {
                       event.preventDefault();
@@ -929,10 +986,11 @@ function Edit() {
                       <Col flex="auto" className="table-value-col-section">
                         <Space direction="vertical" align="start" size={37}>
                           <label className="logo-description-label">
-                            이미지 권장 크기는 90 * 60이며, *.png로 등록하셔야
-                            합니다. <br />
-                            이미지를 새로 등록 하기 위해선 등록된 이미지
-                            [삭제]후 재 등록 하시면 됩니다.
+                            사진의 권장 크기는 1280 * 800 이며 ‘사진01에 등록된
+                            사진은 썸네일 또는 대표 사진으로 사용이 됩니다.
+                            <br />
+                            사진을 교체하기 위해선 먼저 [삭제]를 해주신 후에
+                            다시 등록 해주시면 됩니다.
                           </label>
                           {renderPictures()}
                         </Space>

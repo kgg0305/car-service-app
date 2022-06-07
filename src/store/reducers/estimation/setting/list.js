@@ -45,6 +45,7 @@ export const save = () => async (dispatch, getState) => {
 
 const initialState = {
   dataSource: [],
+  dataLength: 0,
 };
 
 export default function list(state = initialState, action) {
@@ -53,6 +54,7 @@ export default function list(state = initialState, action) {
       return {
         ...initialState,
         dataSource: action.payload.dataSource,
+        dataLength: action.payload.dataLength,
       };
     case SET_DATA_SOURCE:
       return {

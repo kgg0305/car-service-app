@@ -85,19 +85,37 @@ function Edit() {
         className="detail-table-layout"
       >
         <Col flex="154px" className="table-header-col-section">
-          <Space direction="vertical" style={{ paddingLeft: "10px" }}>
-            <CaretUpFilled
-              style={{ fontSize: "30px", cursor: "pointer" }}
-              onClick={() => onUpMoveClick(index)}
-            />
-            <CaretDownFilled
-              style={{ fontSize: "30px", cursor: "pointer" }}
-              onClick={() => onDownMoveClick(index)}
-            />
-          </Space>
-          <label>
-            순서 {body.number < 10 ? "0" + body.number : body.number}
-          </label>
+          <Row
+            justify="start"
+            align="middle"
+            style={{ paddingLeft: 10, width: "100%" }}
+          >
+            <Col flex="auto">
+              <Space direction="vertical">
+                <CaretUpFilled
+                  style={{
+                    fontSize: "20px",
+                    cursor: "pointer",
+                    color: "#C1C1C1",
+                  }}
+                  onClick={() => onUpMoveClick(index)}
+                />
+                <CaretDownFilled
+                  style={{
+                    fontSize: "20px",
+                    cursor: "pointer",
+                    color: "#C1C1C1",
+                  }}
+                  onClick={() => onDownMoveClick(index)}
+                />
+              </Space>
+            </Col>
+            <Col flex="none">
+              <label>
+                순서 {body.number < 10 ? "0" + body.number : body.number}
+              </label>
+            </Col>
+          </Row>
         </Col>
         <Col flex="auto" className="table-value-col-section">
           <Space size={10}>
@@ -199,7 +217,7 @@ function Edit() {
 
   return (
     <>
-      <Space direction="vertical" size={18} className="main-layout">
+      <Space direction="vertical" size={20} className="main-layout">
         {/* Page Header */}
         <Space direction="vertical" size={11}>
           <Row justify="middle">
@@ -218,7 +236,7 @@ function Edit() {
                   </Button>
                 </Link>
                 <Button
-                  className="black-button"
+                  className="black-button save-detail-button"
                   size="large"
                   onClick={onSaveClick}
                 >
@@ -235,7 +253,7 @@ function Edit() {
           <Space direction="vertical" size={0} split={<Divider />}>
             <Row align="middle">
               <Col>
-                <label className="detail-sub-title">콘텐츠 선택</label>
+                <label className="detail-header-title">순위</label>
               </Col>
               <Col flex="auto" />
             </Row>

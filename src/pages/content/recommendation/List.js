@@ -19,11 +19,14 @@ import { GetDateStringFromDate } from "../../../constants/GlobalFunctions";
 
 // 목록페지
 function List() {
-  const { offset, dataSource, detailModal } = useSelector((state) => ({
-    offset: state.recommendationList.offset,
-    dataSource: state.recommendationList.dataSource,
-    detailModal: state.recommendationList.detailModal,
-  }));
+  const { offset, dataSource, dataLength, detailModal } = useSelector(
+    (state) => ({
+      offset: state.recommendationList.offset,
+      dataSource: state.recommendationList.dataSource,
+      dataLength: state.recommendationList.dataLength,
+      detailModal: state.recommendationList.detailModal,
+    })
+  );
 
   const dispatch = useDispatch();
 
@@ -198,11 +201,15 @@ function List() {
         {/* Body Section */}
         <TableList dataSource={tableDataSource} />
 
-        <Row justify="center">
-          <label className="show-more-label" onClick={onTableMoreClick}>
-            더보기
-          </label>
-        </Row>
+        {dataLength > 10 ? (
+          <Row justify="center">
+            <label className="show-more-label" onClick={onTableMoreClick}>
+              더보기
+            </label>
+          </Row>
+        ) : (
+          <></>
+        )}
       </Space>
 
       <Modal

@@ -16,14 +16,14 @@ import {
 
 // 목록페지
 function List() {
-  const { offset, dataSource, searchData, summaryData } = useSelector(
-    (state) => ({
+  const { offset, dataSource, dataLength, searchData, summaryData } =
+    useSelector((state) => ({
       offset: state.assignmentList.offset,
       dataSource: state.assignmentList.dataSource,
+      dataLength: state.assignmentList.dataLength,
       searchData: state.assignmentList.searchData,
       summaryData: state.assignmentList.summaryData,
-    })
-  );
+    }));
 
   const dispatch = useDispatch();
 
@@ -274,11 +274,15 @@ function List() {
       {/* Body Section */}
       <TableList dataSource={tableDataSource} />
 
-      <Row justify="center">
-        <label className="show-more-label" onClick={onTableMoreClick}>
-          더보기
-        </label>
-      </Row>
+      {dataLength > 10 ? (
+        <Row justify="center">
+          <label className="show-more-label" onClick={onTableMoreClick}>
+            더보기
+          </label>
+        </Row>
+      ) : (
+        <></>
+      )}
     </Space>
   );
 }

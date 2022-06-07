@@ -11,9 +11,10 @@ import {
 
 // 목록페지
 function List() {
-  const { offset, dataSource, bodyInfo } = useSelector((state) => ({
+  const { offset, dataSource, bodyInfo, dataLength } = useSelector((state) => ({
     offset: state.carRankList.offset,
     dataSource: state.carRankList.dataSource,
+    dataLength: state.carRankList.dataLength,
     bodyInfo: state.carRankList.bodyInfo,
   }));
 
@@ -102,11 +103,15 @@ function List() {
         {/* Body Section */}
         <TableList dataSource={tableList} />
 
-        <Row justify="center">
-          <label className="show-more-label" onClick={onTableMoreClick}>
-            더보기
-          </label>
-        </Row>
+        {dataLength > 10 ? (
+          <Row justify="center">
+            <label className="show-more-label" onClick={onTableMoreClick}>
+              더보기
+            </label>
+          </Row>
+        ) : (
+          <></>
+        )}
       </Space>
     </>
   );

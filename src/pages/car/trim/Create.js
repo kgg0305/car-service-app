@@ -10,7 +10,11 @@ import {
   Switch,
   InputNumber,
 } from "antd";
-import { CaretDownOutlined } from "@ant-design/icons";
+import {
+  CaretDownOutlined,
+  CaretUpFilled,
+  CaretDownFilled,
+} from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect } from "react";
 import { Constants } from "../../../constants/Constants";
@@ -26,6 +30,8 @@ import {
   closeValidation,
   checkName,
   setBody,
+  moveUp,
+  moveDown,
   save,
   setDetailBody,
 } from "../../../store/reducers/car/trim/create";
@@ -89,6 +95,8 @@ function Create() {
     dispatch(setTrimBody(idx, name, value));
   const onDetailComponentChange = (name, value) =>
     dispatch(setDetailBody(name, value));
+  const onUpMoveClick = (index) => dispatch(moveUp(index));
+  const onDownMoveClick = (index) => dispatch(moveDown(index));
   const onSaveClick = (url) => dispatch(save(url));
 
   const renderSpecificationBodyList = () => {
@@ -100,9 +108,37 @@ function Create() {
         className="detail-table-layout"
       >
         <Col flex="154px" className="table-header-col-section">
-          <label>
-            사양 {body.number < 10 ? "0" + body.number : body.number}
-          </label>
+          <Row
+            justify="start"
+            align="middle"
+            style={{ paddingLeft: 10, width: "100%" }}
+          >
+            <Col flex="auto">
+              <Space direction="vertical">
+                <CaretUpFilled
+                  style={{
+                    fontSize: "20px",
+                    cursor: "pointer",
+                    color: "#C1C1C1",
+                  }}
+                  onClick={() => onUpMoveClick(index)}
+                />
+                <CaretDownFilled
+                  style={{
+                    fontSize: "20px",
+                    cursor: "pointer",
+                    color: "#C1C1C1",
+                  }}
+                  onClick={() => onDownMoveClick(index)}
+                />
+              </Space>
+            </Col>
+            <Col flex="none">
+              <label>
+                사양 {body.number < 10 ? "0" + body.number : body.number}
+              </label>
+            </Col>
+          </Row>
         </Col>
         <Col flex="auto" className="table-value-col-section">
           <Row>

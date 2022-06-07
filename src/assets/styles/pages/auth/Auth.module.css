@@ -39,6 +39,7 @@
 }
 
 .submitButton {
+    height: 50px;
     border-color: #2D2D2D;
     background: #2D2D2D;
     border-radius: 100px;
@@ -53,15 +54,15 @@
 }
 
 .submitButton:hover {
-    background-color: #2D2D2D;
-    border-color: #2D2D2D;
+    background-color: black;
+    border-color: black;
 
     color: white;
 }
 
 .submitButton:focus {
-    background-color: #2D2D2D;
-    border-color: #2D2D2D;
+    background-color: #363636;
+    border-color: #363636;
     color: white;
 }
 

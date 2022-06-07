@@ -12,6 +12,7 @@ export const init = () => async (dispatch) => {
   try {
     const brandOptionList = await brandService.getOptionList();
     const dataSource = await brandService.getList(0);
+    const dataLength = await brandService.getCount();
 
     let updatedDataSource = [];
 
@@ -30,6 +31,7 @@ export const init = () => async (dispatch) => {
       payload: {
         brandOptionList: brandOptionList,
         dataSource: updatedDataSource,
+        dataLength: dataLength,
       },
     });
   } catch (e) {
@@ -72,6 +74,7 @@ export const search = () => async (dispatch, getState) => {
     const state = getState();
     const searchData = state.brandList.searchData;
     const dataSource = await brandService.getList(0, searchData);
+    const dataLength = await brandService.getCount(searchData);
 
     let updatedDataSource = [];
 
@@ -89,6 +92,7 @@ export const search = () => async (dispatch, getState) => {
       type: SEARCH,
       payload: {
         dataSource: updatedDataSource,
+        dataLength: dataLength,
       },
     });
   } catch (e) {
@@ -116,6 +120,7 @@ const initialState = {
   offset: 0,
   brandOptionList: [],
   dataSource: [],
+  dataLength: 0,
   searchData: {
     idx: null,
     is_use: null,
@@ -129,6 +134,7 @@ export default function list(state = initialState, action) {
         ...initialState,
         brandOptionList: action.payload.brandOptionList,
         dataSource: action.payload.dataSource,
+        dataLength: action.payload.dataLength,
       };
     case SHOW_MORE:
       return {
@@ -140,6 +146,7 @@ export default function list(state = initialState, action) {
       return {
         ...state,
         dataSource: action.payload.dataSource,
+        dataLength: action.payload.dataLength,
       };
     case SET_SEARCH:
       return {

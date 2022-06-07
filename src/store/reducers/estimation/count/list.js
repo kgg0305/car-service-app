@@ -144,6 +144,7 @@ export const setMonth = (month) => async (dispatch, getState) => {
 const initialState = {
   offset: 0,
   dataSource: [],
+  dataLength: 0,
   addData: {
     rent_admin: "",
     new_admin: "",
@@ -158,6 +159,7 @@ export default function list(state = initialState, action) {
       return {
         ...initialState,
         dataSource: action.payload.dataSource,
+        dataLength: action.payload.dataLength,
       };
     case SHOW_MORE:
       return {
@@ -169,6 +171,7 @@ export default function list(state = initialState, action) {
       return {
         ...state,
         dataSource: action.payload.dataSource,
+        dataLength: action.payload.dataLength,
         addData: initialState.addData,
       };
     case SET_ADD:
@@ -183,12 +186,14 @@ export default function list(state = initialState, action) {
       return {
         ...state,
         dataSource: action.payload.dataSource,
+        dataLength: action.payload.dataLength,
         year: action.payload.year,
       };
     case SET_MONTH:
       return {
         ...state,
         dataSource: action.payload.dataSource,
+        dataLength: action.payload.dataLength,
         month: action.payload.month,
       };
     default:

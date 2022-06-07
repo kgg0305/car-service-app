@@ -10,7 +10,11 @@ import {
   Switch,
   InputNumber,
 } from "antd";
-import { CaretDownOutlined } from "@ant-design/icons";
+import {
+  CaretDownOutlined,
+  CaretUpFilled,
+  CaretDownFilled,
+} from "@ant-design/icons";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 import { Constants } from "../../../constants/Constants";
@@ -27,6 +31,8 @@ import {
   closeValidation,
   checkName,
   setBody,
+  moveUp,
+  moveDown,
   save,
   closeConfirm,
   showConfirm,
@@ -99,6 +105,8 @@ function Edit() {
     dispatch(setTrimBody(idx, name, value));
   const onDetailComponentChange = (name, value) =>
     dispatch(setDetailBody(name, value));
+  const onUpMoveClick = (index) => dispatch(moveUp(index));
+  const onDownMoveClick = (index) => dispatch(moveDown(index));
   const onSaveClick = (url) => dispatch(save(url));
   const onDeleteClick = async () => dispatch(showConfirm());
   const deleteInfo = async () => dispatch(remove("/car/trim", id));
@@ -112,9 +120,37 @@ function Edit() {
         className="detail-table-layout"
       >
         <Col flex="154px" className="table-header-col-section">
-          <label>
-            사양 {body.number < 10 ? "0" + body.number : body.number}
-          </label>
+          <Row
+            justify="start"
+            align="middle"
+            style={{ paddingLeft: 10, width: "100%" }}
+          >
+            <Col flex="auto">
+              <Space direction="vertical">
+                <CaretUpFilled
+                  style={{
+                    fontSize: "20px",
+                    cursor: "pointer",
+                    color: "#C1C1C1",
+                  }}
+                  onClick={() => onUpMoveClick(index)}
+                />
+                <CaretDownFilled
+                  style={{
+                    fontSize: "20px",
+                    cursor: "pointer",
+                    color: "#C1C1C1",
+                  }}
+                  onClick={() => onDownMoveClick(index)}
+                />
+              </Space>
+            </Col>
+            <Col flex="none">
+              <label>
+                사양 {body.number < 10 ? "0" + body.number : body.number}
+              </label>
+            </Col>
+          </Row>
         </Col>
         <Col flex="auto" className="table-value-col-section">
           <Row>
@@ -180,9 +216,7 @@ function Edit() {
                     )}
                     <Button
                       className="black-button detail-add-body-button"
-                      onClick={() =>
-                        onAddSpecificationComponentClick(body.number)
-                      }
+                      onClick={() => onAddSpecificationComponentClick()}
                       size="large"
                     >
                       추가

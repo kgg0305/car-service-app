@@ -2,6 +2,7 @@ import { Col, Divider, Row, Space, Select, Button, Image } from "antd";
 import { CaretDownOutlined } from "@ant-design/icons";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import React, { useEffect } from "react";
+import preview_default_image from "../../../assets/images/preview-default-image.png";
 import AlertModal from "../../../components/AlertModal";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -73,28 +74,36 @@ function Edit() {
       modelBodyInfo.picture_7,
       modelBodyInfo.picture_8,
     ];
-    return image_path_array.map((path, index) => (
-      <Col style={{ textAlign: "center" }}>
-        <Space direction="vertical" size={5}>
-          <label>사진 {index + 1 < 10 ? "0" + (index + 1) : index + 1}</label>
-          <Image
-            className={
-              bodyInfo.picture_index === index + 1 ? "picture-selected" : ""
-            }
-            src={window.location.origin + "/uploads/model/" + path}
-            width={150}
-            height={150}
-          />
-          <Button
-            className="black-button"
-            size="large"
-            onClick={() => onPictureClick(index + 1)}
-          >
-            선택
-          </Button>
-        </Space>
-      </Col>
-    ));
+    return bodyInfo.model_id !== null ? (
+      image_path_array.map((path, index) => (
+        <Col style={{ textAlign: "center" }}>
+          <Space direction="vertical" size={5}>
+            <label>사진 {index + 1 < 10 ? "0" + (index + 1) : index + 1}</label>
+            <Image
+              className={
+                bodyInfo.picture_index === index + 1 ? "picture-selected" : ""
+              }
+              src={
+                path === ""
+                  ? preview_default_image
+                  : window.location.origin + "/uploads/model/" + path
+              }
+              width={150}
+              height={150}
+            />
+            <Button
+              className="black-button gallery-select-button"
+              size="large"
+              onClick={() => onPictureClick(index + 1)}
+            >
+              선택
+            </Button>
+          </Space>
+        </Col>
+      ))
+    ) : (
+      <label className="gallery-no-result">선택된 차량 정보가 없습니다.</label>
+    );
   };
 
   return (
@@ -118,7 +127,7 @@ function Edit() {
                   </Button>
                 </Link>
                 <Button
-                  className="black-button"
+                  className="black-button save-detail-button"
                   size="large"
                   onClick={onSaveClick}
                 >
