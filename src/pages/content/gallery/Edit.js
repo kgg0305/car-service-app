@@ -81,7 +81,9 @@ function Edit() {
             <label>사진 {index + 1 < 10 ? "0" + (index + 1) : index + 1}</label>
             <Image
               className={
-                bodyInfo.picture_index === index + 1 ? "picture-selected" : ""
+                bodyInfo.picture_index === index + 1
+                  ? "picture-selected"
+                  : "image-upload"
               }
               src={
                 path === ""

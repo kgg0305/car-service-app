@@ -678,10 +678,11 @@ function Edit() {
                 }
                 width={150}
                 height={150}
+                className="image-upload"
               />
               {bodyInfo["picture_" + item].uid.includes("__AUTO__") ? (
                 <Upload
-                  accept=".png"
+                  accept=".png,.jpg"
                   fileList={[bodyInfo["picture_" + item]]}
                   name={"picture_" + item}
                   showUploadList={false}

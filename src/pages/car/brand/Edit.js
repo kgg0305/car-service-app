@@ -374,6 +374,7 @@ function Edit() {
                         }
                         width={150}
                         height={150}
+                        className="image-upload"
                       />
                       <Space direction="vertical" size={34}>
                         <label className="logo-description-label">

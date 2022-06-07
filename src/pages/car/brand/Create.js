@@ -340,7 +340,12 @@ function Create() {
               </Col>
               <Col flex="auto" className="table-value-col-section">
                 <Space direction="horizontal" align="end" size={20}>
-                  <Image src={body.preview} width={150} height={150} />
+                  <Image
+                    src={body.preview}
+                    width={150}
+                    height={150}
+                    className="image-upload"
+                  />
                   <Space direction="vertical" size={34}>
                     <label className={styles.logoDescriptionLabel}>
                       이미지 권장 크기는 90 * 60이며, *.png로 등록하셔야 합니다.{" "}
