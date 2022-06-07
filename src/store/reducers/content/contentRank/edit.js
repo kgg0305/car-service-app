@@ -73,10 +73,13 @@ export const deleteContent = (number) => ({
 });
 export const setContent = (number, name, value) => async (dispatch) => {
   if (name == "idx") {
-    const content_info = await contentService.get(value);
-    let title = "등록되지 않은 콘텐츠입니다.";
-    if (content_info) {
-      title = content_info.title;
+    let title = "";
+    if (!isNaN(+value)) {
+      const content_info = await contentService.get(value);
+      title = "등록되지 않은 콘텐츠입니다.";
+      if (content_info) {
+        title = content_info.title;
+      }
     }
 
     dispatch({

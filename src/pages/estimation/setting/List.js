@@ -155,6 +155,7 @@ function List() {
     <Space direction="vertical" size={18} className="main-layout">
       {/* Body Section */}
       <TableList dataSource={tableDataSource} />
+      <div style={{ height: 69 }}></div>
     </Space>
   );
 }

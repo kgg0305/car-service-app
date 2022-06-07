@@ -19,7 +19,7 @@ export const init = () => async (dispatch) => {
     const initDataSource = await rankService.get(1);
 
     var initModelBodyList = [];
-    if (initDataSource.length) {
+    if (initDataSource) {
       for (
         let index = 0;
         index < initDataSource.ids.split(",").length;
