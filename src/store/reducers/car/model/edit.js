@@ -60,13 +60,13 @@ export const init = (idx) => async (dispatch) => {
     const trimBodyList = await modelTrimService.getList(0, {
       model_id: idx,
     });
-    const initDiscountKindList = await discountKindService.getList(0, {
+    const initDiscountKindList = await discountKindService.getListAll(0, {
       brand_id: bodyInfo.brand_id,
     });
     let discountBodyList = [];
     for (let i = 0; i < initDiscountKindList.length; i++) {
       const discountInfo = initDiscountKindList[i];
-      const conditionList = await discountConditionService.getList(0, {
+      const conditionList = await discountConditionService.getListAll({
         discount_kind_id: discountInfo.idx,
       });
 
@@ -187,14 +187,14 @@ export const setBody = (name, value) => async (dispatch) => {
         },
       });
 
-      const initDiscountKindList = await discountKindService.getList(0, {
+      const initDiscountKindList = await discountKindService.getListAll({
         brand_id: value,
       });
 
       let discountBodyList = [];
       for (let i = 0; i < initDiscountKindList.length; i++) {
         const discountInfo = initDiscountKindList[i];
-        const conditionList = await discountConditionService.getList(0, {
+        const conditionList = await discountConditionService.getListAll({
           discount_kind_id: discountInfo.idx,
         });
 
