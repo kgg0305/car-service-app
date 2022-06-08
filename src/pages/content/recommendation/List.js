@@ -201,7 +201,7 @@ function List() {
         {/* Body Section */}
         <TableList dataSource={tableDataSource} />
 
-        {dataLength > 10 && dataLength > 10 * (offset + 1) ? (
+        {dataLength > 10 && dataLength > offset ? (
           <Row justify="center">
             <label className="show-more-label" onClick={onTableMoreClick}>
               더보기
