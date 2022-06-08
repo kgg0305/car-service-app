@@ -1,6 +1,7 @@
 import axios from "axios";
 import { GetDateTimeStringFromDate } from "../constants/GlobalFunctions";
 import { trimService } from "./trimService";
+import moment from "moment";
 
 const base_url = process.env.REACT_APP_API_URL + "/lineup";
 
@@ -30,9 +31,9 @@ const create = async (body) => {
       year_type: body.year_type,
       is_use: body.is_use,
 
-      created_at: new Date().toISOString().slice(0, 19).replace("T", " "),
+      created_at: moment().format("YYYY-MM-DD hh:mm:ss"),
       created_by: token.idx,
-      updated_at: new Date().toISOString().slice(0, 19).replace("T", " "),
+      updated_at: moment().format("YYYY-MM-DD hh:mm:ss"),
       updated_by: token.idx,
       is_deleted: false,
     },

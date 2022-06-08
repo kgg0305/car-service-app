@@ -23,8 +23,7 @@ export function GetDateTimeStringFromDate(date_time) {
   return date_text1 + " " + date_text2;
 }
 
-export function GetDateFullTimeStringUsingKorFromDate(date_time) {
-  const date = ConvertUTCDateToLocalDate(date_time);
+export function GetDateFullTimeStringUsingKorFromDate(date) {
   let year = date.getFullYear();
   let month = ("0" + (date.getMonth() + 1)).slice(-2);
   let day = ("0" + date.getDate()).slice(-2);
