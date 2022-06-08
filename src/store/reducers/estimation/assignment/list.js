@@ -15,6 +15,9 @@ export const init = () => async (dispatch) => {
     const dataSource = await userService.getList(0, {
       type_id: "1",
     });
+    const dataLength = await userService.getCount({
+      type_id: "1",
+    });
 
     let updatedDataSource = [];
     for (let i = 0; i < dataSource.length; i++) {
@@ -79,6 +82,7 @@ export const init = () => async (dispatch) => {
       payload: {
         summaryData: summaryData,
         dataSource: updatedDataSource,
+        dataLength: dataLength,
       },
     });
   } catch (e) {

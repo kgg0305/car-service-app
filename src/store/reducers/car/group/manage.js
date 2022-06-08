@@ -17,12 +17,16 @@ export const init = (brand_id) => async (dispatch) => {
     const dataSource = await groupService.getList(0, {
       brand_id: brand_id,
     });
+    const dataLength = await groupService.getCount({
+      brand_id: brand_id,
+    });
     const brandBodyInfo = await brandService.get(brand_id);
 
     dispatch({
       type: INIT,
       payload: {
         dataSource: dataSource,
+        dataLength: dataLength,
         brandBodyInfo: brandBodyInfo,
       },
     });

@@ -16,11 +16,16 @@ export const init = () => async (dispatch) => {
       year: initialState.year,
       month: initialState.month,
     });
+    const dataLength = await countService.getCount({
+      year: initialState.year,
+      month: initialState.month,
+    });
 
     dispatch({
       type: INIT,
       payload: {
         dataSource: dataSource,
+        dataLength: dataLength,
       },
     });
   } catch (e) {

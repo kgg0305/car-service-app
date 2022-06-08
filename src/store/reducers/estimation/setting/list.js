@@ -10,11 +10,13 @@ const SAVE = prefix + "SAVE";
 export const init = () => async (dispatch) => {
   try {
     const dataSource = await countSettingService.getList();
+    const dataLength = await countSettingService.getCount();
 
     dispatch({
       type: INIT,
       payload: {
         dataSource: dataSource,
+        dataLength: dataLength,
       },
     });
   } catch (e) {

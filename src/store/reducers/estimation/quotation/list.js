@@ -14,6 +14,7 @@ const ASSIGN = prefix + "ASSIGN";
 export const init = () => async (dispatch) => {
   try {
     const dataSource = await quotationService.getList(0);
+    const dataLength = await quotationService.getCount();
     const userOptionList = await userService.getOptionList();
     const summaryData = {
       quotation: dataSource.length,
@@ -30,6 +31,7 @@ export const init = () => async (dispatch) => {
         userOptionList: userOptionList,
         summaryData: summaryData,
         dataSource: dataSource,
+        dataLength: dataLength,
       },
     });
   } catch (e) {

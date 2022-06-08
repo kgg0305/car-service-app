@@ -17,12 +17,16 @@ export const init = (model_id) => async (dispatch) => {
     const dataSource = await lineupService.getList(0, {
       model_id: model_id,
     });
+    const dataLength = await lineupService.getCount({
+      model_id: model_id,
+    });
     const modelBodyInfo = await modelService.get(model_id);
 
     dispatch({
       type: INIT,
       payload: {
         dataSource: dataSource,
+        dataLength: dataLength,
         modelBodyInfo: modelBodyInfo,
       },
     });

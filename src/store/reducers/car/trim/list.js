@@ -14,6 +14,7 @@ const SET_SEARCH = prefix + "SET_SEARCH";
 export const init = () => async (dispatch) => {
   try {
     const dataSource = await trimService.getList(0);
+    const dataLength = await trimService.getCount();
     const brandOptionList = await brandService.getOptionList();
     const groupOptionList = await groupService.getOptionList();
     const modelOptionList = await modelService.getOptionList();
@@ -23,6 +24,7 @@ export const init = () => async (dispatch) => {
       type: INIT,
       payload: {
         dataSource: dataSource,
+        dataLength: dataLength,
         brandOptionList: brandOptionList,
         groupOptionList: groupOptionList,
         modelOptionList: modelOptionList,

@@ -16,11 +16,13 @@ const SET_USE = prefix + "SET_USE";
 export const init = () => async (dispatch) => {
   try {
     const dataSource = await contentService.getList(0);
+    const dataLength = await contentService.getCount();
 
     dispatch({
       type: INIT,
       payload: {
         dataSource: dataSource,
+        dataLength: dataLength,
       },
     });
   } catch (e) {

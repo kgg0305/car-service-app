@@ -17,12 +17,16 @@ export const init = (lineup_id) => async (dispatch) => {
     const dataSource = await trimService.getList(0, {
       lineup_id: lineup_id,
     });
+    const dataLength = await trimService.getCount({
+      lineup_id: lineup_id,
+    });
     const lineupBodyInfo = await lineupService.get(lineup_id);
 
     dispatch({
       type: INIT,
       payload: {
         dataSource: dataSource,
+        dataLength: dataLength,
         lineupBodyInfo: lineupBodyInfo,
       },
     });

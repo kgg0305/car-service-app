@@ -18,12 +18,16 @@ export const init = (group_id) => async (dispatch) => {
     const dataSource = await modelService.getList(0, {
       group_id: group_id,
     });
+    const dataLength = await modelService.getCount({
+      group_id: group_id,
+    });
     const groupBodyInfo = await groupService.get(group_id);
 
     dispatch({
       type: INIT,
       payload: {
         dataSource: dataSource,
+        dataLength: dataLength,
         groupBodyInfo: groupBodyInfo,
       },
     });
