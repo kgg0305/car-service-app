@@ -84,8 +84,7 @@ export function GetBase64(file) {
   });
 }
 
-export function ConvertUTCDateToLocalDate(date) {
-  var dateLocal = new Date(date);
+export function ConvertUTCDateToLocalDate(dateLocal) {
   var newDate = new Date(
     dateLocal.getTime() + dateLocal.getTimezoneOffset() * 60 * 1000
   );
