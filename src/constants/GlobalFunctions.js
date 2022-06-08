@@ -84,12 +84,22 @@ export function GetBase64(file) {
   });
 }
 
-export function ConvertUTCDateToLocalDate(dateLocal) {
+function ConvertUTCDateToLocalDate(date) {
+  var newDate = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
+
+  var offset = date.getTimezoneOffset() / 60;
+  var hours = date.getHours();
+
+  newDate.setHours(hours - offset);
+
+  return newDate;
+}
+
+export function ConvertLocalDateToUTCDate(dateUtc) {
   const timezoneOffset = new Date().getTimezoneOffset();
 
-  console.log(timezoneOffset);
   var newDate = new Date(
-    dateLocal.getTime() - dateLocal.getTimezoneOffset() * 60 * 1000
+    timezoneOffset.getTime() + dateUtc.getTimezoneOffset() * 60 * 1000
   );
   return newDate;
 }
