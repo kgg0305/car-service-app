@@ -59,6 +59,16 @@ export function GetTimeStringFromDate(date) {
   return time_text;
 }
 
+export function GetTimeStringUsingKorFromDate(date) {
+  let hour = date.getHours();
+  let minute = date.getMinutes();
+  let seconds = date.getSeconds();
+
+  const time_text = hour + "시" + minute + "분";
+
+  return time_text;
+}
+
 export function GetBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();

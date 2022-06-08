@@ -12,8 +12,8 @@ const SET_SEARCH = prefix + "SET_SEARCH";
 
 export const init = () => async (dispatch) => {
   try {
-    const dataSource = await discountKindService.getList(0);
-    const dataLength = await discountKindService.getCount();
+    const dataSource = await discountConditionService.getList(0);
+    const dataLength = await discountConditionService.getCount();
     const brandOptionList = await brandService.getOptionList();
     const discountKindOptionList = await discountKindService.getOptionList();
 
@@ -35,7 +35,7 @@ export const showMore = () => async (dispatch, getState) => {
   try {
     const state = getState();
     const offset = state.discountList.offset + 10;
-    const dataSource = await discountKindService.getList(offset);
+    const dataSource = await discountConditionService.getList(offset);
 
     dispatch({
       type: SHOW_MORE,
@@ -53,7 +53,7 @@ export const search = () => async (dispatch, getState) => {
   try {
     const state = getState();
     const searchData = state.discountList.searchData;
-    const dataSource = await discountKindService.getList(0, {
+    const dataSource = await discountConditionService.getList(0, {
       ...searchData,
       s_date: searchData.s_date
         ? GetDateStringFromDate(new Date(searchData.s_date))
@@ -62,7 +62,7 @@ export const search = () => async (dispatch, getState) => {
         ? GetDateStringFromDate(new Date(searchData.e_date))
         : "",
     });
-    const dataLength = await discountKindService.getCount({
+    const dataLength = await discountConditionService.getCount({
       ...searchData,
       s_date: searchData.s_date
         ? GetDateStringFromDate(new Date(searchData.s_date))

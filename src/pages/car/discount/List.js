@@ -92,13 +92,13 @@ function List() {
     },
     {
       title: "관리",
-      dataIndex: "idx",
-      key: "idx",
+      dataIndex: "discount_kind_id",
+      key: "discount_kind_id",
       align: "center",
-      render: (idx) => (
+      render: (discount_kind_id) => (
         <Row justify="center">
           <Col>
-            <Link to={"/car/discount/edit/" + idx}>
+            <Link to={"/car/discount/edit/" + discount_kind_id}>
               <Button className="black-button small-button rounded-button">
                 수정
               </Button>

@@ -21,7 +21,7 @@ export const init = (idx) => async (dispatch) => {
   try {
     const brandOptionList = await brandService.getOptionList();
     const bodyInfo = await discountKindService.get(idx);
-    const conditionBodyList = await discountConditionService.getList(0, {
+    const conditionBodyList = await discountConditionService.getListAll({
       discount_kind_id: idx,
     });
     const conditionIdList = conditionBodyList.map((item) => item.idx);

@@ -71,9 +71,8 @@ function List() {
 
   const tableList = {
     title: "등록일",
-    subTitle1: bodyInfo.created_at.split(" ")[0],
-    subTitle2:
-      bodyInfo.created_at.split(" ")[1] + bodyInfo.created_at.split(" ")[2],
+    subTitle1: bodyInfo.reg_date_text,
+    subTitle2: bodyInfo.reg_time_text,
     topItems: [
       {
         type: Constants.inputTypes.button,

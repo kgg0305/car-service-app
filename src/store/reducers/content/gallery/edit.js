@@ -58,9 +58,20 @@ export const closeConfirm = () => ({
   type: CLOSE_CONFIRM,
 });
 export const setBody = (name, value) => async (dispatch) => {
+  let picture_index = 0;
   if (name === "model_id") {
     const modelBodyInfo = await modelService.get(value);
     dispatch(putModelBody(modelBodyInfo));
+
+    if (name === "model_id") {
+      for (let i = 1; i <= 8; i++) {
+        const picture = modelBodyInfo["picture_" + i];
+        if (picture) {
+          picture_index = i;
+          break;
+        }
+      }
+    }
   }
 
   dispatch({
@@ -68,6 +79,7 @@ export const setBody = (name, value) => async (dispatch) => {
     payload: {
       name: name,
       value: value,
+      picture_index: picture_index,
     },
   });
 };
@@ -207,6 +219,10 @@ export default function edit(state = initialState, action) {
             action.payload.name === "group_id"
               ? null
               : state.bodyInfo.model_id,
+          picture_index:
+            action.payload.name === "model_id"
+              ? action.payload.picture_index
+              : state.bodyInfo.picture_index,
           [action.payload.name]: action.payload.value,
         },
       };

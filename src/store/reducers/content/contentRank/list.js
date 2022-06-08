@@ -3,6 +3,7 @@ import { contentService } from "../../../../services/contentService";
 import {
   GetDateStringFromDate,
   GetDateTimeUntilMinuteStringUsingKorFromDate,
+  GetTimeStringUsingKorFromDate,
 } from "../../../../constants/GlobalFunctions";
 
 const prefix = "content/contentRank/list/";
@@ -15,16 +16,12 @@ const PUBLISH = prefix + "PUBLISH";
 
 export const init = () => async (dispatch) => {
   try {
-    const initDataSource = await rankService.get(2);
+    const bodyInfo = await rankService.get(2);
 
     var initContentBodyList = [];
-    if (initDataSource.length) {
-      for (
-        let index = 0;
-        index < initDataSource.ids.split(",").length;
-        index++
-      ) {
-        const id = initDataSource.ids.split(",")[index];
+    if (bodyInfo.length) {
+      for (let index = 0; index < bodyInfo.ids.split(",").length; index++) {
+        const id = bodyInfo.ids.split(",")[index];
         initContentBodyList.push({
           ...(await contentService.get(id)),
           number: index + 1,
@@ -32,18 +29,19 @@ export const init = () => async (dispatch) => {
       }
     }
 
-    const bodyInfo = {
-      ...initDataSource,
-      created_at: GetDateTimeUntilMinuteStringUsingKorFromDate(
-        initDataSource.length ? new Date(initDataSource.created_at) : new Date()
-      ),
-    };
-
     dispatch({
       type: INIT,
       payload: {
         dataSource: initContentBodyList,
-        bodyInfo: bodyInfo,
+        bodyInfo: {
+          ...bodyInfo,
+          reg_date_text: GetDateStringFromDate(
+            bodyInfo.updated_at ? new Date(bodyInfo.updated_at) : new Date()
+          ),
+          reg_time_text: GetTimeStringUsingKorFromDate(
+            bodyInfo.updated_at ? new Date(bodyInfo.updated_at) : new Date()
+          ),
+        },
       },
     });
   } catch (e) {
