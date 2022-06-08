@@ -30,9 +30,9 @@ const create = async (body) => {
       year_type: body.year_type,
       is_use: body.is_use,
 
-      created_at: GetDateTimeStringFromDate(new Date()),
+      created_at: new Date().toISOString().slice(0, 19).replace("T", " "),
       created_by: token.idx,
-      updated_at: GetDateTimeStringFromDate(new Date()),
+      updated_at: new Date().toISOString().slice(0, 19).replace("T", " "),
       updated_by: token.idx,
       is_deleted: false,
     },
