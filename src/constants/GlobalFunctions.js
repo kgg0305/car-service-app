@@ -1,5 +1,5 @@
-export function GetDateStringFromDate(datetime) {
-  const date = ConvertUTCDateToLocalDate(datetime);
+export function GetDateStringFromDate(date_time) {
+  const date = ConvertUTCDateToLocalDate(date_time);
   let year = date.getFullYear();
   let month = ("0" + (date.getMonth() + 1)).slice(-2);
   let day = ("0" + date.getDate()).slice(-2);
@@ -8,8 +8,8 @@ export function GetDateStringFromDate(datetime) {
   return date_text;
 }
 
-export function GetDateTimeStringFromDate(datetime) {
-  const date = ConvertUTCDateToLocalDate(datetime);
+export function GetDateTimeStringFromDate(date_time) {
+  const date = ConvertUTCDateToLocalDate(date_time);
   let year = date.getFullYear();
   let month = ("0" + (date.getMonth() + 1)).slice(-2);
   let day = ("0" + date.getDate()).slice(-2);
@@ -23,8 +23,8 @@ export function GetDateTimeStringFromDate(datetime) {
   return date_text1 + " " + date_text2;
 }
 
-export function GetDateFullTimeStringUsingKorFromDate(datetime) {
-  const date = ConvertUTCDateToLocalDate(datetime);
+export function GetDateFullTimeStringUsingKorFromDate(date_time) {
+  const date = ConvertUTCDateToLocalDate(date_time);
   let year = date.getFullYear();
   let month = ("0" + (date.getMonth() + 1)).slice(-2);
   let day = ("0" + date.getDate()).slice(-2);
@@ -38,8 +38,8 @@ export function GetDateFullTimeStringUsingKorFromDate(datetime) {
   return date_text1 + " " + date_text2;
 }
 
-export function GetDateTimeUntilMinuteStringUsingKorFromDate(datetime) {
-  const date = ConvertUTCDateToLocalDate(datetime);
+export function GetDateTimeUntilMinuteStringUsingKorFromDate(date_time) {
+  const date = ConvertUTCDateToLocalDate(date_time);
   let year = date.getFullYear();
   let month = ("0" + (date.getMonth() + 1)).slice(-2);
   let day = ("0" + date.getDate()).slice(-2);
@@ -53,8 +53,8 @@ export function GetDateTimeUntilMinuteStringUsingKorFromDate(datetime) {
   return date_text1 + " " + date_text2;
 }
 
-export function GetTimeStringFromDate(datetime) {
-  const date = ConvertUTCDateToLocalDate(datetime);
+export function GetTimeStringFromDate(date_time) {
+  const date = ConvertUTCDateToLocalDate(date_time);
   let hour = date.getHours();
   let minute = date.getMinutes();
   let seconds = date.getSeconds();
@@ -64,8 +64,8 @@ export function GetTimeStringFromDate(datetime) {
   return time_text;
 }
 
-export function GetTimeStringUsingKorFromDate(datetime) {
-  const date = ConvertUTCDateToLocalDate(datetime);
+export function GetTimeStringUsingKorFromDate(date_time) {
+  const date = ConvertUTCDateToLocalDate(date_time);
   let hour = date.getHours();
   let minute = date.getMinutes();
   let seconds = date.getSeconds();
@@ -87,7 +87,7 @@ export function GetBase64(file) {
 export function ConvertUTCDateToLocalDate(date) {
   var dateLocal = new Date(date);
   var newDate = new Date(
-    dateLocal.getTime() - dateLocal.getTimezoneOffset() * 60 * 1000
+    dateLocal.getTime() + dateLocal.getTimezoneOffset() * 60 * 1000
   );
   return newDate;
 }
