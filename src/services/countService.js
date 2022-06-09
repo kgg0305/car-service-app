@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GetDateTimeStringFromDate } from "../constants/GlobalFunctions";
+import { GetServerTimezoneDate } from "../constants/GlobalFunctions";
 
 const base_url = process.env.REACT_APP_API_URL + "/count";
 
@@ -25,9 +25,9 @@ const create = async (body) => {
       new_request: body.new_request,
       new_admin: body.new_admin,
 
-      created_at: GetDateTimeStringFromDate(new Date()),
+      created_at: GetServerTimezoneDate(new Date()),
       created_by: token.idx,
-      updated_at: GetDateTimeStringFromDate(new Date()),
+      updated_at: GetServerTimezoneDate(new Date()),
       updated_by: token.idx,
       is_deleted: false,
     },
@@ -51,9 +51,9 @@ const update = async (body) => {
     new_request: body.new_request,
     new_admin: body.new_admin,
 
-    created_at: GetDateTimeStringFromDate(new Date(body.created_at)),
+    created_at: GetServerTimezoneDate(new Date(body.created_at)),
     created_by: body.created_by,
-    updated_at: GetDateTimeStringFromDate(new Date()),
+    updated_at: GetServerTimezoneDate(new Date()),
     updated_by: token.idx,
     is_deleted: body.is_deleted,
   };
@@ -73,9 +73,9 @@ const remove = async (idx) => {
 
   var data = {
     ...response.data,
-    created_at: GetDateTimeStringFromDate(new Date(response.data.created_at)),
-    updated_at: GetDateTimeStringFromDate(new Date(response.data.updated_at)),
-    deleted_at: GetDateTimeStringFromDate(new Date()),
+    created_at: GetServerTimezoneDate(new Date(response.data.created_at)),
+    updated_at: GetServerTimezoneDate(new Date(response.data.updated_at)),
+    deleted_at: GetServerTimezoneDate(new Date()),
     deleted_by: token.idx,
     is_deleted: true,
   };

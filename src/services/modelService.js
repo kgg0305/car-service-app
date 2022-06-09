@@ -1,7 +1,7 @@
 import axios from "axios";
 import {
   GetDateStringFromDate,
-  GetDateTimeStringFromDate,
+  GetServerTimezoneDate,
 } from "../constants/GlobalFunctions";
 import { lineupService } from "./lineupService";
 
@@ -52,9 +52,9 @@ const create = async (body) => {
       picture_7: pictures["picture_7"],
       picture_8: pictures["picture_8"],
 
-      created_at: GetDateTimeStringFromDate(new Date()),
+      created_at: GetServerTimezoneDate(new Date()),
       created_by: token.idx,
-      updated_at: GetDateTimeStringFromDate(new Date()),
+      updated_at: GetServerTimezoneDate(new Date()),
       updated_by: token.idx,
       is_deleted: false,
     },
@@ -106,9 +106,9 @@ const update = async (body) => {
     picture_7: pictures["picture_7"],
     picture_8: pictures["picture_8"],
 
-    created_at: GetDateTimeStringFromDate(new Date(body.created_at)),
+    created_at: GetServerTimezoneDate(new Date(body.created_at)),
     created_by: body.created_by,
-    updated_at: GetDateTimeStringFromDate(new Date()),
+    updated_at: GetServerTimezoneDate(new Date()),
     updated_by: token.idx,
     is_deleted: body.is_deleted,
   };
@@ -129,9 +129,9 @@ const remove = async (idx) => {
 
   var data = {
     ...response.data,
-    created_at: GetDateTimeStringFromDate(new Date(response.data.created_at)),
-    updated_at: GetDateTimeStringFromDate(new Date(response.data.updated_at)),
-    deleted_at: GetDateTimeStringFromDate(new Date()),
+    created_at: GetServerTimezoneDate(new Date(response.data.created_at)),
+    updated_at: GetServerTimezoneDate(new Date(response.data.updated_at)),
+    deleted_at: GetServerTimezoneDate(new Date()),
     deleted_by: token.idx,
     is_deleted: true,
   };
