@@ -862,11 +862,11 @@ main {
     color: #363636;
 }
 
-.gallery-table .ant-table-tbody > tr {
+.gallery-table .ant-table-tbody > tr, .gallery-table .ant-table-tbody > tr > td {
     height: 250px;
 }
 
-.popular-table .ant-table-tbody > tr {
+.popular-table .ant-table-tbody > tr, .popular-table .ant-table-tbody > tr > td {
     height: 250px;
 }
 
