@@ -15,6 +15,7 @@ import {
   closeConfirm,
   save,
 } from "../../../store/reducers/car/trim/manage";
+import { setSideMenu } from "../../../store/reducers/menu";
 
 // 목록페지
 function Manage() {
@@ -40,6 +41,7 @@ function Manage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(setSideMenu("4"));
     if (redirectTo) {
       const redirectURL = redirectTo;
       dispatch(removeRedirectTo());

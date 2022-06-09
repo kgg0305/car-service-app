@@ -12,6 +12,7 @@ import {
   showMore,
 } from "../../../store/reducers/car/brand/list";
 import { CaretDownOutlined } from "@ant-design/icons";
+import { setSideMenu } from "../../../store/reducers/menu";
 
 const { Option } = Select;
 
@@ -29,6 +30,7 @@ function List() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(setSideMenu("0"));
     dispatch(init());
   }, [dispatch]);
 

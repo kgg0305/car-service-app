@@ -12,6 +12,7 @@ import {
   showMore,
 } from "../../../store/reducers/car/group/list";
 import { CaretDownOutlined } from "@ant-design/icons";
+import { setSideMenu } from "../../../store/reducers/menu";
 
 // 목록페지
 function List() {
@@ -34,6 +35,7 @@ function List() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(setSideMenu("1"));
     dispatch(init());
   }, [dispatch]);
 

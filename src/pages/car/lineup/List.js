@@ -13,6 +13,7 @@ import {
   setSearch,
   showMore,
 } from "../../../store/reducers/car/lineup/list";
+import { setSideMenu } from "../../../store/reducers/menu";
 
 // 목록페지
 function List() {
@@ -37,6 +38,7 @@ function List() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(setSideMenu("3"));
     dispatch(init());
   }, [dispatch]);
 
