@@ -103,6 +103,7 @@ function List() {
             ? window.location.origin + "/uploads/model/" + image_path
             : ""
         }
+        style={{ maxHeight: 250 }}
       />
     );
   };

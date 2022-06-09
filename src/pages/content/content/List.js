@@ -162,6 +162,7 @@ function List() {
       <Row justify="center" gutter={[11]}>
         <Col>
           <Switch
+            className="manage-switch"
             checked={
               dataSource.filter((item) => item.idx === idx)[0].is_use === "0"
                 ? false
