@@ -181,6 +181,21 @@ export default function detail(state = initialState, action) {
         ...state,
         bodyInfo: {
           ...state.bodyInfo,
+          is_contract:
+            action.payload.name === "is_business"
+              ? null
+              : state.bodyInfo.is_contract,
+          is_release:
+            action.payload.name === "is_business" ||
+            action.payload.name === "is_contract"
+              ? null
+              : state.bodyInfo.is_release,
+          is_close:
+            action.payload.name === "is_business" ||
+            action.payload.name === "is_contract" ||
+            action.payload.name === "is_release"
+              ? null
+              : state.bodyInfo.is_close,
           [action.payload.name]: action.payload.value,
         },
       };

@@ -267,6 +267,7 @@ function Detail() {
                       onChange={(value) => {
                         onComponentChange("is_contract", value);
                       }}
+                      disabled={bodyInfo.is_business === "1" ? false : true}
                       size="large"
                       suffixIcon={<CaretDownOutlined />}
                       placeholder="선택"
@@ -296,6 +297,7 @@ function Detail() {
                           GetDateStringFromDate(new Date(value.toString()))
                         );
                       }}
+                      disabled={bodyInfo.is_business === "1" ? false : true}
                       placeholder="0000-00-00"
                       size="large"
                     />
@@ -319,6 +321,7 @@ function Detail() {
                       onChange={(value) => {
                         onComponentChange("is_release", value);
                       }}
+                      disabled={bodyInfo.is_contract === "1" ? false : true}
                       size="large"
                       suffixIcon={<CaretDownOutlined />}
                       placeholder="선택"
@@ -348,6 +351,7 @@ function Detail() {
                           GetDateStringFromDate(new Date(value.toString()))
                         );
                       }}
+                      disabled={bodyInfo.is_contract === "1" ? false : true}
                       placeholder="0000-00-00"
                       size="large"
                     />
@@ -364,6 +368,7 @@ function Detail() {
                       onChange={(value) => {
                         onComponentChange("is_close", value);
                       }}
+                      disabled={bodyInfo.is_release === "1" ? false : true}
                       size="large"
                       suffixIcon={<CaretDownOutlined />}
                       placeholder="선택"
