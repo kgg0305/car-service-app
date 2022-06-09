@@ -10,13 +10,11 @@ const SAVE = prefix + "SAVE";
 export const init = () => async (dispatch) => {
   try {
     const dataSource = await countSettingService.getList();
-    const dataLength = await countSettingService.getCount();
 
     dispatch({
       type: INIT,
       payload: {
         dataSource: dataSource,
-        dataLength: dataLength,
       },
     });
   } catch (e) {
@@ -47,7 +45,6 @@ export const save = () => async (dispatch, getState) => {
 
 const initialState = {
   dataSource: [],
-  dataLength: 0,
 };
 
 export default function list(state = initialState, action) {
@@ -56,7 +53,6 @@ export default function list(state = initialState, action) {
       return {
         ...initialState,
         dataSource: action.payload.dataSource,
-        dataLength: action.payload.dataLength,
       };
     case SET_DATA_SOURCE:
       return {
