@@ -10,6 +10,7 @@ function AlertModal({ visible, onConfirmClick, validationList }) {
       width={325}
       closable={false}
       visible={visible}
+      transitionName=""
       footer={[
         <Button
           className="alert-button confirm-button"

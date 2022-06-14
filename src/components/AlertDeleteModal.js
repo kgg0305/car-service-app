@@ -10,6 +10,7 @@ function AlertDeleteModal({ name, visible, onConfirmClick, onCancelClick }) {
       width={350}
       closable={false}
       visible={visible}
+      transitionName=""
       footer={[
         <Space size={200}>
           <Button
