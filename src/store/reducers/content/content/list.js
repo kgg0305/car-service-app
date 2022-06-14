@@ -17,6 +17,7 @@ const SET_USE = prefix + "SET_USE";
 export const init = () => async (dispatch) => {
   try {
     const mediaOptionList = await contentService.getMediaOptionList();
+    const categoryOptionList = await contentService.getCategoryOptionList();
     const dataSource = await contentService.getList(0);
     const dataLength = await contentService.getCount();
 
@@ -24,6 +25,7 @@ export const init = () => async (dispatch) => {
       type: INIT,
       payload: {
         mediaOptionList: mediaOptionList,
+        categoryOptionList: categoryOptionList,
         dataSource: dataSource,
         dataLength: dataLength,
       },
@@ -200,6 +202,7 @@ const initialState = {
     idx: null,
   },
   mediaOptionList: [],
+  categoryOptionList: [],
   dataSource: [],
   dataLength: 0,
   searchData: {
@@ -220,6 +223,7 @@ export default function list(state = initialState, action) {
       return {
         ...initialState,
         mediaOptionList: action.payload.mediaOptionList,
+        categoryOptionList: action.payload.categoryOptionList,
         dataSource: action.payload.dataSource,
         dataLength: action.payload.dataLength,
       };

@@ -42,6 +42,7 @@ function List() {
     redirectTo,
     offset,
     mediaOptionList,
+    categoryOptionList,
     dataSource,
     dataLength,
     searchData,
@@ -50,6 +51,7 @@ function List() {
     redirectTo: state.contentList.redirectTo,
     offset: state.contentList.offset,
     mediaOptionList: state.contentList.mediaOptionList,
+    categoryOptionList: state.contentList.categoryOptionList,
     dataSource: state.contentList.dataSource,
     dataSourcdataLengthe: state.contentList.dataLength,
     searchData: state.contentList.searchData,
@@ -364,11 +366,15 @@ function List() {
                   size="large"
                   style={{ width: 150 }}
                 >
-                  {mediaOptionList.map((optionItem, optionIndex) => (
-                    <Select.Option key={optionIndex} value={optionItem.value}>
-                      {optionItem.label}
-                    </Select.Option>
-                  ))}
+                  {mediaOptionList ? (
+                    mediaOptionList.map((optionItem, optionIndex) => (
+                      <Select.Option key={optionIndex} value={optionItem.value}>
+                        {optionItem.label}
+                      </Select.Option>
+                    ))
+                  ) : (
+                    <></>
+                  )}
                 </Select>
               </Col>
             </Row>
@@ -401,21 +407,25 @@ function List() {
               </Col>
               <Col flex="245px" className="table-value">
                 <Select
-                  name="category_id"
-                  value={searchData.category_id}
+                  name="category"
+                  value={searchData.category}
                   onChange={(value) => {
-                    onSearchComponentChange("category_id", value);
+                    onSearchComponentChange("category", value);
                   }}
                   suffixIcon={<CaretDownOutlined />}
                   placeholder="선택"
                   size="large"
                   style={{ width: 150 }}
                 >
-                  {Constants.dateTypeOptions.map((optionItem, optionIndex) => (
-                    <Select.Option key={optionIndex} value={optionItem.value}>
-                      {optionItem.label}
-                    </Select.Option>
-                  ))}
+                  {categoryOptionList ? (
+                    categoryOptionList.map((optionItem, optionIndex) => (
+                      <Select.Option key={optionIndex} value={optionItem.value}>
+                        {optionItem.label}
+                      </Select.Option>
+                    ))
+                  ) : (
+                    <></>
+                  )}
                 </Select>
               </Col>
               <Col flex="154px" className="table-header">
