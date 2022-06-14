@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import React, { useEffect } from "react";
 import TableList from "../../../components/TableList";
 import { Constants } from "../../../constants/Constants";
-import { GetDateFullTimeStringUsingKorFromDate } from "../../../constants/GlobalFunctions";
+import { GetDateStringFromDate } from "../../../constants/GlobalFunctions";
 import { CaretDownOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -100,8 +100,7 @@ function List() {
       key: "created_at",
       align: "center",
       width: 184,
-      render: (created_at) =>
-        GetDateFullTimeStringUsingKorFromDate(new Date(created_at)),
+      render: (created_at) => GetDateStringFromDate(new Date(created_at)),
     },
     {
       title: "관리",

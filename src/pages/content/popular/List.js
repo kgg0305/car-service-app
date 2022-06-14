@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import TableList from "../../../components/TableList";
 import { useDispatch, useSelector } from "react-redux";
 import { init, showMore } from "../../../store/reducers/content/popular/list";
-import { GetDateFullTimeStringUsingKorFromDate } from "../../../constants/GlobalFunctions";
+import { GetDateStringFromDate } from "../../../constants/GlobalFunctions";
 
 // 목록페지
 function List() {
@@ -63,8 +63,7 @@ function List() {
       key: "created_at",
       align: "center",
       width: 290,
-      render: (created_at) =>
-        GetDateFullTimeStringUsingKorFromDate(new Date(created_at)),
+      render: (created_at) => GetDateStringFromDate(new Date(created_at)),
     },
     {
       title: "관리",

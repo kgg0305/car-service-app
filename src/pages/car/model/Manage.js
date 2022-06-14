@@ -3,7 +3,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import React, { useEffect } from "react";
 import TableList from "../../../components/TableList";
 import { Constants } from "../../../constants/Constants";
-import { GetDateFullTimeStringUsingKorFromDate } from "../../../constants/GlobalFunctions";
+import { GetDateStringFromDate } from "../../../constants/GlobalFunctions";
 import AlertDeleteModal from "../../../components/AlertDeleteModal";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -110,8 +110,7 @@ function Manage() {
       key: "created_at",
       align: "center",
       width: 180,
-      render: (created_at) =>
-        GetDateFullTimeStringUsingKorFromDate(new Date(created_at)),
+      render: (created_at) => GetDateStringFromDate(new Date(created_at)),
     },
     {
       title: "관리",

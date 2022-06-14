@@ -15,10 +15,7 @@ import { useNavigate } from "react-router-dom";
 import AlertDeleteModal from "../../../components/AlertDeleteModal";
 import TableList from "../../../components/TableList";
 import { Constants } from "../../../constants/Constants";
-import {
-  GetDateFullTimeStringUsingKorFromDate,
-  GetDateStringFromDate,
-} from "../../../constants/GlobalFunctions";
+import { GetDateStringFromDate } from "../../../constants/GlobalFunctions";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -129,8 +126,7 @@ function List() {
       key: "created_at",
       align: "center",
       width: 120,
-      render: (created_at) =>
-        GetDateFullTimeStringUsingKorFromDate(new Date(created_at)),
+      render: (created_at) => GetDateStringFromDate(new Date(created_at)),
     },
     {
       title: "사용여부",
