@@ -105,7 +105,7 @@ function Manage() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 122,
+      width: 150,
       render: (idx) => renderIsUseField(idx),
     },
     {

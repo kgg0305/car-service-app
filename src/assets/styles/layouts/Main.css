@@ -616,6 +616,7 @@ main {
 
 .switch-label {
     height: 100%;
+    width: 45px;
     font-weight: 400;
     font-size: 14px;
     line-height: 16px;

@@ -86,14 +86,14 @@ function Manage() {
       dataIndex: "lineup_name",
       key: "lineup_name",
       align: "center",
-      width: 355,
+      width: 330,
     },
     {
       title: "사용여부",
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 130,
+      width: 150,
       render: (idx) => renderIsUseField(idx),
     },
     {
@@ -101,7 +101,7 @@ function Manage() {
       dataIndex: "created_at",
       key: "created_at",
       align: "center",
-      width: 176,
+      width: 180,
       render: (created_at) =>
         GetDateFullTimeStringUsingKorFromDate(new Date(created_at)),
     },
