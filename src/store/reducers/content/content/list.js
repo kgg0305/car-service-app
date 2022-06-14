@@ -16,12 +16,14 @@ const SET_USE = prefix + "SET_USE";
 
 export const init = () => async (dispatch) => {
   try {
+    const mediaOptionList = await contentService.getMediaOptionList();
     const dataSource = await contentService.getList(0);
     const dataLength = await contentService.getCount();
 
     dispatch({
       type: INIT,
       payload: {
+        mediaOptionList: mediaOptionList,
         dataSource: dataSource,
         dataLength: dataLength,
       },
@@ -197,13 +199,14 @@ const initialState = {
     show: false,
     idx: null,
   },
+  mediaOptionList: [],
   dataSource: [],
   dataLength: 0,
   searchData: {
     date_period: 0,
     s_date: null,
     e_date: null,
-    idx: null,
+    media: null,
     title: null,
     category: null,
     is_recommend: null,
@@ -216,6 +219,7 @@ export default function list(state = initialState, action) {
     case INIT:
       return {
         ...initialState,
+        mediaOptionList: action.payload.mediaOptionList,
         dataSource: action.payload.dataSource,
         dataLength: action.payload.dataLength,
       };

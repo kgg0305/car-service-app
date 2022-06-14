@@ -38,15 +38,23 @@ import {
 function List() {
   let navigate = useNavigate();
 
-  const { redirectTo, offset, dataSource, dataLength, searchData, confirm } =
-    useSelector((state) => ({
-      redirectTo: state.contentList.redirectTo,
-      offset: state.contentList.offset,
-      dataSource: state.contentList.dataSource,
-      dataSourcdataLengthe: state.contentList.dataLength,
-      searchData: state.contentList.searchData,
-      confirm: state.contentList.confirm,
-    }));
+  const {
+    redirectTo,
+    offset,
+    mediaOptionList,
+    dataSource,
+    dataLength,
+    searchData,
+    confirm,
+  } = useSelector((state) => ({
+    redirectTo: state.contentList.redirectTo,
+    offset: state.contentList.offset,
+    mediaOptionList: state.contentList.mediaOptionList,
+    dataSource: state.contentList.dataSource,
+    dataSourcdataLengthe: state.contentList.dataLength,
+    searchData: state.contentList.searchData,
+    confirm: state.contentList.confirm,
+  }));
 
   const dispatch = useDispatch();
 
@@ -346,23 +354,21 @@ function List() {
               </Col>
               <Col flex="auto" className="table-value">
                 <Select
-                  name="idx"
-                  value={searchData.idx}
+                  name="media"
+                  value={searchData.media}
                   onChange={(value) => {
-                    onSearchComponentChange("idx", value);
+                    onSearchComponentChange("media", value);
                   }}
                   suffixIcon={<CaretDownOutlined />}
                   placeholder="선택"
                   size="large"
                   style={{ width: 150 }}
                 >
-                  {Constants.purchaseMethodOptions.map(
-                    (optionItem, optionIndex) => (
-                      <Select.Option key={optionIndex} value={optionItem.value}>
-                        {optionItem.label}
-                      </Select.Option>
-                    )
-                  )}
+                  {mediaOptionList.map((optionItem, optionIndex) => (
+                    <Select.Option key={optionIndex} value={optionItem.value}>
+                      {optionItem.label}
+                    </Select.Option>
+                  ))}
                 </Select>
               </Col>
             </Row>

@@ -119,6 +119,16 @@ const getOptionList = async () => {
   }
 };
 
+const getMediaOptionList = async () => {
+  try {
+    const response = await axios.get(base_url + "/media-option-list");
+
+    return response.data;
+  } catch (e) {
+    return e;
+  }
+};
+
 const get = async (idx) => {
   try {
     const response = await axios.get(base_url + "/" + idx);
@@ -146,6 +156,7 @@ export const contentService = {
   getList,
   getCount,
   getOptionList,
+  getMediaOptionList,
   get,
   remove,
 };
