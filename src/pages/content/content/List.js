@@ -164,22 +164,26 @@ function List() {
           <Switch
             className="manage-switch"
             checked={
-              dataSource.filter((item) => item.idx === idx)[0].is_use === "0"
-                ? false
-                : true
+              dataSource.filter((item) => item.idx === idx)[0].is_use === "1"
+                ? true
+                : false
             }
             onClick={(checked) => onChangeUse(idx, checked)}
           />
         </Col>
         <Col>
           <label className="switch-label">
-            {
-              Constants.availableOptions.filter(
-                (item) =>
-                  item.value ===
-                  dataSource.filter((item) => item.idx === idx)[0].is_use
-              )[0].label
-            }
+            {Constants.availableOptions.some(
+              (item) =>
+                item.value ===
+                dataSource.filter((item) => item.idx === idx)[0].is_use
+            )
+              ? Constants.availableOptions.filter(
+                  (item) =>
+                    item.value ===
+                    dataSource.filter((item) => item.idx === idx)[0].is_use
+                )[0].label
+              : Constants.availableOptions[1].label}
           </label>
         </Col>
       </Row>
@@ -411,7 +415,7 @@ function List() {
               <Col flex="154px" className="table-header">
                 <label className="table-header-label">추천뉴스</label>
               </Col>
-              <Col flex="auto" className="table-value">
+              <Col flex="241px" className="table-value">
                 <Select
                   name="is_recommend"
                   value={searchData.is_recommend}

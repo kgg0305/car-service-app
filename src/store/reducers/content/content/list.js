@@ -184,7 +184,7 @@ const initialState = {
     e_date: null,
     idx: null,
     title: null,
-    category_id: null,
+    category: null,
     is_recommend: null,
     is_use: null,
   },
