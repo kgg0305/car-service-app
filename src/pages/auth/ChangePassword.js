@@ -32,13 +32,22 @@ function ChangePassword() {
           <Space direction="vertical" align="center" size={30}>
             <Space direction="vertical" size={5}>
               <label className={styles.fieldLabel}>비밀번호 입력</label>
-              <Input.Password
-                name="new_password"
-                value={new_password}
-                onChange={(e) => onFormChange(e.target.name, e.target.value)}
-                size="large"
-                style={{ width: 300 }}
-              />
+              <div className={styles.newPasswordPanel}>
+                <Input.Password
+                  className="auth-input"
+                  name="new_password"
+                  value={new_password}
+                  onChange={(e) => onFormChange(e.target.name, e.target.value)}
+                  size="large"
+                  style={{ width: 300, height: 50 }}
+                />
+                <label className={styles.newPasswordLabel}>
+                  공백없이 8~15글자의영문 대소문자, <br />
+                  숫자, 일부 특수기호만 조합해 사용 <br />
+                  (사용가능한 특수기호 :
+                  &#33;&#64;&#35;&#36;&#37;&#94;&#38;&#42;&#40;&#41;&#95;&#43;&#61;&#62;&#60;)
+                </label>
+              </div>
               {danger_password ? (
                 <label className={styles.validationLabel}>
                   {short_password
@@ -52,11 +61,12 @@ function ChangePassword() {
             <Space direction="vertical" size={5}>
               <label className={styles.fieldLabel}>비밀번호 확인</label>
               <Input.Password
+                className="auth-input"
                 name="old_password"
                 value={old_password}
                 onChange={(e) => onFormChange(e.target.name, e.target.value)}
                 size="large"
-                style={{ width: 300 }}
+                style={{ width: 300, height: 50 }}
               />
               {match_password ? (
                 <label className={styles.validationLabel}>

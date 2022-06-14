@@ -31,11 +31,12 @@ function Login() {
             <Space direction="vertical" size={5}>
               <label className={styles.fieldLabel}>사용자 아이디</label>
               <Input
+                className="auth-input"
                 name="user_id"
                 value={form_user_id}
                 onChange={(e) => onFormChange(e.target.name, e.target.value)}
                 size="large"
-                style={{ width: 300 }}
+                style={{ width: 300, height: 50 }}
               />
               <label
                 hidden={!validation_user_id}
@@ -47,11 +48,12 @@ function Login() {
             <Space direction="vertical" size={5}>
               <label className={styles.fieldLabel}>비밀번호</label>
               <Input.Password
+                className="auth-input"
                 name="password"
                 value={form_password}
                 onChange={(e) => onFormChange(e.target.name, e.target.value)}
                 size="large"
-                style={{ width: 300 }}
+                style={{ width: 300, height: 50 }}
               />
               <label
                 hidden={!validation_password}

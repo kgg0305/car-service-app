@@ -29,7 +29,7 @@
 .validationLabel {
     font-style: normal;
     font-weight: 300;
-    font-size: 10px;
+    font-size: 10px!important;
     line-height: 12px;
 
     display: flex;
@@ -61,8 +61,8 @@
 }
 
 .submitButton:focus {
-    background-color: #363636;
-    border-color: #363636;
+    background-color: #2D2D2D;
+    border-color: #2D2D2D;
     color: white;
 }
 
@@ -76,4 +76,23 @@
     align-items: center;
 
     color: #FFFFFF;
+}
+
+.newPasswordPanel {
+    position: relative;
+}
+
+.newPasswordLabel {
+    position: absolute;
+    top: 0px;
+    left: 307px;
+    width: 280px;
+    height: 45px;
+
+    font-style: normal;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 15px;
+
+    color: #7B7B7B;
 }

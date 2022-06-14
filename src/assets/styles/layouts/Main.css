@@ -6,6 +6,20 @@
     display:none;
 }
 
+.auth-input > input {
+    height: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 21px;
+
+    color: #363636;
+}
+
 .ant-input {
     font-weight: 400;
     font-size: 14px;
