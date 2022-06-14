@@ -160,12 +160,20 @@ function App() {
         <Route exact path="user" element={<Main />}>
           <Route index path="mine/:id" element={<UserMineDetail />} />
           <Route path="manage">
-            <Route index element={<UserManageList />} />
+            {token.idx === 1 ? (
+              <Route index element={<UserManageList />} />
+            ) : (
+              <Route index element={<NoAccess />} />
+            )}
             <Route path="create" element={<UserManageCreate />} />
             <Route path="edit/:id" element={<UserManageEdit />} />
           </Route>
           <Route path="role">
-            <Route index element={<UserRoleList />} />
+            {token.idx === 1 ? (
+              <Route index element={<UserRoleList />} />
+            ) : (
+              <Route index element={<NoAccess />} />
+            )}
           </Route>
         </Route>
 
