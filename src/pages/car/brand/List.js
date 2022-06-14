@@ -55,11 +55,9 @@ function List() {
       align: "center",
       width: 192.5,
       render: (path) => (
-        <Image
-          width={50}
-          height={50}
-          src={window.location.origin + "/uploads/brand/" + path}
-        />
+        <div className="list-image">
+          <Image src={window.location.origin + "/uploads/brand/" + path} />
+        </div>
       ),
     },
     {

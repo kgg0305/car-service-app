@@ -97,14 +97,15 @@ function List() {
     const gallery_info = dataSource.filter((item) => item.idx === idx)[0];
     const image_path = gallery_info["picture_" + gallery_info.picture_index];
     return (
-      <Image
-        src={
-          image_path
-            ? window.location.origin + "/uploads/model/" + image_path
-            : ""
-        }
-        style={{ maxHeight: 250 }}
-      />
+      <div className="gallery-image">
+        <Image
+          src={
+            image_path
+              ? window.location.origin + "/uploads/model/" + image_path
+              : ""
+          }
+        />
+      </div>
     );
   };
 

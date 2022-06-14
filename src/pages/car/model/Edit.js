@@ -666,20 +666,20 @@ function Edit() {
               사진 {"0" + item} (대표)
             </label>
             <Space direction="vertical" align="center" size={6}>
-              <Image
-                src={
-                  bodyInfo["preview_" + item] === preview_default_image
-                    ? preview_default_image
-                    : bodyInfo["picture_" + item].uid === ""
-                    ? window.location.origin +
-                      "/uploads/model/" +
-                      bodyInfo["preview_" + item]
-                    : bodyInfo["preview_" + item]
-                }
-                width={150}
-                height={150}
-                className="image-upload"
-              />
+              <div className="edit-image image-upload">
+                <Image
+                  src={
+                    bodyInfo["preview_" + item] === preview_default_image
+                      ? preview_default_image
+                      : bodyInfo["picture_" + item].uid === ""
+                      ? window.location.origin +
+                        "/uploads/model/" +
+                        bodyInfo["preview_" + item]
+                      : bodyInfo["preview_" + item]
+                  }
+                  className="image-upload"
+                />
+              </div>
               {bodyInfo["picture_" + item].uid.includes("__AUTO__") ? (
                 <Upload
                   accept=".png,.jpg"

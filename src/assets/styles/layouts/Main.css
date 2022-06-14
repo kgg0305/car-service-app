@@ -1,3 +1,11 @@
+[ant-click-animating-without-extra-node='true']::after {
+    display:none;
+}
+
+[ant-click-animating='true']::after {
+    display:none;
+}
+
 .ant-input {
     font-weight: 400;
     font-size: 14px;
@@ -557,6 +565,10 @@ main {
     border: 1px solid #E5E5E5;
 }
 
+.ant-switch:focus {
+    box-shadow: none;
+}
+
 .ant-switch-checked {
     background-color: #F0F0F0;
 }
@@ -701,6 +713,33 @@ main {
 .picture-selected {
     border: 2px solid #00A0C4;
     border-radius: 3px;
+}
+
+.ant-image {
+    width: 100%;
+}
+
+.edit-image {
+    display: flex;
+    align-items: center;
+    width: 150px;
+    height: 150px;
+}
+
+.list-image {
+    margin: auto;
+    display: flex;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+}
+
+.gallery-image {
+    margin: auto;
+    display: flex;
+    align-items: center;
+    width: 250px;
+    height: 250px;
 }
 
 .no-access-page {

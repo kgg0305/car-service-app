@@ -79,20 +79,21 @@ function Edit() {
         <Col style={{ textAlign: "center" }}>
           <Space direction="vertical" size={5}>
             <label>사진 {index + 1 < 10 ? "0" + (index + 1) : index + 1}</label>
-            <Image
+            <div
               className={
                 bodyInfo.picture_index === index + 1
-                  ? "picture-selected"
-                  : "image-upload"
+                  ? "edit-image picture-selected"
+                  : "edit-image image-upload"
               }
-              src={
-                path === ""
-                  ? preview_default_image
-                  : window.location.origin + "/uploads/model/" + path
-              }
-              width={150}
-              height={150}
-            />
+            >
+              <Image
+                src={
+                  path === ""
+                    ? preview_default_image
+                    : window.location.origin + "/uploads/model/" + path
+                }
+              />
+            </div>
             <Button
               className="black-button gallery-select-button"
               size="large"

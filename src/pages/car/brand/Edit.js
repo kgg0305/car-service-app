@@ -362,20 +362,20 @@ function Edit() {
                   </Col>
                   <Col flex="auto" className="table-value-col-section">
                     <Space direction="horizontal" align="end" size={20}>
-                      <Image
-                        src={
-                          bodyInfo.preview === preview_default_image
-                            ? preview_default_image
-                            : bodyInfo.logo.uid === ""
-                            ? window.location.origin +
-                              "/uploads/brand/" +
-                              bodyInfo.preview
-                            : bodyInfo.preview
-                        }
-                        width={150}
-                        height={150}
-                        className="image-upload"
-                      />
+                      <div className="edit-image image-upload">
+                        <Image
+                          src={
+                            bodyInfo.preview === preview_default_image
+                              ? preview_default_image
+                              : bodyInfo.logo.uid === ""
+                              ? window.location.origin +
+                                "/uploads/brand/" +
+                                bodyInfo.preview
+                              : bodyInfo.preview
+                          }
+                          className="image-upload"
+                        />
+                      </div>
                       <Space direction="vertical" size={34}>
                         <label className="logo-description-label">
                           이미지 권장 크기는 90 * 60이며, *.png로 등록하셔야
