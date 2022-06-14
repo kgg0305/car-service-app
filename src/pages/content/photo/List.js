@@ -103,7 +103,7 @@ function List() {
 
   const renderContentListField = (idx) => {
     return (
-      <Row gutter={[10]} justify="center">
+      <Row gutter={[10]} justify="center" align="middle">
         <Col>
           <label>
             {dataSource.filter((item) => item.idx === idx)[0].content_list_text}
