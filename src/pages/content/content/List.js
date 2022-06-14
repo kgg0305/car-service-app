@@ -164,9 +164,9 @@ function List() {
           <Switch
             className="manage-switch"
             checked={
-              dataSource.filter((item) => item.idx === idx)[0].is_use === "1"
-                ? true
-                : false
+              dataSource.filter((item) => item.idx === idx)[0].is_use === "0"
+                ? false
+                : true
             }
             onClick={(checked) => onChangeUse(idx, checked)}
           />
