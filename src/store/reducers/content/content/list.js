@@ -1,5 +1,6 @@
 import { contentService } from "../../../../services/contentService";
 import { GetDateStringFromDate } from "../../../../constants/GlobalFunctions";
+import { recommendationService } from "../../../../services/recommendationService";
 
 const prefix = "content/content/list/";
 
@@ -57,11 +58,31 @@ export const search = () => async (dispatch, getState) => {
     const state = getState();
     const searchData = state.contentList.searchData;
     const dataSource = await contentService.getList(0, searchData);
+    let updatedDataSource = [];
+
+    if (searchData.is_recommend != null) {
+      for (let i = 0; i < dataSource.length; i++) {
+        const element = dataSource[i];
+
+        const count = await recommendationService.getContentCount({
+          content_id: element.idx,
+        });
+
+        if (
+          (searchData.is_recommend === "0" && count !== 0) ||
+          (searchData.is_recommend === "1" && count === 0)
+        ) {
+          updatedDataSource.push(element);
+        }
+      }
+    } else {
+      updatedDataSource = dataSource;
+    }
 
     dispatch({
       type: SEARCH,
       payload: {
-        dataSource: dataSource,
+        dataSource: updatedDataSource,
       },
     });
   } catch (e) {

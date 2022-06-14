@@ -103,6 +103,16 @@ const getCount = async (search) => {
   }
 };
 
+const getContentCount = async (search) => {
+  try {
+    const response = await axios.post(base_url + "/content-count", search);
+
+    return response.data.count;
+  } catch (e) {
+    return e;
+  }
+};
+
 const getOptionList = async () => {
   try {
     const response = await axios.get(base_url + "/option-list");
@@ -139,6 +149,7 @@ export const recommendationService = {
   update,
   getList,
   getCount,
+  getContentCount,
   getOptionList,
   get,
   remove,
