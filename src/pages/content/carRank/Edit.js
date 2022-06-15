@@ -1,9 +1,5 @@
 import { Col, Divider, Row, Space, Select, Button, Input } from "antd";
-import {
-  CaretDownOutlined,
-  CaretUpFilled,
-  CaretDownFilled,
-} from "@ant-design/icons";
+import { CaretDownOutlined } from "@ant-design/icons";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 import AlertModal from "../../../components/AlertModal";
@@ -91,23 +87,32 @@ function Edit() {
             style={{ paddingLeft: 10, width: "100%" }}
           >
             <Col flex="auto">
-              <Space direction="vertical">
-                <CaretUpFilled
-                  style={{
-                    fontSize: "20px",
-                    cursor: "pointer",
-                    color: "#C1C1C1",
-                  }}
+              <Space
+                className="order-change-panel"
+                direction="vertical"
+                size={10}
+              >
+                <svg
+                  width="18"
+                  height="15"
+                  viewBox="0 0 18 15"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
                   onClick={() => onUpMoveClick(index)}
-                />
-                <CaretDownFilled
-                  style={{
-                    fontSize: "20px",
-                    cursor: "pointer",
-                    color: "#C1C1C1",
-                  }}
+                >
+                  <path d="M9 0L17.6603 15H0.339746L9 0Z" fill="#C1C1C1" />
+                </svg>
+
+                <svg
+                  width="18"
+                  height="15"
+                  viewBox="0 0 18 15"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
                   onClick={() => onDownMoveClick(index)}
-                />
+                >
+                  <path d="M9 15L0.339745 0L17.6603 0L9 15Z" fill="#C1C1C1" />
+                </svg>
               </Space>
             </Col>
             <Col flex="none">
@@ -255,7 +260,7 @@ function Edit() {
           <Space direction="vertical" size={0} split={<Divider />}>
             <Row align="middle">
               <Col>
-                <label className="detail-header-title">순위</label>
+                <label className="detail-sub-title">순위</label>
               </Col>
               <Col flex="auto" />
             </Row>

@@ -440,7 +440,7 @@ main {
 }
 
 .save-detail-button {
-    width: 150px;
+    width: 130px;
     font-weight: 600;
     font-size: 12px;
     line-height: 14px;
@@ -971,4 +971,15 @@ input:-webkit-autofill:active {
 .image-upload {
     border-radius: 3px;
     border: solid 1px #e5e5e5;
+}
+
+.order-change-panel {
+    gap: 10px;
+    display: flex;
+    padding-top: 4px;
+    margin-left: 10px;
+}
+
+.order-change-panel > .ant-space-item > svg {
+    cursor: pointer;
 }

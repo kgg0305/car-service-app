@@ -16,10 +16,10 @@ const PUBLISH = prefix + "PUBLISH";
 
 export const init = () => async (dispatch) => {
   try {
-    const bodyInfo = await rankService.get(2);
+    const bodyInfo = await rankService.get(3);
 
     var initContentBodyList = [];
-    if (bodyInfo.length) {
+    if (bodyInfo) {
       for (let index = 0; index < bodyInfo.ids.split(",").length; index++) {
         const id = bodyInfo.ids.split(",")[index];
         initContentBodyList.push({

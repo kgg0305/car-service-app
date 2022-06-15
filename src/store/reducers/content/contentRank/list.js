@@ -19,7 +19,7 @@ export const init = () => async (dispatch) => {
     const bodyInfo = await rankService.get(2);
 
     var initContentBodyList = [];
-    if (bodyInfo.length) {
+    if (bodyInfo) {
       for (let index = 0; index < bodyInfo.ids.split(",").length; index++) {
         const id = bodyInfo.ids.split(",")[index];
         initContentBodyList.push({
