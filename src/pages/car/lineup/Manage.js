@@ -173,7 +173,7 @@ function Manage() {
       <Space direction="vertical" size={18} className="main-layout">
         {/* Page Header */}
         <Space direction="vertical" size={11}>
-          <Space size={1185}>
+          <Space size={1189}>
             <label className="main-header-title">라인업 관리</label>
             <Space size={10}>
               <Link to="/car/model">
