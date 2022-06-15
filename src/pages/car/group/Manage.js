@@ -35,7 +35,7 @@ function Manage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setSideMenu("1"));
+    // dispatch(setSideMenu("1"));
     if (redirectTo) {
       const redirectURL = redirectTo;
       dispatch(removeRedirectTo());
@@ -157,7 +157,7 @@ function Manage() {
       <Space direction="vertical" size={18} className="main-layout">
         {/* Page Header */}
         <Space direction="vertical" size={11}>
-          <Space size={1140}>
+          <Space size={1165}>
             <label className="main-header-title">모델그룹 관리</label>
             <Space size={10}>
               <Link to="/car/brand">
