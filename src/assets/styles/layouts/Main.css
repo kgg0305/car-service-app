@@ -612,6 +612,10 @@ main {
     background-color: #C7C7C7;
 }
 
+.ant-click-animating-node {
+    display: none;
+}
+
 .manage-switch {
     width: 75px;
     height: 30px;
