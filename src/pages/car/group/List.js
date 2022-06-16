@@ -51,35 +51,34 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 153,
+      width: "100px",
     },
     {
       title: "브랜드",
       dataIndex: "brand_name",
       key: "brand_name",
       align: "center",
-      width: 413,
+      width: "478px",
     },
     {
       title: "모델그룹",
       dataIndex: "group_name",
       key: "group_name",
       align: "center",
-      width: 413,
     },
     {
       title: "차종",
       dataIndex: "kind_name",
       key: "kind_name",
       align: "center",
-      width: 188,
+      width: "149px",
     },
     {
       title: "사용여부",
       dataIndex: "is_use",
       key: "is_use",
       align: "center",
-      width: 191,
+      width: "149px",
       render: (is_use) =>
         Constants.availableOptions.filter((item) => item.value == is_use)[0]
           .label,
@@ -89,11 +88,14 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 220,
+      width: "220px",
       render: (idx) => (
         <Row justify="center">
           <Col>
-            <Space size={15} split={<Divider type="vertical" />}>
+            <Space
+              size={0}
+              split={<Divider className="pl-3.5 pr-3" type="vertical" />}
+            >
               <Link to={"/car/model/manage/" + idx}>
                 <Button className="white-button small-button rounded-button">
                   모델관리

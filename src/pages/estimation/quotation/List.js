@@ -66,21 +66,21 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 100,
+      width: "100px",
     },
     {
       title: "유입경로",
       dataIndex: "purchase_path",
       key: "purchase_path",
       align: "center",
-      width: 125,
+      width: "124px",
     },
     {
       title: "구입방법",
       dataIndex: "purchase_method",
       key: "purchase_method",
       align: "center",
-      width: 104,
+      width: "103px",
       render: (purchase_method) =>
         Constants.purchaseMethodOptions.filter(
           (item) => item.value == purchase_method
@@ -95,35 +95,34 @@ function List() {
       dataIndex: "client_name",
       key: "client_name",
       align: "center",
-      width: 125,
+      width: "124px",
     },
     {
       title: "연락처",
       dataIndex: "client_phone",
       key: "client_phone",
       align: "center",
-      width: 187,
+      width: "186px",
     },
     {
       title: "브랜드",
       dataIndex: "brand_name",
       key: "brand_name",
       align: "center",
-      width: 208,
+      width: "208px",
     },
     {
       title: "차종",
       dataIndex: "kind_name",
       key: "kind_name",
       align: "center",
-      width: 208,
     },
     {
       title: "지점",
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 180,
+      width: "179px",
       render: (idx) => renderAreaGroupSelect(idx),
     },
     {
@@ -131,7 +130,7 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 179,
+      width: "178px",
       render: (idx) => renderUserSelect(idx),
     },
     {
@@ -139,17 +138,15 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 160,
+      width: "160px",
       render: (idx) => (
         <Row justify="center">
           <Col>
-            <Space size={15} split={<Divider type="vertical" />}>
-              <Link to={"/estimation/quotation/detail/" + idx}>
-                <Button className="black-button small-button rounded-button">
-                  상세보기
-                </Button>
-              </Link>
-            </Space>
+            <Link to={"/estimation/quotation/detail/" + idx}>
+              <Button className="black-button small-button rounded-button">
+                상세보기
+              </Button>
+            </Link>
           </Col>
         </Row>
       ),

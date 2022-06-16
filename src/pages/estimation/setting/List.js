@@ -31,6 +31,7 @@ function List() {
       dataIndex: "hour",
       key: "hour",
       align: "center",
+      width: "151px",
       render: (hour) => hour + "시 ~",
     },
     {
@@ -38,6 +39,7 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: "713px",
       render: (idx) => (
         <Row key={"rent_row_" + idx} justify="center">
           <Col>

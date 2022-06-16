@@ -58,28 +58,28 @@ function Manage() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 98,
+      width: "100px",
     },
     {
       title: "브랜드",
       dataIndex: "brand_name",
       key: "brand_name",
       align: "center",
-      width: 200,
+      width: "239px",
     },
     {
       title: "모델그룹",
       dataIndex: "group_name",
       key: "group_name",
       align: "center",
-      width: 200,
+      width: "239px",
     },
     {
       title: "모델",
       dataIndex: "model_name",
       key: "model_name",
       align: "center",
-      width: 200,
+      width: "239px",
     },
     {
       title: "라인업",
@@ -93,7 +93,7 @@ function Manage() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 150,
+      width: "149px",
       render: (idx) => renderIsUseField(idx),
     },
     {
@@ -101,7 +101,7 @@ function Manage() {
       dataIndex: "created_at",
       key: "created_at",
       align: "center",
-      width: 180,
+      width: "149px",
       render: (created_at) => GetDateStringFromDate(new Date(created_at)),
     },
     {
@@ -109,11 +109,14 @@ function Manage() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 220,
+      width: "220px",
       render: (idx) => (
         <Row justify="center">
           <Col>
-            <Space size={15} split={<Divider type="vertical" />}>
+            <Space
+              size={0}
+              split={<Divider className="pl-3.5 pr-3" type="vertical" />}
+            >
               <Link to={"/car/lineup/edit/" + idx + "/" + model_id}>
                 <Button className="black-button small-button rounded-button">
                   수정

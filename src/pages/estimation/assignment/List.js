@@ -44,14 +44,14 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 100,
+      width: "100px",
     },
     {
       title: "지점",
       dataIndex: "group_id",
       key: "group_id",
       align: "center",
-      width: 164,
+      width: "163px",
       render: (group_id) =>
         Constants.userAreaGroupOptions.filter((item) => item.value === group_id)
           .length
@@ -65,66 +65,63 @@ function List() {
       dataIndex: "name",
       key: "name",
       align: "center",
-      width: 164,
     },
     {
       title: "견적서",
       dataIndex: "quotation",
       key: "quotation",
       align: "center",
-      width: 164,
+      width: "164px",
     },
     {
       title: "대기",
       dataIndex: "wait",
       key: "wait",
       align: "center",
-      width: 164,
+      width: "163px",
     },
     {
       title: "상담",
       dataIndex: "business",
       key: "business",
       align: "center",
-      width: 164,
+      width: "163px",
     },
     {
       title: "계약",
       dataIndex: "contract",
       key: "contract",
       align: "center",
-      width: 164,
+      width: "163px",
     },
     {
       title: "출고",
       dataIndex: "release",
       key: "release",
       align: "center",
-      width: 164,
+      width: "164px",
     },
     {
       title: "종료",
       dataIndex: "close",
       key: "close",
       align: "center",
-      width: 164,
+      width: "163px",
     },
     {
       title: "관리",
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 164,
+      width: "163px",
       render: (idx) => (
         <Row justify="center">
           <Col>
-            <Space size={15} split={<Divider type="vertical" />}>
-              <Link to={"/estimation/assignment/manage/" + idx}>
-                <Button className="black-button small-button rounded-button">
-                  할당관리
-                </Button>
-              </Link>
-            </Space>
+            <Link to={"/estimation/assignment/manage/" + idx}>
+              <Button className="black-button small-button rounded-button">
+                할당관리
+              </Button>
+            </Link>
           </Col>
         </Row>
       ),

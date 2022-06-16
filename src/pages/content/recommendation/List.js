@@ -46,7 +46,7 @@ function List() {
       dataIndex: "publish_date",
       key: "publish_date",
       align: "center",
-      width: 180,
+      width: "179px",
       render: (publish_date) => GetDateStringFromDate(new Date(publish_date)),
     },
     {
@@ -54,7 +54,6 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 840,
       render: (idx) => renderContentListField(idx),
     },
     {
@@ -62,14 +61,14 @@ function List() {
       dataIndex: "content_count",
       key: "content_count",
       align: "center",
-      width: 180,
+      width: "179px",
     },
     {
       title: "발행여부/상태",
       dataIndex: "publish_date",
       key: "publish_date",
       align: "center",
-      width: 180,
+      width: "179px",
       render: (publish_date) => renderStatusField(publish_date),
     },
     {
@@ -77,7 +76,7 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 200,
+      width: "200px",
       render: (idx) => renderManageField(idx),
     },
   ];
@@ -146,7 +145,10 @@ function List() {
           ).getTime() < current_time ? (
             <Image src={lockIcon} preview={false} />
           ) : (
-            <Space size={15} split={<Divider type="vertical" />}>
+            <Space
+              size={0}
+              split={<Divider className="pl-3.5 pr-3" type="vertical" />}
+            >
               <Button
                 className="white-button small-button rounded-button"
                 onClick={() => onPublishClick(idx)}

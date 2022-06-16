@@ -53,49 +53,48 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 98,
+      width: "100px",
     },
     {
       title: "브랜드",
       dataIndex: "brand_name",
       key: "brand_name",
       align: "center",
-      width: 150,
+      width: "227px",
     },
     {
       title: "모델그룹",
       dataIndex: "group_name",
       key: "group_name",
       align: "center",
-      width: 150,
+      width: "227px",
     },
     {
       title: "모델",
       dataIndex: "model_name",
       key: "model_name",
       align: "center",
-      width: 214,
+      width: "227px",
     },
     {
       title: "라인업",
       dataIndex: "lineup_name",
       key: "lineup_name",
       align: "center",
-      width: 440,
+      width: "226px",
     },
     {
       title: "트림",
       dataIndex: "trim_name",
       key: "trim_name",
       align: "center",
-      width: 186,
     },
     {
       title: "사용여부",
       dataIndex: "is_use",
       key: "is_use",
       align: "center",
-      width: 124,
+      width: "119px",
       render: (is_use) =>
         Constants.availableOptions.filter((item) => item.value == is_use)[0]
           .label,
@@ -105,7 +104,7 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 220,
+      width: "220px",
       render: (idx) => (
         <Row justify="center">
           <Col>

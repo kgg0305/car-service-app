@@ -31,28 +31,27 @@ function List() {
       dataIndex: "number",
       key: "number",
       align: "center",
-      width: 98,
+      width: "100px",
     },
     {
       title: "매체",
       dataIndex: "media",
       key: "media",
       align: "center",
-      width: 200,
+      width: 199,
     },
     {
       title: "카테고리",
       dataIndex: "category",
       key: "category",
       align: "center",
-      width: 200,
+      width: "199px",
     },
     {
       title: "콘텐츠",
       dataIndex: "title",
       key: "title",
       align: "center",
-      width: 1081,
     },
   ];
 

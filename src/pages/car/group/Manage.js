@@ -57,35 +57,34 @@ function Manage() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 153,
+      width: "100px",
     },
     {
       title: "브랜드",
       dataIndex: "brand_name",
       key: "brand_name",
       align: "center",
-      width: 413,
+      width: "474px",
     },
     {
       title: "모델그룹",
       dataIndex: "group_name",
       key: "group_name",
       align: "center",
-      width: 413,
     },
     {
       title: "차종",
       dataIndex: "kind_name",
       key: "kind_name",
       align: "center",
-      width: 188,
+      width: "149px",
     },
     {
       title: "사용여부",
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 191,
+      width: "149px",
       render: (idx) => renderIsUseField(idx),
     },
     {
@@ -93,11 +92,14 @@ function Manage() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 220,
+      width: "220px",
       render: (idx) => (
         <Row justify="center">
           <Col>
-            <Space size={15} split={<Divider type="vertical" />}>
+            <Space
+              size={0}
+              split={<Divider className="pl-3.5 pr-3" type="vertical" />}
+            >
               <Link to={"/car/group/edit/" + idx + "/" + brand_id}>
                 <Button className="black-button small-button rounded-button">
                   수정

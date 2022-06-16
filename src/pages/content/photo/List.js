@@ -38,14 +38,13 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 100,
+      width: "100px",
     },
     {
       title: "콘텐츠 목록",
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 1078,
       render: (idx) => renderContentListField(idx),
     },
     {
@@ -53,14 +52,14 @@ function List() {
       dataIndex: "content_count",
       key: "content_count",
       align: "center",
-      width: 160,
+      width: "159",
     },
     {
       title: "사용여부",
       dataIndex: "is_use",
       key: "is_use",
       align: "center",
-      width: 120,
+      width: "119px",
       render: (is_use) =>
         Constants.availableOptions.filter((item) => item.value === is_use)[0]
           .label,
@@ -70,17 +69,15 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 120,
+      width: "120px",
       render: (idx) => (
         <Row justify="center">
           <Col>
-            <Space size={15} split={<Divider type="vertical" />}>
-              <Link to={"/content/photo/edit/" + idx}>
-                <Button className="black-button small-button rounded-button">
-                  수정
-                </Button>
-              </Link>
-            </Space>
+            <Link to={"/content/photo/edit/" + idx}>
+              <Button className="black-button small-button rounded-button">
+                수정
+              </Button>
+            </Link>
           </Col>
         </Row>
       ),

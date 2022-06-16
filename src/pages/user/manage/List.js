@@ -44,14 +44,14 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 100,
+      width: "100px",
     },
     {
       title: "구분",
       dataIndex: "type_id",
       key: "type_id",
       align: "center",
-      width: 210,
+      width: "209px",
       render: (type_id) =>
         Constants.userTypeOptions.filter((item) => item.value === type_id)
           .length
@@ -65,7 +65,7 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 210,
+      width: "209px",
       render: (idx) => renderGroupField(idx),
     },
     {
@@ -73,28 +73,27 @@ function List() {
       dataIndex: "name",
       key: "name",
       align: "center",
-      width: 210,
     },
     {
       title: "연락처",
       dataIndex: "phone",
       key: "phone",
       align: "center",
-      width: 315,
+      width: "313px",
     },
     {
       title: "이메일",
       dataIndex: "email",
       key: "email",
       align: "center",
-      width: 315,
+      width: "314px",
     },
     {
       title: "관리",
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 220,
+      width: "220px",
       render: (idx) => (
         <Row justify="center">
           <Col>

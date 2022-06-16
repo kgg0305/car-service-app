@@ -83,49 +83,48 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 120,
+      width: "100px",
     },
     {
       title: "매체명",
       dataIndex: "media",
       key: "media",
       align: "center",
-      width: 150,
+      width: "149px",
     },
     {
       title: "카테고리",
       dataIndex: "category",
       key: "category",
       align: "center",
-      width: 100,
+      width: "99px",
     },
     {
       title: "콘텐츠 제목",
       dataIndex: "title",
       key: "title",
       align: "center",
-      width: 600,
     },
     {
       title: "추천뉴스",
       dataIndex: "recommendation",
       key: "recommendation",
       align: "center",
-      width: 100,
+      width: "99px",
     },
     {
       title: "조회수",
       dataIndex: "views",
       key: "views",
       align: "center",
-      width: 120,
+      width: "118px",
     },
     {
       title: "등록일",
       dataIndex: "created_at",
       key: "created_at",
       align: "center",
-      width: 120,
+      width: "120px",
       render: (created_at) => GetDateStringFromDate(new Date(created_at)),
     },
     {
@@ -133,7 +132,7 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 150,
+      width: "149px",
       render: (idx) => renderSwitchComponent(idx),
     },
     {
@@ -141,7 +140,7 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 120,
+      width: "120px",
       render: (idx) => (
         <Row justify="center">
           <Col>

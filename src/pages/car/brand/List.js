@@ -46,14 +46,14 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 154,
+      width: "100px",
     },
     {
       title: "로고",
       dataIndex: "logo",
       key: "logo",
       align: "center",
-      width: 192.5,
+      width: "199px",
       render: (path) => (
         <div className="list-image">
           <Image src={window.location.origin + "/uploads/brand/" + path} />
@@ -65,21 +65,20 @@ function List() {
       dataIndex: "brand_name",
       key: "brand_name",
       align: "center",
-      width: 422,
     },
     {
       title: "순서",
       dataIndex: "sequence",
       key: "sequence",
       align: "center",
-      width: 169,
+      width: "149px",
     },
     {
       title: "사용여부",
       dataIndex: "is_use",
       key: "is_use",
       align: "center",
-      width: 211,
+      width: "149px",
       render: (is_use) =>
         Constants.availableOptions.filter((item) => item.value == is_use)[0]
           .label,
@@ -89,18 +88,21 @@ function List() {
       dataIndex: "group_count",
       key: "group_count",
       align: "center",
-      width: 211,
+      width: "149px",
     },
     {
       title: "관리",
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 220,
+      width: "220px",
       render: (idx) => (
         <Row justify="center">
           <Col>
-            <Space size={15} split={<Divider type="vertical" />}>
+            <Space
+              size={0}
+              split={<Divider className="pl-3.5 pr-3" type="vertical" />}
+            >
               <Link to={"/car/group/manage/" + idx}>
                 <Button className="white-button small-button rounded-button">
                   그룹관리

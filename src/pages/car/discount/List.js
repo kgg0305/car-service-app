@@ -51,36 +51,42 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
+      width: "100px",
     },
     {
       title: "브랜드",
       dataIndex: "brand_name",
       key: "brand_name",
       align: "center",
+      width: "119px",
     },
     {
       title: "종류",
       dataIndex: "kind_name",
       key: "kind_name",
       align: "center",
+      width: "318px",
     },
     {
       title: "조건",
       dataIndex: "condition_name",
       key: "condition_name",
       align: "center",
+      width: "318px",
     },
     {
       title: "할인비용",
       dataIndex: "discount_price",
       key: "discount_price",
       align: "center",
+      width: "199px",
     },
     {
       title: "시작일",
       dataIndex: "s_date",
       key: "s_date",
       align: "center",
+      width: "149px",
       render: (s_date) => GetDateStringFromDate(new Date(s_date)),
     },
     {
@@ -88,6 +94,7 @@ function List() {
       dataIndex: "e_date",
       key: "e_date",
       align: "center",
+      width: "149px",
       render: (e_date) => GetDateStringFromDate(new Date(e_date)),
     },
     {
@@ -95,6 +102,7 @@ function List() {
       dataIndex: "discount_kind_id",
       key: "discount_kind_id",
       align: "center",
+      width: "220px",
       render: (discount_kind_id) => (
         <Row justify="center">
           <Col>

@@ -31,14 +31,13 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 98,
+      width: "100px",
     },
     {
       title: "이미지",
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 413,
       render: (idx) => renderPicture(idx),
     },
     {
@@ -46,7 +45,7 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 290,
+      width: "366px",
       render: (idx) => renderBrandField(idx),
     },
     {
@@ -54,7 +53,7 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 290,
+      width: "249px",
       render: (idx) => renderModelField(idx),
     },
     {
@@ -62,7 +61,7 @@ function List() {
       dataIndex: "created_at",
       key: "created_at",
       align: "center",
-      width: 290,
+      width: "250px",
       render: (created_at) => GetDateStringFromDate(new Date(created_at)),
     },
     {
@@ -70,17 +69,15 @@ function List() {
       dataIndex: "idx",
       key: "idx",
       align: "center",
-      width: 200,
+      width: "200px",
       render: (idx) => (
         <Row justify="center">
           <Col>
-            <Space size={15} split={<Divider type="vertical" />}>
-              <Link to={"/content/popular/edit/" + idx}>
-                <Button className="black-button small-button rounded-button">
-                  수정
-                </Button>
-              </Link>
-            </Space>
+            <Link to={"/content/popular/edit/" + idx}>
+              <Button className="black-button small-button rounded-button">
+                수정
+              </Button>
+            </Link>
           </Col>
         </Row>
       ),
