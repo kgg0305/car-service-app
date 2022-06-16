@@ -258,7 +258,7 @@ const initialState = {
   siderMenu: {
     key: sessionStorage.getItem("siderMenuKey")
       ? JSON.parse(sessionStorage.getItem("siderMenuKey"))
-      : "brand",
+      : "0",
   },
   roleList: [],
   headerMenuRole: {
