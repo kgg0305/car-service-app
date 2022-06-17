@@ -273,7 +273,7 @@ export const Constants = {
       value: "0",
     },
     {
-      label: "유로",
+      label: "%",
       value: "1",
     },
   ],

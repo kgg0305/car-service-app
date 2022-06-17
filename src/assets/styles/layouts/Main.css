@@ -981,7 +981,6 @@ input:-webkit-autofill:active {
     gap: 10px;
     display: flex;
     padding-top: 4px;
-    margin-left: 10px;
 }
 
 .order-change-panel > .ant-space-item > svg {

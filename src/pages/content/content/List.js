@@ -50,7 +50,7 @@ function List() {
     mediaOptionList: state.contentList.mediaOptionList,
     categoryOptionList: state.contentList.categoryOptionList,
     dataSource: state.contentList.dataSource,
-    dataSourcdataLengthe: state.contentList.dataLength,
+    dataLength: state.contentList.dataLength,
     searchData: state.contentList.searchData,
     confirm: state.contentList.confirm,
   }));
