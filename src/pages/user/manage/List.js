@@ -75,6 +75,12 @@ function List() {
       align: "center",
     },
     {
+      title: "아이디",
+      dataIndex: "user_id",
+      key: "user_id",
+      align: "center",
+    },
+    {
       title: "연락처",
       dataIndex: "phone",
       key: "phone",

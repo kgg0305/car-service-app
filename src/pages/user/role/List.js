@@ -18,21 +18,14 @@ import {
 function List() {
   let navigate = useNavigate();
 
-  const {
-    redirectTo,
-    dataSource,
-    roleIdList,
-    userOptionList,
-    userName,
-    checkName,
-  } = useSelector((state) => ({
-    redirectTo: state.roleList.redirectTo,
-    dataSource: state.roleList.dataSource,
-    roleIdList: state.roleList.roleIdList,
-    userOptionList: state.roleList.userOptionList,
-    userName: state.roleList.userName,
-    checkName: state.roleList.checkName,
-  }));
+  const { redirectTo, dataSource, userName, checkName } = useSelector(
+    (state) => ({
+      redirectTo: state.roleList.redirectTo,
+      dataSource: state.roleList.dataSource,
+      userName: state.roleList.userName,
+      checkName: state.roleList.checkName,
+    })
+  );
 
   const dispatch = useDispatch();
 
@@ -52,8 +45,7 @@ function List() {
     dispatch(setStatus(number, status));
   const onAddUserNameClick = (name) => dispatch(addUserName(name));
   const onDeleteUserNameClick = (number) => dispatch(deleteUserName(number));
-  const onSaveClick = () =>
-    dispatch(save("/user/role", dataSource, roleIdList));
+  const onSaveClick = () => dispatch(save("/user/role"));
 
   const columns1 = [
     {

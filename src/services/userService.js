@@ -27,6 +27,7 @@ const create = async (bodyList) => {
       phone: body.phone,
       email: body.email,
       password: body.password,
+      is_reset_password: body.is_reset_password,
 
       created_at: GetServerTimezoneDate(new Date()),
       created_by: token.idx,
@@ -55,6 +56,7 @@ const update = async (body) => {
     phone: body.phone,
     email: body.email,
     password: body.password,
+    is_reset_password: body.is_reset_password,
 
     created_at: GetServerTimezoneDate(new Date(body.created_at)),
     created_by: body.created_by,

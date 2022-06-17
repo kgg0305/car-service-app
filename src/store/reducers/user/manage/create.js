@@ -166,6 +166,7 @@ const initialState = {
       type_id: null,
       group_id: null,
       password: "",
+      is_reset_password: false,
       check_name: "",
       danger_password: false,
       short_password: false,

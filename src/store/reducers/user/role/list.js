@@ -142,12 +142,16 @@ export const setCheckName = (name, value) => ({
     value: value,
   },
 });
-export const save = (url, dataSource, roleIdList) => async (dispatch) => {
+export const save = (url) => async (dispatch, getState) => {
+  const state = getState();
+  const dataSource = state.roleList.dataSource;
+  const roleIdList = state.roleList.roleIdList;
+
   //delete role
   for (let i = 0; i < roleIdList.length; i++) {
     const element = roleIdList[i];
     if (!dataSource.some((item) => item.idx === element)) {
-      userRoleService.remove(element);
+      await userRoleService.remove(element);
     }
   }
 

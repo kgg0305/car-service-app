@@ -147,7 +147,12 @@ function List() {
           ) : (
             <Space
               size={0}
-              split={<Divider className="pl-3.5 pr-3" type="vertical" />}
+              split={
+                <Divider
+                  style={{ marginLeft: "14px", marginRight: "15px" }}
+                  type="vertical"
+                />
+              }
             >
               <Button
                 className="white-button small-button rounded-button"
@@ -169,7 +174,12 @@ function List() {
 
   const renderContentListField = (idx) => {
     return (
-      <Row gutter={[10]} justify="center" align="middle">
+      <Row
+        className="content-list"
+        gutter={[10]}
+        justify="space-between"
+        align="middle"
+      >
         <Col>
           <label>
             {dataSource.filter((item) => item.idx === idx)[0].content_list_text}

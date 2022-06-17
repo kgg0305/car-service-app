@@ -21,7 +21,7 @@ const create = async (bodyList) => {
   bodyList.map((body) => {
     data.push({
       name: body.name,
-      user_id: body.user_id,
+      user_id: body.user_idx,
       status: body.status,
 
       created_at: GetServerTimezoneDate(new Date()),
@@ -45,7 +45,7 @@ const update = async (body) => {
   const token = JSON.parse(sessionStorage.getItem("token"));
   var data = {
     name: body.name,
-    user_id: body.user_id,
+    user_id: body.user_idx,
     status: body.status,
 
     created_at: GetServerTimezoneDate(new Date(body.created_at)),

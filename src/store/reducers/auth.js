@@ -136,6 +136,7 @@ export const changePassword = () => async (dispatch, getState) => {
       await userService.update({
         ...user_info,
         password: new_password,
+        is_reset_password: true,
       });
 
       const updated_user_info = await userService.get(user_info.idx);

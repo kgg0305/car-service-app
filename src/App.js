@@ -98,7 +98,7 @@ function App() {
         <Login />
       </AuthMain>
     );
-  } else if (token.created_at === token.updated_at) {
+  } else if (!token.is_reset_password) {
     return (
       <AuthMain>
         <ChangePassword />

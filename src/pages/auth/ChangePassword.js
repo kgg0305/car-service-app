@@ -25,7 +25,14 @@ function ChangePassword() {
     dispatch(setChangeForm({ name: name, value: value }));
 
   return (
-    <div className={styles.bodyPanel}>
+    <div className={styles.bodyPanel} style={{ position: "relative" }}>
+      <Space size={0} className={styles.resetPasswordHeaderPanel}>
+        <label className={styles.resetPasswordHeaderLabel}>
+          안녕하세요
+          <br />
+          새로운 비밀번호를 입력해 주세요
+        </label>
+      </Space>
       <Space direction="vertical" align="center" size={40}>
         <label className={styles.headerLabel}>비밀번호 변경</label>
         <Form onFinish={handleSubmit} autoComplete="off">

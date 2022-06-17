@@ -112,7 +112,12 @@ function List() {
           <Col>
             <Space
               size={0}
-              split={<Divider className="pl-3.5 pr-3" type="vertical" />}
+              split={
+                <Divider
+                  style={{ marginLeft: "14px", marginRight: "12px" }}
+                  type="vertical"
+                />
+              }
             >
               <Link to={"/car/trim/manage/" + idx}>
                 <Button className="white-button small-button rounded-button">

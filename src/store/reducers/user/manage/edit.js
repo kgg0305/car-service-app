@@ -261,6 +261,10 @@ export default function edit(state = initialState, action) {
             action.payload.name === "password"
               ? action.payload.short_password
               : state.short_password,
+          is_reset_password:
+            action.payload.name === "password"
+              ? false
+              : state.is_reset_password,
         },
       };
     case SAVE:

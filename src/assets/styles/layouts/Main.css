@@ -986,3 +986,8 @@ input:-webkit-autofill:active {
 .order-change-panel > .ant-space-item > svg {
     cursor: pointer;
 }
+
+.content-list {
+    padding-left: 20px;
+    padding-right: 6px;
+}
