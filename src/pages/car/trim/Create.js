@@ -31,6 +31,7 @@ import {
   save,
   setDetailBody,
 } from "../../../store/reducers/car/trim/create";
+import { setSideMenu } from "../../../store/reducers/menu";
 
 const { Option } = Select;
 const { TabPane } = Tabs;
