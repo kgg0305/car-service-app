@@ -76,6 +76,7 @@ function Create() {
       navigate(redirectURL);
     }
     dispatch(init());
+    dispatch(setSideMenu("4"));
   }, [redirectTo, dispatch]);
 
   const onCloseValidationClick = () => dispatch(closeValidation());
