@@ -1,5 +1,4 @@
 import { brandService } from "../../../../services/brandService";
-import { groupService } from "../../../../services/groupService";
 import { modelService } from "../../../../services/modelService";
 
 const prefix = "car/brand/list/";
@@ -21,7 +20,7 @@ export const init = () => async (dispatch) => {
       const element = dataSource[i];
       updatedDataSource.push({
         ...element,
-        group_count: await groupService.getCount({
+        model_count: await modelService.getCount({
           brand_id: element.idx,
         }),
       });
@@ -52,7 +51,7 @@ export const showMore = () => async (dispatch, getState) => {
       const element = dataSource[i];
       updatedDataSource.push({
         ...element,
-        group_count: await groupService.getCount({
+        model_count: await modelService.getCount({
           brand_id: element.idx,
         }),
       });
@@ -83,7 +82,7 @@ export const search = () => async (dispatch, getState) => {
       const element = dataSource[i];
       updatedDataSource.push({
         ...element,
-        group_count: await groupService.getCount({
+        model_count: await modelService.getCount({
           brand_id: element.idx,
         }),
       });

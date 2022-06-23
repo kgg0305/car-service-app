@@ -79,33 +79,37 @@ function Create() {
             style={{ paddingLeft: 10, width: "100%" }}
           >
             <Col flex="auto">
-              <Space
-                className="order-change-panel"
-                direction="vertical"
-                size={10}
-              >
-                <svg
-                  width="18"
-                  height="15"
-                  viewBox="0 0 18 15"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  onClick={() => onUpMoveClick(index)}
+              {contentBodyList.length > 1 ? (
+                <Space
+                  className="order-change-panel"
+                  direction="vertical"
+                  size={10}
                 >
-                  <path d="M9 0L17.6603 15H0.339746L9 0Z" fill="#C1C1C1" />
-                </svg>
+                  <svg
+                    width="18"
+                    height="15"
+                    viewBox="0 0 18 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    onClick={() => onUpMoveClick(index)}
+                  >
+                    <path d="M9 0L17.6603 15H0.339746L9 0Z" fill="#C1C1C1" />
+                  </svg>
 
-                <svg
-                  width="18"
-                  height="15"
-                  viewBox="0 0 18 15"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  onClick={() => onDownMoveClick(index)}
-                >
-                  <path d="M9 15L0.339745 0L17.6603 0L9 15Z" fill="#C1C1C1" />
-                </svg>
-              </Space>
+                  <svg
+                    width="18"
+                    height="15"
+                    viewBox="0 0 18 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    onClick={() => onDownMoveClick(index)}
+                  >
+                    <path d="M9 15L0.339745 0L17.6603 0L9 15Z" fill="#C1C1C1" />
+                  </svg>
+                </Space>
+              ) : (
+                <></>
+              )}
             </Col>
             <Col flex="none">
               <label>

@@ -15,6 +15,7 @@ import {
   checkName,
   removeRedirectTo,
 } from "../../../store/reducers/car/group/create";
+import { setSideMenu } from "../../../store/reducers/menu";
 
 const { Option } = Select;
 
@@ -45,6 +46,7 @@ function Create() {
       navigate(redirectURL);
     }
     dispatch(init());
+    dispatch(setSideMenu("1"));
   }, [redirectTo, dispatch]);
 
   const onCloseValidationClick = () => dispatch(closeValidation());

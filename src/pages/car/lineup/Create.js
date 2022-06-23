@@ -25,6 +25,7 @@ import {
   setLineupBody,
   setColorBody,
 } from "../../../store/reducers/car/lineup/create";
+import { setSideMenu } from "../../../store/reducers/menu";
 
 const { Option } = Select;
 
@@ -61,6 +62,7 @@ function Create() {
       navigate(redirectURL);
     }
     dispatch(init());
+    dispatch(setSideMenu("3"));
   }, [redirectTo, dispatch]);
 
   const onCloseValidationClick = () => dispatch(closeValidation());

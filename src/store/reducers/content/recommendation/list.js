@@ -13,6 +13,7 @@ const PUBLISH = prefix + "PUBLISH";
 export const init = () => async (dispatch) => {
   try {
     const initDataSource = await recommendationService.getList(0);
+    const dataLength = await recommendationService.getCount();
 
     let initTempDataSource = [];
     for (let i = 0; i < initDataSource.length; i++) {
@@ -33,6 +34,7 @@ export const init = () => async (dispatch) => {
       type: INIT,
       payload: {
         dataSource: initTempDataSource,
+        dataLength: dataLength,
       },
     });
   } catch (e) {
@@ -102,12 +104,15 @@ export const publish = (idx, dataSource) => async (dispatch) => {
     bodyInfo.publish_date = GetDateStringFromDate(new Date());
     await recommendationService.update(bodyInfo);
 
+    const dataLength = await recommendationService.getCount();
+
     dispatch({
       type: PUBLISH,
       payload: {
         dataSource: dataSource.map((item) =>
           item.idx === idx ? bodyInfo : item
         ),
+        dataLength: dataLength,
       },
     });
   } catch (e) {

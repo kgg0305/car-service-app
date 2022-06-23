@@ -85,8 +85,8 @@ function List() {
     },
     {
       title: "등록 차량수",
-      dataIndex: "group_count",
-      key: "group_count",
+      dataIndex: "model_count",
+      key: "model_count",
       align: "center",
       width: "149px",
     },

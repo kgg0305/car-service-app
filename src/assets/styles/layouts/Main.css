@@ -991,3 +991,7 @@ input:-webkit-autofill:active {
     padding-left: 20px;
     padding-right: 6px;
 }
+
+.hidden {
+    display: none;
+}

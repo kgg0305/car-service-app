@@ -60,7 +60,7 @@ export const init = (idx) => async (dispatch) => {
     const trimBodyList = await modelTrimService.getList(0, {
       model_id: idx,
     });
-    const initDiscountKindList = await discountKindService.getListAll(0, {
+    const initDiscountKindList = await discountKindService.getListAll({
       brand_id: bodyInfo.brand_id,
     });
     let discountBodyList = [];
@@ -632,9 +632,21 @@ const initialState = {
     check_name: preview_default_image,
     origin_name: preview_default_image,
   },
-  lineupBodyList: [],
-  colorBodyList: [],
-  trimBodyList: [],
+  lineupBodyList: [
+    {
+      idx: null,
+    },
+  ],
+  colorBodyList: [
+    {
+      idx: null,
+    },
+  ],
+  trimBodyList: [
+    {
+      idx: null,
+    },
+  ],
   discountBodyList: [],
   lineupIdList: [],
   colorIdList: [],

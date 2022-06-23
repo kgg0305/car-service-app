@@ -71,18 +71,39 @@ const remove = async (idx) => {
   const response = await axios.get(base_url + "/" + idx);
 
   var data = {
-    ...response.data,
+    brand_id: null,
+    group_id: null,
+    model_id: null,
+    picture_index: null,
+
     created_at: GetServerTimezoneDate(new Date(response.data.created_at)),
-    updated_at: GetServerTimezoneDate(new Date(response.data.updated_at)),
-    deleted_at: GetServerTimezoneDate(new Date()),
-    deleted_by: token.idx,
-    is_deleted: true,
+    created_by: response.data.created_by,
+    updated_at: GetServerTimezoneDate(new Date()),
+    updated_by: token.idx,
+    is_deleted: response.data.is_deleted,
   };
 
   try {
     const response = await axios.put(base_url + "/" + idx, data);
 
     return response.data;
+  } catch (e) {
+    return e;
+  }
+};
+
+const removeByModel = async (model_id) => {
+  try {
+    const response = await axios.post(base_url + "/list-id", {
+      model_id: model_id,
+    });
+
+    for (let i = 0; i < response.data.length; i++) {
+      const idx = response.data[i].idx;
+      await remove(idx);
+    }
+
+    return;
   } catch (e) {
     return e;
   }
@@ -147,4 +168,5 @@ export const popularService = {
   getOptionList,
   get,
   remove,
+  removeByModel,
 };

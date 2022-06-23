@@ -161,10 +161,10 @@ function Edit() {
                 ))}
             </Select>
             <Select
-              name="idx"
-              value={body.idx}
+              name="model_id"
+              value={body.model_id}
               onChange={(value) => {
-                onModelComponentChange(body.number, "idx", value);
+                onModelComponentChange(body.number, "model_id", value);
               }}
               size="large"
               suffixIcon={<CaretDownOutlined />}
@@ -317,6 +317,7 @@ function Edit() {
         visible={validation.show}
         onConfirmClick={onCloseValidationClick}
         validationList={validation.list}
+        disableFooter={validation.disableFooter}
       />
     </>
   );

@@ -62,6 +62,7 @@ export const search = () => async (dispatch, getState) => {
     const state = getState();
     const searchData = state.contentList.searchData;
     const dataSource = await contentService.getList(0, searchData);
+    const dataLength = await contentService.getCount(searchData);
     let updatedDataSource = [];
 
     if (searchData.is_recommend != null) {
@@ -87,6 +88,7 @@ export const search = () => async (dispatch, getState) => {
       type: SEARCH,
       payload: {
         dataSource: updatedDataSource,
+        dataLength: dataLength,
       },
     });
   } catch (e) {
@@ -151,12 +153,20 @@ export const setSearch = (name, value) => (dispatch) => {
   });
 };
 
-export const showConfirm = (idx) => ({
-  type: SHOW_CONFIRM,
-  payload: {
-    idx: idx,
-  },
-});
+export const showConfirm = (idx) => (dispatch, getState) => {
+  const state = getState();
+  const dataSource = state.contentList.dataSource;
+
+  const body_info = dataSource.filter((item) => item.idx === idx)[0];
+
+  dispatch({
+    type: SHOW_CONFIRM,
+    payload: {
+      idx: idx,
+      name: body_info.title,
+    },
+  });
+};
 
 export const closeConfirm = () => ({
   type: CLOSE_CONFIRM,
@@ -200,6 +210,7 @@ const initialState = {
   confirm: {
     show: false,
     idx: null,
+    name: "",
   },
   mediaOptionList: [],
   categoryOptionList: [],
@@ -267,6 +278,7 @@ export default function list(state = initialState, action) {
           ...state.confirm,
           show: true,
           idx: action.payload.idx,
+          name: action.payload.name,
         },
       };
     case CLOSE_CONFIRM:

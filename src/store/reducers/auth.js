@@ -76,7 +76,7 @@ export const changePassword = () => async (dispatch, getState) => {
     const state = getState();
     const user_info = state.auth.token;
     const new_password = state.auth.changeForm.new_password;
-    const old_password = state.auth.changeForm.old_password;
+    const confirm_password = state.auth.changeForm.confirm_password;
 
     let danger_password = false;
     let short_password = false;
@@ -107,7 +107,7 @@ export const changePassword = () => async (dispatch, getState) => {
       danger_password = true;
     }
 
-    if (user_info.password !== old_password) {
+    if (new_password !== confirm_password) {
       match_password = true;
     }
 
@@ -165,7 +165,7 @@ const initialState = {
   },
   changeForm: {
     new_password: "",
-    old_password: "",
+    confirm_password: "",
   },
 };
 

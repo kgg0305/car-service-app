@@ -31,7 +31,7 @@ export const init = () => async (dispatch) => {
           ).length;
           j++
         ) {
-          siderMenuRole[header_menu.key].push(1);
+          siderMenuRole[header_menu.key].push(2);
         }
       }
     } else {
@@ -96,7 +96,18 @@ export const init = () => async (dispatch) => {
                 temp_siderMenu.push(parseInt(role_status));
               }
               break;
+
             case "content":
+              // 콘텐츠관리 -> 콘텐츠
+              if (roleList.some((item) => item.name === "content1")) {
+                role_info = roleList.filter(
+                  (item) => item.name === "content1"
+                )[0];
+                temp_siderMenu.push(parseInt(role_info.status.split(",")[0]));
+              } else {
+                temp_siderMenu.push(0);
+              }
+              // 콘텐츠 운영관리
               if (roleList.some((item) => item.name === "content2")) {
                 role_info = roleList.filter(
                   (item) => item.name === "content2"
@@ -106,6 +117,12 @@ export const init = () => async (dispatch) => {
                   role_status = role_info.status.split(",")[j];
 
                   switch (j) {
+                    case 0:
+                      temp_siderMenu.push(parseInt(role_status));
+                      break;
+                    case 1:
+                      temp_siderMenu.push(parseInt(role_status));
+                      break;
                     case 2:
                       temp_siderMenu.push(parseInt(role_status));
                       temp_siderMenu.push(parseInt(role_status));
@@ -115,13 +132,17 @@ export const init = () => async (dispatch) => {
                       temp_siderMenu.push(parseInt(role_status));
                       temp_siderMenu.push(parseInt(role_status));
                       break;
-                    default:
-                      temp_siderMenu.push(parseInt(role_status));
                   }
                 }
               } else {
                 for (let j = 0; j < 4; j++) {
                   switch (j) {
+                    case 0:
+                      temp_siderMenu.push(0);
+                      break;
+                    case 1:
+                      temp_siderMenu.push(0);
+                      break;
                     case 2:
                       temp_siderMenu.push(0);
                       temp_siderMenu.push(0);
@@ -131,23 +152,17 @@ export const init = () => async (dispatch) => {
                       temp_siderMenu.push(0);
                       temp_siderMenu.push(0);
                       break;
-                    default:
-                      temp_siderMenu.push(0);
                   }
                 }
               }
 
+              // 콘텐츠관리 -> 매체 PV
               if (roleList.some((item) => item.name === "content1")) {
                 role_info = roleList.filter(
                   (item) => item.name === "content1"
                 )[0];
 
-                for (let j = 0; j < 2; j++) {
-                  role_status = role_info.status.split(",")[j];
-                  if (j === 1) {
-                    temp_siderMenu.push(parseInt(role_status));
-                  }
-                }
+                temp_siderMenu.push(parseInt(role_info.status.split(",")[1]));
               } else {
                 temp_siderMenu.push(0);
               }

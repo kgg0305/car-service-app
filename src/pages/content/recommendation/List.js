@@ -19,14 +19,14 @@ import { GetDateStringFromDate } from "../../../constants/GlobalFunctions";
 
 // 목록페지
 function List() {
-  const { offset, dataSource, dataLength, detailModal } = useSelector(
-    (state) => ({
+  const { offset, dataSource, dataLength, detailModal, siderMenuRole } =
+    useSelector((state) => ({
       offset: state.recommendationList.offset,
       dataSource: state.recommendationList.dataSource,
       dataLength: state.recommendationList.dataLength,
       detailModal: state.recommendationList.detailModal,
-    })
-  );
+      siderMenuRole: state.role.siderMenuRole,
+    }));
 
   const dispatch = useDispatch();
 
@@ -157,11 +157,15 @@ function List() {
               <Button
                 className="white-button small-button rounded-button"
                 onClick={() => onPublishClick(idx)}
+                disabled={siderMenuRole["content"][1] === 2 ? false : true}
               >
                 즉시반영
               </Button>
               <Link to={"/content/recommendation/edit/" + idx}>
-                <Button className="black-button small-button rounded-button">
+                <Button
+                  className="black-button small-button rounded-button"
+                  disabled={siderMenuRole["content"][1] === 2 ? false : true}
+                >
                   수정
                 </Button>
               </Link>

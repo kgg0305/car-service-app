@@ -36,6 +36,7 @@ function List() {
     searchData,
     userOptionList,
     summaryData,
+    siderMenuRole,
   } = useSelector((state) => ({
     offset: state.quotationList.offset,
     dataSource: state.quotationList.dataSource,
@@ -43,6 +44,7 @@ function List() {
     searchData: state.quotationList.searchData,
     userOptionList: state.quotationList.userOptionList,
     summaryData: state.quotationList.summaryData,
+    siderMenuRole: state.role.siderMenuRole,
   }));
 
   const dispatch = useDispatch();
@@ -225,6 +227,7 @@ function List() {
             suffixIcon={<CaretDownOutlined />}
             placeholder={"선택"}
             style={{ width: 130 }}
+            disabled={siderMenuRole["estimation"][0] === 2 ? false : true}
           >
             {Constants.userAreaGroupOptions.map((optionItem, optionIndex) => (
               <Select.Option key={optionIndex} value={optionItem.value}>
@@ -252,6 +255,7 @@ function List() {
             suffixIcon={<CaretDownOutlined />}
             placeholder={"선택"}
             style={{ width: 130 }}
+            disabled={siderMenuRole["estimation"][0] === 2 ? false : true}
           >
             {userOptionList
               .filter(

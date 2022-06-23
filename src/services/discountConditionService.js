@@ -85,6 +85,23 @@ const remove = async (idx) => {
   }
 };
 
+const removeByCondition = async (discount_kind_id) => {
+  try {
+    const response = await axios.post(base_url + "/list-id", {
+      discount_kind_id: discount_kind_id,
+    });
+
+    for (let i = 0; i < response.data.length; i++) {
+      const idx = response.data[i].idx;
+      await remove(idx);
+    }
+
+    return;
+  } catch (e) {
+    return e;
+  }
+};
+
 const getList = async (offset, search) => {
   try {
     const response = await axios.post(base_url + "/list/" + offset, search);
@@ -155,4 +172,5 @@ export const discountConditionService = {
   getOptionList,
   get,
   remove,
+  removeByCondition,
 };

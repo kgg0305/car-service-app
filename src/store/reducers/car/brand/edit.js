@@ -178,6 +178,12 @@ export const save = (url) => async (dispatch, getState) => {
       name: "보증금 안내",
     });
   }
+  if (bodyInfo.preview === preview_default_image) {
+    validation.push({
+      title: "정보",
+      name: "로고",
+    });
+  }
 
   if (validation.length > 0) {
     dispatch(showValidation(validation));

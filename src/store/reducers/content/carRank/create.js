@@ -21,23 +21,12 @@ const MOVE_DOWN = prefix + "MOVE_DOWN";
 const SAVE = prefix + "SAVE";
 const REMOVE = prefix + "REMOVE";
 
-export const init = (idx) => async (dispatch) => {
+export const init = () => async (dispatch) => {
   try {
     const brandOptionList = await brandService.getOptionList();
     const groupOptionList = await groupService.getOptionList();
     const modelOptionList = await modelService.getOptionList();
     const bodyInfo = await rankService.get(1);
-    const modelBodyList = [];
-
-    if (bodyInfo.ids !== null) {
-      for (let index = 0; index < bodyInfo.ids.split(",").length; index++) {
-        const id = bodyInfo.ids.split(",")[index];
-        modelBodyList.push({
-          ...(await modelService.get(id)),
-          number: index + 1,
-        });
-      }
-    }
 
     dispatch({
       type: INIT,
@@ -46,7 +35,6 @@ export const init = (idx) => async (dispatch) => {
         groupOptionList: groupOptionList,
         modelOptionList: modelOptionList,
         bodyInfo: bodyInfo,
-        modelBodyList: modelBodyList,
       },
     });
   } catch (e) {
@@ -56,10 +44,11 @@ export const init = (idx) => async (dispatch) => {
 export const removeRedirectTo = () => ({
   type: REMOVE_REDIRECTTO,
 });
-export const showValidation = (list) => ({
+export const showValidation = (list, disableFooter) => ({
   type: SHOW_VALIDATION,
   payload: {
     list: list,
+    disableFooter: disableFooter,
   },
 });
 export const closeValidation = () => ({
@@ -71,9 +60,16 @@ export const showConfirm = () => ({
 export const closeConfirm = () => ({
   type: CLOSE_CONFIRM,
 });
-export const addModel = () => ({
-  type: ADD_MODEL,
-});
+export const addModel = () => (dispatch, getState) => {
+  const state = getState();
+  const modelBodyList = state.carRankCreate.modelBodyList;
+
+  if (modelBodyList.length < 20) {
+    dispatch({
+      type: ADD_MODEL,
+    });
+  }
+};
 export const deleteModel = (number) => ({
   type: DELETE_MODEL,
   payload: {
@@ -81,12 +77,19 @@ export const deleteModel = (number) => ({
   },
 });
 export const setModel = (number, name, value) => async (dispatch) => {
+  let is_income = "";
+  if (name === "model_id") {
+    const model_info = await modelService.get(value);
+    is_income = model_info.is_income;
+  }
+
   dispatch({
     type: SET_MODEL,
     payload: {
       number: number,
       name: name,
       value: value,
+      is_income: is_income,
     },
   });
 };
@@ -127,36 +130,49 @@ export const moveDown = (index, modelBodyList) => (dispatch) => {
     });
   }
 };
-export const save = (url, bodyInfo, modelBodyList) => async (dispatch) => {
+export const save = (url) => async (dispatch, getState) => {
+  const state = getState();
+  const bodyInfo = state.carRankCreate.bodyInfo;
+  const modelBodyList = state.carRankCreate.modelBodyList;
+
   const validation = [];
-  modelBodyList.map((body) => {
-    if (body.brand_id === null) {
-      validation.push({
-        title: "순위 " + (body.number < 10 ? "0" + body.number : body.number),
-        name: "브랜드",
-      });
-    }
-    if (body.group_id === null) {
-      validation.push({
-        title: "순위 " + (body.number < 10 ? "0" + body.number : body.number),
-        name: "그룹",
-      });
-    }
-    if (body.idx === null) {
-      validation.push({
-        title: "순위 " + (body.number < 10 ? "0" + body.number : body.number),
-        name: "모델",
-      });
-    }
-  });
+  let disableFooter = false;
+
+  if (modelBodyList.length < 20) {
+    disableFooter = true;
+    validation.push({
+      title: "등록 수량이 부족 합니다.",
+    });
+  } else {
+    modelBodyList.map((body) => {
+      if (body.brand_id === null) {
+        validation.push({
+          title: "순위 " + (body.number < 10 ? "0" + body.number : body.number),
+          name: "브랜드",
+        });
+      }
+      if (body.group_id === null) {
+        validation.push({
+          title: "순위 " + (body.number < 10 ? "0" + body.number : body.number),
+          name: "그룹",
+        });
+      }
+      if (body.model_id === null) {
+        validation.push({
+          title: "순위 " + (body.number < 10 ? "0" + body.number : body.number),
+          name: "모델",
+        });
+      }
+    });
+  }
 
   if (validation.length > 0) {
-    dispatch(showValidation(validation));
+    dispatch(showValidation(validation, disableFooter));
   } else {
     try {
       const updateRankBodyInfo = {
         ...bodyInfo,
-        ids: modelBodyList.map((body) => body.idx).join(","),
+        ids: modelBodyList.map((body) => body.model_id).join(","),
       };
 
       await rankService.update(updateRankBodyInfo);
@@ -192,6 +208,7 @@ const initialState = {
   validation: {
     show: false,
     list: [],
+    disableFooter: false,
   },
   confirm: {
     show: false,
@@ -204,7 +221,15 @@ const initialState = {
     type: null,
     ids: "",
   },
-  modelBodyList: [],
+  modelBodyList: [
+    {
+      number: 1,
+      brand_id: null,
+      group_id: null,
+      model_id: null,
+      is_income: "",
+    },
+  ],
 };
 
 export default function edit(state = initialState, action) {
@@ -216,7 +241,6 @@ export default function edit(state = initialState, action) {
         groupOptionList: action.payload.groupOptionList,
         modelOptionList: action.payload.modelOptionList,
         bodyInfo: action.payload.bodyInfo,
-        modelBodyList: action.payload.modelBodyList,
       };
     case REMOVE_REDIRECTTO:
       return {
@@ -230,6 +254,7 @@ export default function edit(state = initialState, action) {
           ...state.validation,
           show: true,
           list: action.payload.list,
+          disableFooter: action.payload.disableFooter,
         },
       };
     case CLOSE_VALIDATION:
@@ -273,9 +298,6 @@ export default function edit(state = initialState, action) {
             ...initialState.modelBodyList[0],
             number:
               state.modelBodyList[state.modelBodyList.length - 1].number + 1,
-            brand_id: null,
-            group_id: null,
-            model_id: null,
           },
         ],
       };
@@ -300,6 +322,10 @@ export default function edit(state = initialState, action) {
                   action.payload.name == "group_id"
                     ? null
                     : body.model_id,
+                is_income:
+                  action.payload.name == "model_id"
+                    ? action.payload.is_income
+                    : body.is_income,
                 [action.payload.name]: action.payload.value,
               }
             : body

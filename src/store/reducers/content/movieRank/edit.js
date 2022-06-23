@@ -47,10 +47,11 @@ export const init = (idx) => async (dispatch) => {
 export const removeRedirectTo = () => ({
   type: REMOVE_REDIRECTTO,
 });
-export const showValidation = (list) => ({
+export const showValidation = (list, disableFooter) => ({
   type: SHOW_VALIDATION,
   payload: {
     list: list,
+    disableFooter: disableFooter,
   },
 });
 export const closeValidation = () => ({
@@ -62,9 +63,16 @@ export const showConfirm = () => ({
 export const closeConfirm = () => ({
   type: CLOSE_CONFIRM,
 });
-export const addContent = () => ({
-  type: ADD_CONTENT,
-});
+export const addContent = () => (dispatch, getState) => {
+  const state = getState();
+  const contentBodyList = state.movieRankEdit.contentBodyList;
+
+  if (contentBodyList.length < 10) {
+    dispatch({
+      type: ADD_CONTENT,
+    });
+  }
+};
 export const deleteContent = (number) => ({
   type: DELETE_CONTENT,
   payload: {
@@ -130,25 +138,38 @@ export const moveDown = (index, contentBodyList) => (dispatch) => {
     });
   }
 };
-export const save = (url, bodyInfo, contentBodyList) => async (dispatch) => {
+export const save = (url) => async (dispatch, getState) => {
+  const state = getState();
+  const bodyInfo = state.movieRankEdit.bodyInfo;
+  const contentBodyList = state.movieRankEdit.contentBodyList;
+
   const validation = [];
-  contentBodyList.map((body) => {
-    if (body.idx === null) {
-      validation.push({
-        title: "뉴스 " + (body.number < 10 ? "0" + body.number : body.number),
-        name: "콘텐츠 번호",
-      });
-    }
-    if (body.title === "등록되지 않은 콘텐츠입니다.") {
-      validation.push({
-        title: "뉴스 " + (body.number < 10 ? "0" + body.number : body.number),
-        name: "콘텐츠 내용",
-      });
-    }
-  });
+  let disableFooter = false;
+
+  if (contentBodyList.length < 10) {
+    disableFooter = true;
+    validation.push({
+      title: "등록 수량이 부족 합니다.",
+    });
+  } else {
+    contentBodyList.map((body) => {
+      if (body.idx === null) {
+        validation.push({
+          title: "뉴스 " + (body.number < 10 ? "0" + body.number : body.number),
+          name: "콘텐츠 번호",
+        });
+      }
+      if (body.title === "등록되지 않은 콘텐츠입니다.") {
+        validation.push({
+          title: "뉴스 " + (body.number < 10 ? "0" + body.number : body.number),
+          name: "콘텐츠 내용",
+        });
+      }
+    });
+  }
 
   if (validation.length > 0) {
-    dispatch(showValidation(validation));
+    dispatch(showValidation(validation, disableFooter));
   } else {
     try {
       const updateRankBodyInfo = {
@@ -222,6 +243,7 @@ export default function edit(state = initialState, action) {
           ...state.validation,
           show: true,
           list: action.payload.list,
+          disableFooter: action.payload.disableFooter,
         },
       };
     case CLOSE_VALIDATION:

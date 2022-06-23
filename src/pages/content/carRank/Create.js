@@ -24,7 +24,6 @@ const { Option } = Select;
 
 // 등록페지
 function Create() {
-  let { id } = useParams();
   let navigate = useNavigate();
 
   const {
@@ -55,7 +54,7 @@ function Create() {
       dispatch(removeRedirectTo());
       navigate(redirectURL);
     }
-    dispatch(init(id));
+    dispatch(init());
   }, [redirectTo, dispatch]);
 
   const onCloseValidationClick = () => dispatch(closeValidation());
@@ -70,7 +69,7 @@ function Create() {
   const onSaveClick = () =>
     dispatch(save("/content/carRank", bodyInfo, modelBodyList));
   const onDeleteClick = async () => dispatch(showConfirm());
-  const deleteInfo = async () => dispatch(remove("/content/carRank", id));
+  const deleteInfo = async () => dispatch(remove("/content/carRank"));
 
   const renderModelBodyList = () => {
     return modelBodyList.map((body, index) => (
@@ -161,10 +160,10 @@ function Create() {
                 ))}
             </Select>
             <Select
-              name="idx"
-              value={body.idx}
+              name="model_id"
+              value={body.model_id}
               onChange={(value) => {
-                onModelComponentChange(body.number, "idx", value);
+                onModelComponentChange(body.number, "model_id", value);
               }}
               size="large"
               suffixIcon={<CaretDownOutlined />}
@@ -317,6 +316,7 @@ function Create() {
         visible={validation.show}
         onConfirmClick={onCloseValidationClick}
         validationList={validation.list}
+        disableFooter={validation.disableFooter}
       />
     </>
   );

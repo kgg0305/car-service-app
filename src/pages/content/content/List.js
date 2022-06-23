@@ -44,6 +44,7 @@ function List() {
     dataLength,
     searchData,
     confirm,
+    siderMenuRole,
   } = useSelector((state) => ({
     redirectTo: state.contentList.redirectTo,
     offset: state.contentList.offset,
@@ -53,6 +54,7 @@ function List() {
     dataLength: state.contentList.dataLength,
     searchData: state.contentList.searchData,
     confirm: state.contentList.confirm,
+    siderMenuRole: state.role.siderMenuRole,
   }));
 
   const dispatch = useDispatch();
@@ -148,6 +150,7 @@ function List() {
               className="black-button small-button rounded-button"
               onClick={() => onDeleteClick(idx)}
               size="large"
+              disabled={siderMenuRole["content"][0] === 2 ? false : true}
             >
               삭제
             </Button>
@@ -174,6 +177,7 @@ function List() {
                 : true
             }
             onClick={(checked) => onChangeUse(idx, checked)}
+            disabled={siderMenuRole["content"][0] === 2 ? false : true}
           />
         </Col>
         <Col>

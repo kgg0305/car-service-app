@@ -14,11 +14,14 @@ import {
 
 // 목록페지
 function List() {
-  const { offset, dataSource, detailModal } = useSelector((state) => ({
-    offset: state.photoList.offset,
-    dataSource: state.photoList.dataSource,
-    detailModal: state.photoList.detailModal,
-  }));
+  const { offset, dataSource, dataLength, detailModal } = useSelector(
+    (state) => ({
+      offset: state.photoList.offset,
+      dataSource: state.photoList.dataSource,
+      dataLength: state.photoList.dataLength,
+      detailModal: state.photoList.detailModal,
+    })
+  );
 
   const dispatch = useDispatch();
 
@@ -138,6 +141,16 @@ function List() {
 
         {/* Body Section */}
         <TableList dataSource={tableList} />
+
+        {dataLength > 10 && dataLength > offset + 10 ? (
+          <Row justify="center">
+            <label className="show-more-label" onClick={onTableMoreClick}>
+              더보기
+            </label>
+          </Row>
+        ) : (
+          <div style={{ height: 69 }}></div>
+        )}
       </Space>
 
       <Modal

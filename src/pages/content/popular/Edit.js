@@ -116,12 +116,12 @@ function Edit() {
         <Space direction="vertical" size={11}>
           <Row justify="middle">
             <Col>
-              <label className="main-header-title">포토갤러리 수정</label>
+              <label className="main-header-title">인기포토 수정</label>
             </Col>
             <Col flex="auto" />
             <Col>
               <Space size={10}>
-                <Link to="/car/brand">
+                <Link to="/content/popular">
                   <Button
                     className="white-button cancel-detail-button"
                     size="large"

@@ -141,7 +141,7 @@ function Edit() {
               value={body.title}
               size="large"
               readOnly={true}
-              style={{ width: 750 }}
+              style={{ width: 740 }}
             />
           </Space>
         </Col>
@@ -236,7 +236,7 @@ function Edit() {
                     <Input
                       size="large"
                       style={{ width: 130 }}
-                      value={contentBodyList.length + " / 20"}
+                      value={contentBodyList.length + " / 10"}
                       disabled
                     />
                   </Space>
@@ -253,6 +253,7 @@ function Edit() {
         visible={validation.show}
         onConfirmClick={onCloseValidationClick}
         validationList={validation.list}
+        disableFooter={validation.disableFooter}
       />
     </>
   );

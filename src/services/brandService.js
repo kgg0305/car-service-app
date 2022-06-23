@@ -1,5 +1,6 @@
 import axios from "axios";
 import { GetServerTimezoneDate } from "../constants/GlobalFunctions";
+import { discountKindService } from "./discountKindService";
 import { groupService } from "./groupService";
 
 const base_url = process.env.REACT_APP_API_URL + "/brand";
@@ -109,6 +110,7 @@ const update = async (body) => {
 const remove = async (idx) => {
   const token = JSON.parse(sessionStorage.getItem("token"));
   await groupService.removeByBrand(idx);
+  await discountKindService.removeByBrand(idx);
   const response = await axios.get(base_url + "/" + idx);
 
   var data = {

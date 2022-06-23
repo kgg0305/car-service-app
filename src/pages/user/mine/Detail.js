@@ -151,7 +151,7 @@ function Detail() {
                   <label>연락처</label>
                 </Col>
                 <Col flex="auto" className="table-value-col-section">
-                  <InputNumber
+                  <Input
                     onKeyPress={(event) => {
                       if (!/[0-9]/.test(event.key)) {
                         event.preventDefault();
@@ -159,13 +159,12 @@ function Detail() {
                     }}
                     name="phone"
                     value={bodyInfo.phone}
-                    onChange={(number) => {
-                      onComponentChange("phone", number);
+                    onChange={(e) => {
+                      onComponentChange(e.target.name, e.target.value);
                     }}
                     size="large"
                     placeholder="공백없이 - 제외한 숫자 입력"
                     maxLength={12}
-                    controls={false}
                     style={{ width: 200 }}
                   />
                 </Col>

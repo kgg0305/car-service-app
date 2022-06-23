@@ -132,7 +132,7 @@ function List() {
       <Space direction="vertical" size={18} className="main-layout">
         {/* Page Header */}
         <Space direction="vertical" size={11}>
-          <label className="main-header-title">포토갤러리 관리</label>
+          <label className="main-header-title">인기포토 관리</label>
           <Divider className="main-body-divider" />
         </Space>
 

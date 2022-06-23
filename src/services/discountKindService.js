@@ -3,6 +3,7 @@ import {
   GetDateStringFromDate,
   GetServerTimezoneDate,
 } from "../constants/GlobalFunctions";
+import { discountConditionService } from "./discountConditionService";
 
 const base_url = process.env.REACT_APP_API_URL + "/discount-kind";
 
@@ -70,10 +71,13 @@ const update = async (body) => {
 
 const remove = async (idx) => {
   const token = JSON.parse(sessionStorage.getItem("token"));
+  await discountConditionService.removeByCondition(idx);
   const response = await axios.get(base_url + "/" + idx);
 
   var data = {
     ...response.data,
+    s_date: GetDateStringFromDate(new Date(response.data.s_date)),
+    e_date: GetDateStringFromDate(new Date(response.data.e_date)),
     created_at: GetServerTimezoneDate(new Date(response.data.created_at)),
     updated_at: GetServerTimezoneDate(new Date(response.data.updated_at)),
     deleted_at: GetServerTimezoneDate(new Date()),
@@ -85,6 +89,23 @@ const remove = async (idx) => {
     const response = await axios.put(base_url + "/" + idx, data);
 
     return response.data;
+  } catch (e) {
+    return e;
+  }
+};
+
+const removeByBrand = async (brand_id) => {
+  try {
+    const response = await axios.post(base_url + "/list-id", {
+      brand_id: brand_id,
+    });
+
+    for (let i = 0; i < response.data.length; i++) {
+      const idx = response.data[i].idx;
+      await remove(idx);
+    }
+
+    return;
   } catch (e) {
     return e;
   }
@@ -160,4 +181,5 @@ export const discountKindService = {
   getOptionList,
   get,
   remove,
+  removeByBrand,
 };

@@ -3,7 +3,12 @@ import { Space, Button, Modal } from "antd";
 import alert_icon from "../assets/images/alert-icon.png";
 
 // 유효성검사창
-function AlertModal({ visible, onConfirmClick, validationList }) {
+function AlertModal({
+  visible,
+  onConfirmClick,
+  validationList,
+  disableFooter,
+}) {
   return (
     <Modal
       centered
@@ -29,13 +34,19 @@ function AlertModal({ visible, onConfirmClick, validationList }) {
       >
         <img src={alert_icon} />
         <label className="alert-content-label">
-          {validationList
-            .map((validation) => validation.title + " - " + validation.name)
-            .join(", ")}
+          {disableFooter
+            ? validationList[0].title
+            : validationList
+                .map((validation) => validation.title + " - " + validation.name)
+                .join(", ")}
         </label>
-        <label className="alert-content-label">
-          작성되지 않은 정보가 있습니다.
-        </label>
+        {disableFooter ? (
+          <></>
+        ) : (
+          <label className="alert-content-label">
+            작성되지 않은 정보가 있습니다.
+          </label>
+        )}
       </Space>
     </Modal>
   );

@@ -1026,7 +1026,7 @@ function Edit() {
                       <Col flex="auto" className="table-value-col-section">
                         <Space direction="vertical" align="start" size={37}>
                           <label className="logo-description-label">
-                            사진의 권장 크기는 1280 * 800 이며 ‘사진01에 등록된
+                            사진의 권장 크기는 1280 * 800 이며 ‘사진01’에 등록된
                             사진은 썸네일 또는 대표 사진으로 사용이 됩니다.
                             <br />
                             사진을 교체하기 위해선 먼저 [삭제]를 해주신 후에

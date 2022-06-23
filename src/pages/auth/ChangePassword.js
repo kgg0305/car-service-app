@@ -9,13 +9,13 @@ function ChangePassword() {
     short_password,
     match_password,
     new_password,
-    old_password,
+    confirm_password,
   } = useSelector((state) => ({
     danger_password: state.auth.changeValidation.danger_password,
     short_password: state.auth.changeValidation.short_password,
     match_password: state.auth.changeValidation.match_password,
     new_password: state.auth.changeForm.new_password,
-    old_password: state.auth.changeForm.old_password,
+    confirm_password: state.auth.changeForm.confirm_password,
   }));
 
   const dispatch = useDispatch();
@@ -69,8 +69,8 @@ function ChangePassword() {
               <label className={styles.fieldLabel}>비밀번호 확인</label>
               <Input.Password
                 className="auth-input"
-                name="old_password"
-                value={old_password}
+                name="confirm_password"
+                value={confirm_password}
                 onChange={(e) => onFormChange(e.target.name, e.target.value)}
                 size="large"
                 style={{ width: 300, height: 50 }}

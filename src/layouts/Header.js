@@ -7,20 +7,22 @@ import { Constants } from "../constants/Constants";
 import { useDispatch, useSelector } from "react-redux";
 import { removeToken } from "../store/reducers/auth";
 import { init, setHeaderMenu, setSideMenu } from "../store/reducers/menu";
+import { init as roleInit } from "../store/reducers/role";
 
 function Header() {
   const { token, headerMenu, headerMenuRole, siderMenuRole } = useSelector(
     (state) => ({
       token: state.auth.token,
       headerMenu: state.menu.headerMenu,
-      headerMenuRole: state.menu.headerMenuRole,
-      siderMenuRole: state.menu.siderMenuRole,
+      headerMenuRole: state.role.headerMenuRole,
+      siderMenuRole: state.role.siderMenuRole,
     })
   );
 
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(roleInit());
     dispatch(init());
   }, [dispatch]);
 
@@ -49,16 +51,18 @@ function Header() {
           onClick={(key) => onMenuClick(key.key)}
         >
           {Constants.headerMenus.map((item) =>
-            headerMenuRole[item.key] ? (
+            (headerMenuRole[item.key] &&
+              siderMenuRole[item.key].some((item) => item !== 0)) ||
+            item.key === "finance" ? (
               <Menu.Item key={item.key} disabled={item.key === "finance"}>
                 <Link
                   to={
-                    siderMenuRole[item.key].some((sideItem) => sideItem === 1)
+                    siderMenuRole[item.key].some((sideItem) => sideItem !== 0)
                       ? Constants.siderMenus.filter(
                           (sideItem) => sideItem.headerMenu === item.key
                         )[
                           siderMenuRole[item.key].findIndex(
-                            (sideItem) => sideItem === 1
+                            (sideItem) => sideItem !== 0
                           )
                         ].link
                       : "/no-access"

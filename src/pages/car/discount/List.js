@@ -173,10 +173,10 @@ function List() {
                   ))}
                 </Select>
                 <Select
-                  name="idx"
-                  value={searchData.idx}
+                  name="discount_kind_id"
+                  value={searchData.discount_kind_id}
                   onChange={(value) => {
-                    onSearchComponentChange("idx", value);
+                    onSearchComponentChange("discount_kind_id", value);
                   }}
                   suffixIcon={<CaretDownOutlined />}
                   placeholder="할인종류 선택"

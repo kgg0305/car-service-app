@@ -153,7 +153,7 @@ const initialState = {
   dataLength: 0,
   searchData: {
     brand_id: null,
-    idx: null,
+    discount_kind_id: null,
     s_date: null,
     e_date: null,
     date_period: 0,
@@ -187,7 +187,10 @@ export default function list(state = initialState, action) {
         ...state,
         searchData: {
           ...state.searchData,
-          idx: action.payload.name == "brand_id" ? null : state.searchData.idx,
+          discount_kind_id:
+            action.payload.name == "brand_id"
+              ? null
+              : state.searchData.discount_kind_id,
           s_date:
             action.payload.name === "date_period"
               ? action.payload.s_date

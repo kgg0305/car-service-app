@@ -19,11 +19,17 @@ const create = async (body) => {
   const token = JSON.parse(sessionStorage.getItem("token"));
   var data = [
     {
-      media_type: body.media_type,
-      category_id: body.category_id,
+      media: body.media,
+      category: body.category,
       title: body.title,
       views: body.views,
       is_use: body.is_use,
+      content_number: body.content_number,
+      thumbnail: body.thumbnail,
+      description: body.description,
+      preview: body.preview,
+      writer: body.writer,
+      tag: body.tag,
 
       created_at: GetServerTimezoneDate(new Date()),
       created_by: token.idx,
@@ -45,11 +51,17 @@ const create = async (body) => {
 const update = async (body) => {
   const token = JSON.parse(sessionStorage.getItem("token"));
   var data = {
-    media_type: body.media_type,
-    category_id: body.category_id,
+    media: body.media,
+    category: body.category,
     title: body.title,
     views: body.views,
     is_use: body.is_use,
+    content_number: body.content_number,
+    thumbnail: body.thumbnail,
+    description: body.description,
+    preview: body.preview,
+    writer: body.writer,
+    tag: body.tag,
 
     created_at: GetServerTimezoneDate(new Date(body.created_at)),
     created_by: body.created_by,

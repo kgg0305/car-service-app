@@ -84,6 +84,35 @@ const remove = async (idx) => {
   }
 };
 
+const removeByModel = async (model_id) => {
+  try {
+    const token = JSON.parse(sessionStorage.getItem("token"));
+    const response = await axios.get(base_url + "/1");
+
+    const model_id_array = response.data.ids.split(",");
+    const updated_model_ids = model_id_array
+      .filter((item) => item !== model_id)
+      .join(",");
+
+    var data = {
+      type: response.data.type,
+      ids: updated_model_ids,
+
+      created_at: GetServerTimezoneDate(new Date(response.data.created_at)),
+      created_by: response.data.created_by,
+      updated_at: GetServerTimezoneDate(new Date()),
+      updated_by: token.idx,
+      is_deleted: response.data.is_deleted,
+    };
+
+    await axios.put(base_url + "/1", data);
+
+    return;
+  } catch (e) {
+    return e;
+  }
+};
+
 const getList = async (offset, search) => {
   try {
     const response = await axios.post(base_url + "/list/" + offset, search);
@@ -143,4 +172,5 @@ export const rankService = {
   getOptionList,
   get,
   remove,
+  removeByModel,
 };

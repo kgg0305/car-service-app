@@ -4,6 +4,9 @@ import {
   GetServerTimezoneDate,
 } from "../constants/GlobalFunctions";
 import { lineupService } from "./lineupService";
+import { galleryService } from "./galleryService";
+import { popularService } from "./popularService";
+import { rankService } from "./rankService";
 
 const base_url = process.env.REACT_APP_API_URL + "/model";
 
@@ -125,10 +128,14 @@ const update = async (body) => {
 const remove = async (idx) => {
   const token = JSON.parse(sessionStorage.getItem("token"));
   await lineupService.removeByModel(idx);
+  await galleryService.removeByModel(idx);
+  await popularService.removeByModel(idx);
+  await rankService.removeByModel(idx);
   const response = await axios.get(base_url + "/" + idx);
 
   var data = {
     ...response.data,
+    release_date: GetDateStringFromDate(new Date(response.data.release_date)),
     created_at: GetServerTimezoneDate(new Date(response.data.created_at)),
     updated_at: GetServerTimezoneDate(new Date(response.data.updated_at)),
     deleted_at: GetServerTimezoneDate(new Date()),

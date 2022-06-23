@@ -11,7 +11,7 @@ function Sider() {
   const { headerMenu, siderMenu, siderMenuRole } = useSelector((state) => ({
     headerMenu: state.menu.headerMenu,
     siderMenu: state.menu.siderMenu,
-    siderMenuRole: state.menu.siderMenuRole,
+    siderMenuRole: state.role.siderMenuRole,
   }));
 
   const dispatch = useDispatch();
@@ -40,16 +40,8 @@ function Sider() {
           )
           .map((item, index) =>
             siderMenuRole[headerMenu.key] ? (
-              siderMenuRole[headerMenu.key][index] === 1 ||
-              siderMenuRole[headerMenu.key][index] === 2 ? (
-                <Menu.Item
-                  key={index}
-                  disabled={
-                    siderMenuRole[headerMenu.key]
-                      ? siderMenuRole[headerMenu.key][index] === 2
-                      : false
-                  }
-                >
+              siderMenuRole[headerMenu.key][index] !== 0 ? (
+                <Menu.Item key={index}>
                   <Link to={item.link}>{item.label}</Link>
                 </Menu.Item>
               ) : (

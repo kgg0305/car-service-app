@@ -88,8 +88,9 @@ import ContentMediaList from "./pages/content/media/List";
 import NoAccess from "./pages/NoAccess";
 
 function App() {
-  const { token } = useSelector((state) => ({
+  const { token, siderMenuRole } = useSelector((state) => ({
     token: state.auth.token,
+    siderMenuRole: state.role.siderMenuRole,
   }));
 
   if (!token) {
@@ -119,37 +120,153 @@ function App() {
         <Route exact path="car" element={<Main />}>
           <Route path="brand">
             <Route index element={<CarBrandList />} />
-            <Route path="create" element={<CarBrandCreate />} />
-            <Route path="edit/:id" element={<CarBrandEdit />} />
+            <Route
+              path="create"
+              element={
+                siderMenuRole["car"][0] === 2 ? (
+                  <CarBrandCreate />
+                ) : (
+                  <NoAccess />
+                )
+              }
+            />
+            <Route
+              path="edit/:id"
+              element={
+                siderMenuRole["car"][0] === 2 ? <CarBrandEdit /> : <NoAccess />
+              }
+            />
           </Route>
           <Route path="group">
             <Route index element={<CarGroupList />} />
-            <Route path="create" element={<CarGroupCreate />} />
-            <Route path="edit/:id/:brand_id" element={<CarGroupEdit />} />
-            <Route path="manage/:brand_id" element={<CarGroupManage />} />
+            <Route
+              path="create"
+              element={
+                siderMenuRole["car"][1] === 2 ? (
+                  <CarGroupCreate />
+                ) : (
+                  <NoAccess />
+                )
+              }
+            />
+            <Route
+              path="edit/:id/:brand_id"
+              element={
+                siderMenuRole["car"][1] === 2 ? <CarGroupEdit /> : <NoAccess />
+              }
+            />
+            <Route
+              path="manage/:brand_id"
+              element={
+                siderMenuRole["car"][1] === 2 ? (
+                  <CarGroupManage />
+                ) : (
+                  <NoAccess />
+                )
+              }
+            />
           </Route>
           <Route path="model">
             <Route index element={<CarModelList />} />
-            <Route path="create" element={<CarModelCreate />} />
-            <Route path="edit/:id/:group_id" element={<CarModelEdit />} />
-            <Route path="manage/:group_id" element={<CarModelManage />} />
+            <Route
+              path="create"
+              element={
+                siderMenuRole["car"][2] === 2 ? (
+                  <CarModelCreate />
+                ) : (
+                  <NoAccess />
+                )
+              }
+            />
+            <Route
+              path="edit/:id/:group_id"
+              element={
+                siderMenuRole["car"][2] === 2 ? <CarModelEdit /> : <NoAccess />
+              }
+            />
+            <Route
+              path="manage/:group_id"
+              element={
+                siderMenuRole["car"][2] === 2 ? (
+                  <CarModelManage />
+                ) : (
+                  <NoAccess />
+                )
+              }
+            />
           </Route>
           <Route path="lineup">
             <Route index element={<CarLineupList />} />
-            <Route path="create" element={<CarLineupCreate />} />
-            <Route path="edit/:id/:model_id" element={<CarLineupEdit />} />
-            <Route path="manage/:model_id" element={<CarLineupManage />} />
+            <Route
+              path="create"
+              element={
+                siderMenuRole["car"][3] === 2 ? (
+                  <CarLineupCreate />
+                ) : (
+                  <NoAccess />
+                )
+              }
+            />
+            <Route
+              path="edit/:id/:model_id"
+              element={
+                siderMenuRole["car"][3] === 2 ? <CarLineupEdit /> : <NoAccess />
+              }
+            />
+            <Route
+              path="manage/:model_id"
+              element={
+                siderMenuRole["car"][3] === 2 ? (
+                  <CarLineupManage />
+                ) : (
+                  <NoAccess />
+                )
+              }
+            />
           </Route>
           <Route path="trim">
             <Route index element={<CarTrimList />} />
-            <Route path="create" element={<CarTrimCreate />} />
-            <Route path="edit/:id/:lineup_id" element={<CarTrimEdit />} />
-            <Route path="manage/:lineup_id" element={<CarTrimManage />} />
+            <Route
+              path="create"
+              element={
+                siderMenuRole["car"][4] === 2 ? <CarTrimCreate /> : <NoAccess />
+              }
+            />
+            <Route
+              path="edit/:id/:lineup_id"
+              element={
+                siderMenuRole["car"][4] === 2 ? <CarTrimEdit /> : <NoAccess />
+              }
+            />
+            <Route
+              path="manage/:lineup_id"
+              element={
+                siderMenuRole["car"][4] === 2 ? <CarTrimManage /> : <NoAccess />
+              }
+            />
           </Route>
           <Route path="discount">
             <Route index element={<CarDiscountList />} />
-            <Route path="create" element={<CarDiscountCreate />} />
-            <Route path="edit/:id" element={<CarDiscountEdit />} />
+            <Route
+              path="create"
+              element={
+                siderMenuRole["car"][5] === 2 ? (
+                  <CarDiscountCreate />
+                ) : (
+                  <NoAccess />
+                )
+              }
+            />
+            <Route
+              path="edit/:id"
+              element={
+                siderMenuRole["car"][5] === 2 ? (
+                  <CarDiscountEdit />
+                ) : (
+                  <NoAccess />
+                )
+              }
+            />
           </Route>
           <Route path="extra">
             <Route index element={<CarExtraList />} />
@@ -181,11 +298,29 @@ function App() {
         <Route exact path="estimation" element={<Main />}>
           <Route path="quotation">
             <Route index element={<EstimationQuotationList />} />
-            <Route path="detail/:id" element={<EstimationQuotationDetail />} />
+            <Route
+              path="detail/:id"
+              element={
+                siderMenuRole["estimation"][0] === 2 ? (
+                  <EstimationQuotationDetail />
+                ) : (
+                  <NoAccess />
+                )
+              }
+            />
           </Route>
           <Route path="assignment">
             <Route index element={<EstimationAssignmentList />} />
-            <Route path="manage/:id" element={<EstimationAssignmentManage />} />
+            <Route
+              path="manage/:id"
+              element={
+                siderMenuRole["estimation"][1] === 2 ? (
+                  <EstimationAssignmentManage />
+                ) : (
+                  <NoAccess />
+                )
+              }
+            />
           </Route>
           <Route path="count">
             <Route index element={<EstimationCountList />} />
@@ -202,36 +337,144 @@ function App() {
           </Route>
           <Route path="recommendation">
             <Route index element={<ContentRecommendationList />} />
-            <Route path="create" element={<ContentRecommendationCreate />} />
-            <Route path="edit/:id" element={<ContentRecommendationEdit />} />
+            <Route
+              path="create"
+              element={
+                siderMenuRole["content"][1] === 2 ? (
+                  <ContentRecommendationCreate />
+                ) : (
+                  <NoAccess />
+                )
+              }
+            />
+            <Route
+              path="edit/:id"
+              element={
+                siderMenuRole["content"][1] === 2 ? (
+                  <ContentRecommendationEdit />
+                ) : (
+                  <NoAccess />
+                )
+              }
+            />
           </Route>
           <Route path="photo">
             <Route index element={<ContentPhotoList />} />
-            <Route path="create" element={<ContentPhotoCreate />} />
-            <Route path="edit/:id" element={<ContentPhotoEdit />} />
+            <Route
+              path="create"
+              element={
+                siderMenuRole["content"][2] === 2 ? (
+                  <ContentPhotoCreate />
+                ) : (
+                  <NoAccess />
+                )
+              }
+            />
+            <Route
+              path="edit/:id"
+              element={
+                siderMenuRole["content"][2] === 2 ? (
+                  <ContentPhotoEdit />
+                ) : (
+                  <NoAccess />
+                )
+              }
+            />
           </Route>
           <Route path="gallery">
             <Route index element={<ContentGalleryList />} />
-            <Route path="edit/:id" element={<ContentGalleryEdit />} />
+            <Route
+              path="edit/:id"
+              element={
+                siderMenuRole["content"][3] === 2 ? (
+                  <ContentGalleryEdit />
+                ) : (
+                  <NoAccess />
+                )
+              }
+            />
           </Route>
           <Route path="popular">
             <Route index element={<ContentPopularList />} />
-            <Route path="edit/:id" element={<ContentPopularEdit />} />
+            <Route
+              path="edit/:id"
+              element={
+                siderMenuRole["content"][4] === 2 ? (
+                  <ContentPopularEdit />
+                ) : (
+                  <NoAccess />
+                )
+              }
+            />
           </Route>
           <Route path="carRank">
             <Route index element={<ContentCarRankList />} />
-            <Route path="create" element={<ContentCarRankCreate />} />
-            <Route path="edit" element={<ContentCarRankEdit />} />
+            <Route
+              path="create"
+              element={
+                siderMenuRole["content"][5] === 2 ? (
+                  <ContentCarRankCreate />
+                ) : (
+                  <NoAccess />
+                )
+              }
+            />
+            <Route
+              path="edit"
+              element={
+                siderMenuRole["content"][5] === 2 ? (
+                  <ContentCarRankEdit />
+                ) : (
+                  <NoAccess />
+                )
+              }
+            />
           </Route>
           <Route path="contentRank">
             <Route index element={<ContentContentRankList />} />
-            <Route path="create" element={<ContentContentRankCreate />} />
-            <Route path="edit" element={<ContentContentRankEdit />} />
+            <Route
+              path="create"
+              element={
+                siderMenuRole["content"][6] === 2 ? (
+                  <ContentContentRankCreate />
+                ) : (
+                  <NoAccess />
+                )
+              }
+            />
+            <Route
+              path="edit"
+              element={
+                siderMenuRole["content"][6] === 2 ? (
+                  <ContentContentRankEdit />
+                ) : (
+                  <NoAccess />
+                )
+              }
+            />
           </Route>
           <Route path="movieRank">
             <Route index element={<ContentMovieRankList />} />
-            <Route path="create" element={<ContentMovieRankCreate />} />
-            <Route path="edit" element={<ContentMovieRankEdit />} />
+            <Route
+              path="create"
+              element={
+                siderMenuRole["content"][7] === 2 ? (
+                  <ContentMovieRankCreate />
+                ) : (
+                  <NoAccess />
+                )
+              }
+            />
+            <Route
+              path="edit"
+              element={
+                siderMenuRole["content"][7] === 2 ? (
+                  <ContentMovieRankEdit />
+                ) : (
+                  <NoAccess />
+                )
+              }
+            />
           </Route>
           <Route path="media">
             <Route index element={<ContentMediaList />} />

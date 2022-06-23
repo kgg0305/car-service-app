@@ -186,7 +186,11 @@ function List() {
       <Row justify="left">
         <Col>
           <Space size={20}>
-            <label>{role_info.user_name + "(" + role_info.user_id + ")"}</label>
+            <div>
+              <label>{role_info.user_name}</label>
+              <br />
+              <label>{"(" + role_info.user_id + ")"}</label>
+            </div>
             <Button
               type="link"
               className={styles.linkButton}
@@ -211,12 +215,12 @@ function List() {
             <Checkbox
               checked={
                 dataSource.filter((item) => item.number === number)[0]
-                  .status === "1"
+                  .status === "2"
                   ? true
                   : false
               }
               onChange={(e) => {
-                onStatusChange(number, e.target.checked ? "1" : "0");
+                onStatusChange(number, e.target.checked ? "2" : "0");
               }}
             >
               이 메뉴에 대한 전체 사용권한을 부여
@@ -231,12 +235,12 @@ function List() {
             <Checkbox
               checked={
                 dataSource.filter((item) => item.number === number)[0]
-                  .status === "2"
+                  .status === "1"
                   ? true
                   : false
               }
               onChange={(e) => {
-                onStatusChange(number, e.target.checked ? "2" : "0");
+                onStatusChange(number, e.target.checked ? "1" : "0");
               }}
             >
               보기 전용(메뉴 사용 불가)
@@ -258,12 +262,12 @@ function List() {
             <Checkbox
               checked={
                 dataSource.filter((item) => item.number === number)[0]
-                  .status === "1"
+                  .status === "2"
                   ? true
                   : false
               }
               onChange={(e) => {
-                onStatusChange(number, e.target.checked ? "1" : "0");
+                onStatusChange(number, e.target.checked ? "2" : "0");
               }}
             >
               이 메뉴에 대한 전체 사용권한을 부여
@@ -278,12 +282,12 @@ function List() {
             <Checkbox
               checked={
                 dataSource.filter((item) => item.number === number)[0]
-                  .status === "2"
+                  .status === "1"
                   ? true
                   : false
               }
               onChange={(e) => {
-                onStatusChange(number, e.target.checked ? "2" : "0");
+                onStatusChange(number, e.target.checked ? "1" : "0");
               }}
             >
               보기 전용(메뉴 사용 불가)
@@ -306,7 +310,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[0] === "1"
+                  .status.split(",")[0] === "2"
                   ? true
                   : false
               }
@@ -315,7 +319,7 @@ function List() {
                   .filter((item) => item.number === number)[0]
                   .status.split(",");
                 const updated_status = [
-                  e.target.checked ? "1" : "0",
+                  e.target.checked ? "2" : "0",
                   status_array[1],
                   status_array[2],
                 ];
@@ -335,7 +339,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[0] === "4"
+                  .status.split(",")[0] === "3"
                   ? true
                   : false
               }
@@ -344,7 +348,7 @@ function List() {
                   .filter((item) => item.number === number)[0]
                   .status.split(",");
                 const updated_status = [
-                  e.target.checked ? "4" : "0",
+                  e.target.checked ? "3" : "0",
                   status_array[1],
                   status_array[2],
                 ];
@@ -364,7 +368,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[0] === "2"
+                  .status.split(",")[0] === "1"
                   ? true
                   : false
               }
@@ -373,7 +377,7 @@ function List() {
                   .filter((item) => item.number === number)[0]
                   .status.split(",");
                 const updated_status = [
-                  e.target.checked ? "2" : "0",
+                  e.target.checked ? "1" : "0",
                   status_array[1],
                   status_array[2],
                 ];
@@ -393,7 +397,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[0] === "3"
+                  .status.split(",")[0] === "0"
                   ? true
                   : false
               }
@@ -402,7 +406,7 @@ function List() {
                   .filter((item) => item.number === number)[0]
                   .status.split(",");
                 const updated_status = [
-                  e.target.checked ? "3" : "0",
+                  e.target.checked ? "0" : "0",
                   status_array[1],
                   status_array[2],
                 ];
@@ -429,7 +433,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[1] === "1"
+                  .status.split(",")[1] === "2"
                   ? true
                   : false
               }
@@ -439,7 +443,7 @@ function List() {
                   .status.split(",");
                 const updated_status = [
                   status_array[0],
-                  e.target.checked ? "1" : "0",
+                  e.target.checked ? "2" : "0",
                   status_array[2],
                 ];
                 onStatusChange(number, updated_status.join(","));
@@ -458,7 +462,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[1] === "2"
+                  .status.split(",")[1] === "1"
                   ? true
                   : false
               }
@@ -468,7 +472,7 @@ function List() {
                   .status.split(",");
                 const updated_status = [
                   status_array[0],
-                  e.target.checked ? "2" : "0",
+                  e.target.checked ? "1" : "0",
                   status_array[2],
                 ];
                 onStatusChange(number, updated_status.join(","));
@@ -487,7 +491,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[1] === "3"
+                  .status.split(",")[1] === "0"
                   ? true
                   : false
               }
@@ -497,7 +501,7 @@ function List() {
                   .status.split(",");
                 const updated_status = [
                   status_array[0],
-                  e.target.checked ? "3" : "0",
+                  e.target.checked ? "0" : "0",
                   status_array[2],
                 ];
                 onStatusChange(number, updated_status.join(","));
@@ -523,7 +527,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[2] === "1"
+                  .status.split(",")[2] === "2"
                   ? true
                   : false
               }
@@ -534,7 +538,7 @@ function List() {
                 const updated_status = [
                   status_array[0],
                   status_array[1],
-                  e.target.checked ? "1" : "0",
+                  e.target.checked ? "2" : "0",
                 ];
                 onStatusChange(number, updated_status.join(","));
               }}
@@ -552,7 +556,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[2] === "2"
+                  .status.split(",")[2] === "1"
                   ? true
                   : false
               }
@@ -563,7 +567,7 @@ function List() {
                 const updated_status = [
                   status_array[0],
                   status_array[1],
-                  e.target.checked ? "2" : "0",
+                  e.target.checked ? "1" : "0",
                 ];
                 onStatusChange(number, updated_status.join(","));
               }}
@@ -581,7 +585,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[2] === "3"
+                  .status.split(",")[2] === "0"
                   ? true
                   : false
               }
@@ -592,7 +596,7 @@ function List() {
                 const updated_status = [
                   status_array[0],
                   status_array[1],
-                  e.target.checked ? "3" : "0",
+                  e.target.checked ? "0" : "0",
                 ];
                 onStatusChange(number, updated_status.join(","));
               }}
@@ -617,7 +621,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[0] === "1"
+                  .status.split(",")[0] === "2"
                   ? true
                   : false
               }
@@ -626,7 +630,7 @@ function List() {
                   .filter((item) => item.number === number)[0]
                   .status.split(",");
                 const updated_status = [
-                  e.target.checked ? "1" : "0",
+                  e.target.checked ? "2" : "0",
                   status_array[1],
                 ];
                 onStatusChange(number, updated_status.join(","));
@@ -645,7 +649,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[0] === "2"
+                  .status.split(",")[0] === "1"
                   ? true
                   : false
               }
@@ -654,7 +658,7 @@ function List() {
                   .filter((item) => item.number === number)[0]
                   .status.split(",");
                 const updated_status = [
-                  e.target.checked ? "2" : "0",
+                  e.target.checked ? "1" : "0",
                   status_array[1],
                 ];
                 onStatusChange(number, updated_status.join(","));
@@ -673,7 +677,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[0] === "3"
+                  .status.split(",")[0] === "0"
                   ? true
                   : false
               }
@@ -682,7 +686,7 @@ function List() {
                   .filter((item) => item.number === number)[0]
                   .status.split(",");
                 const updated_status = [
-                  e.target.checked ? "3" : "0",
+                  e.target.checked ? "0" : "0",
                   status_array[1],
                 ];
                 onStatusChange(number, updated_status.join(","));
@@ -708,7 +712,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[1] === "1"
+                  .status.split(",")[1] === "2"
                   ? true
                   : false
               }
@@ -718,7 +722,7 @@ function List() {
                   .status.split(",");
                 const updated_status = [
                   status_array[0],
-                  e.target.checked ? "1" : "0",
+                  e.target.checked ? "2" : "0",
                 ];
                 onStatusChange(number, updated_status.join(","));
               }}
@@ -736,7 +740,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[1] === "2"
+                  .status.split(",")[1] === "1"
                   ? true
                   : false
               }
@@ -746,7 +750,7 @@ function List() {
                   .status.split(",");
                 const updated_status = [
                   status_array[0],
-                  e.target.checked ? "2" : "0",
+                  e.target.checked ? "1" : "0",
                 ];
                 onStatusChange(number, updated_status.join(","));
               }}
@@ -764,7 +768,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[1] === "3"
+                  .status.split(",")[1] === "0"
                   ? true
                   : false
               }
@@ -774,7 +778,7 @@ function List() {
                   .status.split(",");
                 const updated_status = [
                   status_array[0],
-                  e.target.checked ? "3" : "0",
+                  e.target.checked ? "0" : "0",
                 ];
                 onStatusChange(number, updated_status.join(","));
               }}
@@ -799,7 +803,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[0] === "1"
+                  .status.split(",")[0] === "2"
                   ? true
                   : false
               }
@@ -808,7 +812,7 @@ function List() {
                   .filter((item) => item.number === number)[0]
                   .status.split(",");
                 const updated_status = [
-                  e.target.checked ? "1" : "0",
+                  e.target.checked ? "2" : "0",
                   status_array[1],
                   status_array[2],
                   status_array[3],
@@ -829,7 +833,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[0] === "2"
+                  .status.split(",")[0] === "1"
                   ? true
                   : false
               }
@@ -838,7 +842,7 @@ function List() {
                   .filter((item) => item.number === number)[0]
                   .status.split(",");
                 const updated_status = [
-                  e.target.checked ? "2" : "0",
+                  e.target.checked ? "1" : "0",
                   status_array[1],
                   status_array[2],
                   status_array[3],
@@ -859,7 +863,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[0] === "3"
+                  .status.split(",")[0] === "0"
                   ? true
                   : false
               }
@@ -868,7 +872,7 @@ function List() {
                   .filter((item) => item.number === number)[0]
                   .status.split(",");
                 const updated_status = [
-                  e.target.checked ? "3" : "0",
+                  e.target.checked ? "0" : "0",
                   status_array[1],
                   status_array[2],
                   status_array[3],
@@ -896,7 +900,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[1] === "1"
+                  .status.split(",")[1] === "2"
                   ? true
                   : false
               }
@@ -906,7 +910,7 @@ function List() {
                   .status.split(",");
                 const updated_status = [
                   status_array[0],
-                  e.target.checked ? "1" : "0",
+                  e.target.checked ? "2" : "0",
                   status_array[2],
                   status_array[3],
                 ];
@@ -926,7 +930,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[1] === "2"
+                  .status.split(",")[1] === "1"
                   ? true
                   : false
               }
@@ -936,7 +940,7 @@ function List() {
                   .status.split(",");
                 const updated_status = [
                   status_array[0],
-                  e.target.checked ? "2" : "0",
+                  e.target.checked ? "1" : "0",
                   status_array[2],
                   status_array[3],
                 ];
@@ -956,7 +960,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[1] === "3"
+                  .status.split(",")[1] === "0"
                   ? true
                   : false
               }
@@ -966,7 +970,7 @@ function List() {
                   .status.split(",");
                 const updated_status = [
                   status_array[0],
-                  e.target.checked ? "3" : "0",
+                  e.target.checked ? "0" : "0",
                   status_array[2],
                   status_array[3],
                 ];
@@ -993,7 +997,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[2] === "1"
+                  .status.split(",")[2] === "2"
                   ? true
                   : false
               }
@@ -1004,7 +1008,7 @@ function List() {
                 const updated_status = [
                   status_array[0],
                   status_array[1],
-                  e.target.checked ? "1" : "0",
+                  e.target.checked ? "2" : "0",
                   status_array[3],
                 ];
                 onStatusChange(number, updated_status.join(","));
@@ -1023,7 +1027,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[2] === "2"
+                  .status.split(",")[2] === "1"
                   ? true
                   : false
               }
@@ -1034,7 +1038,7 @@ function List() {
                 const updated_status = [
                   status_array[0],
                   status_array[1],
-                  e.target.checked ? "2" : "0",
+                  e.target.checked ? "1" : "0",
                   status_array[3],
                 ];
                 onStatusChange(number, updated_status.join(","));
@@ -1053,7 +1057,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[2] === "3"
+                  .status.split(",")[2] === "0"
                   ? true
                   : false
               }
@@ -1064,7 +1068,7 @@ function List() {
                 const updated_status = [
                   status_array[0],
                   status_array[1],
-                  e.target.checked ? "3" : "0",
+                  e.target.checked ? "0" : "0",
                   status_array[3],
                 ];
                 onStatusChange(number, updated_status.join(","));
@@ -1090,7 +1094,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[3] === "1"
+                  .status.split(",")[3] === "2"
                   ? true
                   : false
               }
@@ -1101,8 +1105,8 @@ function List() {
                 const updated_status = [
                   status_array[0],
                   status_array[1],
-                  status_array[3],
-                  e.target.checked ? "1" : "0",
+                  status_array[2],
+                  e.target.checked ? "2" : "0",
                 ];
                 onStatusChange(number, updated_status.join(","));
               }}
@@ -1120,7 +1124,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[3] === "2"
+                  .status.split(",")[3] === "1"
                   ? true
                   : false
               }
@@ -1131,8 +1135,8 @@ function List() {
                 const updated_status = [
                   status_array[0],
                   status_array[1],
-                  status_array[3],
-                  e.target.checked ? "2" : "0",
+                  status_array[2],
+                  e.target.checked ? "1" : "0",
                 ];
                 onStatusChange(number, updated_status.join(","));
               }}
@@ -1150,7 +1154,7 @@ function List() {
               checked={
                 dataSource
                   .filter((item) => item.number === number)[0]
-                  .status.split(",")[3] === "3"
+                  .status.split(",")[3] === "0"
                   ? true
                   : false
               }
@@ -1161,8 +1165,8 @@ function List() {
                 const updated_status = [
                   status_array[0],
                   status_array[1],
-                  status_array[3],
-                  e.target.checked ? "3" : "0",
+                  status_array[2],
+                  e.target.checked ? "0" : "0",
                 ];
                 onStatusChange(number, updated_status.join(","));
               }}
