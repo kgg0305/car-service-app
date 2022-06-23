@@ -577,6 +577,7 @@ main {
     width: 100px;
     background-color: white;
     border: 1px solid #E5E5E5;
+    background-image: none;
 }
 
 .ant-switch:focus {
