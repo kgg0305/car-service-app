@@ -178,6 +178,8 @@ export const assign = (idx, value) => async (dispatch, getState) => {
     },
   });
 };
+
+// 다운로드
 export const download = () => {
   quotationService.download();
 };
