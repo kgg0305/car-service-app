@@ -12,6 +12,7 @@ const REMOVE = prefix + "REMOVE";
 const SET_USE = prefix + "SET_USE";
 const SAVE = prefix + "SAVE";
 
+// 초기화
 export const init = (model_id) => async (dispatch) => {
   try {
     const dataSource = await lineupService.getList(0, {
@@ -34,9 +35,13 @@ export const init = (model_id) => async (dispatch) => {
     console.log(e);
   }
 };
+
+// 재로딩 경로 삭제
 export const removeRedirectTo = () => ({
   type: REMOVE_REDIRECTTO,
 });
+
+// 더보기
 export const showMore = () => async (dispatch, getState) => {
   try {
     const state = getState();
@@ -66,6 +71,8 @@ export const showConfirm = (idx) => ({
 export const closeConfirm = () => ({
   type: CLOSE_CONFIRM,
 });
+
+// 삭제
 export const remove = (idx) => async (dispatch) => {
   try {
     dispatch(closeConfirm());
@@ -89,6 +96,8 @@ export const setUse = (idx, value) => async (dispatch) => {
     },
   });
 };
+
+// 등록
 export const save = (url) => async (dispatch, getState) => {
   try {
     const state = getState();
@@ -123,6 +132,7 @@ export const save = (url) => async (dispatch, getState) => {
   }
 };
 
+// 초기상태값
 const initialState = {
   redirectTo: "",
   offset: 0,

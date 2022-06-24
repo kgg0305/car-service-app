@@ -13,6 +13,7 @@ const SET_BODY = prefix + "SET_BODY";
 const SAVE = prefix + "SAVE";
 const REMOVE = prefix + "REMOVE";
 
+// 초기화
 export const init = (idx) => async (dispatch) => {
   try {
     const bodyInfo = await userService.get(idx);
@@ -27,15 +28,21 @@ export const init = (idx) => async (dispatch) => {
     console.log(e);
   }
 };
+
+// 재로딩 경로 삭제
 export const removeRedirectTo = () => ({
   type: REMOVE_REDIRECTTO,
 });
+
+// 유효검사창 현시
 export const showValidation = (list) => ({
   type: SHOW_VALIDATION,
   payload: {
     list: list,
   },
 });
+
+// 유효검사창 닫기
 export const closeValidation = () => ({
   type: CLOSE_VALIDATION,
 });
@@ -45,6 +52,8 @@ export const showConfirm = () => ({
 export const closeConfirm = () => ({
   type: CLOSE_CONFIRM,
 });
+
+// 항목값 설정
 export const setBody = (name, value) => ({
   type: SET_BODY,
   payload: {
@@ -52,6 +61,8 @@ export const setBody = (name, value) => ({
     value: value,
   },
 });
+
+// 등록
 export const save = (url, bodyInfo) => async (dispatch) => {
   const validation = [];
   if (bodyInfo.name === "") {
@@ -98,6 +109,8 @@ export const save = (url, bodyInfo) => async (dispatch) => {
     }
   }
 };
+
+// 삭제
 export const remove = (url, idx) => async (dispatch) => {
   try {
     await userService.remove(idx);
@@ -113,6 +126,7 @@ export const remove = (url, idx) => async (dispatch) => {
   }
 };
 
+// 초기상태값
 const initialState = {
   redirectTo: "",
   validation: {

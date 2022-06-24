@@ -7,6 +7,7 @@ const REMOVE_REDIRECTTO = prefix + "REMOVE_REDIRECTTO";
 const SET_HEADER_MENU = prefix + "SET_HEADER_MENU";
 const SET_SIDE_MENU = prefix + "SET_SIDE_MENU";
 
+// 초기화
 export const init = () => async (dispatch, getState) => {
   try {
     const state = getState();
@@ -93,10 +94,13 @@ export const setSideMenu = (key) => ({
     key: key,
   },
 });
+
+// 재로딩 경로 삭제
 export const removeRedirectTo = () => ({
   type: REMOVE_REDIRECTTO,
 });
 
+// 초기상태값
 const initialState = {
   redirectTo: "",
   headerMenu: {

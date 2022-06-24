@@ -7,6 +7,7 @@ import { Constants } from "../constants/Constants";
 import { useDispatch, useSelector } from "react-redux";
 import { setSideMenu } from "../store/reducers/menu";
 
+// 보조메뉴 현시부분
 function Sider() {
   const { headerMenu, siderMenu, siderMenuRole } = useSelector((state) => ({
     headerMenu: state.menu.headerMenu,

@@ -13,6 +13,7 @@ const SET_USER_NAME = prefix + "SET_USER_NAME";
 const SET_CHECK_NAME = prefix + "SET_CHECK_NAME";
 const SAVE = prefix + "SAVE";
 
+// 초기화
 export const init = () => async (dispatch) => {
   try {
     const dataSource = await userRoleService.getList(0);
@@ -34,6 +35,8 @@ export const init = () => async (dispatch) => {
     console.log(e);
   }
 };
+
+// 재로딩 경로 삭제
 export const removeRedirectTo = () => ({
   type: REMOVE_REDIRECTTO,
 });
@@ -142,6 +145,8 @@ export const setCheckName = (name, value) => ({
     value: value,
   },
 });
+
+// 등록
 export const save = (url) => async (dispatch, getState) => {
   const state = getState();
   const dataSource = state.roleList.dataSource;
@@ -178,6 +183,7 @@ export const save = (url) => async (dispatch, getState) => {
   });
 };
 
+// 초기상태값
 const initialState = {
   redirectTo: "",
   dataSource: [],

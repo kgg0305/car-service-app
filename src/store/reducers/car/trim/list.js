@@ -11,6 +11,7 @@ const SHOW_MORE = prefix + "SHOW_MORE";
 const SEARCH = prefix + "SEARCH";
 const SET_SEARCH = prefix + "SET_SEARCH";
 
+// 초기화
 export const init = () => async (dispatch) => {
   try {
     const dataSource = await trimService.getList(0);
@@ -36,6 +37,7 @@ export const init = () => async (dispatch) => {
   }
 };
 
+// 더보기
 export const showMore = () => async (dispatch, getState) => {
   try {
     const state = getState();
@@ -54,6 +56,7 @@ export const showMore = () => async (dispatch, getState) => {
   }
 };
 
+// 검색
 export const search = () => async (dispatch, getState) => {
   try {
     const state = getState();
@@ -71,6 +74,7 @@ export const search = () => async (dispatch, getState) => {
   }
 };
 
+// 검색 초기화
 export const reset = () => async (dispatch) => {
   try {
     dispatch(init());
@@ -79,6 +83,7 @@ export const reset = () => async (dispatch) => {
   }
 };
 
+// 검색값 설정
 export const setSearch = (name, value) => ({
   type: SET_SEARCH,
   payload: {
@@ -87,6 +92,7 @@ export const setSearch = (name, value) => ({
   },
 });
 
+// 초기상태값
 const initialState = {
   offset: 0,
   brandOptionList: [],

@@ -14,6 +14,7 @@ const CLOSE_CONFIRM = prefix + "CLOSE_CONFIRM";
 const REMOVE = prefix + "REMOVE";
 const SET_USE = prefix + "SET_USE";
 
+// 초기화
 export const init = () => async (dispatch) => {
   try {
     const mediaOptionList = await contentService.getMediaOptionList();
@@ -35,10 +36,12 @@ export const init = () => async (dispatch) => {
   }
 };
 
+// 재로딩 경로 삭제
 export const removeRedirectTo = () => ({
   type: REMOVE_REDIRECTTO,
 });
 
+// 더보기
 export const showMore = () => async (dispatch, getState) => {
   try {
     const state = getState();
@@ -57,6 +60,7 @@ export const showMore = () => async (dispatch, getState) => {
   }
 };
 
+// 검색
 export const search = () => async (dispatch, getState) => {
   try {
     const state = getState();
@@ -96,6 +100,7 @@ export const search = () => async (dispatch, getState) => {
   }
 };
 
+// 검색 초기화
 export const reset = () => async (dispatch) => {
   try {
     dispatch(init());
@@ -104,6 +109,7 @@ export const reset = () => async (dispatch) => {
   }
 };
 
+// 검색값 설정
 export const setSearch = (name, value) => (dispatch) => {
   let s_date = null;
   let e_date = null;
@@ -172,6 +178,7 @@ export const closeConfirm = () => ({
   type: CLOSE_CONFIRM,
 });
 
+// 삭제
 export const remove = (url, idx) => async (dispatch) => {
   try {
     await contentService.remove(idx);
@@ -205,6 +212,7 @@ export const setUse = (dataSource, idx, checked) => async (dispatch) => {
   }
 };
 
+// 초기상태값
 const initialState = {
   offset: 0,
   confirm: {

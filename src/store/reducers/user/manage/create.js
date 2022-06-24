@@ -12,6 +12,7 @@ const DELETE_BODY = prefix + "DELETE_BODY";
 const SET_BODY = prefix + "SET_BODY";
 const SAVE = prefix + "SAVE";
 
+// 초기화
 export const init = () => async (dispatch) => {
   try {
     dispatch({
@@ -21,18 +22,26 @@ export const init = () => async (dispatch) => {
     console.log(e);
   }
 };
+
+// 재로딩 경로 삭제
 export const removeRedirectTo = () => ({
   type: REMOVE_REDIRECTTO,
 });
+
+// 유효검사창 현시
 export const showValidation = (list) => ({
   type: SHOW_VALIDATION,
   payload: {
     list: list,
   },
 });
+
+// 유효검사창 닫기
 export const closeValidation = () => ({
   type: CLOSE_VALIDATION,
 });
+
+// 증복명 검사
 export const checkName = (number, name) => async (dispatch) => {
   try {
     const result = await userService.checkName(name);
@@ -48,15 +57,21 @@ export const checkName = (number, name) => async (dispatch) => {
     console.log(e);
   }
 };
+
+// 항목 추가
 export const addBody = () => ({
   type: ADD_BODY,
 });
+
+// 항목 삭제
 export const deleteBody = (number) => ({
   type: DELETE_BODY,
   payload: {
     number: number,
   },
 });
+
+// 항목값 설정
 export const setBody = (number, name, value) => (dispatch) => {
   let danger_password = false;
   let short_password = false;
@@ -99,6 +114,8 @@ export const setBody = (number, name, value) => (dispatch) => {
     },
   });
 };
+
+// 등록
 export const save = (url, bodyList) => async (dispatch) => {
   const validation = [];
   bodyList.map((body, index) => {
@@ -152,6 +169,7 @@ export const save = (url, bodyList) => async (dispatch) => {
   }
 };
 
+// 초기상태값
 const initialState = {
   redirectTo: "",
   validation: {

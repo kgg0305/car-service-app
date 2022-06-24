@@ -7,6 +7,7 @@ import SiderContent from "./Sider";
 
 const { Header, Content, Sider } = Layout;
 
+// 페지 현시부분
 function Main() {
   return (
     <Layout className="main-layout">

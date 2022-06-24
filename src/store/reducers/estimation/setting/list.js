@@ -7,6 +7,7 @@ const INIT = prefix + "INIT";
 const SET_DATA_SOURCE = prefix + "SET_DATA_SOURCE";
 const SAVE = prefix + "SAVE";
 
+// 초기화
 export const init = () => async (dispatch) => {
   try {
     const dataSource = await countSettingService.getList();
@@ -29,6 +30,8 @@ export const setDataSource = (idx, name, value) => ({
     value: value,
   },
 });
+
+// 등록
 export const save = () => async (dispatch, getState) => {
   const state = getState();
   const dataSource = state.settingList.dataSource;
@@ -43,6 +46,7 @@ export const save = () => async (dispatch, getState) => {
   });
 };
 
+// 초기상태값
 const initialState = {
   dataSource: [],
 };

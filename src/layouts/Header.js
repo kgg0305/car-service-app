@@ -9,6 +9,7 @@ import { removeToken } from "../store/reducers/auth";
 import { init, setHeaderMenu, setSideMenu } from "../store/reducers/menu";
 import { init as roleInit } from "../store/reducers/role";
 
+// 기본메뉴 현시부분
 function Header() {
   const { token, headerMenu, headerMenuRole, siderMenuRole } = useSelector(
     (state) => ({

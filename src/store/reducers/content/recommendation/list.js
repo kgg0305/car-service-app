@@ -10,6 +10,7 @@ const SHOW_DETAIL_MODAL = prefix + "SHOW_DETAIL_MODAL";
 const CLOSE_DETAIL_MODAL = prefix + "CLOSE_DETAIL_MODAL";
 const PUBLISH = prefix + "PUBLISH";
 
+// 초기화
 export const init = () => async (dispatch) => {
   try {
     const initDataSource = await recommendationService.getList(0);
@@ -42,6 +43,7 @@ export const init = () => async (dispatch) => {
   }
 };
 
+// 더보기
 export const showMore = () => async (dispatch, getState) => {
   try {
     const state = getState();
@@ -120,6 +122,7 @@ export const publish = (idx, dataSource) => async (dispatch) => {
   }
 };
 
+// 초기상태값
 const initialState = {
   offset: 0,
   dataSource: [],

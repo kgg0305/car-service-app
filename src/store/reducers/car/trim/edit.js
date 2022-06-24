@@ -29,6 +29,7 @@ const MOVE_DOWN = prefix + "MOVE_DOWN";
 const SAVE = prefix + "SAVE";
 const REMOVE = prefix + "REMOVE";
 
+// 초기화
 export const init = (idx) => async (dispatch) => {
   try {
     const bodyInfo = await trimService.get(idx);
@@ -77,15 +78,21 @@ export const init = (idx) => async (dispatch) => {
     console.log(e);
   }
 };
+
+// 재로딩 경로 삭제
 export const removeRedirectTo = () => ({
   type: REMOVE_REDIRECTTO,
 });
+
+// 유효검사창 현시
 export const showValidation = (list) => ({
   type: SHOW_VALIDATION,
   payload: {
     list: list,
   },
 });
+
+// 유효검사창 닫기
 export const closeValidation = () => ({
   type: CLOSE_VALIDATION,
 });
@@ -95,6 +102,8 @@ export const showConfirm = () => ({
 export const closeConfirm = () => ({
   type: CLOSE_CONFIRM,
 });
+
+// 증복명 검사
 export const checkName = (name) => async (dispatch, getState) => {
   try {
     const state = getState();
@@ -120,6 +129,8 @@ export const checkName = (name) => async (dispatch, getState) => {
     console.log(e);
   }
 };
+
+// 항목값 설정
 export const setBody = (name, value) => async (dispatch) => {
   try {
     if (name === "brand_id") {
@@ -245,6 +256,8 @@ export const moveDown = (index) => (dispatch, getState) => {
     });
   }
 };
+
+// 등록
 export const save = (url) => async (dispatch, getState) => {
   const state = getState();
   const bodyInfo = state.trimEdit.bodyInfo;
@@ -370,6 +383,8 @@ export const save = (url) => async (dispatch, getState) => {
     }
   }
 };
+
+// 삭제
 export const remove = (url, idx) => async (dispatch) => {
   try {
     await trimService.remove(idx);
@@ -385,6 +400,7 @@ export const remove = (url, idx) => async (dispatch) => {
   }
 };
 
+// 초기상태값
 const initialState = {
   redirectTo: "",
   validation: {

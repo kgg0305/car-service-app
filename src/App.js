@@ -87,12 +87,14 @@ import ContentMovieRankEdit from "./pages/content/movieRank/Edit";
 import ContentMediaList from "./pages/content/media/List";
 import NoAccess from "./pages/NoAccess";
 
+// 루트경로지정 파일
 function App() {
   const { token, siderMenuRole } = useSelector((state) => ({
     token: state.auth.token,
     siderMenuRole: state.role.siderMenuRole,
   }));
 
+  // 사용자 로그인상태 확인
   if (!token) {
     return (
       <AuthMain>
@@ -110,6 +112,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* 초기현시페지 */}
         <Route exact path="/" element={<Main />}>
           {token.idx === 1 ? (
             <Route index element={<CarBrandList />} />
@@ -117,6 +120,8 @@ function App() {
             <Route index element={<NoAccess />} />
           )}
         </Route>
+
+        {/* 자동차메뉴 */}
         <Route exact path="car" element={<Main />}>
           <Route path="brand">
             <Route index element={<CarBrandList />} />
@@ -273,7 +278,7 @@ function App() {
           </Route>
         </Route>
 
-        {/* User */}
+        {/* 관리자관리 */}
         <Route exact path="user" element={<Main />}>
           <Route index path="mine/:id" element={<UserMineDetail />} />
           <Route path="manage">
@@ -294,7 +299,7 @@ function App() {
           </Route>
         </Route>
 
-        {/* Estimation */}
+        {/* 견적관리메뉴 */}
         <Route exact path="estimation" element={<Main />}>
           <Route path="quotation">
             <Route index element={<EstimationQuotationList />} />
@@ -330,7 +335,7 @@ function App() {
           </Route>
         </Route>
 
-        {/* Content */}
+        {/* 콘텐츠관리메뉴 */}
         <Route exact path="content" element={<Main />}>
           <Route path="content">
             <Route index element={<ContentContentList />} />
@@ -481,7 +486,7 @@ function App() {
           </Route>
         </Route>
 
-        {/* NoAccess */}
+        {/* 접근권한 페지 */}
         <Route exact path="no-access" element={<Main />}>
           <Route index element={<NoAccess />} />
         </Route>

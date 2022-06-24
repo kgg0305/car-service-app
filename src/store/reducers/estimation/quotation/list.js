@@ -11,6 +11,7 @@ const SET_SEARCH = prefix + "SET_SEARCH";
 const SET_GROUP = prefix + "SET_GROUP";
 const ASSIGN = prefix + "ASSIGN";
 
+// 초기화
 export const init = () => async (dispatch) => {
   try {
     const dataSource = await quotationService.getList(0);
@@ -39,6 +40,7 @@ export const init = () => async (dispatch) => {
   }
 };
 
+// 더보기
 export const showMore = () => async (dispatch, getState) => {
   try {
     const state = getState();
@@ -66,6 +68,7 @@ export const showMore = () => async (dispatch, getState) => {
   }
 };
 
+// 검색
 export const search = () => async (dispatch, getState) => {
   try {
     const state = getState();
@@ -92,6 +95,7 @@ export const search = () => async (dispatch, getState) => {
   }
 };
 
+// 검색 초기화
 export const reset = () => async (dispatch) => {
   try {
     dispatch(init());
@@ -100,6 +104,7 @@ export const reset = () => async (dispatch) => {
   }
 };
 
+// 검색값 설정
 export const setSearch = (name, value) => (dispatch) => {
   let s_date = null;
   let e_date = null;
@@ -177,6 +182,7 @@ export const download = () => {
   quotationService.download();
 };
 
+// 초기상태값
 const initialState = {
   offset: 0,
   userOptionList: [],

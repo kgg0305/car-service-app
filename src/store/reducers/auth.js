@@ -148,6 +148,7 @@ export const changePassword = () => async (dispatch, getState) => {
   }
 };
 
+// 초기상태값
 const initialState = {
   token: JSON.parse(sessionStorage.getItem("token")),
   validation: {

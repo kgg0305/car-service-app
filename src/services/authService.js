@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// 백엔드 경로
 const base_url = process.env.REACT_APP_API_URL + "/auth";
 
 const login = async (user_id, password) => {

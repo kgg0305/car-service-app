@@ -26,6 +26,7 @@ const MOVE_UP = prefix + "MOVE_UP";
 const MOVE_DOWN = prefix + "MOVE_DOWN";
 const SAVE = prefix + "SAVE";
 
+// 초기화
 export const init = () => async (dispatch) => {
   try {
     const brandOptionList = await brandService.getOptionList();
@@ -46,18 +47,26 @@ export const init = () => async (dispatch) => {
     console.log(e);
   }
 };
+
+// 재로딩 경로 삭제
 export const removeRedirectTo = () => ({
   type: REMOVE_REDIRECTTO,
 });
+
+// 유효검사창 현시
 export const showValidation = (list) => ({
   type: SHOW_VALIDATION,
   payload: {
     list: list,
   },
 });
+
+// 유효검사창 닫기
 export const closeValidation = () => ({
   type: CLOSE_VALIDATION,
 });
+
+// 증복명 검사
 export const checkName = (name) => async (dispatch) => {
   try {
     if (name === "") {
@@ -83,6 +92,8 @@ export const checkName = (name) => async (dispatch) => {
     console.log(e);
   }
 };
+
+// 항목값 설정
 export const setBody = (name, value) => async (dispatch) => {
   try {
     if (name === "brand_id") {
@@ -208,6 +219,8 @@ export const moveDown = (index) => (dispatch, getState) => {
     });
   }
 };
+
+// 등록
 export const save = (url) => async (dispatch, getState) => {
   const state = getState();
   const bodyInfo = state.trimCreate.bodyInfo;
@@ -316,6 +329,7 @@ export const save = (url) => async (dispatch, getState) => {
   }
 };
 
+// 초기상태값
 const initialState = {
   redirectTo: "",
   validation: {

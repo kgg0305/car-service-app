@@ -21,6 +21,7 @@ const MOVE_DOWN = prefix + "MOVE_DOWN";
 const SAVE = prefix + "SAVE";
 const REMOVE = prefix + "REMOVE";
 
+// 초기화
 export const init = () => async (dispatch) => {
   try {
     const brandOptionList = await brandService.getOptionList();
@@ -41,9 +42,13 @@ export const init = () => async (dispatch) => {
     console.log(e);
   }
 };
+
+// 재로딩 경로 삭제
 export const removeRedirectTo = () => ({
   type: REMOVE_REDIRECTTO,
 });
+
+// 유효검사창 현시
 export const showValidation = (list, disableFooter) => ({
   type: SHOW_VALIDATION,
   payload: {
@@ -51,6 +56,8 @@ export const showValidation = (list, disableFooter) => ({
     disableFooter: disableFooter,
   },
 });
+
+// 유효검사창 닫기
 export const closeValidation = () => ({
   type: CLOSE_VALIDATION,
 });
@@ -93,6 +100,8 @@ export const setModel = (number, name, value) => async (dispatch) => {
     },
   });
 };
+
+// 항목값 설정
 export const setBody = (name, value) => ({
   type: SET_BODY,
   payload: {
@@ -130,6 +139,8 @@ export const moveDown = (index, modelBodyList) => (dispatch) => {
     });
   }
 };
+
+// 등록
 export const save = (url) => async (dispatch, getState) => {
   const state = getState();
   const bodyInfo = state.carRankCreate.bodyInfo;
@@ -188,6 +199,8 @@ export const save = (url) => async (dispatch, getState) => {
     }
   }
 };
+
+// 삭제
 export const remove = (url, idx) => async (dispatch) => {
   try {
     await rankService.remove(idx);
@@ -203,6 +216,7 @@ export const remove = (url, idx) => async (dispatch) => {
   }
 };
 
+// 초기상태값
 const initialState = {
   redirectTo: "",
   validation: {

@@ -6,6 +6,7 @@ const prefix = "role/";
 const INIT = prefix + "INIT";
 const REMOVE_REDIRECTTO = prefix + "REMOVE_REDIRECTTO";
 
+// 초기화
 export const init = () => async (dispatch) => {
   try {
     const user_info = sessionStorage.getItem("token")
@@ -213,10 +214,13 @@ export const init = () => async (dispatch) => {
     console.log(e);
   }
 };
+
+// 재로딩 경로 삭제
 export const removeRedirectTo = () => ({
   type: REMOVE_REDIRECTTO,
 });
 
+// 초기상태값
 const initialState = {
   redirectTo: "",
   refreshed: false,

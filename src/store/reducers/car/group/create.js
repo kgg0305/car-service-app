@@ -14,6 +14,7 @@ const DELETE_BODY = prefix + "DELETE_BODY";
 const SET_BODY = prefix + "SET_BODY";
 const SAVE = prefix + "SAVE";
 
+// 초기화
 export const init = () => async (dispatch) => {
   try {
     const brandOptionList = await brandService.getOptionList();
@@ -30,18 +31,26 @@ export const init = () => async (dispatch) => {
     console.log(e);
   }
 };
+
+// 재로딩 경로 삭제
 export const removeRedirectTo = () => ({
   type: REMOVE_REDIRECTTO,
 });
+
+// 유효검사창 현시
 export const showValidation = (list) => ({
   type: SHOW_VALIDATION,
   payload: {
     list: list,
   },
 });
+
+// 유효검사창 닫기
 export const closeValidation = () => ({
   type: CLOSE_VALIDATION,
 });
+
+// 증복명 검사
 export const checkName = (number, name) => async (dispatch) => {
   try {
     if (name === "") {
@@ -68,6 +77,8 @@ export const checkName = (number, name) => async (dispatch) => {
     console.log(e);
   }
 };
+
+// 항목 추가
 export const addBody = () => (dispatch, getState) => {
   const state = getState();
   const bodyList = state.groupCreate.bodyList;
@@ -78,12 +89,16 @@ export const addBody = () => (dispatch, getState) => {
     });
   }
 };
+
+// 항목 삭제
 export const deleteBody = (number) => ({
   type: DELETE_BODY,
   payload: {
     number: number,
   },
 });
+
+// 항목값 설정
 export const setBody = (number, name, value) => ({
   type: SET_BODY,
   payload: {
@@ -92,6 +107,8 @@ export const setBody = (number, name, value) => ({
     value: value,
   },
 });
+
+// 등록
 export const save = (url) => async (dispatch, getState) => {
   const state = getState();
   const bodyList = state.groupCreate.bodyList;
@@ -142,6 +159,7 @@ export const save = (url) => async (dispatch, getState) => {
   }
 };
 
+// 초기상태값
 const initialState = {
   redirectTo: "",
   validation: {

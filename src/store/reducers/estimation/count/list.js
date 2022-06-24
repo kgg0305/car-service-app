@@ -10,6 +10,7 @@ const SET_ADD = prefix + "SET_ADD";
 const SET_YEAR = prefix + "SET_YEAR";
 const SET_MONTH = prefix + "SET_MONTH";
 
+// 초기화
 export const init = () => async (dispatch) => {
   try {
     const dataSource = await countService.getList(0, {
@@ -32,6 +33,8 @@ export const init = () => async (dispatch) => {
     console.log(e);
   }
 };
+
+// 더보기
 export const showMore = () => async (dispatch, getState) => {
   try {
     const state = getState();
@@ -146,6 +149,7 @@ export const setMonth = (month) => async (dispatch, getState) => {
   }
 };
 
+// 초기상태값
 const initialState = {
   offset: 0,
   dataSource: [],

@@ -3,8 +3,10 @@ import { GetServerTimezoneDate } from "../constants/GlobalFunctions";
 import { discountKindService } from "./discountKindService";
 import { groupService } from "./groupService";
 
+// 백엔드 경로
 const base_url = process.env.REACT_APP_API_URL + "/brand";
 
+// 증복명 확인
 const checkName = async (name) => {
   try {
     const response = await axios.post(base_url + "/check-name", {
@@ -17,6 +19,7 @@ const checkName = async (name) => {
   }
 };
 
+// 데이터목록 등록
 const create = async (bodyList) => {
   const token = JSON.parse(sessionStorage.getItem("token"));
   var data = [];
@@ -65,6 +68,7 @@ const create = async (bodyList) => {
   }
 };
 
+// 데이터 수정
 const update = async (body) => {
   const token = JSON.parse(sessionStorage.getItem("token"));
   let logo = "";
@@ -107,6 +111,7 @@ const update = async (body) => {
   }
 };
 
+// 데이터 삭제(임시삭제)
 const remove = async (idx) => {
   const token = JSON.parse(sessionStorage.getItem("token"));
   await groupService.removeByBrand(idx);
@@ -131,6 +136,7 @@ const remove = async (idx) => {
   }
 };
 
+// 데이터목록 얻기
 const getList = async (offset, search) => {
   try {
     const response = await axios.post(base_url + "/list/" + offset, search);
@@ -141,6 +147,7 @@ const getList = async (offset, search) => {
   }
 };
 
+// 데이터목록개수 얻기
 const getCount = async (search) => {
   try {
     const response = await axios.post(base_url + "/count", search);
@@ -151,6 +158,7 @@ const getCount = async (search) => {
   }
 };
 
+// 옵션목록 얻기
 const getOptionList = async () => {
   try {
     const response = await axios.get(base_url + "/option-list");
@@ -161,6 +169,7 @@ const getOptionList = async () => {
   }
 };
 
+// 데이터 얻기
 const get = async (idx) => {
   try {
     const response = await axios.get(base_url + "/" + idx);
@@ -191,6 +200,7 @@ const sequence = async () => {
 //     }
 // }
 
+// 로고 업로드
 const uploadLogo = async (file) => {
   var formData = new FormData();
   formData.append("logo", file);

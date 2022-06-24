@@ -6,6 +6,7 @@ const prefix = "content/popular/list/";
 const INIT = prefix + "INIT";
 const SHOW_MORE = prefix + "SHOW_MORE";
 
+// 초기화
 export const init = () => async (dispatch) => {
   try {
     const brandOptionList = await brandService.getOptionList();
@@ -23,6 +24,7 @@ export const init = () => async (dispatch) => {
   }
 };
 
+// 더보기
 export const showMore = () => async (dispatch, getState) => {
   try {
     const state = getState();
@@ -40,6 +42,8 @@ export const showMore = () => async (dispatch, getState) => {
     console.log(e);
   }
 };
+
+// 초기상태값
 const initialState = {
   offset: 0,
   dataSource: [],
