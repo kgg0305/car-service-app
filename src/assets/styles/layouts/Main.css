@@ -996,3 +996,19 @@ input:-webkit-autofill:active {
 .hidden {
     display: none;
 }
+
+::-webkit-input-placeholder {
+    font-weight: 500;
+}
+ 
+:-moz-placeholder { /* Firefox 18- */
+    font-weight: 500;
+}
+ 
+::-moz-placeholder {  /* Firefox 19+ */
+    font-weight: 500;
+}
+ 
+:-ms-input-placeholder {
+    font-weight: 500;
+}
